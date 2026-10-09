@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../fonts/fonts.css">
+<style>html,body{margin:0;background:transparent}svg{display:block}</style></head><body>
+<script>
+const mode=new URLSearchParams(location.search).get('m');
+const S=mode==='splash'||mode==='splashd'||mode==='feat'?null:1024;
+const bg=`<defs>
+<radialGradient id="g0" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#2a6a5e"/><stop offset=".55" stop-color="#14352f"/><stop offset="1" stop-color="#0a1a17"/></radialGradient>
+<pattern id="cini" width="128" height="128" patternUnits="userSpaceOnUse">
+ <g fill="none" stroke="#e8ab3c" stroke-opacity=".13" stroke-width="3">
+  <path d="M64 8 L80 48 L120 64 L80 80 L64 120 L48 80 L8 64 L48 48Z"/><circle cx="64" cy="64" r="14"/>
+  <path d="M0 0 L20 20 M128 0 L108 20 M0 128 L20 108 M128 128 L108 108"/></g></pattern>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".55"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></radialGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1c1"/><stop offset=".45" stop-color="#f3c76a"/><stop offset="1" stop-color="#c98a22"/></linearGradient>
+<linearGradient id="tag" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbeed2"/><stop offset="1" stop-color="#e3c99a"/></linearGradient>
+<filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000" flood-opacity=".55"/></filter>
+</defs>`;
+function bgLayer(w,h){return `<rect width="${w}" height="${h}" fill="url(#g0)"/><rect width="${w}" height="${h}" fill="url(#cini)"/>`}
+/* the emblem: hanging price tag with lira sign, drawn in a 1024 box, centred */
+function emblem(){return `<g filter="url(#sh)">
+ <ellipse cx="512" cy="520" rx="330" ry="330" fill="url(#glow)"/>
+ <path d="M512 150 C470 150 440 200 455 262" fill="none" stroke="url(#gold)" stroke-width="14" stroke-linecap="round"/>
+ <circle cx="512" cy="150" r="26" fill="url(#gold)" stroke="#7a4a12" stroke-width="6"/>
+ <g transform="rotate(-12 512 540)">
+  <path d="M512 248 L700 400 L700 820 Q700 850 670 850 L354 850 Q324 850 324 820 L324 400 Z" fill="#7a4a12"/>
+  <path d="M512 262 L686 404 L686 812 Q686 836 662 836 L362 836 Q338 836 338 812 L338 404 Z" fill="url(#tag)"/>
+  <path d="M512 290 L660 412 L660 806 L364 806 L364 412 Z" fill="none" stroke="#c98a22" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>
+  <circle cx="512" cy="372" r="30" fill="#14352f" stroke="url(#gold)" stroke-width="12"/>
+  <text x="512" y="700" text-anchor="middle" font-family="Lilita One" font-size="330" fill="#d9473e" stroke="#7a1f19" stroke-width="10" paint-order="stroke">₺</text>
+ </g>
+ <path d="M455 262 C470 320 500 345 512 372" fill="none" stroke="url(#gold)" stroke-width="14" stroke-linecap="round" transform="rotate(-12 512 540)"/>
+ <g fill="#fff3cf"><path d="M780 260 l12 34 34 12 -34 12 -12 34 -12 -34 -34 -12 34 -12z"/><path d="M230 690 l8 22 22 8 -22 8 -8 22 -8 -22 -22 -8 22 -8z" opacity=".8"/></g>
+</g>`}
+let out='';
+if(mode==='icon')out=`<svg width="1024" height="1024" viewBox="0 0 1024 1024">${bg}${bgLayer(1024,1024)}${emblem()}</svg>`;
+if(mode==='bg')out=`<svg width="1024" height="1024" viewBox="0 0 1024 1024">${bg}${bgLayer(1024,1024)}</svg>`;
+if(mode==='fg')out=`<svg width="1024" height="1024" viewBox="0 0 1024 1024">${bg}<g transform="translate(512 512) scale(.62) translate(-512 -512)">${emblem()}</g></svg>`;
+if(mode==='splash'||mode==='splashd')out=`<svg width="2732" height="2732" viewBox="0 0 2732 2732">${bg}<rect width="2732" height="2732" fill="#0d1f1c"/><rect width="2732" height="2732" fill="url(#cini)" opacity=".7"/>
+ <g transform="translate(1366 1250) scale(.85) translate(-512 -512)">${emblem()}</g>
+ <text x="1366" y="1880" text-anchor="middle" font-family="Cinzel" font-weight="900" font-size="150" letter-spacing="18" fill="url(#gold)">BİT PAZARI</text>
+ <text x="1366" y="1980" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="50" letter-spacing="10" fill="#a7bfb8">İSTANBUL · AL · SAT · KAZAN</text></svg>`;
+if(mode==='feat')out=`<svg width="1024" height="500" viewBox="0 0 1024 500">${bg}${bgLayer(1024,500)}
+ <g transform="translate(250 255) scale(.5) translate(-512 -512)">${emblem()}</g>
+ <text x="690" y="235" text-anchor="middle" font-family="Cinzel" font-weight="900" font-size="78" letter-spacing="6" fill="url(#gold)">BİT PAZARI</text>
+ <text x="690" y="292" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" letter-spacing="3" fill="#f6ecd8">Ucuza al · Pahalıya sat · Sahteye dikkat</text>
+ <text x="690" y="338" text-anchor="middle" font-family="Nunito" font-weight="700" font-size="20" letter-spacing="3" fill="#a7bfb8">İstanbul antika pazarlık oyunu</text></svg>`;
+document.body.innerHTML=out;document.fonts.ready.then(()=>document.title='ready');
+</script></body></html>

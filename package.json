@@ -1,0 +1,35 @@
+{
+  "name": "bit-pazari",
+  "version": "1.0.0",
+  "description": "Bit Pazarı - İstanbul antika al-sat oyunu (OZS Studio)",
+  "main": "index.js",
+  "scripts": {
+    "build": "python3 build.py && npx cap sync android",
+    "open": "npx cap open android",
+    "assets": "npx capacitor-assets generate --android"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor-community/admob": "^8.2.1",
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4",
+    "@fontsource/cinzel": "^5.3.0",
+    "@fontsource/lilita-one": "^5.3.0",
+    "@fontsource/mrs-saint-delafield": "^5.3.0",
+    "@fontsource/nunito": "^5.3.0",
+    "three": "0.128.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3",
+    "esbuild": "^0.28.2"
+  },
+  "private": true
+}

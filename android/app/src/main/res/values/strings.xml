@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bit Pazarı</string>
+    <string name="title_activity_main">Bit Pazarı</string>
+    <string name="package_name">com.ozsstudio.bitpazari</string>
+    <string name="custom_url_scheme">com.ozsstudio.bitpazari</string>
+    <!-- AdMob UYGULAMA kimliği. Şu an Google TEST kimliği; AdMob hesabını açınca kendi kimliğinle değiştir (ca-app-pub-XXXX~ZZZZ) -->
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+</resources>

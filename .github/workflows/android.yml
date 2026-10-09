@@ -1,0 +1,72 @@
+name: Android derle (AAB + APK)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KS_B64: ${{ secrets.KEYSTORE_BASE64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Android SDK lisansları
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+      - run: npm ci
+      - name: Web paketini hazırla ve Android'e kopyala
+        run: |
+          python3 build.py
+          npx cap sync android
+      - name: İmza anahtarını yükle
+        if: env.KS_B64 != ''
+        run: |
+          echo "$KS_B64" | base64 -d > $RUNNER_TEMP/upload.jks
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> $GITHUB_ENV
+      - name: Derle
+        working-directory: android
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          set -o pipefail
+          ./gradlew bundleRelease assembleDebug --no-daemon --stacktrace 2>&1 | tee $RUNNER_TEMP/build.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bit-pazari-${{ github.run_number }}
+          path: |
+            android/app/build/outputs/bundle/release/*.aab
+            android/app/build/outputs/apk/debug/*.apk
+      - name: Çıktıları build-output dalına koy
+        run: |
+          mkdir -p $RUNNER_TEMP/out
+          cp android/app/build/outputs/bundle/release/app-release.aab $RUNNER_TEMP/out/bit-pazari-$GITHUB_RUN_NUMBER.aab
+          cp android/app/build/outputs/apk/debug/app-debug.apk $RUNNER_TEMP/out/bit-pazari-test-$GITHUB_RUN_NUMBER.apk
+          git config user.name ci && git config user.email ci@users.noreply.github.com
+          git checkout --orphan build-output
+          git rm -rfq . >/dev/null
+          cp $RUNNER_TEMP/out/* .
+          git add *.aab *.apk && git commit -qm "build $GITHUB_RUN_NUMBER" && git push -f origin build-output
+      - name: Hata günlüğünü kaydet
+        if: failure()
+        run: |
+          git config user.name ci && git config user.email ci@users.noreply.github.com
+          git checkout --orphan ci-log
+          git rm -rfq . >/dev/null
+          tail -c 60000 $RUNNER_TEMP/build.log > build.log || echo "log yok" > build.log
+          git add build.log && git commit -qm "build log $GITHUB_RUN_NUMBER" && git push -f origin ci-log
