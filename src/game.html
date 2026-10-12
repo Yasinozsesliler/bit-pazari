@@ -1162,6 +1162,45 @@ img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,1
 @keyframes m3fade{from{opacity:0}}
 @media (max-height:700px){.m3-head{padding-top:18px}.m3-logo span:last-child{font-size:42px}.m3-stage{min-height:200px}.m3-dock{gap:9px;padding-top:8px}.m3-go{height:52px}.m3-plate{bottom:4px;padding:5px 14px 6px;min-width:150px}.m3-plate small{display:none}.m3-dots{display:none}.m3-slot{inset:-6px 0 20px}.m3-stats span{font-size:12px}}
 @media (max-width:370px){.m3-logo span:last-child{font-size:44px}}
+/* deal panel v3 */
+.dz{gap:9px;padding:10px 14px 8px}
+.dz-info{display:flex;border-radius:14px;background:linear-gradient(180deg,#140d08,#0e0905);box-shadow:inset 0 0 0 1px rgba(232,171,60,.22)}
+.dz-c{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:7px 12px;min-width:0}
+.dz-c+.dz-c{border-left:1px solid rgba(232,171,60,.16)}
+.dz-c small{font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#9b8a72}
+.dz-big{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1;color:var(--brass)}
+.dz-v{flex:1}
+.dz-vv{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap}
+.dz-vv b{font-size:15px;font-weight:900;color:var(--fg);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
+.dz-vv .chip{flex:none;font-size:9.5px;padding:2px 7px}
+.dz-vv em{font-style:normal;font-size:12px;color:var(--muted)}
+.dz-ask{border:none;background:none;padding:0;font:inherit;font-size:13px;font-weight:800;color:var(--muted);text-align:left}
+.dz-ask u{color:var(--brass);text-underline-offset:3px}
+.dz-offer{display:grid;grid-template-columns:52px 1fr 52px;gap:8px}
+.dz-sb{border:none;border-radius:14px;font-family:var(--display);font-size:26px;line-height:1;color:var(--brass);background:linear-gradient(180deg,#2c1f15,#1a110a);box-shadow:inset 0 0 0 1px rgba(232,171,60,.35),0 3px 0 #0b0704}
+.dz-sb:active{transform:translateY(2px);box-shadow:inset 0 0 0 1px rgba(232,171,60,.35),0 1px 0 #0b0704}
+.dz .dz-box{height:56px;padding:0;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.dz .dz-box small{font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#9b8a72}
+.dz .dz-box small .pen{color:var(--brass);letter-spacing:0}
+.dz .dz-box b{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.1;color:#fff3d6}
+.dz .dz-box b .ph{font-family:var(--body);font-weight:800;font-size:15px;color:#7d6e5a}
+.dz #offerIn{font-size:26px}
+.dz-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.dz .dz-qc{flex-direction:row;justify-content:center;align-items:baseline;gap:6px;padding:7px 4px;border-radius:10px}
+.dz .dz-qc b{font-size:13px}.dz .dz-qc span{display:inline;font-size:11px}
+.dz-main{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dz-main .b{height:54px;padding:6px 8px;font-size:19px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dz-main .b small{font-size:11.5px;margin-top:1px}
+.dz-main .b.brass:disabled{opacity:1;filter:grayscale(.85) brightness(.5);box-shadow:0 4px 0 #2a2015}
+.dz-wait{display:grid;place-items:center;text-align:center;border-radius:14px;padding:6px 10px;font-size:11.5px;font-weight:800;color:#8e7d66;box-shadow:inset 0 0 0 1px rgba(232,171,60,.18)}
+.dz-tools{display:flex;justify-content:space-around;gap:4px;padding-top:2px}
+.dz-t{display:flex;align-items:center;gap:5px;border:none;background:none;padding:5px 6px;border-radius:8px;color:#bda98c;font-size:12px;font-weight:800;white-space:nowrap}
+.dz-t svg{width:16px;height:16px;color:var(--brass)}
+.dz-t.red svg{color:#ff8c80}
+.dz-t:disabled{opacity:.35}
+.dz-t:active:not(:disabled){background:rgba(232,171,60,.1)}
+@media (max-height:740px){.dz{gap:6px;padding:7px 12px 6px}.dz-c{padding:4px 12px}.dz-big{font-size:19px}.dz .dz-box{height:46px}.dz .dz-box b{font-size:23px}.dz-sb{font-size:22px}.dz .dz-qc{padding:5px 4px}.dz-main .b{height:46px;font-size:17px}.dz-main .b small{font-size:10.5px}.dz-t{padding:3px 6px}}
+@media (max-width:380px){.dz-t{font-size:11px;padding:5px 3px;gap:4px}.dz-t svg{width:14px;height:14px}.dz-big{font-size:20px}.dz-offer{grid-template-columns:46px 1fr 46px}}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -3133,6 +3172,21 @@ function intelHtml(it){
   else if(k.insp)s=`Tahmini piyasa: <b>${fmt(k.lo)} – ${fmt(k.hi)}</b> · ${CONDN[it.cond-1]} ${k.suspect?'<span class="chip bad">Şüpheli damga</span>':'<span class="chip good">Temiz görünüyor</span>'}`;
   else s='Henüz incelemedin. Ürüne dokun, arkasını çevirip damgasına bak.';
   return `<div class="intel">${s}</div>`}
+/* ---------- deal panel v3 (simple) ---------- */
+function dzVal(it){if(it.chest)return `<b class="dz-q">?</b><em>Kilitli sandık</em>`;const k=it.known;
+  if(k.expert)return `<b>${fmt(it.fake?it.worth:val(it))}</b>${it.fake?'<span class="chip bad">Sahte</span>':'<span class="chip good">Orijinal</span>'}`;
+  if(k.insp)return `<b>${fmt(k.lo)}–${fmt(k.hi)}</b>${k.suspect?'<span class="chip bad">Şüpheli</span>':'<span class="chip good">Temiz</span>'}`;
+  return `<button class="dz-ask" data-act="inspect">Bilinmiyor · <u>İncele</u></button>`}
+function dzInfo(l1,v1,it,extra){return `<div class="dz-info"><div class="dz-c"><small>${l1}</small><b class="dz-big">${v1}</b></div>
+  <div class="dz-c dz-v"><small>Tahmini değer</small><div class="dz-vv">${dzVal(it)}</div></div>${extra||''}</div>`}
+function dzOffer(lbl){return `<div class="dz-offer"><button class="dz-sb" data-act="dec" aria-label="Azalt">−</button>
+  <button class="offerBox dz-box" data-act="typeOffer" id="offerBox" aria-label="Tutarı elle yaz"><small>${lbl} <span class="pen">✎</span></small><b id="offerV">${S.offer>0?fmt(S.offer):'<span class="ph">Tutar seç</span>'}</b></button>
+  <button class="dz-sb" data-act="inc" aria-label="Artır">+</button></div>`}
+function dzChips(){const c=S.cust;let ch=[];
+  if(c.kind==='seller')ch=[['%50',r10(c.ask*.5)],['%70',r10(c.ask*.7)],['%85',r10(c.ask*.85)]];
+  else{const it=itemById(c.itemId);if(!it)return'';const b=Math.max(it.appear,it.paid);ch=[['×1.3',r10(b*1.3)],['×1.6',r10(b*1.6)],['×2',r10(b*2)]]}
+  return `<div class="dz-chips">${ch.map(([l,v])=>`<button class="qc dz-qc${S.offer===v?' on':''}" data-act="q:${v}"><b>${l}</b><span>${fmt(v)}</span></button>`).join('')}</div>`}
+function dzTool(act,ic,t,dis,cls){return `<button class="dz-t ${cls||''}" data-act="${act}" ${dis?'disabled':''}>${ic}<span>${t}</span></button>`}
 function renderPanel(){
   const c=S.cust;
   if(S.phase==='dayEnd'){const prof=S.money-S.stats.start;const invV=S.inv.reduce((a,x)=>a+(x.known.expert&&x.fake?x.worth:x.appear),0);
@@ -3145,22 +3199,18 @@ function renderPanel(){
   if(c.done)return `<div class="panel"><div class="wait">${c.result==='deal'?'Anlaşma tamam. Sıradaki müşteri geliyor…':'Müşteri gidiyor…'}</div></div>`;
   const dis=busy?'disabled':'';
   if(c.kind==='seller'){const it=c.item;
-    return `<div class="panel deal2">${talkPop(c)}<div class="dtop"><div class="ask"><span class="lbl">İstediği</span><b>${fmt(c.ask)}</b></div>${intelMini(it)}</div>
-      ${stepper(Math.max(r10(c.ask*1.4),100))}
-      <div class="acts"><button class="ib" data-act="inspect" ${it.chest?'disabled':''} aria-label="İncele">${IC.look}<span>İncele</span></button>
-       <button class="ib" data-act="expert" ${it.known.expert||it.chest?'disabled':''} aria-label="Uzmana sor">${IC.expert}<span>${fmt(expertFee())}</span></button>
-       <button class="ib red" data-act="talkMenu" ${busy?'disabled':''} aria-label="Konuş">${IC.talk}<span>Konuş</span></button>
-       <button class="ib" data-act="pass" ${dis} aria-label="Geç">${IC.x}<span>Geç</span></button>
-       <button class="b brass main" id="offerGo" data-act="offer" ${busy||!(S.offer>0||c.trade)?'disabled':''}>Teklif Ver</button>
-       <button class="b mint main" data-act="acceptAsk" ${dis}>Kabul<small>${fmt(c.ask)}</small></button></div></div>`}
+    return `<div class="panel deal2 dz">${talkPop(c)}${dzInfo('İstediği',fmt(c.ask),it)}
+      ${dzOffer('Teklifin')}${dzChips()}
+      <div class="dz-main"><button class="b brass" id="offerGo" data-act="offer" ${busy||!(S.offer>0||c.trade)?'disabled':''}>Teklif Ver</button>
+       <button class="b mint" data-act="acceptAsk" ${dis}>Kabul Et<small>${fmt(c.ask)}</small></button></div>
+      <div class="dz-tools">${dzTool('inspect',IC.look,'İncele',it.chest)}${dzTool('expert',IC.expert,'Uzman '+fmt(expertFee()),it.known.expert||it.chest)}${dzTool('talkMenu',IC.talk,'Konuş',busy)}${dzTool('pass',IC.x,'Vazgeç',busy,'red')}</div></div>`}
   if(c.kind==='buyer'){const it=itemById(c.itemId);const knowsFake=it.fake&&(it.known.expert||it.known.suspect);
-    return `<div class="panel deal2">${talkPop(c)}<div class="dtop"><div class="ask"><span class="lbl">Maliyetin</span><b>${fmt(it.paid)}</b></div>${intelMini(it)}</div>
+    return `<div class="panel deal2 dz">${talkPop(c)}${dzInfo('Maliyetin',fmt(it.paid),it)}
       ${knowsFake?`<button class="toggle sm ${c.honest?'on':''}" data-act="honest"><span class="sw"></span><span><b>Dürüst ol:</b> replika olduğunu söyle</span></button>`:''}
-      ${stepper(Math.max(r10(it.appear*2.2),200))}
-      <div class="acts"><button class="ib red" data-act="talkMenu" ${busy?'disabled':''} aria-label="Konuş">${IC.talk}<span>Konuş</span></button>
-       <button class="ib" data-act="decline" ${dis} aria-label="Satma">${IC.x}<span>Satma</span></button>
-       <button class="b brass main" id="offerGo" data-act="propose" ${busy||!(S.offer>0)?'disabled':''}>Fiyatı Söyle</button>
-       ${c.counter?`<button class="b mint main" data-act="takeCounter" ${dis}>Kabul<small>${fmt(c.counter)}</small></button>`:''}</div></div>`}
+      ${dzOffer('Fiyatın')}${dzChips()}
+      <div class="dz-main"><button class="b brass" id="offerGo" data-act="propose" ${busy||!(S.offer>0)?'disabled':''}>Fiyatı Söyle</button>
+       ${c.counter?`<button class="b mint" data-act="takeCounter" ${dis}>Kabul Et<small>${fmt(c.counter)}</small></button>`:`<div class="dz-wait">Müşteri henüz teklif vermedi</div>`}</div>
+      <div class="dz-tools">${dzTool('talkMenu',IC.talk,'Konuş',busy)}${dzTool('decline',IC.x,'Satmaktan vazgeç',busy,'red')}</div></div>`}
   if(c.kind==='story'){
     if(c.sold)return `<div class="panel"><p class="sub">Saati başkasına sattın. Rıza Amca üzgün.</p><button class="b ghost" data-act="story:ok">Başını Eğ</button></div>`;
     const it=itemById(c.itemId);
