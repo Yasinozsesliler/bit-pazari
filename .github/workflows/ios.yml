@@ -44,6 +44,19 @@ jobs:
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath $RUNNER_TEMP/dd CODE_SIGNING_ALLOWED=NO build 2>&1 | tee $RUNNER_TEMP/log/sim.log | tail -40
 
+      - name: Simülatörde aç ve ekran görüntüsü al
+        continue-on-error: true
+        run: |
+          UDID=$(xcrun simctl list devices available | grep -E "iPhone 1[6-9] Pro Max|iPhone [0-9]+ Pro Max" | head -1 | grep -oE "[0-9A-F-]{36}")
+          [ -z "$UDID" ] && UDID=$(xcrun simctl list devices available | grep iPhone | head -1 | grep -oE "[0-9A-F-]{36}")
+          echo "Simülatör: $UDID"
+          xcrun simctl boot "$UDID"; xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" $RUNNER_TEMP/dd/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl launch "$UDID" com.ozsstudio.bitpazari
+          sleep 25
+          xcrun simctl io "$UDID" screenshot $RUNNER_TEMP/log/sim-menu.png
+          xcrun simctl spawn "$UDID" log show --last 1m --predicate 'process == "App"' 2>/dev/null | grep -iE "error|exception|⚡️" | tail -60 > $RUNNER_TEMP/log/applog.log || true
+
       - name: Arşivle ve TestFlight'a yükle (Apple sırları varsa)
         if: env.ASC_KEY_P8 != '' && env.APPLE_TEAM_ID != ''
         run: |
