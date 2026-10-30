@@ -1274,6 +1274,11 @@ img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,1
 .dec-bulbs circle{filter:drop-shadow(0 0 6px rgba(255,200,90,1))}
 .dec-bulbs .bulb0{animation:bulb 2.4s ease-in-out infinite}.dec-bulbs .bulb1{animation:bulb 2.4s ease-in-out .8s infinite}.dec-bulbs .bulb2{animation:bulb 2.4s ease-in-out 1.6s infinite}
 .swc.emo{display:grid;place-items:center;font-size:22px;background:#140d08!important}
+/* iOS safe areas (notch / home indicator) */
+body{padding-top:env(safe-area-inset-top,0px)}
+.m3-dock{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+.rs,.mapv{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.viewer{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

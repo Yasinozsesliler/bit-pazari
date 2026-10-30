@@ -1,0 +1,86 @@
+name: iOS derle (simülatör + TestFlight)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    env:
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: En yeni Xcode'u seç
+        run: |
+          X=$(ls -d /Applications/Xcode_*.app | grep -v beta | sort -V | tail -1)
+          echo "Xcode: $X"
+          sudo xcode-select -s "$X"
+          xcodebuild -version
+
+      - run: npm ci
+      - name: Web paketini hazırla ve iOS'a kopyala
+        run: |
+          python3 build.py
+          npx cap sync ios
+
+      - name: Derleme kontrolü (simülatör, imzasız)
+        run: |
+          set -o pipefail
+          mkdir -p $RUNNER_TEMP/log
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath $RUNNER_TEMP/dd CODE_SIGNING_ALLOWED=NO build 2>&1 | tee $RUNNER_TEMP/log/sim.log | tail -40
+
+      - name: Arşivle ve TestFlight'a yükle (Apple sırları varsa)
+        if: env.ASC_KEY_P8 != '' && env.APPLE_TEAM_ID != ''
+        run: |
+          set -o pipefail
+          KEY=$RUNNER_TEMP/AuthKey.p8
+          printf '%s' "$ASC_KEY_P8" > $KEY
+          AUTH="-allowProvisioningUpdates -authenticationKeyPath $KEY -authenticationKeyID $ASC_KEY_ID -authenticationKeyIssuerID $ASC_ISSUER_ID"
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath $RUNNER_TEMP/App.xcarchive \
+            DEVELOPMENT_TEAM=$APPLE_TEAM_ID CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            $AUTH archive 2>&1 | tee $RUNNER_TEMP/log/archive.log | tail -40
+          cat > $RUNNER_TEMP/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$APPLE_TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>uploadSymbols</key><true/>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath $RUNNER_TEMP/App.xcarchive \
+            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist -exportPath $RUNNER_TEMP/export \
+            $AUTH 2>&1 | tee $RUNNER_TEMP/log/export.log | tail -40
+          echo "TestFlight'a yüklendi: sürüm $(/usr/libexec/PlistBuddy -c 'Print :ApplicationProperties:CFBundleShortVersionString' $RUNNER_TEMP/App.xcarchive/Info.plist) (${{ github.run_number }})" | tee $RUNNER_TEMP/log/RESULT.txt
+
+      - name: Günlüğü ios-log dalına yaz
+        if: always()
+        run: |
+          git config user.name ci && git config user.email ci@users.noreply.github.com
+          mkdir -p $RUNNER_TEMP/log
+          echo "run ${{ github.run_number }} · ${{ job.status }}" > $RUNNER_TEMP/log/STATUS.txt
+          for f in $RUNNER_TEMP/log/*.log; do [ -f "$f" ] && tail -c 60000 "$f" > "$f.tail" && mv "$f.tail" "$f"; done
+          git checkout --orphan ios-log
+          git rm -rfq . >/dev/null
+          cp $RUNNER_TEMP/log/* . 2>/dev/null || true
+          git add -f $(cd $RUNNER_TEMP/log && ls) && git commit -qm "ios log ${{ github.run_number }}" && git push -f origin ios-log

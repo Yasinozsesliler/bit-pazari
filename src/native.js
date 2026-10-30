@@ -9,8 +9,11 @@ import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob";
 import { ADS } from "./ads.config.js";
 
 const isNative = Capacitor.isNativePlatform();
+const platform = Capacitor.getPlatform();
+const isIOS = platform === "ios";
+const AD_UNIT = (isIOS ? ADS.ios : ADS.android).rewardedId;
 const KEY = "bitpazari.v1";
-const N = { isNative, notifPerm: "default" };
+const N = { isNative, platform, notifPerm: "default" };
 window.NATIVE = N;
 
 /* ---------- Kayıt: localStorage + Preferences yedeği (WebView verisi silinirse geri yükler) ---------- */
@@ -46,6 +49,13 @@ async function initAds() {
         canAds = r.canRequestAds !== false;
       } else canAds = info.canRequestAds !== false;
     } catch (e) {}
+    /* iOS: Apple'ın uygulama takip izni (ATT). Reddedilse de reklamlar kişiselleştirilmeden gösterilir. */
+    if (isIOS) {
+      try {
+        const t = await AdMob.trackingAuthorizationStatus();
+        if (t.status === "notDetermined") await AdMob.requestTrackingAuthorization();
+      } catch (e) {}
+    }
     return true;
   } catch (e) { return false; }
 }
@@ -54,7 +64,7 @@ N.rewarded = async () => {
   if (!isNative) return false;
   if (!adsReady) adsReady = initAds();
   if (!(await adsReady) || !canAds) return false;
-  try { await AdMob.prepareRewardVideoAd({ adId: ADS.rewardedId, isTesting: ADS.testing }); } catch (e) { return false; }
+  try { await AdMob.prepareRewardVideoAd({ adId: AD_UNIT, isTesting: ADS.testing }); } catch (e) { return false; }
   return new Promise((resolve) => {
     let got = false, done = false;
     const fin = (v) => { if (done) return; done = true; hs.forEach((h) => h.then((x) => x.remove())); resolve(v); };
@@ -95,7 +105,8 @@ function onBack() {
 
 if (isNative) {
   document.documentElement.classList.add("native");
-  App.addListener("backButton", onBack);
+  document.documentElement.classList.add("plat-" + platform);
+  if (!isIOS) App.addListener("backButton", onBack);
   App.addListener("appStateChange", async ({ isActive }) => {
     try { window.BP_PAUSE && window.BP_PAUSE(!isActive); } catch (e) {}
     if (isActive) { try { const p = await LocalNotifications.getPending(); if (p.notifications.length) await LocalNotifications.cancel(p); } catch (e) {} }
@@ -107,7 +118,7 @@ if (isNative) {
     if (N.notifPerm === "default") setTimeout(() => { try { const S = JSON.parse(localStorage.getItem(KEY) || "{}"); if ((S.day || 1) >= 2) N.askNotif(); } catch (e) {} }, 60000);
   }).catch(() => {});
   StatusBar.setStyle({ style: Style.Dark }).catch(() => {});
-  StatusBar.setBackgroundColor({ color: "#0d1f1c" }).catch(() => {});
+  if (!isIOS) StatusBar.setBackgroundColor({ color: "#0d1f1c" }).catch(() => {});
   window.addEventListener("load", () => setTimeout(() => SplashScreen.hide().catch(() => {}), 300));
   setTimeout(() => { adsReady = adsReady || initAds(); }, 4000);
 }
