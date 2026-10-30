@@ -1202,7 +1202,7 @@ img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,1
 @media (max-height:740px){.dz{gap:6px;padding:7px 12px 6px}.dz-c{padding:4px 12px}.dz-big{font-size:19px}.dz .dz-box{height:46px}.dz .dz-box b{font-size:23px}.dz-sb{font-size:22px}.dz .dz-qc{padding:5px 4px}.dz-main .b{height:46px;font-size:17px}.dz-main .b small{font-size:10.5px}.dz-t{padding:3px 6px}}
 @media (max-width:380px){.dz-t{font-size:11px;padding:5px 3px;gap:4px}.dz-t svg{width:14px;height:14px}.dz-big{font-size:20px}.dz-offer{grid-template-columns:46px 1fr 46px}}
 /* restoration */
-.rs{position:absolute;inset:0;z-index:300;display:flex;flex-direction:column;gap:10px;padding:14px 14px 16px;background:radial-gradient(120% 70% at 50% 0%,#2a1c12,#0c0805 70%);animation:fade .25s}
+.rsx{position:absolute;inset:0;z-index:300;display:flex;flex-direction:column;gap:10px;padding:14px 14px 16px;background:radial-gradient(120% 70% at 50% 0%,#2a1c12,#0c0805 70%);animation:fade .25s}
 .rs-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .rs-top small{display:block;font-size:9.5px;font-weight:900;letter-spacing:.2em;color:#9b8a72}
 .rs-top b{display:block;font-family:var(--serif);font-weight:900;font-size:17px;color:#f6ecd8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
@@ -1277,7 +1277,7 @@ img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,1
 /* iOS safe areas (notch / home indicator) */
 body{padding-top:env(safe-area-inset-top,0px)}
 .m3-dock{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-.rs,.mapv{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.rsx,.mapv{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 .viewer{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 </style>
 
@@ -1850,7 +1850,7 @@ function rsOpen(id){const x=itemById(id);if(!x)return;if(x.diy===S.day){toast('B
   const fee=rsFee(x);if(S.money<fee){toast('Malzeme parası yok');sfx.bad();return}
   S.money-=fee;logT('fee',{n:'Malzeme: '+x.n,i:'🧴'},-fee);x.diy=S.day;save();
   const cracks=Math.max(0,4-x.cond);
-  const el=document.createElement('div');el.className='rs';el.id='rs';
+  const el=document.createElement('div');el.className='rsx';el.id='rs';
   el.innerHTML=`<div class="rs-top"><div><small>RESTORASYON TEZGÂHI</small><b>${esc(x.n)}</b></div><div class="rs-time"><i id="rsT"></i><span id="rsS">40</span></div></div>
    <div class="rs-steps">${[['dirt','🪥','Temizle'],...(cracks?[['glue','🧴','Yapıştır']]:[]),['polish','✨','Cilala']].map(([k,ic,t])=>`<button class="rs-tool" data-rs="${k}"><span class="rs-ring" style="--p:0"><em>${ic}</em></span><small>${t}</small><b id="rsp-${k}">%0</b></button>`).join('')}</div>
    <div class="rs-stage" id="rsStage"><canvas id="rsC"></canvas><div class="rs-hint" id="rsHint">Fırçayla tozu ve pası sil</div></div>
