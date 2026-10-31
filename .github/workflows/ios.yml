@@ -13,9 +13,10 @@ jobs:
     runs-on: macos-latest
     env:
       ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
-      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      # Gizli olmayan kimlikler (tek başına işe yaramazlar; gizli olan sadece .p8 anahtarı)
+      ASC_KEY_ID: 6328BZ8U27
+      ASC_ISSUER_ID: 92538e79-b529-4f31-b67e-b78ad2429c3d
+      APPLE_TEAM_ID: H492363L3R
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
