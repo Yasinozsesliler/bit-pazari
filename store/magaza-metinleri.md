@@ -1,31 +1,34 @@
 # Bit Pazarı: Google Play mağaza metinleri
 
 ## Uygulama adı (en fazla 30 karakter)
-Bit Pazarı: Antika Al-Sat
+Bit Pazarı: Antika Simülatörü
 
 ## Kısa açıklama (en fazla 80 karakter)
-İstanbul'da antika dükkânı aç: pazarlık et, sahteyi yakala, kârla sat!
+Pazarlık et, sahteyi yakala, antika dükkânını büyüt! İnternetsiz al-sat oyunu.
 
 ## Tam açıklama (en fazla 4000 karakter)
-Dededen kalma küçük bir dükkân, bir avuç para ve İstanbul'un en renkli pazarı… Ucuza al, pahalıya sat. Ama dikkat: her parlayan altın değil!
+Bit Pazarı, İstanbul'da geçen bir antika dükkânı simülatörü ve al-sat oyunu. Dededen kalma küçük bir dükkân, bir avuç para ve şehrin en renkli pazarı… Esnaf ol, tüccar gibi düşün: ucuza al, pahalıya sat. Ama dikkat: her parlayan altın değil!
 
 🏺 GERÇEK BİR PAZARLIK
 Her müşterinin bir huyu var. Kurnaz Cevdet Dayı fiyatı şişirir, emekli öğretmen pazarlıktan hoşlanmaz, koleksiyoncu sahteyi bir bakışta anlar. Teklifini yaz, çay ikram et, tatlı dille ikna et ya da elindeki eşyayla takas öner. Fazla sıkıştırırsan müşteri kapıyı çarpıp gider.
 
 🔍 SAHTEYİ YAKALA
-Eşyaları 3 boyutlu olarak elinde çevir, damgasına, dikişine, imzasına bak. Uzmana sor, laboratuvara gönder. Sahte malı gerçek diye satarsan zabıta kapıya dayanır, itibarın yerle bir olur.
+Eşyaları 3 boyutlu olarak elinde çevir. Ekspertiz çantanı aç: büyüteçle gizli damgayı bul, UV lambayla taze boyayı yakala, terazide tart. Uzmana sor, laboratuvara gönder. Sahte malı gerçek diye satarsan zabıta kapıya dayanır, itibarın yerle bir olur.
+
+🛠️ ELLE RESTORASYON
+Tozlu cep saatini fırçala, çatlak vazoyu yapıştır, gramofonu cilala. Ne kadar özenli çalışırsan eşyanın değeri o kadar artar.
 
 🏆 ONAY SERTİFİKASI
 İmzalı formaları ve efsane futbolcu kartlarını ONAY'a gönder. Notu yüksek çıkarsa koruyucu kılıfa giren ürünün değeri katlanır.
 
 📦 E-MEZAT VE KARGO
-Akşamları telefonundan e-Mezat'a gir: canlı açık artırmalarda kapış, kendi ürünlerini sat. Satılan ürünü kutusuna kendin yerleştir, balonlu naylona sar, bantla, kargo firmasını seç. İyi paketlersen 5 yıldız!
+Akşamları telefonundan e-Mezat'a gir: canlı müzayede ve açık artırmalarda kapış, kendi ürünlerini sat. Satılan ürünü kutusuna kendin yerleştir, balonlu naylona sar, bantla, kargo firmasını seç. İyi paketlersen 5 yıldız!
 
 🗺️ İSTANBUL'DA BÜYÜ
 Bit Pazarı'ndan başla, Kadıköy Çarşısı'na, Kapalıçarşı'ya, Galata'ya ve Nişantaşı'na uzan. Her semtin müşterisi, malı ve kirası farklı.
 
-✨ 90'DAN FAZLA EŞYA
-Çini vazolar, cep saatleri, pikaplar, oyuncak ayılar, mücevher kutuları, Osmanlı sikkeleri, imzalı formalar… Her biri kendi 3B tasarımıyla. Nadir ve efsanevi parçaları bul, koleksiyon serilerini tamamla.
+✨ 120'DEN FAZLA EŞYA
+Çini vazolar, 40 farklı saat, cep saatleri, pikaplar, oyuncak ayılar, mücevher kutuları, Osmanlı sikkeleri, imzalı formalar… Her biri kendi 3B tasarımıyla. Nadir ve efsanevi parçaları bul, koleksiyon serilerini tamamla.
 
 🌳 USTALIK AĞACI
 İkna, ekspertiz, onarım, ticaret… Seviye atladıkça yeni yetenekler aç, dükkânını büyüt, raflarını genişlet, vitrini süsle.
@@ -46,7 +49,7 @@ Simülasyon, İşletme, Tek oyunculu, Çevrimdışı, Stilize
 ## Mağaza görselleri
 - Uygulama simgesi (512×512): `store/icon-512.png`
 - Öne çıkan grafik (1024×500): `store/feature-graphic.png`
-- Telefon ekran görüntüleri (1080×2160): `store/screens/` klasöründeki 9 görsel. Sırası:
+- Telefon ekran görüntüleri (1080×2160): **`store/aso/play/`** (üstü başlıklı, sıralı). Eski düz görseller `store/screens/` içinde. Sırası:
   1. `02-pazarlik.png` (en güçlü ilk izlenim)
   2. `03-3d-inceleme.png`
   3. `06-e-mezat.png`

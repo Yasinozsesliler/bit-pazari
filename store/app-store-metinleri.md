@@ -1,16 +1,16 @@
 # Bit Pazarı: App Store metinleri
 
 ## Ad (en fazla 30 karakter)
-Bit Pazarı: Antika Al-Sat
+Bit Pazarı: Antika Simülatörü
 
 ## Alt başlık (en fazla 30 karakter)
-Pazarlık et, sahteyi yakala
+Pazarlık Et, Al Sat, Zengin Ol
 
 ## Tanıtım metni (en fazla 170 karakter, incelemesiz güncellenebilir)
 Yeni: 30 saatlik Saat Ustası serisi, elle restorasyon ve ekspertiz çantası! Büyüteçle damgayı bul, UV lambayla sahteyi yakala, dükkânını kedinle süsle.
 
 ## Anahtar kelimeler (en fazla 100 karakter, virgülle, boşluksuz)
-antika,pazarlık,al sat,dükkan,simülasyon,koleksiyon,saat,müzayede,istanbul,tüccar,esnaf,sahte
+dükkan,esnaf,tüccar,ticaret,tycoon,işletme,saat,koleksiyon,müzayede,mezat,sahte,istanbul,eşya,mağaza
 
 ## Açıklama
 Dededen kalma küçük bir dükkân, bir avuç para ve İstanbul'un en renkli pazarı… Ucuza al, pahalıya sat. Ama dikkat: her parlayan altın değil!
@@ -52,3 +52,6 @@ Bir OZS Studio oyunu.
 
 ## İnceleme notu (App Review)
 Hesap veya giriş gerekmez; oyun doğrudan açılır. Reklamlar isteğe bağlı ödüllü reklamlardır. Oyun içi para gerçek parayla satın alınamaz.
+
+## İngilizce (ABD) sayfa
+Bkz. `store/aso/ASO-PLANI.md`. Türkiye'de de aranır.

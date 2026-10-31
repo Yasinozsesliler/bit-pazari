@@ -11,7 +11,8 @@ import { ADS } from "./ads.config.js";
 const isNative = Capacitor.isNativePlatform();
 const platform = Capacitor.getPlatform();
 const isIOS = platform === "ios";
-const AD_UNIT = (isIOS ? ADS.ios : ADS.android).rewardedId;
+const AD_CFG = isIOS ? ADS.ios : ADS.android;
+const AD_UNIT = AD_CFG.rewardedId;
 const KEY = "bitpazari.v1";
 const N = { isNative, platform, notifPerm: "default" };
 window.NATIVE = N;
@@ -41,7 +42,7 @@ if (isNative) {
 let adsReady = null, canAds = true;
 async function initAds() {
   try {
-    await AdMob.initialize({ initializeForTesting: ADS.testing });
+    await AdMob.initialize({ initializeForTesting: AD_CFG.testing });
     try {
       const info = await AdMob.requestConsentInfo();
       if (info.isConsentFormAvailable && info.status === AdmobConsentStatus.REQUIRED) {
@@ -64,7 +65,7 @@ N.rewarded = async () => {
   if (!isNative) return false;
   if (!adsReady) adsReady = initAds();
   if (!(await adsReady) || !canAds) return false;
-  try { await AdMob.prepareRewardVideoAd({ adId: AD_UNIT, isTesting: ADS.testing }); } catch (e) { return false; }
+  try { await AdMob.prepareRewardVideoAd({ adId: AD_UNIT, isTesting: AD_CFG.testing }); } catch (e) { return false; }
   return new Promise((resolve) => {
     let got = false, done = false;
     const fin = (v) => { if (done) return; done = true; hs.forEach((h) => h.then((x) => x.remove())); resolve(v); };
