@@ -71,6 +71,13 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             $AUTH archive 2>&1 | tee $RUNNER_TEMP/log/archive.log | tail -40
+          # Gömülü hazır framework'lerin (Google) eski imzasını sil; dışa aktarım hepsini dağıtım sertifikasıyla yeniden imzalar
+          for fw in $RUNNER_TEMP/App.xcarchive/Products/Applications/App.app/Frameworks/*.framework; do
+            [ -d "$fw" ] || continue
+            echo "imza siliniyor: $fw"
+            codesign --remove-signature "$fw/$(basename "$fw" .framework)" || true
+            rm -rf "$fw/_CodeSignature"
+          done
           cat > $RUNNER_TEMP/ExportOptions.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -79,7 +86,7 @@ jobs:
             <key>destination</key><string>upload</string>
             <key>teamID</key><string>$APPLE_TEAM_ID</string>
             <key>signingStyle</key><string>automatic</string>
-            <key>uploadSymbols</key><true/>
+            <key>uploadSymbols</key><false/>
             <key>manageAppVersionAndBuildNumber</key><false/>
           </dict></plist>
           EOF
