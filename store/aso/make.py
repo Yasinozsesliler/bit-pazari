@@ -22,10 +22,11 @@ background:radial-gradient(120% 60% at 50% 0%,#1f4a40 0%,#0d1f1c 55%,#08120f 100
 .s{{font-family:N;font-weight:800;color:#e9dcc0;text-align:center;opacity:.92}}
 .ph{{border-radius:calc(var(--w)*.075);overflow:hidden;border:calc(var(--w)*.012) solid #c9a24a;box-shadow:0 0 0 calc(var(--w)*.006) #3a2a10,0 calc(var(--w)*.04) calc(var(--w)*.1) #000a}}
 .ph img{{display:block;width:100%}}"""
+TARGETS=[('ios63',1206,2622,'screens-ios-63')]
 async def main():
   async with async_playwright() as p:
     b=await p.chromium.launch()
-    for tag,W,H,src in [('ios',1320,2868,'screens-ios'),('play',1080,2160,'screens')]:
+    for tag,W,H,src in TARGETS:
       os.makedirs(tag,exist_ok=True)
       pg=await b.new_page(viewport={'width':W,'height':H})
       for i,(f,t,s) in enumerate(CAP,1):
