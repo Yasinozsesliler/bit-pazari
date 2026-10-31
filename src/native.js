@@ -78,6 +78,28 @@ N.rewarded = async () => {
   });
 };
 
+/* ---------- Geçiş reklamı: her 2 günün sonunda, "Kepenkleri Aç"a basınca ---------- */
+N.interstitial = async () => {
+  if (!isNative || !AD_CFG.interstitialId) return false;
+  try {
+    if (!adsReady) adsReady = initAds();
+    if (!(await adsReady) || !canAds) return false;
+    await AdMob.prepareInterstitial({ adId: AD_CFG.interstitialId, isTesting: AD_CFG.testing });
+    await new Promise((resolve) => {
+      let done = false;
+      const fin = () => { if (done) return; done = true; hs.forEach((h) => h.then((x) => x.remove())); resolve(); };
+      const hs = [
+        AdMob.addListener("interstitialAdDismissed", fin),
+        AdMob.addListener("interstitialAdFailedToShow", fin),
+      ];
+      try { window.BP_PAUSE && window.BP_PAUSE(true); } catch (e) {}
+      AdMob.showInterstitial().catch(fin);
+      setTimeout(fin, 90000);
+    });
+    return true;
+  } catch (e) { return false; }
+};
+
 /* ---------- Yerel bildirimler ---------- */
 N.askNotif = async () => {
   try { const r = await LocalNotifications.requestPermissions(); N.notifPerm = r.display === "granted" ? "granted" : "denied"; } catch (e) {}

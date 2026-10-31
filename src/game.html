@@ -3764,7 +3764,7 @@ document.addEventListener('click',e=>{
     case 'takeCounter':doSell(c.counter,c.honest&&itemById(c.itemId).fake);break;
     case 'decline':buyerDecline();break;
     case 'honest':c.honest=!c.honest;sfx.tap();save();render();break;
-    case 'newDay':startDay();break;
+    case 'newDay':if(S.day>=2&&S.day%2===0&&window.NATIVE&&NATIVE.interstitial){const b=document.querySelectorAll('[data-act=newDay]');b.forEach(x=>x.disabled=true);NATIVE.interstitial().finally(()=>{try{AC&&AC.resume()}catch(e){}startDay()})}else startDay();break;
     case 'open':nextCustomer();break;
     case 'closeModal':closeModal();break;
     case 'closeModalNext':closeModal();nextCustomer();break;
