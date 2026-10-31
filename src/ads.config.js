@@ -6,5 +6,5 @@ export const ADS = {
   android: { testing: true,  rewardedId: "ca-app-pub-3940256099942544/5224354917",
              interstitialId: "ca-app-pub-3940256099942544/1033173712" },
   ios:     { testing: false, rewardedId: "ca-app-pub-6387108639379747/5365824891",
-             interstitialId: "" /* iOS geçiş reklamı birimi bekleniyor */ },
+             interstitialId: "ca-app-pub-6387108639379747/9357040799" },
 };
