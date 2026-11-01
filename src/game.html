@@ -1081,7 +1081,7 @@ nav button{font-size:10px;letter-spacing:.04em;padding-inline:2px}
 .plaque{position:absolute;z-index:7;left:10px;top:256px;display:flex;flex-direction:column;align-items:center;padding:3px 9px 4px;border-radius:5px;background:#1d4f9c;box-shadow:inset 0 0 0 1.5px #fff,inset 0 0 0 3px #1d4f9c,0 4px 8px rgba(0,0,0,.45);color:#fff;line-height:1.1;max-width:46%}
 .plaque small{font-size:7.5px;font-weight:900;letter-spacing:.14em;opacity:.85}.plaque b{font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .scene .evbadge{top:258px;left:auto;right:10px;max-width:40%}
-img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,160,.22),rgba(255,220,160,0) 65%);animation:blink 1.2s ease-in-out infinite}
+img.tico.pend{opacity:.85}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:370px){.cust{width:124px;margin-left:-62px}.bubble{font-size:13px}}
 @media (max-width:380px){.crest .ttl{font-size:10.5px!important;letter-spacing:.02em!important;word-break:normal;overflow-wrap:anywhere}.acts{gap:4px}.ib{width:40px}.ib span{font-size:8.5px}.acts .main{font-size:13px;letter-spacing:0;padding:9px 2px}.pill .num{font-size:16px}}
@@ -1527,7 +1527,8 @@ function cardBackSvg(it){const p=it.pl,c1=p.col[0];
    <text x="50" y="41" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="700" font-size="4.6" fill="#fff" opacity=".75">${p.team} · ${p.pos} · #${p.num}</text>
    ${[['Sezon',p.year],['Maç',p.mac],['Gol',p.gol],['Kupa',p.kupa]].map((r,k)=>`<text x="16" y="${56+k*9}" font-family="Nunito,Arial,sans-serif" font-weight="800" font-size="5.2" fill="#f3d48c">${r[0]}</text><text x="84" y="${56+k*9}" text-anchor="end" font-family="Lilita One,Arial,sans-serif" font-size="5.6" fill="#fff">${r[1]}</text><line x1="16" y1="${58.5+k*9}" x2="84" y2="${58.5+k*9}" stroke="#fff" stroke-opacity=".12"/>`).join('')}
    <text x="50" y="126" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="4" fill="#f3d48c" letter-spacing="1.2">SERİ NO ${String(p.seed%9000+1000)}</text></svg>`}
-function icon(it){if(!it)return'';ensurePlayer(it);if(it.k==='kart'&&it.pl)return it.cert&&it.cert.auth?`<span class="cardIco slabbed"><span class="slbl"><b>ONAY</b><i>${it.cert.grade}</i></span>${cardSvg(it)}</span>`:`<span class="cardIco">${cardSvg(it)}</span>`;if(!window.THREE)return it.i;const u=thumbAsync(it);return u?`<img class="tico" src="${u}" alt="">`:`<img class="tico pend" data-tk="${esc(thumbKey(it))}" src="${BLANK}" alt="">`}
+function icon(it){if(!it)return'';ensurePlayer(it);if(it.k==='kart'&&it.pl)return it.cert&&it.cert.auth?`<span class="cardIco slabbed"><span class="slbl"><b>ONAY</b><i>${it.cert.grade}</i></span>${cardSvg(it)}</span>`:`<span class="cardIco">${cardSvg(it)}</span>`;if(!window.THREE)return it.i;const u=thumbAsync(it);return u?`<img class="tico" src="${u}" alt="">`:`<img class="tico pend" data-tk="${esc(thumbKey(it))}" src="${emojiImg(it.i)}" alt="">`}
+const EMJ=new Map();function emojiImg(e){if(!e)return BLANK;if(EMJ.has(e))return EMJ.get(e);const u='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="58" font-size="64" text-anchor="middle" dominant-baseline="middle">${e}</text></svg>`);EMJ.set(e,u);return u}
 
 
 /* ---------- skills & levels ---------- */
@@ -3602,9 +3603,13 @@ function stepper(max){const lbl=S.cust&&S.cust.kind==='buyer'?'Fiyatın':'Teklif
   <button class="offerBox" data-act="typeOffer" id="offerBox" aria-label="Tutarı elle yaz"><small>${lbl}<span class="pen">✎ YAZ</span></small><b id="offerV">${S.offer>0?fmt(S.offer):'<span class="ph">Tutar seç</span>'}</b></button>
   <button class="sb" data-act="inc" aria-label="Artır">+</button></div>
   <input type="range" id="offerR" min="0" max="${Math.max(max,S.offer)}" step="${stepOf(max/2)}" value="${S.offer}" aria-label="Teklif">${quickChips()}`}
-function fitScene(){const m=document.querySelector('main'),sc=m&&m.querySelector('.scene');if(!sc)return;sc.style.zoom='';
-  for(let i=0;i<2;i++){const over=m.scrollHeight-m.clientHeight;if(over<=1)break;const h=sc.getBoundingClientRect().height;const cur=parseFloat(sc.style.zoom)||1;
-    const z=Math.max(.55,cur*(h-over)/h);sc.style.zoom=z.toFixed(3)}}
+/* Sahne ölçeği: bir kez küçülünce sabit kalır (her satışta zıplamasın); yalnızca ekran boyutu değişince sıfırlanır */
+let SZ=1,SZh=0;
+function fitScene(){const m=document.querySelector('main'),sc=m&&m.querySelector('.scene');if(!sc)return;
+  if(SZh!==innerHeight){SZh=innerHeight;SZ=1}
+  sc.style.zoom=SZ<1?SZ.toFixed(3):'';
+  for(let i=0;i<2;i++){const over=m.scrollHeight-m.clientHeight;if(over<=1)break;const h=sc.getBoundingClientRect().height;
+    SZ=Math.max(.55,SZ*(h-over)/h);sc.style.zoom=SZ.toFixed(3)}}
 window.addEventListener('resize',()=>{clearTimeout(fitScene.t);fitScene.t=setTimeout(fitScene,120)});
 function numPad(o){/* o:{label,value,max,onInput(v),onDone(v)} */
   const app=$('#app');if(!app)return;const old=$('.kp');if(old)old.remove();let v=o.value>0?String(Math.round(o.value)):'';
@@ -4239,6 +4244,9 @@ let TDB=null,TDBready=false;const TQ=new Map();let TQrun=false;
 (function(){try{const rq=indexedDB.open('bitpazari-thumbs',1);rq.onupgradeneeded=()=>rq.result.createObjectStore('t');rq.onsuccess=()=>{TDB=rq.result;try{const tx=TDB.transaction('t','readonly'),st=tx.objectStore('t'),cur=st.openCursor();let n=0;
   cur.onsuccess=()=>{const c=cur.result;if(c){if(!THUMBS.has(c.key))THUMBS.set(c.key,c.value);n++;c.continue()}else{TDBready=true;if(n>900){try{TDB.transaction('t','readwrite').objectStore('t').clear()}catch(e){}}tqKick();thumbFill()}};cur.onerror=()=>{TDBready=true;tqKick()}}catch(e){TDBready=true;tqKick()}};rq.onerror=()=>{TDBready=true;tqKick()}}catch(e){TDBready=true}})();
 setTimeout(()=>{if(!TDBready){TDBready=true;tqKick()}},1500);
+function thumbPrewarm(){try{if(!window.THREE)return;const list=[...(S.inv||[])];if(S.lots&&S.lots.list)S.lots.list.forEach(l=>list.push(l.it));if(S.cust&&S.cust.item)list.push(S.cust.item);
+  list.forEach(it=>{if(it&&!(it.k==='kart'&&it.pl))thumbAsync(it)})}catch(e){}}
+setTimeout(thumbPrewarm,2500);setInterval(thumbPrewarm,20000);
 function tdbPut(k,v){if(!TDB||!v)return;try{TDB.transaction('t','readwrite').objectStore('t').put(v,k)}catch(e){}}
 const BLANK='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 function thumbFill(){document.querySelectorAll('img.tico.pend').forEach(el=>{const u=THUMBS.get(el.dataset.tk);if(u){el.src=u;el.classList.remove('pend')}})}
