@@ -1085,9 +1085,7 @@ img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,1
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:370px){.cust{width:124px;margin-left:-62px}.bubble{font-size:13px}}
 @media (max-width:380px){.crest .ttl{font-size:10.5px!important;letter-spacing:.02em!important;word-break:normal;overflow-wrap:anywhere}.acts{gap:4px}.ib{width:40px}.ib span{font-size:8.5px}.acts .main{font-size:13px;letter-spacing:0;padding:9px 2px}.pill .num{font-size:16px}}
-@media (max-height:820px){.scene{zoom:.86}}
-@media (max-height:740px){.scene{zoom:.76}}
-@media (max-height:660px){.scene{zoom:.66}}
+
 /* main menu v3 */
 .m3{position:relative;flex:1;min-height:100%;display:flex;flex-direction:column;overflow:hidden;background:#0a0705;isolation:isolate}
 .m3-bg{position:absolute;inset:0;z-index:-1;pointer-events:none;
@@ -1276,6 +1274,45 @@ img.tico.pend{border-radius:50%;background:radial-gradient(circle,rgba(255,220,1
 .swc.emo{display:grid;place-items:center;font-size:22px;background:#140d08!important}
 /* iOS safe areas (notch / home indicator) */
 body{padding-top:env(safe-area-inset-top,0px)}
+/* ---- iPhone uyumu: tek ekrana sığdırma ---- */
+.viewer{overflow:hidden;gap:8px}
+.viewer .stage{min-height:120px}
+.viewer .vinfo{flex:none;max-height:30vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+@media (max-height:780px){.viewer .vhint{display:none}.viewer .vtop .h{font-size:19px}}
+.tablet{padding:8px 6px;border-radius:24px}.tablet .tcam{display:none}
+.tscreen{min-height:0}
+.tbody{padding:8px;gap:8px}
+.pcard{display:grid;grid-template-columns:96px 1fr}
+.pcard .pimg{height:auto;min-height:100%}
+.pcard .pimg .tico{width:74px;height:74px}.pcard .pimg .cardIco{font-size:62px}
+.pcard .pbadge{transform:scale(.82);transform-origin:top left}.pcard .pwatch{transform:scale(.82);transform-origin:top right}
+.pcard .pbody{padding:8px 10px 10px;gap:4px;min-width:0}
+.pcard .pname{font-size:14px}
+.pcard .psale{display:none}
+.pcard .prival,.pcard .pwarn{font-size:11px;padding:3px 7px}
+.pcard .pprice{padding-top:2px}.pcard .pprice b{font-size:17px}
+.pcard .pbtns{gap:6px}.pcard .pbtns .tb{padding:8px 4px;font-size:12.5px;gap:4px}
+.lvhero{height:clamp(96px,13vh,190px)}
+.evlive{padding-top:10px;padding-bottom:10px;gap:0}.evlive>.b.ghost{display:none}
+.live2 .feed2{max-height:78px;overflow:hidden}
+.pcard .pbtns .tb{white-space:nowrap}.pcard .pbtns .tb svg{display:none}
+.lvimg .tico{width:clamp(76px,11vh,160px);height:clamp(76px,11vh,160px)}
+.live2{gap:7px}
+/* ---- oyun içi sayı tuş takımı (telefon klavyesi açılmaz) ---- */
+.kp{position:absolute;inset:0;z-index:320;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(5,3,2,.55);animation:fade .15s}
+.kp-sh{background:linear-gradient(180deg,#2a1d12,#140d08);border-top:1px solid rgba(232,171,60,.5);border-radius:22px 22px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -14px 30px rgba(0,0,0,.6);animation:kpUp .2s cubic-bezier(.2,.9,.3,1.1)}
+@keyframes kpUp{from{transform:translateY(40%)}to{transform:none}}
+.kp-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.kp-hd small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.kp-v{font-family:var(--display);font-size:34px;color:#ffd77a;text-align:center;padding:6px 0 12px;font-variant-numeric:tabular-nums;min-height:52px}
+.kp-v .ph{color:rgba(255,255,255,.25)}
+.kp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kp-g button{height:52px;border:none;border-radius:14px;font-size:22px;font-weight:900;color:var(--fg);background:linear-gradient(180deg,#3a2a1b,#24180f);box-shadow:inset 0 1px 0 rgba(255,220,160,.12),0 3px 0 #0c0805}
+.kp-g button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,220,160,.12),0 1px 0 #0c0805}
+.kp-g .kp-ok{grid-column:1/-1;font-size:18px;color:#2a1a05;background:linear-gradient(180deg,#ffe08a,#e2a33a);box-shadow:0 3px 0 #8a5a14}
+.kp-x{width:34px;height:34px;border-radius:50%;border:none;color:var(--brass);background:rgba(0,0,0,.35);font-size:14px}
+input.kpIn{caret-color:transparent}
+
 .m3-dock{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 .rsx,.mapv{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 .viewer{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
@@ -2279,7 +2316,7 @@ const TI={sig:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="14" w
   bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
   gavel:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="19" width="12" height="3" rx="1"/><path d="M13.5 3.5l6 6-2 2-6-6z"/><path d="M9.5 7.5l6 6-2 2-6-6z" opacity=".8"/><path d="M12 11l7 7-1.5 1.5-7-7z"/></svg>'};
 function tabletWrap(inner,tab,opts){opts=opts||{};genLots();const open=S.lots.list.filter(l=>l.status==='open').length;
-  return `<div class="eve"><div class="tablet"><div class="tcam"></div><div class="tscreen">
+  return `<div class="eve${opts.live?' evlive':''}"><div class="tablet"><div class="tcam"></div><div class="tscreen">
   <div class="tstatus"><b>21:4${S.day%10}</b><span>${TI.sig}${TI.bat}</span></div>
   ${opts.live?'':`<div class="tapphd"><span class="tlogo">e<b>Mezat</b></span><div class="tsearch">${TI.search}<span>Antika, imzalı forma, plak…</span></div><span class="tbell">${TI.bell}${open?'<i></i>':''}</span></div>
   <div class="tseg"><button class="${tab==='buy'?'on':''}" data-act="eve:auction">Canlı Mezatlar<em>${open}</em></button><button class="${tab==='sell'?'on':''}" data-act="eve:sell">Mal Sat</button></div>`}
@@ -2365,7 +2402,7 @@ function renderMys(){const t=mysState();const m=S.mys;const left=3-m.g.length;
      <h2 class="myname">${t.cat.n}</h2><div class="mycond"><span class="stars">${stars(t.cond)}</span>${CONDN[t.cond-1]}</div>
      <div class="mylives">${[0,1,2].map(i=>`<i class="${i<left&&!m.done?'on':''}"></i>`).join('')}<span>${m.done?(m.won?'Bildin!':'Hakların bitti'):left+' hakkın kaldı'}</span></div></div>
    <p class="sub" style="margin:0;text-align:center">Herkese bugün aynı eşya geliyor. Değerinin %10 yakınına yaklaşırsan bilmiş sayılırsın. Ödül: 150 ₺ ve tecrübe.</p>
-   ${m.done?'':`<div class="guess2"><span class="cur">₺</span><input id="mysIn" inputmode="numeric" placeholder="Tahminin" aria-label="Tahmin" autocomplete="off"><button class="b brass" data-act="guess">Tahmin Et</button></div>`}
+   ${m.done?'':`<div class="guess2"><span class="cur">₺</span><input id="mysIn" class="kpIn" readonly inputmode="none" placeholder="Tahminin" aria-label="Tahmin" autocomplete="off" data-act="mysPad"><button class="b brass" data-act="guess">Tahmin Et</button></div>`}
    <div class="glist2">${rows}</div>
    ${m.done?`<div class="myres"><small>Gerçek değer</small><b>${fmt(t.val)}</b>${m.won?'<span class="chip good">+150 ₺ kazandın</span>':''}</div><div class="share" id="shareTx">${mysShare(t)}</div><button class="b teal" data-act="copy">Sonucu Kopyala ve Paylaş</button><p class="sub" style="margin:0;text-align:center">Yarın yeni bir eşya gelecek.</p>`:''}</div>`}
 
@@ -3565,13 +3602,27 @@ function stepper(max){const lbl=S.cust&&S.cust.kind==='buyer'?'Fiyatın':'Teklif
   <button class="offerBox" data-act="typeOffer" id="offerBox" aria-label="Tutarı elle yaz"><small>${lbl}<span class="pen">✎ YAZ</span></small><b id="offerV">${S.offer>0?fmt(S.offer):'<span class="ph">Tutar seç</span>'}</b></button>
   <button class="sb" data-act="inc" aria-label="Artır">+</button></div>
   <input type="range" id="offerR" min="0" max="${Math.max(max,S.offer)}" step="${stepOf(max/2)}" value="${S.offer}" aria-label="Teklif">${quickChips()}`}
-function typeOffer(){const box=$('#offerBox');if(!box||box.dataset.typing)return;box.dataset.typing='1';
-  box.innerHTML=`<small>Tutarı yaz, Enter'a bas</small><input id="offerIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="${S.offer>0?Math.round(S.offer):''}" placeholder="0" aria-label="Teklif tutarı">`;
-  const inp=$('#offerIn');inp.focus();inp.select();let fin=false;
-  const apply=()=>{if(fin)return;fin=true;const v=parseInt(inp.value.replace(/\D/g,''),10);if(v>=0)S.offer=v;sfx.tap();save();render()};
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();apply()}if(e.key==='Escape'){fin=true;render()}});
-  inp.addEventListener('blur',apply);
-  inp.addEventListener('input',()=>{inp.value=inp.value.replace(/\D/g,'').slice(0,7);const v=parseInt(inp.value,10);if(v>=0){S.offer=v;reactPreview()}})}
+function fitScene(){const m=document.querySelector('main'),sc=m&&m.querySelector('.scene');if(!sc)return;sc.style.zoom='';
+  for(let i=0;i<2;i++){const over=m.scrollHeight-m.clientHeight;if(over<=1)break;const h=sc.getBoundingClientRect().height;const cur=parseFloat(sc.style.zoom)||1;
+    const z=Math.max(.55,cur*(h-over)/h);sc.style.zoom=z.toFixed(3)}}
+window.addEventListener('resize',()=>{clearTimeout(fitScene.t);fitScene.t=setTimeout(fitScene,120)});
+function numPad(o){/* o:{label,value,max,onInput(v),onDone(v)} */
+  const app=$('#app');if(!app)return;const old=$('.kp');if(old)old.remove();let v=o.value>0?String(Math.round(o.value)):'';
+  const el=document.createElement('div');el.className='kp';el.setAttribute('role','dialog');el.setAttribute('aria-label',o.label||'Tutar');
+  el.innerHTML=`<div class="kp-sh"><div class="kp-hd"><small>${o.label||'Tutar'}</small><button class="kp-x" data-k="x" aria-label="Kapat">✕</button></div>
+   <div class="kp-v" id="kpV"></div><div class="kp-g">${['1','2','3','4','5','6','7','8','9','00','0','⌫'].map(k=>`<button data-k="${k}">${k}</button>`).join('')}<button class="kp-ok" data-k="ok">Tamam</button></div></div>`;
+  const paint=()=>{$('#kpV').innerHTML=v?fmt(+v):'<span class="ph">0 ₺</span>'};
+  const close=(ok)=>{el.remove();if(ok&&o.onDone)o.onDone(v?+v:0)};
+  el.addEventListener('click',e=>{e.stopPropagation();const b=e.target.closest('[data-k]');if(!b){if(e.target===el)close(true);return}
+    const k=b.dataset.k;sfx.tap&&sfx.tap();
+    if(k==='x'){close(false);return}if(k==='ok'){close(true);return}
+    if(k==='⌫')v=v.slice(0,-1);else{v=(v+k).replace(/^0+/,'').slice(0,7)}
+    paint();if(o.onInput)o.onInput(v?+v:0)});
+  app.appendChild(el);paint()}
+function typeOffer(){const c=S.cust;const lbl=c&&c.kind==='buyer'?'Fiyatın':'Teklifin';const prev=S.offer;
+  numPad({label:lbl,value:S.offer,
+    onInput:v=>{S.offer=v;const ov=$('#offerV');if(ov)ov.innerHTML=v>0?fmt(v):'<span class="ph">Tutar seç</span>';reactPreview()},
+    onDone:v=>{S.offer=v>0?v:prev;save();render()}})}
 function offerStart(){const c=S.cust;if(!c)return 100;if(c.kind==='seller')return r10(c.ask*.5);const it=itemById(c.itemId);return it?r10(Math.max(50,it.paid*1.1)):100}
 function reactPreview(){const c=S.cust;if(screen!=='game'||S.tab!=='shop'||!c||c.done||(c.kind!=='seller'&&c.kind!=='buyer'))return;
   if(!(S.offer>0)&&!(S.cust&&S.cust.trade)){const el=$('.cust');if(el)el.innerHTML=avatar(c.seed,moodOf(c));const rx=$('#react');if(rx){rx.textContent='';rx.className='react'}return}
@@ -3648,7 +3699,7 @@ function renderMys_old(){const t=mysState();const m=S.mys;
   const rows=m.g.map((x,k)=>`<div class="g"><span>${k+1}. tahmin</span><b>${fmt(x.v)}</b><span>${x.c==='g'?'Bildin!':x.dir==='up'?'Daha yüksek ↑':'Daha düşük ↓'}</span><i class="dot" style="background:${x.c==='g'?'var(--mint)':x.c==='y'?'var(--brass)':'var(--pom)'}"></i></div>`).join('');
   return `<div class="page"><div class="card mys"><div class="lbl">Günün Gizemli Eşyası #${t.n}</div>
     <div class="big">${icon({k:t.cat.k,i:t.cat.i,cond:t.cond,id:"mys"+t.n,known:{}})}</div><h2 class="h">${t.cat.n}</h2><p class="sub">${CONDN[t.cond-1]} durumda · <span class="stars">${stars(t.cond)}</span><br>Herkese bugün aynı eşya geliyor. 3 hakkın var, %10 yakınına yaklaşırsan bilmiş sayılırsın.</p>
-    ${m.done?'':`<div class="guessRow"><input id="mysIn" inputmode="numeric" placeholder="Kaç ₺?" aria-label="Tahmin" autocomplete="off"><button class="b brass" style="flex:none;padding:12px 18px" data-act="guess">Tahmin</button></div>`}
+    ${m.done?'':`<div class="guessRow"><input id="mysIn" class="kpIn" readonly inputmode="none" placeholder="Kaç ₺?" aria-label="Tahmin" autocomplete="off" data-act="mysPad"><button class="b brass" style="flex:none;padding:12px 18px" data-act="guess">Tahmin</button></div>`}
     <div class="glist">${rows}</div>
     ${m.done?`<p class="sub" style="margin-top:12px">Gerçek değer: <b style="color:var(--brass)">${fmt(t.val)}</b>${m.won?' · Kasaya +150 ₺ eklendi':''}</p><div class="share" id="shareTx">${mysShare(t)}</div><button class="b teal" style="margin-top:10px;width:100%" data-act="copy">Sonucu Kopyala</button><p class="sub" style="margin-top:8px">Yarın yeni eşya gelecek.</p>`:''}
     </div></div>`}
@@ -3664,7 +3715,7 @@ function render(){
   else if(S.tab==='inv')main.innerHTML=renderInv();
   else if(S.tab==='skills')main.innerHTML=renderUst();
   else main.innerHTML=renderMys();
-  shake=false;if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else reactPreview()}}
+  shake=false;fitScene();if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else reactPreview()}}
 
 /* ---------- native hooks (Android geri tuşu / arka plan) ---------- */
 window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click();return true};
@@ -3689,6 +3740,7 @@ document.addEventListener('click',e=>{
   if(a.startsWith('q:')){S.offer=+a.slice(2);sfx.tap();updOffer();return}
   if(a.startsWith('nm:')){const i=$('#shopIn');if(i){i.value=a.slice(3);const t=$('#signTx');if(t)t.textContent=i.value}sfx.tap();return}
   if(a==='typeOffer'){typeOffer();return}
+  if(a==='mysPad'){const inp=$('#mysIn');if(inp)numPad({label:'Tahminin',value:parseInt(inp.value,10)||0,onInput:v=>{inp.value=v||''},onDone:v=>{inp.value=v||''}});return}
   if(a==='mhNext'){mhGo(1);sfx.tap();return}
   if(a==='privacy'){try{window.NATIVE&&NATIVE.privacyOptions()}catch(e){}return}
   if(a==='ledger'){S.ledOpen=!S.ledOpen;save();return}
