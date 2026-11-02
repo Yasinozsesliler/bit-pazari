@@ -1275,6 +1275,7 @@ img.tico.pend{opacity:.85}
 /* iOS safe areas (notch / home indicator) */
 body{padding-top:env(safe-area-inset-top,0px)}
 /* ---- ödüllü reklam düğmeleri ---- */
+.serh .pktag{font-style:normal;font-size:10px;letter-spacing:.04em;padding:2px 6px;border-radius:6px;background:rgba(232,171,60,.18);color:#ffd77a;vertical-align:middle;margin-left:4px}
 .adwide{width:100%;display:flex;flex-direction:column;align-items:center;gap:1px;padding:11px 12px}.adwide small{font-size:11px;opacity:.85}
 .adsm{background:linear-gradient(180deg,#2f6b5c,#1d4a3f);color:#eafff8;font-size:12px!important}
 .tb.adx{width:100%;margin:2px 0 4px;background:#1f7a4b}
@@ -1678,7 +1679,7 @@ function doBuy(price){
 function openChest(it){
   const x=it&&it.roll!=null?it.roll:(has('z2')?.3+R()*.7:R());let got=[],title,msg,icon;
   if(x<.45){got=[{id:uid(),k:'anahtar',n:'Paslı Anahtar Destesi',i:'🗝️',cond:1,fake:false,appear:60,worth:60,paid:0,known:{insp:true,lo:50,hi:70,suspect:false,expert:false}}];title='Hurda çıktı!';icon='🗝️';msg='Sandıktan bir deste paslı anahtar çıktı. Olsun, ders oldu.'}
-  else if(x<.85){const it=newItem(pick(CAT),{cond:3});got=[it];title='Fena değil!';icon=it.i;msg=`Sandıktan ${it.n} çıktı. Rafa koydum.`}
+  else if(x<.85){const it=newItem(pick(catPool()),{cond:3});got=[it];title='Fena değil!';icon=it.i;msg=`Sandıktan ${it.n} çıktı. Rafa koydum.`}
   else{got=[0,1,2].map(()=>newItem(CAT.find(c=>c.k==='sikke'),{cond:4}));title='HAZİNE!';icon='🪙';msg='Sandıktan üç tane gerçek Osmanlı sikkesi çıktı! Bugün bayram.';sfx.ok();setTimeout(sfx.cash,200)}
   got.forEach(g=>{g.paid=0;S.inv.push(g);colAdd(g)});stat('chest');save();
   modal({icon,title,body:msg,btns:[{t:'Rafa Koy',cls:'brass',a:'closeModal'}]});render()}
@@ -1804,7 +1805,7 @@ function countUps(){document.querySelectorAll('.cnt').forEach(el=>{const v=+el.d
 
 /* auctions */
 function genLots(){if(S.lots&&S.lots.day===S.day)return;
-  S.lots={day:S.day,sold:0,list:[0,1,2].map(()=>{const sp=R()<.55;const cat=pick(CAT.filter(c=>sp?c.sp:!c.sp));const rating=+rf(2.4,5).toFixed(1);
+  S.lots={day:S.day,sold:0,list:[0,1,2].map(()=>{const sp=R()<.55;const cat=pick(catPool().filter(c=>sp?c.sp:!c.sp));const rating=+rf(2.4,5).toFixed(1);
     const it=newItem(cat,{fake:!!cat.f&&R()<(5-rating)/5*.9});return{id:uid(),it,rating,start:r10(it.appear*rf(.3,.5)),status:'open',user:pick(NPCB),rival:S.day>=3&&R()<.35}})};save()}
 function tabletWrap_old(inner,tab){return `<div class="eve"><div class="tablet"><div class="tcam"></div><div class="tscreen">
   <div class="tbar"><span class="tlogo">e<b>Mezat</b></span><span class="tclock">${S.day}. gün · 21:4${S.day%10} · ▮▮▮</span></div>
@@ -3055,7 +3056,7 @@ function renderCol(){const tot=SERIES.reduce((a,s)=>a+s.ks.length,0),have=SERIES
     <div class="rlegend">${RN.map((n,i)=>`<span><i style="background:${RC[i]}"></i>${n}</span>`).join('')}</div></div>
    <p class="sub" style="margin:0">Satın aldığın her ürün albüme işlenir. Bir seriyi tamamla, ödülü ve kalıcı satış bonusunu kap. İncelediğin ürünün nadirliği ortaya çıkar.</p>
    ${SERIES.map(s=>{const n=s.ks.filter(k=>S.col&&S.col[k]!=null).length,done=!!(S.colDone&&S.colDone[s.id]);
-     return `<div class="ser${done?' done':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${s.n}</b><small>${s.d}</small></div><span class="sern">${done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
+     return `<div class="ser${done?' done':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${s.n}${s.pack?' <em class="pktag">📜 Tarih Paketi</em>':''}</b><small>${s.d}</small></div><span class="sern">${done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
       <div class="slots">${s.ks.map(k=>{const got=S.col&&S.col[k]!=null,r=got?S.col[k]:0,c=catOf(k);return `<div class="slot${got?' got':''}" style="--rc:${RC[r]}" title="${got?c.n:'?'}"><span class="sic">${icon({k,i:c.i,cond:4,id:'col'+k,known:{}})}</span><small>${got?c.n:'???'}</small>${got&&r?`<i class="sr">${RN[r]}</i>`:''}</div>`}).join('')}</div>
       <div class="serf">${done?`<span class="pos">✓ ${s.bonus}</span>`:`<span>Ödül: <b>${fmt(s.rw)}</b> + ${s.bonus.toLocaleLowerCase('tr-TR')}</span>`}</div></div>`}).join('')}`}
 function renderAch(){const nA=Object.keys(S.ach||{}).length;
@@ -3116,7 +3117,7 @@ const trendTag=it=>{const m=trendMul(it);return m>1?'<span class="trtag up">▲ 
 function marketLine(){const t=S.trend,e=evNow();if(!t&&!e)return'';const su=t&&SERIES.find(s=>s.id===t.up),sd=t&&SERIES.find(s=>s.id===t.down);
   return `<div class="mkt">${e?`<div class="mrow"><span class="mic">${e.ic}</span><span><b>${e.n}</b><small>${e.d}</small></span></div>`:''}${su?`<div class="mrow"><span class="mic up">▲</span><span><b>${su.n} moda</b><small>Bu serideki ürünler %40 daha pahalıya satılıyor · ${Math.max(0,t.until-S.day)} gün daha</small></span></div>`:''}${sd?`<div class="mrow"><span class="mic dn">▼</span><span><b>${sd.n} düşüşte</b><small>%25 daha ucuza gidiyor. Ucuza toplamanın tam zamanı.</small></span></div>`:''}</div>`}
 /* ---- special orders ---- */
-function orderGen(){const pool=CAT.filter(c=>c.k!=='sandik');const c=pick(pool);return{id:uid(),k:c.k,n:c.n,who:pick(NAMES),seed:Math.floor(R()*1e9),price:r10(c.v*COND[3]*rf(1.6,2.2)),until:S.day+3+Math.floor(R()*3)}}
+function orderGen(){const pool=catPool().filter(c=>c.k!=='sandik');const c=pick(pool);return{id:uid(),k:c.k,n:c.n,who:pick(NAMES),seed:Math.floor(R()*1e9),price:r10(c.v*COND[3]*rf(1.6,2.2)),until:S.day+3+Math.floor(R()*3)}}
 const orderMatch=o=>S.inv.filter(x=>x.k===o.k&&!x.lab);
 const orderTag=it=>(S.orders||[]).some(o=>o.k===it.k)?'<span class="ordtag">📋 Siparişte</span>':'';
 function ordersSec(){ensureLive();if(!S.orders.length||S.day<3)return'';
@@ -3430,7 +3431,7 @@ function buildW(it,g,sus){const T=THREE,PI=Math.PI;const k=it.k;
     g.add(mesh(new T.ConeGeometry(.07,.18,10),mat('#e8ab3c'),[0,.22,.6],[PI/2+.3,0,0]));wTableDial(g,{bg:'#fbf6ea',ink:'#3a2410',idx:'arabic',hands:'sword'},.28,.62,mat('#e8ab3c',{metalness:.6,roughness:.3}));
     g.children[g.children.length-1].position.y=-.3;g.children[g.children.length-2].position.y=-.3;g.children[g.children.length-3].position.y=-.3;
     g.add(mesh(box(.3,.5,.06),bm,[0,-1.15,.05],[.1,0,0]));break}
-  default:return false}
+  default:return buildH(it,g,sus)}
   return true}
 
 const curLoc=()=>LOCS.find(l=>l.id===(S.loc||'bit'))||LOCS[0];
@@ -3439,7 +3440,7 @@ function wpick(w){const ks=Object.keys(w),tot=ks.reduce((a,k)=>a+w[k],0);let r=R
 const locPickSeller=()=>wpick(curLoc().sellers);
 const locPickBuyer=()=>wpick(curLoc().buyers);
 function locPickCat(){let c=locPickCat0();if(CATW.some(w=>w.k===c.k)&&R()<.4)c=locPickCat0();return c}
-function locPickCat0(){const L=curLoc();if(!L.cats.length||R()<.45)return pick(CAT);const id=pick(L.cats),s=SERIES.find(x=>x.id===id);return s?catOf(pick(s.ks)):pick(CAT)}
+function locPickCat0(){const L=curLoc();const cats=L.cats.filter(id=>{const s=SERIES.find(x=>x.id===id);return !(s&&s.pack&&!packOwned(s.pack))});if(!cats.length||R()<.45)return pick(catPool());const id=pick(cats),s=SERIES.find(x=>x.id===id);return s?catOf(pick(s.ks)):pick(catPool())}
 const locBuy=()=>curLoc().buy,locRare=()=>curLoc().rare,locDay=()=>curLoc().day;
 function locMorning(){const out=[];S.locs=S.locs||['bit'];if(S.nextLoc){S.loc=S.nextLoc;S.nextLoc=null;const L=curLoc();out.push(`🚚 <b>${L.n}</b>'ndaki dükkânında ilk gün! ${L.d}`)}
   const L=curLoc();if(L.rent){S.money-=L.rent;logT('fee',{n:'Kira: '+L.n,i:'🏠'},-L.rent);out.push(`🏠 ${L.n} kirası ödendi: <b>${fmt(L.rent)}</b>.`)}return out}
@@ -3878,6 +3879,252 @@ function inspectItem(it){if(!it||it.chest||it.known.insp)return false;
 /* ---------- Ekspertiz aletleri: büyüteç, UV lamba, terazi ---------- */
 let XT=null;
 const METAL=new Set([...WATCH,...JEWEL,'sikke','madalya','kupa','semaver','cezve','ibrik','tabaka','pusula','durbun','koldugme','cakmak','kalem']);
+/* ================= TARİH PAKETİ ================= */
+/* Paket sahipliği: satın alma eklenene kadar herkese açık önizleme (PACK_PREVIEW). Satın alma gelince false yapılacak. */
+const PACK_PREVIEW=true;
+function packOwned(id){return PACK_PREVIEW||!!(S.packs&&S.packs[id])}
+const CATH=[
+ /* Kılıçhane */
+ {k:'pala',n:'Osmanlı Palası',i:'⚔️',v:2600,f:1,sp:1,pack:'tarih'},
+ {k:'yatagan',n:'Gümüş Kakmalı Yatağan',i:'⚔️',v:3400,f:1,sp:1,pack:'tarih'},
+ {k:'samsir',n:'Fildişi Kabzalı Şamşir',i:'⚔️',v:3900,f:1,sp:1,pack:'tarih'},
+ {k:'selcukilic',n:'Selçuklu Kılıcı',i:'⚔️',v:4600,f:1,sp:1,pack:'tarih'},
+ {k:'hancer',n:'Mücevherli Osmanlı Hançeri',i:'🗡️',v:3200,f:1,sp:1,pack:'tarih'},
+ {k:'kama',n:'Kafkas Kaması',i:'🗡️',v:650,pack:'tarih',free:1},
+ {k:'gladius',n:'Roma Gladius Kılıcı',i:'⚔️',v:2900,f:1,sp:1,pack:'tarih'},
+ /* Kalkan ve Zırh */
+ {k:'osmkalkan',n:'Hasır Örgü Osmanlı Kalkanı',i:'🛡️',v:3600,f:1,sp:1,pack:'tarih'},
+ {k:'selkalkan',n:'Selçuklu Yuvarlak Kalkanı',i:'🛡️',v:2400,f:1,pack:'tarih'},
+ {k:'bizkalkan',n:'Bizans Badem Kalkanı',i:'🛡️',v:2700,f:1,pack:'tarih'},
+ {k:'scutum',n:'Roma Scutum Kalkanı',i:'🛡️',v:3100,f:1,sp:1,pack:'tarih'},
+ {k:'zincirzirh',n:'Zincir Zırh Gömlek',i:'🛡️',v:2200,pack:'tarih'},
+ {k:'gogusluk',n:'Gümüş İşlemeli Göğüslük',i:'🛡️',v:2800,f:1,pack:'tarih'},
+ {k:'kolcak',n:'Sipahi Kolçağı',i:'🛡️',v:1300,pack:'tarih'},
+ /* Miğferler */
+ {k:'osmmigfer',n:'Osmanlı Çiçak Miğferi',i:'🪖',v:4200,f:1,sp:1,pack:'tarih'},
+ {k:'sipahimig',n:'Sipahi Miğferi',i:'🪖',v:2600,f:1,pack:'tarih'},
+ {k:'selmigfer',n:'Selçuklu Sivri Miğferi',i:'🪖',v:3000,f:1,pack:'tarih'},
+ {k:'romamigfer',n:'Roma Lejyoner Miğferi',i:'🪖',v:3300,f:1,sp:1,pack:'tarih'},
+ {k:'korint',n:'Antik Korint Miğferi',i:'🪖',v:3800,f:1,sp:1,pack:'tarih'},
+ {k:'bork',n:'Yeniçeri Börkü',i:'🪖',v:1800,f:1,pack:'tarih'},
+ {k:'kask',n:'Çanakkale Kaskı',i:'🪖',v:1500,pack:'tarih'},
+ /* Savaş Aletleri */
+ {k:'topuz',n:'Gümüş Topuz',i:'⚒️',v:1900,f:1,pack:'tarih'},
+ {k:'teber',n:'Hilal Teber',i:'🪓',v:1700,pack:'tarih'},
+ {k:'mizrak',n:'Mızrak Ucu',i:'🔱',v:800,pack:'tarih'},
+ {k:'turkyayi',n:'Türk Yayı',i:'🏹',v:2500,f:1,sp:1,pack:'tarih'},
+ {k:'sadak',n:'Nakışlı Sadak (Okluk)',i:'🏹',v:1400,pack:'tarih'},
+ {k:'barutluk',n:'Boynuz Barutluk',i:'📯',v:900,pack:'tarih'},
+ {k:'gulle',n:'Top Güllesi',i:'⚫',v:350,pack:'tarih',free:1},
+ /* Saray ve Ferman */
+ {k:'ferman',n:'Padişah Fermanı',i:'📜',v:5200,f:1,sp:1,pack:'tarih'},
+ {k:'tugra',n:'Tuğralı Levha',i:'🖼️',v:2400,f:1,pack:'tarih'},
+ {k:'muhur',n:'Gümüş Mühür',i:'🔏',v:1600,f:1,pack:'tarih'},
+ {k:'divit',n:'Pirinç Divit',i:'🖋️',v:1100,pack:'tarih'},
+ {k:'sancak',n:'İpek Sancak',i:'🚩',v:3600,f:1,sp:1,pack:'tarih'},
+ {k:'nisan',n:'Mecidiye Nişanı',i:'🎖️',v:2900,f:1,sp:1,pack:'tarih'},
+ {k:'sorguc',n:'Mücevherli Sorguç',i:'🪶',v:4800,f:1,sp:1,pack:'tarih'},
+ /* Antik Çağ */
+ {k:'denarius',n:'Roma Gümüş Denarius',i:'🪙',v:1500,f:1,pack:'tarih'},
+ {k:'solidus',n:'Bizans Altın Solidus',i:'🪙',v:4400,f:1,sp:1,pack:'tarih'},
+ {k:'lidya',n:'Lidya Elektron Sikkesi',i:'🪙',v:3800,f:1,sp:1,pack:'tarih'},
+ {k:'amfora',n:'Antik Amfora',i:'🏺',v:1200,f:1,pack:'tarih',free:1},
+ {k:'romakandil',n:'Roma Pişmiş Toprak Kandili',i:'🪔',v:700,f:1,pack:'tarih'},
+ {k:'fibula',n:'Bronz Fibula',i:'💠',v:900,f:1,pack:'tarih'},
+ {k:'gunes',n:'Hitit Güneş Kursu',i:'☀️',v:5600,f:1,sp:1,pack:'tarih'}];
+CAT.push(...CATH);
+['hancer','kama','muhur','nisan','denarius','solidus','lidya','fibula','mizrak','sorguc','kolcak'].forEach(k=>SMALL.add(k));
+['osmkalkan','scutum','zincirzirh','gogusluk','sancak','turkyayi','amfora','selcukilic','samsir','yatagan','pala','gladius','teber'].forEach(k=>BIG.add(k));
+['amfora','romakandil','ferman','tugra','bork','sancak','sorguc'].forEach(k=>FRAG.add(k));
+['pala','yatagan','samsir','selcukilic','hancer','kama','gladius','zincirzirh','gogusluk','kolcak','osmmigfer','sipahimig','selmigfer','romamigfer','korint','kask','topuz','teber','mizrak','gulle','muhur','divit','nisan','denarius','solidus','lidya','fibula','gunes'].forEach(k=>METAL.add(k));
+['hancer','sorguc','nisan'].forEach(k=>JEWEL.add(k));
+SERIES.push(
+ {id:'kilic',pack:'tarih',n:'Kılıçhane',d:'Kılıç ve hançerler',c:'#b9c3cc',ks:['pala','yatagan','samsir','selcukilic','hancer','kama','gladius'],rw:6000,bonus:'Kılıç ve hançerler %10 daha pahalıya satılır'},
+ {id:'zirh',pack:'tarih',n:'Kalkan ve Zırh',d:'Cephanelikten',c:'#8e6b3e',ks:['osmkalkan','selkalkan','bizkalkan','scutum','zincirzirh','gogusluk','kolcak'],rw:5500,bonus:'Kalkan ve zırhlar %10 daha pahalıya satılır'},
+ {id:'migfer',pack:'tarih',n:'Miğferler',d:'Başlar dik',c:'#c9973f',ks:['osmmigfer','sipahimig','selmigfer','romamigfer','korint','bork','kask'],rw:6000,bonus:'Miğferler %10 daha pahalıya satılır'},
+ {id:'savas',pack:'tarih',n:'Savaş Aletleri',d:'Ordunun yükü',c:'#7a5a3a',ks:['topuz','teber','mizrak','turkyayi','sadak','barutluk','gulle'],rw:4500,bonus:'Savaş aletleri %10 daha pahalıya satılır'},
+ {id:'saray',pack:'tarih',n:'Saray ve Ferman',d:'Divan-ı Hümayun',c:'#2a8a5a',ks:['ferman','tugra','muhur','divit','sancak','nisan','sorguc'],rw:7500,bonus:'Saray eserleri %10 daha pahalıya satılır'},
+ {id:'antik',pack:'tarih',n:'Antik Çağ',d:'Anadolu toprağından',c:'#c0703c',ks:['denarius','solidus','lidya','amfora','romakandil','fibula','gunes'],rw:7000,bonus:'Antik eserler %10 daha pahalıya satılır'});
+(function(){const add=(id,a)=>{const L=LOCS.find(l=>l.id===id);if(L)a.forEach(x=>{if(!L.cats.includes(x))L.cats.push(x)})};
+  add('bit',['savas']);add('kadikoy',['zirh']);add('kapali',['saray','kilic']);add('galata',['migfer','antik']);add('nisantasi',['saray','antik'])})();
+const TARIH=new Set(CATH.map(c=>c.k));
+/* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
+function catPool(){return CAT.filter(c=>!c.pack||c.free||packOwned(c.pack))}
+
+/* ---------- 3B modeller ---------- */
+function hShapeExt(sh,depth,m,bev){return new THREE.ExtrudeGeometry(sh,{depth,bevelEnabled:true,bevelSize:bev==null?.012:bev,bevelThickness:bev==null?.012:bev,bevelSegments:2,curveSegments:24})}
+function hBlade(len,w0,w1,curve,tip){/* x ekseni boyunca kavisli bıçak siluet */const sh=new THREE.Shape(),N=24,top=[],bot=[];
+  for(let i=0;i<=N;i++){const t=i/N,x=t*len,y=curve*len*t*t,w=w0+(w1-w0)*t;const tp=tip&&t>.86?(1-(t-.86)/.14):1;top.push([x,y+w*.5*Math.max(.08,tp)*(tip==='yelman'&&t>.7?1.35:1)]);bot.push([x,y-w*.5*Math.max(.08,tp)])}
+  sh.moveTo(top[0][0],top[0][1]);top.forEach(p=>sh.lineTo(p[0],p[1]));sh.lineTo(len+(tip?w1*.4:0),curve*len+(tip==='up'?w1*.6:0));for(let i=N;i>=0;i--)sh.lineTo(bot[i][0],bot[i][1]);sh.closePath();return sh}
+function hSword(g,o){const T=THREE,PI=Math.PI;const steelM=o.blade||mat('#e4e8eb',{metalness:.7,roughness:.34});
+  const bg=new T.Group();const geo=hShapeExt(hBlade(o.len,o.w0,o.w1,o.curve,o.tip),.035,steelM,.01);bg.add(mesh(geo,steelM,[0,0,-.0175]));
+  if(o.fuller){const fs=hBlade(o.len*.7,.04,.03,o.curve*.7,null);bg.add(mesh(hShapeExt(fs,.04,null,0),mat('#9aa1a7',{metalness:1,roughness:.35}),[.05,o.curve*.02,-.02]))}
+  if(o.inlay){const t=ctex(512,64,(q,W,H)=>{q.fillStyle='rgba(0,0,0,0)';q.clearRect(0,0,W,H);q.strokeStyle=o.inlay;q.lineWidth=3;for(let x=10;x<W-40;x+=36){q.beginPath();q.arc(x+18,H/2,12,0,PI*2);q.stroke();q.beginPath();q.moveTo(x,H/2);q.lineTo(x+36,H/2);q.stroke()}});
+    const pl=new T.Mesh(new T.PlaneGeometry(o.len*.45,o.w0*.55),new T.MeshStandardMaterial({map:t,transparent:true,metalness:1,roughness:.25}));pl.position.set(o.len*.25,o.curve*o.len*.06,.03);bg.add(pl)}
+  g.add(bg);
+  const gm=o.guardM||brass();
+  if(o.guard==='cross'){g.add(mesh(box(.07,o.gw||.55,.09),gm,[-.035,0,0]));[-1,1].forEach(s=>g.add(mesh(sph(.05),gm,[-.035,s*(o.gw||.55)/2,0])))}
+  else if(o.guard==='bar'){g.add(mesh(box(.06,o.gw||.32,.07),gm,[-.03,0,0]))}
+  else if(o.guard==='disk'){g.add(mesh(cyl(.12,.12,.05,32),gm,[-.03,0,0],[0,0,PI/2]))}
+  const gl=o.grip||.42,gc=o.gripM||mat('#3a2212',{roughness:.55});
+  g.add(mesh(cyl(o.gr||.05,(o.gr||.05)*1.1,gl,24),gc,[-.07-gl/2,0,0],[0,0,PI/2]));
+  if(o.wrap){for(let i=0;i<7;i++)g.add(mesh(new T.TorusGeometry((o.gr||.05)*1.08,.008,6,20),gm,[-.1-i*gl/7,0,0],[0,PI/2,0]))}
+  const pm=o.pomM||gm;
+  if(o.pommel==='ear'){[-1,1].forEach(s=>g.add(mesh(sph(.09),o.pomM||mat('#efe6d2',{roughness:.3}),[-.09-gl,s*.07,0],null,[1.2,.9,.6])))}
+  else if(o.pommel==='hook'){g.add(mesh(new T.TorusGeometry(.09,.04,10,24,PI),pm,[-.07-gl,-.06,0],[0,0,PI/2]))}
+  else if(o.pommel==='disk'){g.add(mesh(cyl(.09,.09,.06,28),pm,[-.1-gl,0,0],[0,0,PI/2]))}
+  else g.add(mesh(sph(.075),pm,[-.1-gl,0,0]));
+  if(o.gems){g.add(mesh(sph(.045),mat(o.gems,{roughness:.05,metalness:.2}),[-.07-gl*.5,0,.055]));g.add(mesh(sph(.04),mat('#1f8a4a',{roughness:.05}),[-.07-gl*.25,0,.055]))}
+  g.rotation.z=o.rot==null?.7:o.rot;g.position.x=-(o.len-gl)/2*.8}
+function hShieldTex(kind){const PI=Math.PI;return ctex(512,512,(q,W)=>{const c=W/2;
+  if(kind==='osm'){q.fillStyle='#b8873a';q.fillRect(0,0,W,W);for(let r=20;r<c;r+=11){q.strokeStyle=r%22<11?'#7a1f19':'#e8c98a';q.lineWidth=6;q.beginPath();q.arc(c,c,r,0,PI*2);q.stroke()}
+    q.fillStyle='#1d4a3f';for(let i=0;i<8;i++){const a=i*PI/4;q.beginPath();q.arc(c+Math.cos(a)*170,c+Math.sin(a)*170,22,0,PI*2);q.fill()}}
+  else if(kind==='sel'){q.fillStyle='#5a2a14';q.fillRect(0,0,W,W);q.strokeStyle='#e0aa48';q.lineWidth=10;q.beginPath();q.arc(c,c,c-14,0,PI*2);q.stroke();
+    q.lineWidth=6;for(let i=0;i<8;i++){q.save();q.translate(c,c);q.rotate(i*PI/4);q.beginPath();q.moveTo(0,-60);q.lineTo(30,-150);q.lineTo(0,-210);q.lineTo(-30,-150);q.closePath();q.stroke();q.restore()}}
+  else if(kind==='biz'){q.fillStyle='#7a1414';q.fillRect(0,0,W,W);q.fillStyle='#e0aa48';q.fillRect(c-18,40,36,W-80);q.fillRect(80,c-60,W-160,36);q.strokeStyle='#e0aa48';q.lineWidth=12;q.strokeRect(14,14,W-28,W-28)}
+  else if(kind==='scutum'){q.fillStyle='#9a1b16';q.fillRect(0,0,W,W);q.strokeStyle='#e0aa48';q.lineWidth=12;q.strokeRect(18,18,W-36,W-36);q.fillStyle='#e0aa48';
+    for(let i=0;i<4;i++){q.save();q.translate(c,c);q.rotate(i*PI/2+PI/4);q.beginPath();q.moveTo(0,40);q.lineTo(40,180);q.lineTo(-40,180);q.closePath();q.fill();q.restore()}}})}
+function hDiskShield(g,r,kind,boss){const T=THREE,PI=Math.PI;const t=hShieldTex(kind);const face=new T.MeshStandardMaterial({map:t,roughness:.55,metalness:kind==='sel'?.3:.1});
+  const geo=new T.RingGeometry(.0001,r,72,24);const p=geo.attributes.position;for(let i=0;i<p.count;i++){const d=Math.hypot(p.getX(i),p.getY(i))/r;p.setZ(i,.16*(1-d*d))}geo.computeVertexNormals();
+  g.add(mesh(geo,face,[0,0,0]));g.add(mesh(cyl(r,r,.05,64),mat('#3a2212',{roughness:.7}),[0,0,-.03],[PI/2,0,0]));
+  if(boss!==false)g.add(mesh(sph(r*.18,32,20,0,PI*2,0,PI/2),mat('#c9973f',{metalness:1,roughness:.25}),[0,0,.15],[PI/2,0,0]));
+  g.add(mesh(new T.TorusGeometry(r,.045,10,64),brass(),[0,0,0]))}
+function hHelmet(g,o){const T=THREE,PI=Math.PI;const m=o.m||mat('#a9aeb2',{metalness:1,roughness:.3});m.side=T.DoubleSide;
+  g.add(mesh(lathe(o.prof.slice().reverse(),64),m,[0,0,0]));
+  if(o.band)g.add(mesh(new T.TorusGeometry(o.band[0],.035,10,64),o.bandM||gold(),[0,o.band[1],0],[PI/2,0,0]));
+  if(o.spike)g.add(mesh(new T.ConeGeometry(.05,o.spike,16),o.bandM||gold(),[0,o.top+o.spike/2,0]));
+  if(o.nasal){g.add(mesh(box(.07,.55,.03),m,[0,o.nasal,o.r0+.01]));g.add(mesh(box(.12,.08,.04),o.bandM||gold(),[0,o.nasal-.28,o.r0+.02]))}
+  if(o.cheeks){[-1,1].forEach(s=>g.add(mesh(box(.04,.5,.36),m,[s*(o.r0-.02),-.28,.12],[0,s*.35,s*-.08])))}
+  if(o.neck){g.add(mesh(new T.CylinderGeometry(o.r0+.01,o.r0+.12,.3,48,1,true,PI*.25,PI*1.5),m,[0,-.16,0],[0,PI*.5,0]))}
+  if(o.mail){const t=ctex(256,256,(q,W)=>{q.fillStyle='#2a2c2e';q.fillRect(0,0,W,W);q.strokeStyle='#b8bcc0';q.lineWidth=2;for(let y=0;y<W;y+=10)for(let x=(y/10%2)*5;x<W;x+=10){q.beginPath();q.arc(x,y,4,0,7);q.stroke()}});t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(6,2);
+    g.add(mesh(new T.CylinderGeometry(o.r0,o.r0+.18,.55,48,1,true),new T.MeshStandardMaterial({map:t,metalness:.9,roughness:.45,side:T.DoubleSide}),[0,-.3,0]))}}
+function hCoinTex(o){const PI=Math.PI;return ctex(512,512,(q,W)=>{const c=W/2;q.fillStyle=o.bg;q.fillRect(0,0,W,W);q.strokeStyle=o.ink;q.fillStyle=o.ink;
+  q.lineWidth=8;q.beginPath();q.arc(c,c,c-24,0,PI*2);q.stroke();
+  if(o.head){q.beginPath();q.moveTo(c-60,c+150);q.lineTo(c-40,c+70);q.bezierCurveTo(c-110,c+30,c-110,c-120,c-10,c-140);q.bezierCurveTo(c+60,c-145,c+85,c-80,c+80,c-40);q.lineTo(c+108,c-5);q.lineTo(c+80,c+5);q.bezierCurveTo(c+85,c+25,c+75,c+45,c+55,c+55);q.lineTo(c+50,c+70);q.lineTo(c+70,c+150);q.closePath();q.fill();
+    q.fillStyle=o.bg;q.beginPath();q.ellipse(c+45,c-45,9,5,0,0,PI*2);q.fill();q.strokeStyle=o.bg;q.lineWidth=4;for(let i=0;i<4;i++){q.beginPath();q.arc(c-20,c-60,40+i*14,PI*.9,PI*1.5);q.stroke()}q.fillStyle=o.ink;q.strokeStyle=o.ink;
+    if(o.laurel){q.fillStyle=o.bg;for(let i=0;i<7;i++){q.beginPath();q.ellipse(c-70+i*22,c-120+Math.abs(i-3)*8,10,5,-.5,0,PI*2);q.fill()}}
+    if(o.cross){q.fillStyle=o.bg;q.fillRect(c-6,c-200,12,60);q.fillRect(c-24,c-182,48,12)}}
+  if(o.lion){q.beginPath();q.ellipse(c-30,c,120,90,0,0,PI*2);q.fill();q.fillStyle=o.bg;q.beginPath();q.arc(c-60,c-20,14,0,PI*2);q.fill();q.fillStyle=o.ink;for(let i=0;i<6;i++){q.beginPath();q.moveTo(c+70,c-60+i*24);q.lineTo(c+150,c-70+i*28);q.lineTo(c+80,c-40+i*24);q.fill()}}
+  if(o.txt){q.font='bold 40px serif';q.textAlign='center';q.textBaseline='middle';const s=o.txt;for(let i=0;i<s.length;i++){const a=-PI*.95+i*(PI*1.9/s.length);q.save();q.translate(c+Math.cos(a)*(c-62),c+Math.sin(a)*(c-62));q.rotate(a+PI/2);q.fillText(s[i],0,0);q.restore()}}})}
+function hCoin(g,o){const T=THREE,PI=Math.PI;const t=hCoinTex(o);const face=new T.MeshStandardMaterial({map:t,metalness:.55,roughness:o.rough||.38,color:o.tint||'#ffffff'});const edge=mat(o.edge,{metalness:1,roughness:.35});
+  const geo=new T.CylinderGeometry(1,1,.12,64);if(o.lump){const p=geo.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i),a=Math.atan2(z,x),k=1+.08*Math.sin(a*3)+.05*Math.sin(a*7);p.setX(i,x*k);p.setZ(i,z*k*.92);if(Math.abs(p.getY(i))>.05)p.setY(i,p.getY(i)*(1+.6*(1-Math.hypot(x,z))))}geo.computeVertexNormals()}
+  g.add(mesh(geo,[edge,face,face],[0,0,0],[PI/2,0,0]))}
+function hScroll(g,tex,w,h){const T=THREE,PI=Math.PI;const paper=new T.MeshStandardMaterial({map:tex,roughness:.85,side:T.DoubleSide});const pl=new T.PlaneGeometry(w,h,24,4);const p=pl.attributes.position;for(let i=0;i<p.count;i++){p.setZ(i,Math.sin(p.getX(i)*3)*.03)}pl.computeVertexNormals();
+  g.add(mesh(pl,paper));[-1,1].forEach(s=>{g.add(mesh(cyl(.07,.07,h+.06,24),mat('#e9dcc0',{roughness:.8}),[s*w/2,0,0]));g.add(mesh(cyl(.04,.04,h+.3,12),wood('#4a2a14'),[s*w/2,0,0]))})}
+function hTugra(q,x,y,s,col){q.save();q.translate(x,y);q.scale(s,s);q.strokeStyle=col;q.lineWidth=7;q.lineCap='round';
+  [-40,-10,20].forEach(xx=>{q.beginPath();q.moveTo(xx,60);q.lineTo(xx,-110);q.stroke()});
+  q.beginPath();q.ellipse(-60,30,70,40,0,Math.PI*.2,Math.PI*1.9);q.stroke();q.beginPath();q.ellipse(-60,30,45,24,0,Math.PI*.2,Math.PI*1.9);q.stroke();
+  q.beginPath();q.moveTo(-10,50);q.bezierCurveTo(60,30,120,40,140,10);q.stroke();q.beginPath();q.moveTo(-10,70);q.bezierCurveTo(60,60,110,70,130,50);q.stroke();q.restore()}
+function buildH(it,g,sus){const T=THREE,PI=Math.PI;const k=it.k;const steel=()=>mat('#dfe3e6',{metalness:.75,roughness:.32}),iron=()=>mat('#4a4c4f',{metalness:.9,roughness:.55}),bronze=()=>mat('#b07a3a',{metalness:1,roughness:.38});
+  switch(k){
+  /* --- kılıçlar --- */
+  case 'pala':hSword(g,{len:2.1,w0:.16,w1:.26,curve:.16,tip:'yelman',guard:'cross',gw:.5,grip:.42,pommel:'hook',gripM:mat('#2a1a10',{roughness:.5})});break;
+  case 'yatagan':hSword(g,{len:2.2,w0:.12,w1:.13,curve:-.07,tip:'up',guard:'bar',gw:.2,grip:.45,pommel:'ear',inlay:'#e8e8e8',guardM:silver()});break;
+  case 'samsir':hSword(g,{len:2.3,w0:.12,w1:.1,curve:.22,tip:1,guard:'cross',gw:.55,grip:.46,pommel:'disk',pomM:mat('#efe6d2',{roughness:.3}),gripM:mat('#efe6d2',{roughness:.3}),guardM:gold()});break;
+  case 'selcukilic':hSword(g,{len:2.4,w0:.15,w1:.12,curve:.05,tip:1,fuller:1,guard:'cross',gw:.62,grip:.48,wrap:1,pommel:'ball',guardM:bronze(),inlay:'#e0aa48'});break;
+  case 'hancer':hSword(g,{len:1.0,w0:.16,w1:.1,curve:.14,tip:1,guard:'bar',gw:.26,grip:.42,gr:.06,pommel:'ball',guardM:gold(),gripM:gold(),gems:'#c8372d',rot:.6});
+    {const sc=new T.Group();sc.add(mesh(hShapeExt(hBlade(1.05,.24,.16,.14,1),.08,null,.02),mat('#7a1f19',{roughness:.4}),[0,0,-.04]));sc.add(mesh(cyl(.13,.13,.1,24),gold(),[.08,0,0],[0,0,PI/2]));sc.position.set(0,-.55,-.15);sc.rotation.z=.15;g.add(sc)}break;
+  case 'kama':hSword(g,{len:1.05,w0:.15,w1:.08,curve:0,tip:1,fuller:1,guard:'bar',gw:.22,grip:.38,pommel:'disk',guardM:silver(),gripM:mat('#1d1712',{roughness:.45}),rot:.8});break;
+  case 'gladius':hSword(g,{len:1.35,w0:.2,w1:.2,curve:0,tip:1,guard:'disk',grip:.36,gr:.06,pommel:'ball',guardM:wood('#a87a44'),gripM:mat('#efe6d2',{roughness:.4}),pomM:wood('#a87a44'),rot:.75});break;
+  /* --- kalkanlar ve zırh --- */
+  case 'osmkalkan':hDiskShield(g,1,'osm');break;
+  case 'selkalkan':hDiskShield(g,.9,'sel');break;
+  case 'bizkalkan':{const sh=new T.Shape();sh.moveTo(0,1.05);sh.quadraticCurveTo(.7,1.0,.7,.45);sh.quadraticCurveTo(.6,-.4,0,-1.15);sh.quadraticCurveTo(-.6,-.4,-.7,.45);sh.quadraticCurveTo(-.7,1.0,0,1.05);
+    const t=hShieldTex('biz');t.repeat.set(1/1.4,1/2.2);t.offset.set(.5,.52);g.add(mesh(hShapeExt(sh,.08,null,.03),[new T.MeshStandardMaterial({map:t,roughness:.55}),brass()]));
+    g.add(mesh(sph(.12,24,16,0,PI*2,0,PI/2),gold(),[0,.15,.1],[PI/2,0,0]));break}
+  case 'scutum':{const t=hShieldTex('scutum');const geo=new T.CylinderGeometry(1.4,1.4,2.2,48,1,true,-.55,1.1);g.add(mesh(geo,new T.MeshStandardMaterial({map:t,roughness:.55,side:T.DoubleSide}),[0,0,-1.3]));
+    g.add(mesh(sph(.16,24,16,0,PI*2,0,PI/2),brass(),[0,0,.12],[PI/2,0,0]));[1.1,-1.1].forEach(y=>g.add(mesh(new T.CylinderGeometry(1.42,1.42,.05,48,1,true,-.56,1.12),brass(),[0,y,-1.3])));break}
+  case 'zincirzirh':{const t=ctex(256,256,(q,W)=>{q.fillStyle='#202224';q.fillRect(0,0,W,W);q.strokeStyle='#c4c8cc';q.lineWidth=2.4;for(let y=0;y<W;y+=8)for(let x=(y/8%2)*4;x<W;x+=8){q.beginPath();q.arc(x,y,3.4,0,7);q.stroke()}});t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(5,5);
+    const cm=new T.MeshStandardMaterial({map:t,metalness:.95,roughness:.4,side:T.DoubleSide});g.add(mesh(lathe([[.62,-1.0],[.6,-.9],[.5,.1],[.55,.7],[.42,.98],[.0,1.0]],48),cm));
+    [-1,1].forEach(s=>g.add(mesh(new T.CylinderGeometry(.2,.26,.7,24,1,true),cm,[s*.68,.6,0],[0,0,s*.9])));g.add(mesh(new T.TorusGeometry(.62,.03,8,48),brass(),[0,-1.0,0],[PI/2,0,0]));break}
+  case 'gogusluk':{const m=steel();g.add(mesh(new T.SphereGeometry(1,48,32,PI*.15,PI*.7,PI*.2,PI*.5),m,[0,0,0],null,[.9,1.3,.6]));
+    const t=ctex(256,256,(q,W)=>{q.clearRect(0,0,W,W);q.strokeStyle='#f0f0f0';q.lineWidth=4;for(let r=20;r<120;r+=22){q.beginPath();q.arc(W/2,W/2,r,0,7);q.stroke()}q.beginPath();q.moveTo(W/2,0);q.lineTo(W/2,W);q.stroke()});
+    g.add(mesh(new T.CircleGeometry(.35,48),new T.MeshStandardMaterial({map:t,transparent:true,metalness:1,roughness:.2}),[0,.15,.6]));g.add(mesh(new T.TorusGeometry(.36,.04,10,48),gold(),[0,.15,.59]));
+    [-1,1].forEach(s=>g.add(mesh(box(.12,.5,.04),mat('#6b3a1c',{roughness:.6}),[s*.55,.9,.15],[0,0,s*.3])));break}
+  case 'kolcak':{const m=steel();g.add(mesh(new T.CylinderGeometry(.42,.32,1.6,40,1,true,-PI*.65,PI*1.3),m,[0,0,0]));
+    const t=ctex(256,512,(q,W,H)=>{q.clearRect(0,0,W,H);q.strokeStyle='#e0aa48';q.lineWidth=4;for(let y=40;y<H;y+=80){q.beginPath();q.moveTo(10,y);q.bezierCurveTo(W*.3,y-40,W*.7,y+40,W-10,y);q.stroke()}});
+    g.add(mesh(new T.CylinderGeometry(.425,.325,1.5,40,1,true,-PI*.4,PI*.8),new T.MeshStandardMaterial({map:t,transparent:true,metalness:1,roughness:.2}),[0,0,0]));g.add(mesh(new T.TorusGeometry(.42,.03,8,40,PI*1.3),gold(),[0,.8,0],[PI/2,0,PI*.35]));g.rotation.z=.4;break}
+  /* --- miğferler --- */
+  case 'osmmigfer':hHelmet(g,{prof:[[0,1.0],[.12,.95],[.32,.75],[.5,.45],[.6,.1],[.62,0],[.6,-.02]],top:1.0,spike:.28,band:[.62,.02],nasal:.0,r0:.62,cheeks:1,neck:1,m:mat('#b9bec2',{metalness:1,roughness:.24}),bandM:gold()});
+    {const t=ctex(512,128,(q,W,H)=>{q.clearRect(0,0,W,H);q.fillStyle='#e0aa48';q.font='bold 46px serif';q.textAlign='center';q.fillText('❁ ❁ ❁ ❁ ❁ ❁ ❁',W/2,H*.7)});g.add(mesh(new T.CylinderGeometry(.53,.6,.22,64,1,true),new T.MeshStandardMaterial({map:t,transparent:true,metalness:1,roughness:.2}),[0,.15,0]))}break;
+  case 'sipahimig':hHelmet(g,{prof:[[0,.85],[.3,.75],[.52,.45],[.6,.1],[.62,0],[.6,-.02]],top:.85,spike:.15,band:[.62,.02],r0:.62,neck:1,mail:1,m:iron(),bandM:brass()});break;
+  case 'selmigfer':hHelmet(g,{prof:[[0,1.35],[.08,1.2],[.25,.85],[.45,.45],[.58,.1],[.6,0]],top:1.35,band:[.6,.02],r0:.6,nasal:.0,mail:1,m:mat('#8a8e92',{metalness:1,roughness:.42}),bandM:bronze()});break;
+  case 'romamigfer':hHelmet(g,{prof:[[0,.8],[.3,.74],[.52,.48],[.6,.12],[.62,0],[.6,-.02]],top:.8,band:[.62,.04],r0:.62,cheeks:1,neck:1,m:mat('#c09a5a',{metalness:1,roughness:.28}),bandM:brass()});
+    {const crest=new T.Group();for(let i=0;i<22;i++){const a=-PI*.45+i*PI*.9/21;crest.add(mesh(box(.1,.32,.06),mat('#b01e1a',{roughness:.8}),[Math.sin(a)*.82,Math.cos(a)*.82-.02,0],[0,0,-a]))}crest.rotation.y=PI/2;g.add(crest)}break;
+  case 'korint':{const m=mat('#b88a46',{metalness:1,roughness:.3});g.add(mesh(lathe([[.48,-.78],[.5,-.75],[.58,-.4],[.6,.1],[.55,.5],[.35,.78],[0,.85]],64),m));
+    const eye=new T.MeshBasicMaterial({color:'#0a0604'});[-1,1].forEach(s=>g.add(mesh(box(.28,.14,.06),eye,[s*.18,.0,.6],[0,s*.3,s*-.15])));g.add(mesh(box(.12,.55,.06),eye,[0,-.45,.56]));
+    g.add(mesh(box(.09,.5,.07),m,[0,-.05,.6]));g.add(mesh(new T.TorusGeometry(.6,.025,8,64),m,[0,-.05,0],[PI/2,0,0]));break}
+  case 'bork':{const felt=mat('#f1ece0',{roughness:.95});g.add(mesh(lathe([[0,-.1],[.52,-.1],[.5,0],[.45,.5],[.35,.9],[0,.9]],48),felt,[0,0,0]));
+    const flap=new T.Mesh(new T.PlaneGeometry(.8,1.6,8,16),new T.MeshStandardMaterial({color:'#efe9dc',roughness:.95,side:T.DoubleSide}));const p=flap.geometry.attributes.position;for(let i=0;i<p.count;i++){const y=p.getY(i);p.setZ(i,-(y-.8)*(y-.8)*.35)}flap.geometry.computeVertexNormals();flap.position.set(0,.2,-.5);g.add(flap);
+    g.add(mesh(box(.22,.5,.06),gold(),[0,.25,.48]));g.add(mesh(cyl(.06,.04,.35,16),gold(),[0,.7,.46]));g.add(mesh(new T.TorusGeometry(.52,.05,10,48),mat('#c8372d',{roughness:.6}),[0,-.05,0],[PI/2,0,0]));break}
+  case 'kask':hHelmet(g,{prof:[[0,.62],[.4,.55],[.62,.3],[.68,.06],[.95,-.02],[.98,-.05],[.6,-.03]],top:.62,r0:.66,m:mat('#3a4028',{metalness:.1,roughness:.9})});
+    g.add(mesh(new T.TorusGeometry(.03,.012,6,16),iron(),[0,.62,0]));break;
+  /* --- savaş aletleri --- */
+  case 'topuz':{g.add(mesh(cyl(.06,.07,1.6,20),wood('#4a2a14'),[0,-.4,0]));const hm=silver();g.add(mesh(sph(.24),hm,[0,.55,0]));for(let i=0;i<8;i++){const a=i*PI/4;g.add(mesh(box(.04,.42,.2),hm,[Math.cos(a)*.2,.55,Math.sin(a)*.2],[0,-a,0]))}
+    g.add(mesh(new T.ConeGeometry(.06,.18,16),hm,[0,.85,0]));for(let i=0;i<4;i++)g.add(mesh(new T.TorusGeometry(.075,.015,6,20),gold(),[0,.2-i*.16,0],[PI/2,0,0]));g.rotation.z=.5;break}
+  case 'teber':{g.add(mesh(cyl(.05,.05,2.4,16),wood('#5a3418'),[0,0,0]));const sh=new T.Shape();sh.moveTo(0,.25);sh.quadraticCurveTo(.7,.7,.75,0);sh.quadraticCurveTo(.7,-.7,0,-.25);sh.quadraticCurveTo(.28,0,0,.25);
+    g.add(mesh(hShapeExt(sh,.04,null,.01),steel(),[.04,.9,-.02]));g.add(mesh(cyl(.08,.08,.4,16),iron(),[0,.9,0]));g.add(mesh(new T.ConeGeometry(.05,.3,12),steel(),[0,1.35,0]));g.rotation.z=.35;break}
+  case 'mizrak':{const sh=new T.Shape();sh.moveTo(0,0);sh.quadraticCurveTo(.22,.4,0,1.2);sh.quadraticCurveTo(-.22,.4,0,0);g.add(mesh(hShapeExt(sh,.05,null,.015),iron(),[0,0,-.025]));
+    g.add(mesh(cyl(.06,.09,.55,20),iron(),[0,-.27,0]));g.add(mesh(cyl(.07,.07,.6,16),wood('#6b4426'),[0,-.75,0]));g.add(mesh(box(.02,1.0,.06),mat('#3a3c3e',{metalness:.9,roughness:.4}),[0,.55,.03]));g.rotation.z=-.4;break}
+  case 'turkyayi':{const pts=[];for(let i=0;i<=40;i++){const t=i/40*2-1,y=t*1.2,x=-.35*(1-t*t)+.18*Math.pow(Math.abs(t),5)*1.6;pts.push(new T.Vector3(x,y,0))}const cv=new T.CatmullRomCurve3(pts);
+    const t=ctex(512,64,(q,W,H)=>{q.fillStyle='#7a1f19';q.fillRect(0,0,W,H);q.fillStyle='#e0aa48';for(let x=0;x<W;x+=24){q.beginPath();q.arc(x+12,H/2,6,0,7);q.fill()}});t.wrapS=T.RepeatWrapping;t.repeat.set(4,1);
+    g.add(mesh(new T.TubeGeometry(cv,80,.05,10),new T.MeshStandardMaterial({map:t,roughness:.45,clearcoat:.5})));g.add(mesh(cyl(.07,.07,.32,16),mat('#2a1a10'),[-.35,0,0]));
+    const a=pts[1],b=pts[pts.length-2];const sl=new T.Vector3().subVectors(b,a);g.add(mesh(cyl(.008,.008,sl.length(),6),mat('#f1ece0'),[(a.x+b.x)/2,0,0]));break}
+  case 'sadak':{const t=ctex(256,512,(q,W,H)=>{q.fillStyle='#5a1f12';q.fillRect(0,0,W,H);q.strokeStyle='#e0aa48';q.lineWidth=5;for(let y=30;y<H;y+=70){q.beginPath();q.arc(W/2,y,22,0,7);q.stroke();q.beginPath();q.moveTo(20,y+35);q.lineTo(W-20,y+35);q.stroke()}});
+    g.add(mesh(cyl(.3,.2,1.6,32),new T.MeshStandardMaterial({map:t,roughness:.6}),[0,0,0]));g.add(mesh(new T.TorusGeometry(.3,.04,10,32),gold(),[0,.8,0],[PI/2,0,0]));
+    for(let i=0;i<5;i++){const x=(i-2)*.09,z=(i%2)*.08-.04;g.add(mesh(cyl(.015,.015,.6,8),wood('#c8a26a'),[x,1.05,z]));g.add(mesh(box(.004,.22,.1),mat(i%2?'#f1ece0':'#3a3a3a',{roughness:.9}),[x,1.25,z]))}g.rotation.z=.3;break}
+  case 'barutluk':{const pts=[];for(let i=0;i<=30;i++){const t=i/30;pts.push(new T.Vector3(Math.sin(t*1.6)*1.0,-Math.cos(t*1.6)*.6+.3,0))}const cv=new T.CatmullRomCurve3(pts);
+    const geo=new T.TubeGeometry(cv,60,.2,24);const p=geo.attributes.position;for(let i=0;i<p.count;i++){}g.add(mesh(geo,mat('#d9c6a0',{roughness:.4,clearcoat:.5})));
+    const e=pts[pts.length-1];g.add(mesh(cyl(.21,.21,.08,24),brass(),[pts[0].x,pts[0].y,0]));g.add(mesh(new T.ConeGeometry(.08,.3,16),brass(),[e.x+.12,e.y,0],[0,0,-PI/2]));
+    [.25,.6].forEach(f=>{const q=cv.getPoint(f);g.add(mesh(new T.TorusGeometry(.21,.025,8,24),brass(),[q.x,q.y,0],[0,PI/2,0]))});break}
+  case 'gulle':{const geo=new T.SphereGeometry(.8,48,32);const p=geo.attributes.position;for(let i=0;i<p.count;i++){const k2=1+(Math.sin(p.getX(i)*11)*Math.cos(p.getY(i)*9)*.012);p.setXYZ(i,p.getX(i)*k2,p.getY(i)*k2,p.getZ(i)*k2)}geo.computeVertexNormals();
+    const t=ctex(256,256,(q,W)=>{q.fillStyle='#3a3530';q.fillRect(0,0,W,W);for(let i=0;i<300;i++){q.fillStyle=`rgba(${120+Math.random()*60|0},${60+Math.random()*30|0},20,${Math.random()*.35})`;q.beginPath();q.arc(Math.random()*W,Math.random()*W,2+Math.random()*9,0,7);q.fill()}});
+    g.add(mesh(geo,new T.MeshStandardMaterial({map:t,metalness:.6,roughness:.85})));break}
+  /* --- saray --- */
+  case 'ferman':{const t=ctex(1024,640,(q,W,H)=>{q.fillStyle='#efe0bd';q.fillRect(0,0,W,H);q.strokeStyle='#c9973f';q.lineWidth=10;q.strokeRect(24,24,W-48,H-48);hTugra(q,W/2,190,1.25,'#1d3f8a');
+      q.fillStyle='#2b1a0f';for(let i=0;i<9;i++){let x=90;while(x<W-90){const w=20+Math.random()*60;q.fillRect(x,300+i*32,w,5);x+=w+14}}q.fillStyle='#b01e1a';q.beginPath();q.arc(W-120,H-90,34,0,7);q.fill()});
+    hScroll(g,t,2.2,1.4);break}
+  case 'tugra':{const t=ctex(512,384,(q,W,H)=>{q.fillStyle='#173e33';q.fillRect(0,0,W,H);hTugra(q,W/2,H/2+10,1.3,'#e0aa48')});
+    g.add(mesh(box(1.9,1.45,.08),[wood('#3a1f0e'),wood('#3a1f0e'),wood('#3a1f0e'),wood('#3a1f0e'),new T.MeshStandardMaterial({map:t,roughness:.5,metalness:.2}),wood('#3a1f0e')]));
+    [[0,.77,1.98,.1],[0,-.77,1.98,.1]].forEach(([x,y,w,h])=>g.add(mesh(box(w,h,.14),gold(),[x,y,.02])));[-1,1].forEach(s=>g.add(mesh(box(.1,1.6,.14),gold(),[s*.99,0,.02])));break}
+  case 'muhur':{const m=silver();g.add(mesh(lathe([[0,0],[.34,0],[.34,.06],[.22,.12],[.08,.3],[.1,.7],[.2,.95],[.16,1.08],[0,1.1]],48),m));g.add(mesh(sph(.08),mat('#1f8a4a',{roughness:.05}),[0,1.12,0]));
+    const t=ctex(256,256,(q,W)=>{q.fillStyle='#c4c8cc';q.fillRect(0,0,W,W);hTugra(q,W/2,W/2+10,.7,'#2a2c2e');q.strokeStyle='#2a2c2e';q.lineWidth=6;q.beginPath();q.arc(W/2,W/2,W/2-12,0,7);q.stroke()});
+    g.add(mesh(new T.CircleGeometry(.33,48),new T.MeshStandardMaterial({map:t,metalness:1,roughness:.3}),[0,-.002,0],[PI/2,0,0]));g.rotation.x=.5;break}
+  case 'divit':{const b=brass();g.add(mesh(box(2.1,.22,.26),b,[0,0,0]));g.add(mesh(cyl(.22,.22,.36,32),b,[1.15,.07,0]));g.add(mesh(sph(.22,32,16,0,PI*2,0,PI/2),b,[1.15,.25,0]));
+    const t=ctex(512,64,(q,W,H)=>{q.fillStyle='#c9973f';q.fillRect(0,0,W,H);q.strokeStyle='#5a3a10';q.lineWidth=3;for(let x=0;x<W;x+=40){q.beginPath();q.moveTo(x,H/2);q.bezierCurveTo(x+10,0,x+30,H,x+40,H/2);q.stroke()}});
+    g.add(mesh(new T.PlaneGeometry(2.0,.2),new T.MeshStandardMaterial({map:t,metalness:1,roughness:.3}),[0,0,.131]));g.add(mesh(cyl(.02,.02,1.4,8),wood('#c8a26a'),[-.2,.2,0],[0,0,PI/2+.08]));g.rotation.z=.25;break}
+  case 'sancak':{g.add(mesh(cyl(.04,.04,2.8,16),wood('#5a3418'),[-.9,-.1,0]));g.add(mesh(new T.ConeGeometry(.1,.3,16),gold(),[-.9,1.45,0]));g.add(mesh(sph(.08),gold(),[-.9,1.28,0]));
+    const t=ctex(512,384,(q,W,H)=>{q.fillStyle='#b01e1a';q.fillRect(0,0,W,H);q.fillStyle='#f1ece0';q.beginPath();q.arc(W*.42,H/2,90,0,7);q.fill();q.fillStyle='#b01e1a';q.beginPath();q.arc(W*.47,H/2,74,0,7);q.fill();
+      q.fillStyle='#f1ece0';q.save();q.translate(W*.62,H/2);q.beginPath();for(let i=0;i<10;i++){const r=i%2?16:40,a=i*Math.PI/5-Math.PI/2;q.lineTo(Math.cos(a)*r,Math.sin(a)*r)}q.fill();q.restore();q.fillStyle='#e0aa48';for(let y=0;y<H;y+=24){q.fillRect(W-14,y,14,12)}});
+    const pl=new T.PlaneGeometry(1.8,1.25,30,10);const p=pl.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i)+.9;p.setZ(i,Math.sin(x*3.2)*.12*x)}pl.computeVertexNormals();
+    g.add(mesh(pl,new T.MeshStandardMaterial({map:t,roughness:.7,side:T.DoubleSide}),[0,.55,0]));break}
+  case 'nisan':{const s=new T.Shape();for(let i=0;i<14;i++){const r=i%2?.55:1.0,a=i*PI/7+PI/2;i?s.lineTo(Math.cos(a)*r,Math.sin(a)*r):s.moveTo(Math.cos(a)*r,Math.sin(a)*r)}s.closePath();
+    g.add(mesh(hShapeExt(s,.08,null,.03),silver(),[0,-.3,-.04]));g.add(mesh(cyl(.42,.42,.1,48),enamel('#b01e1a'),[0,-.3,.06],[PI/2,0,0]));g.add(mesh(new T.TorusGeometry(.42,.04,10,48),gold(),[0,-.3,.1]));
+    const t=ctex(128,128,(q,W)=>{q.fillStyle='#b01e1a';q.fillRect(0,0,W,W);hTugra(q,W/2,W/2+6,.3,'#e0aa48')});g.add(mesh(new T.CircleGeometry(.36,40),new T.MeshStandardMaterial({map:t,roughness:.3}),[0,-.3,.115]));
+    g.add(mesh(box(.7,.7,.03),mat('#b01e1a',{roughness:.7}),[0,.85,-.06]));g.add(mesh(box(.14,.7,.035),mat('#2a8a5a',{roughness:.7}),[-.21,.85,-.055]));g.add(mesh(box(.14,.7,.035),mat('#2a8a5a',{roughness:.7}),[.21,.85,-.055]));g.add(mesh(new T.TorusGeometry(.08,.03,8,16),gold(),[0,.48,0]));break}
+  case 'sorguc':{g.add(mesh(lathe([[0,0],[.14,.05],[.2,.3],[.12,.6],[.06,.62],[0,.62]],32),gold()));['#c8372d','#1f8a4a','#2a6fb0'].forEach((c,i)=>g.add(mesh(sph(.07),mat(c,{roughness:.05,metalness:.2}),[Math.cos(i*2.1)*.18,.3,Math.sin(i*2.1)*.18])));
+    for(let i=0;i<9;i++){const a=(i-4)*.12;const f=new T.Mesh(new T.PlaneGeometry(.16,1.6,1,8),new T.MeshStandardMaterial({color:i%3?'#f6f2ea':'#1d1d1f',roughness:.9,side:T.DoubleSide}));const p=f.geometry.attributes.position;for(let j=0;j<p.count;j++){const y=p.getY(j)+.8;p.setZ(j,y*y*.12);p.setX(j,p.getX(j)*(1-y*.25))}f.geometry.computeVertexNormals();f.position.set(Math.sin(a)*.1,1.35,0);f.rotation.z=a;g.add(f)}
+    g.add(mesh(sph(.12),mat('#c8372d',{roughness:.05,metalness:.2}),[0,.62,0]));break}
+  /* --- antik çağ --- */
+  case 'denarius':hCoin(g,{bg:'#bfc3c6',ink:'#6e7275',edge:'#b8bcc0',head:1,laurel:1,txt:'IMP CAESAR AVGVSTVS',rough:.4});break;
+  case 'solidus':hCoin(g,{bg:'#e6b955',ink:'#8a5a14',edge:'#d9a441',head:1,cross:1,txt:'DN IVSTINIANVS PP AVG',rough:.22});break;
+  case 'lidya':hCoin(g,{bg:'#d8b878',ink:'#7a5a24',edge:'#c9a45e',lion:1,lump:1,rough:.45});break;
+  case 'amfora':{const t=ctex(256,512,(q,W,H)=>{q.fillStyle='#b8643a';q.fillRect(0,0,W,H);for(let i=0;i<200;i++){q.fillStyle=`rgba(80,40,20,${Math.random()*.25})`;q.fillRect(Math.random()*W,Math.random()*H,3+Math.random()*12,2)}q.fillStyle='#2a1a10';q.fillRect(0,H*.3,W,8);q.fillRect(0,H*.34,W,4)});
+    const m=new T.MeshStandardMaterial({map:t,roughness:.85});g.add(mesh(lathe([[0,-1.4],[.06,-1.38],[.08,-1.2],[.3,-.8],[.55,-.2],[.58,.2],[.45,.55],[.2,.75],[.14,1.0],[.17,1.08],[.13,1.1]],48),m));
+    [-1,1].forEach(s=>g.add(mesh(new T.TorusGeometry(.26,.05,10,24,PI*1.1),m,[s*.3,.82,0],[0,0,s>0?-PI*.05:PI*1.05])));break}
+  case 'romakandil':{const m=mat('#b5683c',{roughness:.85});g.add(mesh(sph(.6,40,20),m,[0,0,0],null,[1,.38,1]));g.add(mesh(cyl(.2,.24,.18,24),m,[.65,0,0],[0,0,PI/2]));g.add(mesh(new T.TorusGeometry(.12,.04,8,20),m,[.8,.02,0],[PI/2,0,0]));
+    const t=ctex(256,256,(q,W)=>{q.fillStyle='#a35a30';q.fillRect(0,0,W,W);q.strokeStyle='#6b3418';q.lineWidth=5;q.beginPath();q.arc(W/2,W/2,90,0,7);q.stroke();q.fillStyle='#6b3418';q.beginPath();q.ellipse(W/2,W/2,40,24,.4,0,7);q.fill();q.fillStyle='#2a1a10';q.beginPath();q.arc(W/2+60,W/2,10,0,7);q.fill()});
+    g.add(mesh(new T.CircleGeometry(.42,40),new T.MeshStandardMaterial({map:t,roughness:.85}),[0,.225,0],[-PI/2,0,0]));g.add(mesh(new T.TorusGeometry(.12,.05,8,20,PI),m,[-.62,.12,0],[0,0,PI/2]));break}
+  case 'fibula':{const b=bronze();const cv=new T.CatmullRomCurve3([new T.Vector3(-1,0,0),new T.Vector3(-.6,.55,0),new T.Vector3(0,.7,0),new T.Vector3(.6,.5,0),new T.Vector3(.95,0,0)]);g.add(mesh(new T.TubeGeometry(cv,40,.09,12),b));
+    g.add(mesh(cyl(.02,.02,1.9,8),b,[0,-.02,0],[0,0,PI/2]));for(let i=0;i<5;i++)g.add(mesh(new T.TorusGeometry(.06,.025,8,16),b,[-1.0-i*.035,0,0],[0,PI/2,0]));g.add(mesh(box(.25,.15,.1),b,[.98,.02,0]));
+    [-.3,0,.3].forEach(x=>g.add(mesh(sph(.08),b,[x,.66-Math.abs(x)*.3,0])));break}
+  case 'gunes':{const b=bronze();g.add(mesh(new T.TorusGeometry(1,.06,12,64),b));g.add(mesh(cyl(.06,.08,.8,16),b,[0,-1.4,0]));
+    for(let i=0;i<5;i++){const x=-.8+i*.4;const h=2*Math.sqrt(Math.max(0,1-x*x))*.94;g.add(mesh(cyl(.025,.025,h,8),b,[x,0,0]))}for(let i=0;i<5;i++){const y=-.8+i*.4;const w=2*Math.sqrt(Math.max(0,1-y*y))*.94;g.add(mesh(cyl(.025,.025,w,8),b,[0,y,0],[0,0,PI/2]))}
+    for(let i=0;i<9;i++){const a=PI*.1+i*PI*.8/8;g.add(mesh(sph(.08),b,[Math.cos(a)*1.08,Math.sin(a)*1.08,0]));g.add(mesh(new T.TorusGeometry(.07,.02,6,16),b,[Math.cos(a)*1.2,Math.sin(a)*1.2-.12,0]))}
+    g.add(mesh(new T.ConeGeometry(.09,.3,12),b,[0,1.2,0]));break}
+  default:return false}
+  return true}
+
 const XTN={mag:['🔍','Büyüteç'],uv:['🔦','UV Lamba'],w:['⚖️','Terazi']};
 function xtBar(it){if(it.chest||it.known.expert)return '';const tl=it.known.tl||{};
   return `<div class="vtools"><span class="vt-lbl">Ekspertiz çantası</span>${Object.keys(XTN).map(k=>`<button class="vt ${tl[k]?'used '+(tl[k]>0?'ok':'bad'):''}" data-act="xt:${k}" ${tl[k]?'disabled':''}><span>${XTN[k][0]}</span><small>${XTN[k][1]}</small>${tl[k]?`<i>${tl[k]>0?'✓':'!'}</i>`:''}</button>`).join('')}</div>`}
