@@ -1,0 +1,3 @@
+2026-11-02 14:07:20.096337+0000 0x6366     Default     0x0                  6468   0    App: (libxpc.dylib) [com.apple.xpc:connection] [0x101168a40] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
+2026-11-02 14:07:21.259790+0000 0x6392     Error       0x0                  6468   0    App: (WebKit) [com.apple.WebKit:ResourceLoadStatistics] WebContent[6746] Unable to hide query parameters from script (missing data)
+2026-11-02 14:07:22.851500+0000 0x6334     Error       0x0                  6468   0    App: (CoreFoundation) [com.apple.CFBundle:plugin] AddInstanceForFactory: No factory registered for id <CFUUID 0x6000002b8a60> F8BB1C28-BAE8-11D6-9C31-00039315CD46
