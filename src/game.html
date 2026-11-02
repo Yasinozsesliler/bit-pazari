@@ -1415,6 +1415,8 @@ const SELL={
    hi:['Bak usta, bu {i} müzelik. Ama sana özel {p}.','Böylesini çarşıda bulamazsın. {p}, hiç düşünme.','Dedemin dedesinden kalma. {p} veren alır, vermeyen pişman olur.']},
  aceleci:{tag:'Aceleci',ask:[.7,1],min:.75,pat:1,fake:.25,
    hi:['Otobüsü kaçıracağım! {i}, {p}, hemen karar ver!','Acil paraya ihtiyacım var. {p} ver, gidiyorum.']},
+ kacakci:{tag:'Kaçakçı',ask:[.4,.65],min:.75,pat:2,fake:.7,
+   hi:['Psst… Bu {i} kazıdan çıktı, kimseye söyleme. {p}, nakit.','Gümrükten zor geçirdim bu {i}. {p} ver, unut beni.','Soru sorma, {i} senin olsun. {p}.']},
  bilir:{tag:'Bilirkişi',ask:[.95,1.2],min:.9,pat:4,fake:.1,
    hi:['Bu {i} temiz parça, değerini biliyorum. {p} istiyorum.','Antikacılara sordum, {p} civarı ediyor dediler.']}
 };
@@ -1422,7 +1424,8 @@ const BUY={
  pazarlikci:{tag:'Pazarlıkçı',mp:[.95,1.15],pat:3},
  zengin:{tag:'Zengin',mp:[1.25,1.6],pat:2},
  ogrenci:{tag:'Öğrenci',mp:[.65,.9],pat:3},
- koleksiyoncu:{tag:'Koleksiyoncu',mp:[1.1,1.4],pat:3,detect:.55}
+ koleksiyoncu:{tag:'Koleksiyoncu',mp:[1.1,1.4],pat:3,detect:.55},
+ kurator:{tag:'Müze Küratörü',mp:[1.3,1.6],pat:3,detect:.9}
 };
 const L={
  counter:['Olmaz öyle. {p} diyelim.','Biraz daha… {p} olsun.','Yok yok, {p} altına vermem.'],
@@ -1462,15 +1465,18 @@ function mkSeller(item,type,extra){
   const toy=has('k4')&&TOY.has(item.k);const ask=r10(item.appear/((type==='acemi'||type==='aceleci')&&item.rar?RMUL[item.rar]*.85:1)*rf(T.ask[0],T.ask[1])*(toy?.9:1)*evAskMul());
   return Object.assign({id:uid(),kind:'seller',type,tag:T.tag,name:pick(NAMES),seed:Math.floor(R()*1e9),item,ask,minAccept:r10(ask*T.min*(has('p2')?.92:1)*(toy?.8:1)),patience:T.pat+bp(),maxPat:T.pat+bp(),line:tpl(pick(T.hi),{i:item.n,p:fmt(ask)}),done:false},extra||{})}
 function spawnSeller(){
+  if(packOwned('tarih')&&S.day>=3&&R()<.1){const cat=pick(CATH.filter(c=>c.v>=700));const it=newItem(cat,{fake:!!cat.f&&R()<SELL.kacakci.fake});return Object.assign(mkSeller(it,'kacakci'),{name:'Sakallı Necmi',seed:9191})}
   const type=locPickSeller();const cat=locPickCat();
   const fake=!!cat.f&&R()<SELL[type].fake;
   return regApply(mkSeller(newItem(cat,{fake}),type))}
 function spawnBuyer(){
-  const item=pick(S.inv.filter(x=>!x.chest&&!x.lab));
-  const type=locPickBuyer();const T=BUY[type];
+  const tInv=packOwned('tarih')?S.inv.filter(x=>TARIH.has(x.k)&&!x.chest&&!x.lab):[];const cur=tInv.length>0&&R()<(S.story.kurator?.4:.18);
+  const item=cur?pick(tInv):pick(S.inv.filter(x=>!x.chest&&!x.lab));
+  const type=cur?'kurator':locPickBuyer();const T=BUY[type];
   const repF=.85+S.rep/333;
   const maxPay=r10(val(item)*locBuy()*evBuyMul()*trendMul(item)*serBonus(item)*(has('k1')&&isSp(item)?1.15:1)*rf(T.mp[0],T.mp[1])*repF*(has('p2')?1.08:1)*(1+.05*((S.up&&S.up.vitrin)||0)));
-  return regApply({id:uid(),kind:'buyer',type,tag:T.tag,name:pick(NAMES),seed:Math.floor(R()*1e9),itemId:item.id,maxPay,patience:T.pat+bp(),maxPat:T.pat+bp(),counter:0,honest:false,line:tpl(pick(L.bhi),{i:item.n}),done:false})}
+  const b=regApply({id:uid(),kind:'buyer',type,tag:T.tag,name:pick(NAMES),seed:Math.floor(R()*1e9),itemId:item.id,maxPay,patience:T.pat+bp(),maxPat:T.pat+bp(),counter:0,honest:false,line:tpl(pick(L.bhi),{i:item.n}),done:false});
+  if(cur)Object.assign(b,{type:'kurator',tag:T.tag,name:'Dr. Selin Aksoy',seed:5150,line:`Müzemizin koleksiyonu için ${item.n} ile ilgileniyorum. Gerçekse iyi öderim.`});return b}
 function rizaSeller(){
   const cat=CAT.find(c=>c.k==='cepsaati');
   const item=newItem(cat,{cond:4,fake:false,story:'riza'});item.appear=900;item.worth=900;
@@ -1479,6 +1485,20 @@ function rizaReturn(){
   const it=S.inv.find(x=>x.story==='riza');
   if(it)return{id:uid(),kind:'story',name:'Rıza Amca',tag:'Mahalleli',seed:4242,itemId:it.id,line:'Evladım, emekli maaşım yattı. Babamın saati hâlâ sende mi? Geri alabilir miyim?',patience:3,maxPat:3,done:false};
   return{id:uid(),kind:'story',name:'Rıza Amca',tag:'Mahalleli',seed:4242,itemId:null,line:'Babamın saatini geri almaya gelmiştim… Satmışsın demek. Neyse evladım, kısmet.',patience:3,maxPat:3,done:false,sold:true}}
+/* ---- Tarih Paketi hikâyesi: Kayıp Ferman ---- */
+function fermanNext(){const f=S.story.ferman||'none';if(!packOwned('tarih'))return null;
+  if(f==='none'&&S.day>=4&&S.ci===1)return{id:uid(),kind:'story',fst:'intro',name:'Dr. Selin Aksoy',tag:'Müze Küratörü',seed:5150,line:'Merhaba, Topkapı arşivinden çalınan bir padişah fermanının izini sürüyorum. Çarşıda biri satmaya kalkarsa onu kaçırma, bana getir. Karşılığını fazlasıyla öderim.',patience:3,maxPat:3,done:false};
+  if(f==='asked'&&S.day>S.story.fday&&S.ci===2){const it=newItem(catOf('ferman'),{cond:3,fake:false,story:'ferman'});it.n='Mühürlü Padişah Fermanı';it.rar=2;
+    return mkSeller(it,'kacakci',{name:'Sakallı Necmi',seed:9191,ask:1800,minAccept:1250,line:'Psst… Bu ferman dedemden kaldı, mühürü sağlam. 1.800 ₺, soru sorma.',fst:'sell'})}
+  if((f==='have'||f==='missed')&&S.day>S.story.fday&&S.ci===0){const it=S.inv.find(x=>x.story==='ferman');
+    return{id:uid(),kind:'story',fst:'ret',name:'Dr. Selin Aksoy',tag:'Müze Küratörü',seed:5150,itemId:it?it.id:null,sold:!it,line:it?'Duydum ki fermanı bulmuşsun! Müzeye teslim edersen hem ödül veririm hem de adını sergiye yazarız.':'Ferman çarşıda görülmüş ama kaçmış… Yazık. Belki bir gün yine izine rastlarız.',patience:3,maxPat:3,done:false}}
+  return null}
+function fermanAct(a){const c=S.cust,it=c.itemId&&itemById(c.itemId);
+  if(c.fst==='intro'){S.story.ferman='asked';S.story.fday=S.day;gainXP(10);finish('deal','Teşekkürler usta. Gözün kulağın çarşıda olsun.');setTimeout(()=>toast('📜 Yeni görev: Kayıp Ferman'),400);return}
+  if(c.sold||!it){S.story.ferman='done';finish('pass',c.line);return}
+  if(a==='fgive'){const rw=Math.max(4000,r10(it.paid*3));S.money+=rw;logT('sell',it,rw);S.inv=S.inv.filter(x=>x.id!==it.id);addRep(20);gainXP(60);S.story.ferman='done';S.story.kurator=1;sfx.cash();burst(24);flt('+'+fmt(rw),'var(--mint)');
+    finish('deal','Tarih sana minnettar! Ödülün burada. Bundan sonra tarih eserlerini önce bana göster.');setTimeout(()=>toast('🏛️ Ferman müzeye teslim edildi: itibar +20'),300);return}
+  addRep(-5);S.story.ferman='done';finish('leave','Peki… Ama tarih bunu unutmayacak.')}
 function chestSeller(){return mkSeller(chestItem(),'kurnaz',{name:'Paltolu Adam',seed:777,ask:350,minAccept:250,line:'Ne içinde olduğunu ben de bilmiyorum. Anahtarı kayıp. 350 ₺, açarsan şansına.',tag:'Gizemli'})}
 
 function nextCustomer(){
@@ -1486,6 +1506,7 @@ function nextCustomer(){
   let c;
   if(S.day===1&&S.ci===1&&S.story.riza==='none')c=rizaSeller();
   else if(S.day===3&&S.ci===0&&(S.story.riza==='bought'||S.story.riza==='sold'))c=rizaReturn();
+  else if((c=fermanNext()));
   else if((S.day===2&&S.ci===3)||(S.day>3&&R()<(has('z2')?.045:.02)))c=chestSeller();
   else{const pB=S.inv.filter(x=>!x.chest&&!x.lab).length?Math.min(.8,(S.inv.length>=6?.65:.42)+.08*((S.up&&S.up.vitrin)||0)):0;c=R()<Math.min(.9,pB+(pB?evBuyerP():0))?spawnBuyer():spawnSeller()}
   S.ci++;S.cust=c;
@@ -1654,7 +1675,7 @@ function moodOf(c){if(c.done)return c.result==='deal'?1:(c.result==='pass'?-.1:-
 let busy=false;
 function say(line){S.cust.line=line;pulse=true}
 let pulse=false,floats=[],shake=false,lastCustId=null;
-function finish(result,line){const c=S.cust;const wasShake=shake;if(result==='leave'&&c.name&&!c.story)regUpd(c.name,-.5);c.done=true;c.result=result;if(line)say(line);save();render();busy=true;
+function finish(result,line){const c=S.cust;const wasShake=shake;if(c&&c.fst==='sell'&&result!=='deal'){S.story.ferman='missed';S.story.fday=S.day}if(result==='leave'&&c.name&&!c.story)regUpd(c.name,-.5);c.done=true;c.result=result;if(line)say(line);save();render();busy=true;
   const canRe=result==='leave'&&!wasShake&&(c.kind==='seller'||c.kind==='buyer')&&!c.recalled&&!c.story&&adOk();
   if(canRe){setTimeout(()=>{busy=false;if(S.cust!==c)return;modal({icon:'🏃',title:'Müşteri gidiyor!',body:'Kısa bir reklam izlersen geri çağırırsın, sabrı da tazelenir.',btns:[{t:'Gitsin',cls:'ghost',a:'recallNo'},{t:'📺 Geri çağır',cls:'brass',a:'recallAd'}]})},1000);return}
   setTimeout(()=>{const el=$('.cust');if(el)el.classList.add('leave')},900);
@@ -1673,6 +1694,7 @@ function doBuy(price){
   if(c.story)S.story.riza='bought';
   const fairV=it.appear/(it.rar?RMUL[it.rar]:1);if(c.type==='acemi'&&price<fairV*.38){addRep(-1);setTimeout(()=>toast('Ucuza kapattın. Mahallede konuşulur: itibar −1'),400)}else if(!c.story&&price>=fairV*.6&&R()<.2){addRep(1);setTimeout(()=>toast('Adil esnaf: itibar +1'),400)}
   if(it.chest){finish('deal',pick(L.deal));setTimeout(()=>openChest(it),1700);return}
+  if(c.fst==='sell'){S.story.ferman='have';S.story.fday=S.day;setTimeout(()=>toast('📜 Fermanı buldun! Küratör yarın uğrayacak.'),600)}
   S.inv.push(it);colAdd(it);stat('buy');if(!c.story)regUpd(c.name,price<it.appear*.5?-1:price>=it.appear*.75?1:.5);
   finish('deal',pick(L.deal));
 }
@@ -1709,7 +1731,7 @@ function buyerPropose(price){
   const knowsFake=it.fake&&(it.known.expert||it.known.suspect);
   const honest=c.honest&&knowsFake;
   let cap=honest?r10(it.appear*.3*rf(.9,1.2)):c.maxPay;
-  if(c.type==='koleksiyoncu'&&it.fake&&!honest&&!c.checked){c.checked=true;if(R()<BUY.koleksiyoncu.detect){addRep(-5);sfx.bad();shake=true;finish('leave',pick(L.detect));toast('Sahte mal yakalandı: itibar −5');return}}
+  if((c.type==='koleksiyoncu'||c.type==='kurator')&&it.fake&&!honest&&!c.checked){c.checked=true;if(R()<BUY[c.type].detect){addRep(-5);sfx.bad();shake=true;finish('leave',pick(L.detect));toast('Sahte mal yakalandı: itibar −5');return}}
   if(p<=cap){doSell(p,honest);return}
   c.patience-=p>cap*1.7?2:1;
   if(c.patience<=0){finish('leave',pick(L.bleave));sfx.bad();return}
@@ -1727,7 +1749,7 @@ function doSell(price,honest){
   if(profit>0&&it.paid>0&&profit>=it.paid)setTimeout(()=>toast('Kârı ikiye katladın!'),300)}
 function buyerDecline(){sfx.tap();finish('pass','Peki, sağlıcakla kal.')}
 
-function storyAct(a){const c=S.cust,it=c.itemId&&itemById(c.itemId);
+function storyAct(a){if(S.cust&&S.cust.fst)return fermanAct(a);const c=S.cust,it=c.itemId&&itemById(c.itemId);
   if(c.sold){addRep(-2);S.story.riza='done';finish('pass',c.line);return}
   if(a==='give'){S.money+=it.paid;logT('sell',it,it.paid);gainXP(30);S.inv=S.inv.filter(x=>x.id!==it.id);addRep(15);S.story.riza='done';sfx.ok();flt('+15 itibar','var(--mint)');
     finish('deal','Allah razı olsun evladım. Bu iyiliği mahalle unutmaz.');setTimeout(()=>toast('Mahalle bunu duydu: itibar +15'),300)}
@@ -2404,7 +2426,7 @@ function renderInv(){ensureEcon();const cap=invCap(),tot=S.inv.reduce((a,x)=>a+(
   return `<div class="page invp"><div class="ihead"><div><span class="lbl">Raflar</span><h2 class="h">${S.inv.length} / ${cap}</h2><div class="capbar"><i style="width:${Math.min(100,S.inv.length/cap*100)}%"></i></div></div>
      <div class="isum"><div><small>Toplam maliyet</small><b>${fmt(paid)}</b></div><div><small>Bilinen değer</small><b class="pos">${fmt(tot)}</b></div></div></div>
    <div class="igrid">${cards}${empty}</div>
-   <div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}</p></div>
+   <div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}${packOwned('tarih')&&S.story.ferman&&S.story.ferman!=='none'?`<br>📜 Kayıp Ferman: ${S.story.ferman==='done'?(S.story.kurator?'Ferman müzede. Küratör artık düzenli müşterin.':'Hikâye kapandı.'):S.story.ferman==='asked'?'Çarşıda fermanın izini sür.':S.story.ferman==='have'?'Ferman sende. Küratör yakında uğrayacak.':'Ferman kaçtı… Küratör haber bekliyor.'}`:''}</p></div>
    <button class="b ${S.confirmReset?'pom':'ghost'}" data-act="reset">${S.confirmReset?'Emin misin? Tekrar dokun':'Yeni Oyun Başlat'}</button></div>`}
 function renderMys(){const t=mysState();const m=S.mys;const left=3-m.g.length;
   const rows=m.g.map((x,k)=>`<div class="g2 ${x.c}"><span class="gn">${k+1}</span><b>${fmt(x.v)}</b><span class="gd">${x.c==='g'?'Bildin!':x.dir==='up'?'Daha yüksek ↑':'Daha düşük ↓'}</span></div>`).join('');
@@ -3698,6 +3720,13 @@ function renderPanel(){
       <div class="dz-main"><button class="b brass" id="offerGo" data-act="propose" ${busy||!(S.offer>0)?'disabled':''}>Fiyatı Söyle</button>
        ${c.counter?`<button class="b mint" data-act="takeCounter" ${dis}>Kabul Et<small>${fmt(c.counter)}</small></button>`:`<div class="dz-wait">Müşteri henüz teklif vermedi</div>`}</div>
       <div class="dz-tools">${dzTool('talkMenu',IC.talk,'Konuş',busy)}${dzTool('decline',IC.x,'Satmaktan vazgeç',busy,'red')}</div></div>`}
+  if(c.kind==='story'&&c.fst){
+    if(c.fst==='intro')return `<div class="panel"><p class="sub">📜 <b>Yeni görev: Kayıp Ferman.</b> Küratör, çalınan fermanı bulmanı istiyor.</p><button class="b brass" data-act="story:fok">Gözümü dört açarım</button></div>`;
+    if(c.sold)return `<div class="panel"><p class="sub">Fermanı kaçırdın.</p><button class="b ghost" data-act="story:ok">Başını Eğ</button></div>`;
+    const it=itemById(c.itemId),rw=Math.max(4000,r10(it.paid*3));
+    return `<div class="panel"><p class="sub">Fermanı ${fmt(it.paid)} karşılığında almıştın. Ne yapacaksın?</p>
+      <button class="b mint" data-act="story:fgive">Müzeye teslim et<small>${fmt(rw)} ödül · itibar +20</small></button>
+      <button class="b pom" data-act="story:fkeep">Bende kalsın</button></div>`}
   if(c.kind==='story'){
     if(c.sold)return `<div class="panel"><p class="sub">Saati başkasına sattın. Rıza Amca üzgün.</p><button class="b ghost" data-act="story:ok">Başını Eğ</button></div>`;
     const it=itemById(c.itemId);
@@ -3712,7 +3741,7 @@ function renderInv_old(){
     return `<button class="invItem" data-act="viewInv:${x.id}"><div class="ic">${icon(x)}</div><div class="tx"><b>${x.n}</b><span>${CONDN[x.cond-1]} · Tahmin ${est}</span> ${certTag(x)} ${tag}</div><div class="pr">Ödenen<b>${fmt(x.paid)}</b></div></button>`}).join('')
     :'<div class="card"><p class="sub" style="margin:0">Raflar boş. Dükkâna dön, müşterilerden mal al.</p></div>';
   return `<div class="page"><h2 class="h">Raflar</h2><p class="sub">${S.inv.length} / ${invCap()} raf dolu. Satıcı müşteriler gelince bunları satabilirsin.</p>${list}
-   <div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}</p></div>
+   <div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}${packOwned('tarih')&&S.story.ferman&&S.story.ferman!=='none'?`<br>📜 Kayıp Ferman: ${S.story.ferman==='done'?(S.story.kurator?'Ferman müzede. Küratör artık düzenli müşterin.':'Hikâye kapandı.'):S.story.ferman==='asked'?'Çarşıda fermanın izini sür.':S.story.ferman==='have'?'Ferman sende. Küratör yakında uğrayacak.':'Ferman kaçtı… Küratör haber bekliyor.'}`:''}</p></div>
    <button class="b ${S.confirmReset?'pom':'ghost'}" data-act="reset">${S.confirmReset?'Emin misin? Tekrar dokun':'Yeni Oyun Başlat'}</button></div>`}
 function renderMys_old(){const t=mysState();const m=S.mys;
   const rows=m.g.map((x,k)=>`<div class="g"><span>${k+1}. tahmin</span><b>${fmt(x.v)}</b><span>${x.c==='g'?'Bildin!':x.dir==='up'?'Daha yüksek ↑':'Daha düşük ↓'}</span><i class="dot" style="background:${x.c==='g'?'var(--mint)':x.c==='y'?'var(--brass)':'var(--pom)'}"></i></div>`).join('');
