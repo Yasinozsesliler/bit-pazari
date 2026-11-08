@@ -3957,13 +3957,13 @@ const METAL=new Set([...WATCH,...JEWEL,'sikke','madalya','kupa','semaver','cezve
 const ENT_KEY='bitpazari.ent';
 let ENT=(()=>{try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{}}catch(e){return {}}})();
 function entSave(){try{localStorage.setItem(ENT_KEY,JSON.stringify(ENT))}catch(e){}}
-const IAP={premium:'com.ozsstudio.bitpazari.premium',tarih:'com.ozsstudio.bitpazari.tarih',reklamsiz:'com.ozsstudio.bitpazari.reklamsiz'};
+const IAP={premium:'com.ozsstudio.bitpazari.premium',tarih:'com.ozsstudio.bitpazari.tarih'};
 const IAP_K=Object.fromEntries(Object.entries(IAP).map(([k,v])=>[v,k]));
 const IAP_SIM=/[?&]iapsim/.test(location.search);
 function iapLive(){const N=window.NATIVE;return !(N&&N.isNative)||!!N.iapOn}
 const PACK_PREVIEW=false;
 function packOwned(id){return PACK_PREVIEW||!iapLive()&&!IAP_SIM&&!!(window.NATIVE&&NATIVE.isNative)||!!(ENT.premium||ENT[id])||!!(S.packs&&S.packs[id])}
-function noAds(){return !!(ENT.premium||ENT.reklamsiz)}
+function noAds(){return !!ENT.premium}
 let PROD={},PROD_T=0,storeFrom='menu',storeBusy=0;
 function entApply(ids){const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});
   const ch=JSON.stringify(want)!==JSON.stringify(ENT);if(ch){ENT=want;entSave();render()}}
@@ -3972,7 +3972,7 @@ function iapSync(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;N.iap.ow
 function iapLoad(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;if(Date.now()-PROD_T<6e4&&Object.keys(PROD).length)return;
   N.iap.products(Object.values(IAP)).then(ps=>{PROD_T=Date.now();ps.forEach(p=>PROD[p.identifier]=p);if(screen==='store')render()}).catch(()=>{})}
 function iapThanks(k){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}
-  toast(k==='premium'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':k==='tarih'?'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.':'Reklamlar kalktı! Ödüller artık videosuz.')}
+  toast(k==='premium'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.')}
 async function iapBuy(k){if(storeBusy)return;const N=window.NATIVE;
   if(IAP_SIM){ENT[k]=1;entSave();iapThanks(k);render();return}
   if(!(N&&N.iapOn&&N.iap)){toast('Satın alma yalnızca App Store sürümünde.');return}
@@ -4001,7 +4001,7 @@ function renderStore(){
      <div class="st-ic">👑</div>
      <h2>Premium</h2>
      <p class="st-lead">Hepsi bir arada, tek seferlik.</p>
-     <ul><li>📜 <b>Tarih Paketi</b> dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 Geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
+     <ul><li>📜 <b>Tarih Paketi</b> dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 <b>Reklamsız oyun:</b> geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
      ${btn('premium')}
     </section>
     <section class="st-card">
@@ -4011,12 +4011,6 @@ function renderStore(){
      <div class="st-th">${th2}</div>
      <ul><li>Kılıç, kalkan, miğfer, zırh, saray ve antik çağ eserleri</li><li>Yeni müşteriler: <b>Müze Küratörü</b> ve <b>Kaçakçı Necmi</b></li><li>Hikâye görevi: <b>Kayıp Ferman</b></li></ul>
      ${btn('tarih')}
-    </section>
-    <section class="st-card">
-     <div class="st-ic">🚫</div>
-     <h2>Reklamsız</h2>
-     <ul><li>Gün aralarındaki geçiş reklamları kalkar</li><li>Ödüllü reklam bonuslarını video izlemeden al</li></ul>
-     ${btn('reklamsiz')}
     </section>
     <button class="st-restore" data-act="iapRestore" ${storeBusy?'disabled':''}>Satın Alımları Geri Yükle</button>
     <p class="st-legal">Tüm ürünler tek seferlik satın almadır, abonelik değildir. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
