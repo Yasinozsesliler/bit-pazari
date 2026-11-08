@@ -7,6 +7,7 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob";
 import { ADS } from "./ads.config.js";
+import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
 
 const isNative = Capacitor.isNativePlatform();
 const platform = Capacitor.getPlatform();
@@ -99,6 +100,48 @@ N.interstitial = async () => {
     return true;
   } catch (e) { return false; }
 };
+
+
+/* ---------- Uygulama içi satın alma (StoreKit 2, şimdilik yalnızca iOS) ---------- */
+const INAPP = PURCHASE_TYPE.INAPP;
+const okTx = (t) => t && !t.revocationDate;
+N.iapOn = isIOS;
+N.iap = {
+  async products(ids) {
+    if (!N.iapOn) return [];
+    const r = await NativePurchases.getProducts({ productIdentifiers: ids, productType: INAPP });
+    return r.products || [];
+  },
+  async owned() {
+    if (!N.iapOn) return [];
+    const r = await NativePurchases.getPurchases({ productType: INAPP, onlyCurrentEntitlements: true });
+    return (r.purchases || []).filter(okTx).map((p) => p.productIdentifier);
+  },
+  /* sonuç: "ok" | "cancel" | "pending" | "error" */
+  async buy(id) {
+    if (!N.iapOn) return "error";
+    try {
+      const t = await NativePurchases.purchaseProduct({ productIdentifier: id, productType: INAPP, quantity: 1 });
+      return okTx(t) ? "ok" : "error";
+    } catch (e) {
+      const m = String((e && (e.message || e.code)) || e).toLowerCase();
+      if (m.includes("cancel")) return "cancel";
+      if (m.includes("pending") || m.includes("deferred")) return "pending";
+      return "error";
+    }
+  },
+  async restore() {
+    if (!N.iapOn) return [];
+    try { await NativePurchases.restorePurchases(); } catch (e) {}
+    return N.iap.owned();
+  },
+};
+if (N.iapOn) {
+  /* Aile onayı (Ask to Buy) gibi sonradan gelen ya da iade edilen işlemler */
+  NativePurchases.addListener("transactionUpdated", (t) => {
+    try { window.BP_IAP_UPDATE && window.BP_IAP_UPDATE(t.productIdentifier, okTx(t)); } catch (e) {}
+  }).catch(() => {});
+}
 
 /* ---------- Yerel bildirimler ---------- */
 N.askNotif = async () => {

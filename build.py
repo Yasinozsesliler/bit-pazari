@@ -32,8 +32,8 @@ s,n=re.subn(r'<link href="https://fonts.googleapis.com[^"]*" rel="stylesheet">',
 if n!=1: raise SystemExit("font bağlantısı bulunamadı")
 rep("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js","lib/three.min.js")
 # reklam: gerçek AdMob ödüllü reklamı
-rep("function adShow(cb,label){",
- "function adShow(cb,label){if(window.NATIVE&&NATIVE.isNative){if(window.__adBusy)return;window.__adBusy=1;closeModal();toast('Reklam yükleniyor…');"
+rep("function adShow0(cb,label){",
+ "function adShow0(cb,label){if(window.NATIVE&&NATIVE.isNative){if(window.__adBusy)return;window.__adBusy=1;closeModal();toast('Reklam yükleniyor…');"
  "try{AC&&AC.suspend()}catch(e){}NATIVE.rewarded().then(ok=>{window.__adBusy=0;try{AC&&AC.resume()}catch(e){}"
  "if(ok){sfx.ok();cb()}else toast('Reklam şu an yüklenemedi ya da yarıda kapandı. Biraz sonra tekrar dene.');const f=arguments[2];if(typeof f==='function')f()});return}")
 # açılış: Preferences yedeği geri yüklendikten sonra oyunu başlat

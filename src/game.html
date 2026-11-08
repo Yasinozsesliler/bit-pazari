@@ -1148,6 +1148,42 @@ img.tico.pend{opacity:.85}
 .m3-go::after{content:"";position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:m3shine 3.6s ease-in-out 1.2s infinite}
 @keyframes m3shine{0%,60%{left:-80px}100%{left:110%}}
 .m3-go:active{transform:translateY(3px);box-shadow:inset 0 1px 0 #fff6d8,inset 0 -3px 0 rgba(120,70,10,.45),0 2px 0 #6e430f,0 8px 18px rgba(232,150,40,.3)}
+
+/* ---- Mağaza ---- */
+.st{position:relative;min-height:100%;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 24px);color:#f3e6c8;box-sizing:border-box}
+.st .m3-bg{position:fixed}
+.st-head{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.st-head small{display:block;font:800 11px/1 Nunito,sans-serif;letter-spacing:.22em;color:#c9a464}
+.st-head h1{margin:2px 0 0;font:400 30px/1.05 Cinzel,serif;color:#f6d38a;letter-spacing:.04em}
+.st-back{width:42px;height:42px;border-radius:50%;border:none;color:#e8c17a;background:radial-gradient(circle at 50% 30%,#2b1f14,#140d08);box-shadow:inset 0 0 0 1px rgba(232,171,60,.4)}
+.st-back svg{width:22px;height:22px}
+.st-list{position:relative;display:flex;flex-direction:column;gap:12px;max-width:520px;margin:0 auto}
+.st-card{position:relative;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(180deg,rgba(43,31,20,.92),rgba(20,13,8,.94));box-shadow:inset 0 0 0 1px rgba(232,171,60,.28),0 8px 22px rgba(0,0,0,.45)}
+.st-card.prem{background:linear-gradient(160deg,rgba(92,62,18,.95),rgba(32,20,8,.96) 60%);box-shadow:inset 0 0 0 1.5px rgba(255,205,110,.75),0 10px 30px rgba(232,171,60,.22)}
+.st-flag{position:absolute;top:-9px;right:14px;padding:4px 10px;border-radius:99px;background:linear-gradient(180deg,#ffd77a,#e0a33a);color:#3a2205;font:900 10.5px/1 Nunito,sans-serif;letter-spacing:.12em}
+.st-ic{font-size:30px;line-height:1;margin-bottom:4px}
+.st-card h2{margin:0;font:400 22px/1.15 Cinzel,serif;color:#f6d38a}
+.st-lead{margin:3px 0 6px;font:700 14px/1.3 Nunito,sans-serif;color:#e9d4a8}
+.st-card ul{margin:6px 0 12px;padding:0;list-style:none;font:600 14px/1.35 Nunito,sans-serif;color:#efe2c4}
+.st-card li{padding:3px 0 3px 2px}
+.st-card li b{color:#ffd884}
+.st-th{display:flex;gap:6px;font-size:24px;margin:6px 0 2px;flex-wrap:wrap}
+.st-th span{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:rgba(0,0,0,.3);box-shadow:inset 0 0 0 1px rgba(232,171,60,.2)}
+.st-buy{width:100%;padding:13px 10px;border:none;border-radius:14px;font:900 16px/1 Nunito,sans-serif;color:#2c1a06;background:linear-gradient(180deg,#f0d9a6,#cfa860);box-shadow:0 4px 0 #6b4a17}
+.st-buy.gold{background:linear-gradient(180deg,#ffe08f,#e9a73a);box-shadow:0 4px 0 #7a4c0c,0 0 24px rgba(255,200,90,.35)}
+.st-buy:disabled{opacity:.6}
+.st-buy:active{transform:translateY(2px);box-shadow:0 2px 0 #6b4a17}
+.st-own{text-align:center;padding:12px;border-radius:14px;background:rgba(80,170,110,.18);color:#9fe3b4;font:900 15px/1 Nunito,sans-serif;box-shadow:inset 0 0 0 1px rgba(120,220,150,.4)}
+.st-restore{margin-top:4px;padding:12px;border:none;background:none;color:#e8c17a;font:800 14px/1 Nunito,sans-serif;text-decoration:underline;text-underline-offset:3px}
+.st-legal{margin:0;text-align:center;font:600 11.5px/1.45 Nunito,sans-serif;color:rgba(239,226,196,.55)}
+.m3-row button.m3-store{position:relative}
+.m3-dot{position:absolute;top:0;right:calc(50% - 26px);width:10px;height:10px;border-radius:50%;background:#e2483b;box-shadow:0 0 0 2px #140d08}
+.st-teaser{display:flex;align-items:center;gap:12px;cursor:pointer;background:linear-gradient(160deg,rgba(92,62,18,.55),rgba(32,20,8,.4));box-shadow:inset 0 0 0 1px rgba(255,205,110,.45)}
+.st-teaser .st-ti{font-size:30px}
+.st-teaser b{display:block;color:#f6d38a;font-size:16px}
+.st-teaser small{display:block;font-size:12.5px;opacity:.85;line-height:1.3}
+.st-teaser>div{flex:1;min-width:0}
+.st-teaser span{flex:none;font-weight:900;color:#ffd884;font-size:13px}
 .m3-row{display:flex;justify-content:space-around;padding:0 4px}
 .m3-row button{flex:1;min-width:0;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;color:#e8c17a;padding:2px 0}
 .m3-row button svg{width:46px;height:46px;padding:12px;border-radius:50%;box-sizing:border-box;background:radial-gradient(circle at 50% 30%,#2b1f14,#140d08);box-shadow:inset 0 0 0 1px rgba(232,171,60,.4),0 4px 10px rgba(0,0,0,.45)}
@@ -2271,6 +2307,7 @@ function renderMenu3(){const hs=hasSave(),L=hs?curLoc():null;
     <div class="m3-row">
      ${hs?`<button data-act="menuNew">${icon('<path d="M12 5v14M5 12h14"/>')}<span>Yeni Oyun</span></button>`:''}
      <button data-act="howto">${icon('<path d="M4 5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v14h-6a2 2 0 0 0-2 1 2 2 0 0 0-2-1H4z"/><path d="M12 6v14"/>')}<span>Rehber</span></button>
+     ${iapLive()?`<button data-act="store" class="m3-store">${icon('<path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>')}<span>Mağaza</span>${ENT.premium?'':'<i class="m3-dot"></i>'}</button>`:''}
      <button data-act="mute" class="${S.mute?'off':''}">${speakerSvg()}<span>${S.mute?'Ses Kapalı':'Ses'}</span></button>
      <button data-act="musicT" class="${S.music===false?'off':''}">${icon('<path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>')}<span>${S.music===false?'Müzik Kapalı':'Müzik'}</span></button>
     </div>
@@ -2426,7 +2463,7 @@ function renderInv(){ensureEcon();const cap=invCap(),tot=S.inv.reduce((a,x)=>a+(
   return `<div class="page invp"><div class="ihead"><div><span class="lbl">Raflar</span><h2 class="h">${S.inv.length} / ${cap}</h2><div class="capbar"><i style="width:${Math.min(100,S.inv.length/cap*100)}%"></i></div></div>
      <div class="isum"><div><small>Toplam maliyet</small><b>${fmt(paid)}</b></div><div><small>Bilinen değer</small><b class="pos">${fmt(tot)}</b></div></div></div>
    <div class="igrid">${cards}${empty}</div>
-   <div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}${packOwned('tarih')&&S.story.ferman&&S.story.ferman!=='none'?`<br>📜 Kayıp Ferman: ${S.story.ferman==='done'?(S.story.kurator?'Ferman müzede. Küratör artık düzenli müşterin.':'Hikâye kapandı.'):S.story.ferman==='asked'?'Çarşıda fermanın izini sür.':S.story.ferman==='have'?'Ferman sende. Küratör yakında uğrayacak.':'Ferman kaçtı… Küratör haber bekliyor.'}`:''}</p></div>
+   ${packTeaser()}<div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}${packOwned('tarih')&&S.story.ferman&&S.story.ferman!=='none'?`<br>📜 Kayıp Ferman: ${S.story.ferman==='done'?(S.story.kurator?'Ferman müzede. Küratör artık düzenli müşterin.':'Hikâye kapandı.'):S.story.ferman==='asked'?'Çarşıda fermanın izini sür.':S.story.ferman==='have'?'Ferman sende. Küratör yakında uğrayacak.':'Ferman kaçtı… Küratör haber bekliyor.'}`:''}</p></div>
    <button class="b ${S.confirmReset?'pom':'ghost'}" data-act="reset">${S.confirmReset?'Emin misin? Tekrar dokun':'Yeni Oyun Başlat'}</button></div>`}
 function renderMys(){const t=mysState();const m=S.mys;const left=3-m.g.length;
   const rows=m.g.map((x,k)=>`<div class="g2 ${x.c}"><span class="gn">${k+1}</span><b>${fmt(x.v)}</b><span class="gd">${x.c==='g'?'Bildin!':x.dir==='up'?'Daha yüksek ↑':'Daha düşük ↓'}</span></div>`).join('');
@@ -3117,7 +3154,8 @@ function loginTake(m){S.money+=S.loginRw*m;stat('login');S.st.bestStreak=Math.ma
 /* ---- rewarded ad placeholder (replace with AdMob in the Android build) ---- */
 function adOk(){return (S.adD===S.day?(S.adN||0):0)<10}
 function adUse(){if(S.adD!==S.day){S.adD=S.day;S.adN=0}S.adN++}
-function adShow(cb,label){closeModal();const el=document.createElement('div');el.className='adbox';el.innerHTML=`<div class="adcard"><span class="adtag">REKLAM</span><b>${label||'Ödüllü reklam'}</b><p>Uygulamada burada 15 saniyelik ödüllü reklam oynayacak. Şimdilik test modu.</p><div class="adbar"><i></i></div><small id="adT">5</small></div>`;
+function adShow(cb,label,f){if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
+function adShow0(cb,label){closeModal();const el=document.createElement('div');el.className='adbox';el.innerHTML=`<div class="adcard"><span class="adtag">REKLAM</span><b>${label||'Ödüllü reklam'}</b><p>Uygulamada burada 15 saniyelik ödüllü reklam oynayacak. Şimdilik test modu.</p><div class="adbar"><i></i></div><small id="adT">5</small></div>`;
   $('#app').appendChild(el);let n=5;const iv=setInterval(()=>{n--;const t=$('#adT');if(t)t.textContent=n;if(n<=0){clearInterval(iv);el.remove();sfx.ok();cb()}},1000)}
 /* ---- daily events ---- */
 const EVENTS=[
@@ -3741,7 +3779,7 @@ function renderInv_old(){
     return `<button class="invItem" data-act="viewInv:${x.id}"><div class="ic">${icon(x)}</div><div class="tx"><b>${x.n}</b><span>${CONDN[x.cond-1]} · Tahmin ${est}</span> ${certTag(x)} ${tag}</div><div class="pr">Ödenen<b>${fmt(x.paid)}</b></div></button>`}).join('')
     :'<div class="card"><p class="sub" style="margin:0">Raflar boş. Dükkâna dön, müşterilerden mal al.</p></div>';
   return `<div class="page"><h2 class="h">Raflar</h2><p class="sub">${S.inv.length} / ${invCap()} raf dolu. Satıcı müşteriler gelince bunları satabilirsin.</p>${list}
-   <div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}${packOwned('tarih')&&S.story.ferman&&S.story.ferman!=='none'?`<br>📜 Kayıp Ferman: ${S.story.ferman==='done'?(S.story.kurator?'Ferman müzede. Küratör artık düzenli müşterin.':'Hikâye kapandı.'):S.story.ferman==='asked'?'Çarşıda fermanın izini sür.':S.story.ferman==='have'?'Ferman sende. Küratör yakında uğrayacak.':'Ferman kaçtı… Küratör haber bekliyor.'}`:''}</p></div>
+   ${packTeaser()}<div class="card"><h3 class="h" style="font-size:19px">Hikâye</h3><p class="sub" style="margin:0">${S.story.riza==='done'?'Rıza Amca\'nın hikâyesi kapandı.':S.story.riza==='none'?'Mahallede tanınmaya yeni başlıyorsun.':'Rıza Amca\'nın saati… Bir gün geri dönebilir.'}${packOwned('tarih')&&S.story.ferman&&S.story.ferman!=='none'?`<br>📜 Kayıp Ferman: ${S.story.ferman==='done'?(S.story.kurator?'Ferman müzede. Küratör artık düzenli müşterin.':'Hikâye kapandı.'):S.story.ferman==='asked'?'Çarşıda fermanın izini sür.':S.story.ferman==='have'?'Ferman sende. Küratör yakında uğrayacak.':'Ferman kaçtı… Küratör haber bekliyor.'}`:''}</p></div>
    <button class="b ${S.confirmReset?'pom':'ghost'}" data-act="reset">${S.confirmReset?'Emin misin? Tekrar dokun':'Yeni Oyun Başlat'}</button></div>`}
 function renderMys_old(){const t=mysState();const m=S.mys;
   const rows=m.g.map((x,k)=>`<div class="g"><span>${k+1}. tahmin</span><b>${fmt(x.v)}</b><span>${x.c==='g'?'Bildin!':x.dir==='up'?'Daha yüksek ↑':'Daha düşük ↓'}</span><i class="dot" style="background:${x.c==='g'?'var(--mint)':x.c==='y'?'var(--brass)':'var(--pom)'}"></i></div>`).join('');
@@ -3755,7 +3793,7 @@ function renderNav_old(){const t=mysState();const dot=!S.mys.done?'<span class="
   $('#nav').innerHTML=[['shop','🏪','Dükkân'],['inv','🧺','Raflar'],['skills','🌳','Ustalık'],['mystery','🔮','Günün Eşyası']].map(([k,i,n])=>`<button class="${S.tab===k?'on':''}" data-act="tab:${k}"><span class="ni">${i}</span>${n}${k==='mystery'?dot:k==='skills'&&S.sp?'<span class="badge"></span>':''}</button>`).join('')}
 function render(){
   const inGame=screen==='game';$('#top').hidden=!inGame;$('#nav').hidden=!inGame;
-  if(!inGame){$('#main').innerHTML=renderMenu();mhMount();return}
+  if(!inGame){$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();return}
   if(MH)MH.run=false;
   renderTop();renderNav();
   const main=$('#main');
@@ -3849,6 +3887,10 @@ document.addEventListener('click',e=>{
   if(a.startsWith('diy:')){rsOpen(a.slice(4));return}
   if(a.startsWith('xt:')){xtUse(a.slice(3));return}
   if(a==='menuContinue'){screen='game';ensureLive();sfx.ok();shownMoney=null;setTimeout(loginCheck,600);musicStart();if(!S.cust&&S.phase!=='dayEnd')nextCustomer();else render();return}
+  if(a==='store'){storeOpen();return}
+  if(a==='storeBack'){screen=storeFrom==='store'?'menu':storeFrom;sfx.tap();render();return}
+  if(a.startsWith('buy:')){iapBuy(a.slice(4));return}
+  if(a==='iapRestore'){iapRestore();return}
   if(a==='menuNew'){screen='name';sfx.tap();render();setTimeout(()=>{const i=$('#shopIn');if(i)i.focus()},50);return}
   if(a==='menuBack'){screen='menu';sfx.tap();render();return}
   if(a==='nameGo'){startNamed();return}
@@ -3872,7 +3914,7 @@ document.addEventListener('click',e=>{
     case 'takeCounter':doSell(c.counter,c.honest&&itemById(c.itemId).fake);break;
     case 'decline':buyerDecline();break;
     case 'honest':c.honest=!c.honest;sfx.tap();save();render();break;
-    case 'newDay':if(S.day>=2&&S.day%2===0&&window.NATIVE&&NATIVE.interstitial){const b=document.querySelectorAll('[data-act=newDay]');b.forEach(x=>x.disabled=true);NATIVE.interstitial().finally(()=>{try{AC&&AC.resume()}catch(e){}startDay()})}else startDay();break;
+    case 'newDay':if(S.day>=2&&S.day%2===0&&!noAds()&&window.NATIVE&&NATIVE.interstitial){const b=document.querySelectorAll('[data-act=newDay]');b.forEach(x=>x.disabled=true);NATIVE.interstitial().finally(()=>{try{AC&&AC.resume()}catch(e){}startDay()})}else startDay();break;
     case 'open':nextCustomer();break;
     case 'closeModal':closeModal();break;
     case 'closeModalNext':closeModal();nextCustomer();break;
@@ -3909,9 +3951,80 @@ function inspectItem(it){if(!it||it.chest||it.known.insp)return false;
 let XT=null;
 const METAL=new Set([...WATCH,...JEWEL,'sikke','madalya','kupa','semaver','cezve','ibrik','tabaka','pusula','durbun','koldugme','cakmak','kalem']);
 /* ================= TARİH PAKETİ ================= */
-/* Paket sahipliği: satın alma eklenene kadar herkese açık önizleme (PACK_PREVIEW). Satın alma gelince false yapılacak. */
-const PACK_PREVIEW=true;
-function packOwned(id){return PACK_PREVIEW||!!(S.packs&&S.packs[id])}
+/* ================= MAĞAZA / SATIN ALMA =================
+   Sahiplik cihaz geneli (kayıttan bağımsız) tutulur ve açılışta App Store'dan doğrulanır.
+   Android'de satın alma henüz yok: orada paketler önizleme olarak açık kalır. */
+const ENT_KEY='bitpazari.ent';
+let ENT=(()=>{try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{}}catch(e){return {}}})();
+function entSave(){try{localStorage.setItem(ENT_KEY,JSON.stringify(ENT))}catch(e){}}
+const IAP={premium:'com.ozsstudio.bitpazari.premium',tarih:'com.ozsstudio.bitpazari.tarih',reklamsiz:'com.ozsstudio.bitpazari.reklamsiz'};
+const IAP_K=Object.fromEntries(Object.entries(IAP).map(([k,v])=>[v,k]));
+const IAP_SIM=/[?&]iapsim/.test(location.search);
+function iapLive(){const N=window.NATIVE;return !(N&&N.isNative)||!!N.iapOn}
+const PACK_PREVIEW=false;
+function packOwned(id){return PACK_PREVIEW||!iapLive()&&!IAP_SIM&&!!(window.NATIVE&&NATIVE.isNative)||!!(ENT.premium||ENT[id])||!!(S.packs&&S.packs[id])}
+function noAds(){return !!(ENT.premium||ENT.reklamsiz)}
+let PROD={},PROD_T=0,storeFrom='menu',storeBusy=0;
+function entApply(ids){const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});
+  const ch=JSON.stringify(want)!==JSON.stringify(ENT);if(ch){ENT=want;entSave();render()}}
+window.BP_IAP_UPDATE=(pid,ok)=>{const k=IAP_K[pid];if(!k)return;if(ok&&!ENT[k]){ENT[k]=1;entSave();iapThanks(k)}else if(!ok&&ENT[k]){delete ENT[k];entSave()}render()};
+function iapSync(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;N.iap.owned().then(entApply).catch(()=>{})}
+function iapLoad(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;if(Date.now()-PROD_T<6e4&&Object.keys(PROD).length)return;
+  N.iap.products(Object.values(IAP)).then(ps=>{PROD_T=Date.now();ps.forEach(p=>PROD[p.identifier]=p);if(screen==='store')render()}).catch(()=>{})}
+function iapThanks(k){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}
+  toast(k==='premium'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':k==='tarih'?'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.':'Reklamlar kalktı! Ödüller artık videosuz.')}
+async function iapBuy(k){if(storeBusy)return;const N=window.NATIVE;
+  if(IAP_SIM){ENT[k]=1;entSave();iapThanks(k);render();return}
+  if(!(N&&N.iapOn&&N.iap)){toast('Satın alma yalnızca App Store sürümünde.');return}
+  storeBusy=1;render();let r='error';try{r=await N.iap.buy(IAP[k])}catch(e){}storeBusy=0;
+  if(r==='ok'){ENT[k]=1;entSave();iapThanks(k)}
+  else if(r==='pending')toast('Satın alma onay bekliyor. Onaylanınca otomatik açılacak.');
+  else if(r==='error')toast('Satın alma tamamlanamadı. Biraz sonra tekrar dene.');
+  render()}
+async function iapRestore(){if(storeBusy)return;const N=window.NATIVE;
+  if(!(N&&N.iapOn&&N.iap)){toast('Geri yüklenecek satın alma bulunamadı.');return}
+  storeBusy=1;render();let ids=[];try{ids=await N.iap.restore()}catch(e){}storeBusy=0;
+  const before=Object.keys(ENT).length;entApply(ids);render();
+  toast(ids.some(id=>IAP_K[id])?'Satın alımların geri yüklendi.':'Bu Apple hesabında satın alma bulunamadı.')}
+function priceOf(k){const p=PROD[IAP[k]];return p?p.priceString:''}
+function renderStore(){
+  const own=k=>k==='premium'?!!ENT.premium:!!(ENT.premium||ENT[k]);
+  const btn=k=>own(k)?`<div class="st-own">✓ Sende</div>`:`<button class="st-buy${k==='premium'?' gold':''}" data-act="buy:${k}" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':priceOf(k)?esc(priceOf(k))+' · Satın Al':'Satın Al'}</button>`;
+  ;const th2=[...new Set(CATH.map(c=>c.i))].slice(0,8).map(i=>`<span>${i}</span>`).join('');
+  return `<div class="st">
+   <div class="m3-bg"></div>
+   <header class="st-head"><button class="st-back" data-act="storeBack" aria-label="Geri"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div><small>BİT PAZARI</small><h1>Mağaza</h1></div></header>
+   <div class="st-list">
+    <section class="st-card prem">
+     <span class="st-flag">EN İYİ FIRSAT</span>
+     <div class="st-ic">👑</div>
+     <h2>Premium</h2>
+     <p class="st-lead">Hepsi bir arada, tek seferlik.</p>
+     <ul><li>📜 <b>Tarih Paketi</b> dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 Geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
+     ${btn('premium')}
+    </section>
+    <section class="st-card">
+     <div class="st-ic">⚔️</div>
+     <h2>Tarih Paketi</h2>
+     <p class="st-lead">42 yeni 3B eşya, 6 koleksiyon serisi</p>
+     <div class="st-th">${th2}</div>
+     <ul><li>Kılıç, kalkan, miğfer, zırh, saray ve antik çağ eserleri</li><li>Yeni müşteriler: <b>Müze Küratörü</b> ve <b>Kaçakçı Necmi</b></li><li>Hikâye görevi: <b>Kayıp Ferman</b></li></ul>
+     ${btn('tarih')}
+    </section>
+    <section class="st-card">
+     <div class="st-ic">🚫</div>
+     <h2>Reklamsız</h2>
+     <ul><li>Gün aralarındaki geçiş reklamları kalkar</li><li>Ödüllü reklam bonuslarını video izlemeden al</li></ul>
+     ${btn('reklamsiz')}
+    </section>
+    <button class="st-restore" data-act="iapRestore" ${storeBusy?'disabled':''}>Satın Alımları Geri Yükle</button>
+    <p class="st-legal">Tüm ürünler tek seferlik satın almadır, abonelik değildir. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
+   </div></div>`}
+function storeOpen(){storeFrom=screen==='store'?storeFrom:screen;screen='store';iapLoad();sfx.tap();closeModal();render();const m=$('#main');if(m)m.scrollTop=0}
+function packTeaser(){if(packOwned('tarih')||!iapLive())return '';
+  return `<div class="card st-teaser" data-act="store"><div class="st-ti">⚔️</div><div><b>Tarih Paketi</b><small>Kılıç, kalkan, miğfer… 42 yeni eşya ve Kayıp Ferman hikâyesi</small></div><span>Mağaza ›</span></div>`}
+setTimeout(iapSync,1500);
 const CATH=[
  /* Kılıçhane */
  {k:'pala',n:'Osmanlı Palası',i:'⚔️',v:2600,f:1,sp:1,pack:'tarih'},
