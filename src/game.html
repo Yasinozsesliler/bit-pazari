@@ -1312,6 +1312,9 @@ img.tico.pend{opacity:.85}
 body{padding-top:env(safe-area-inset-top,0px)}
 /* ---- ödüllü reklam düğmeleri ---- */
 .serh .pktag{font-style:normal;font-size:10px;letter-spacing:.04em;padding:2px 6px;border-radius:6px;background:rgba(232,171,60,.18);color:#ffd77a;vertical-align:middle;margin-left:4px}
+.dz-adp{display:block;width:100%;border:none;border-radius:12px;padding:8px 10px;margin:2px 0;font:800 13px/1.2 Nunito,sans-serif;color:#eafff8;background:linear-gradient(180deg,#2f6b5c,#1d4a3f);box-shadow:inset 0 0 0 1px rgba(140,255,210,.25)}.dz-adp b{color:#ffe08f}.dz-adp:disabled{opacity:.5}
+.gifts{display:flex;flex-direction:column;gap:8px;margin:2px 0 8px}
+#auAd{margin-top:8px;width:100%}
 .adwide{width:100%;display:flex;flex-direction:column;align-items:center;gap:1px;padding:11px 12px}.adwide small{font-size:11px;opacity:.85}
 .adsm{background:linear-gradient(180deg,#2f6b5c,#1d4a3f);color:#eafff8;font-size:12px!important}
 .tb.adx{width:100%;margin:2px 0 4px;background:#1f7a4b}
@@ -1505,7 +1508,10 @@ function spawnSeller(){
   const type=locPickSeller();const cat=locPickCat();
   const fake=!!cat.f&&R()<SELL[type].fake;
   return regApply(mkSeller(newItem(cat,{fake}),type))}
-function spawnBuyer(){
+function spawnBuyer(vip){
+  if(vip){const its=S.inv.filter(x=>!x.chest&&!x.lab).sort((a,b)=>val(b)-val(a));const item=its[0];const T=BUY.zengin;
+    const maxPay=r10(val(item)*locBuy()*trendMul(item)*serBonus(item)*rf(1.35,1.7)*(.85+S.rep/333));
+    return{id:uid(),kind:'buyer',type:'zengin',tag:'Koleksiyoncu',vip:1,name:pick(['Hikmet Bey','Nermin Hanım','Kemal Paşazade','Leyla Hanım']),seed:Math.floor(R()*1e9),itemId:item.id,maxPay,patience:T.pat+2,maxPat:T.pat+2,counter:0,honest:false,line:`Duydum ki ${item.n} sendeymiş. Güzel parçaya para acımam, söyle bakalım.`,done:false}}
   const tInv=packOwned('tarih')?S.inv.filter(x=>TARIH.has(x.k)&&!x.chest&&!x.lab):[];const cur=tInv.length>0&&R()<(S.story.kurator?.4:.18);
   const item=cur?pick(tInv):pick(S.inv.filter(x=>!x.chest&&!x.lab));
   const type=cur?'kurator':locPickBuyer();const T=BUY[type];
@@ -1543,6 +1549,7 @@ function nextCustomer(){
   if(S.day===1&&S.ci===1&&S.story.riza==='none')c=rizaSeller();
   else if(S.day===3&&S.ci===0&&(S.story.riza==='bought'||S.story.riza==='sold'))c=rizaReturn();
   else if((c=fermanNext()));
+  else if(S.vipDay===S.day&&S.ci===0&&S.inv.some(x=>!x.chest&&!x.lab)){c=spawnBuyer(1);S.vipDay=0}
   else if((S.day===2&&S.ci===3)||(S.day>3&&R()<(has('z2')?.045:.02)))c=chestSeller();
   else{const pB=S.inv.filter(x=>!x.chest&&!x.lab).length?Math.min(.8,(S.inv.length>=6?.65:.42)+.08*((S.up&&S.up.vitrin)||0)):0;c=R()<Math.min(.9,pB+(pB?evBuyerP():0))?spawnBuyer():spawnSeller()}
   S.ci++;S.cust=c;
@@ -1723,7 +1730,7 @@ function doBuy(price){
   const c=S.cust,it=c.item;
   if(!it.chest&&S.inv.length-(c.trade?1:0)>=invCap()){toast(fullMsg());sfx.bad();return}
   const tv=c.trade?tradeValOf(c):0,cash=Math.max(0,price-tv);
-  if(S.money<cash){toast('Kasada yeterli para yok!');sfx.bad();return}
+  if(S.money<cash){const short=cash-Math.max(0,S.money);if(!c.shortAd&&adOk()&&short<=Math.max(300,r10(cash*.35))){SHORT={c,price,short};modal({icon:'💸',title:'Kasada '+fmt(short)+' eksik',body:'Kısa bir reklam izlersen eksik para tamamlanır ve malı hemen alırsın.',btns:[{t:'Vazgeç',cls:'ghost',a:'closeModal'},{t:'📺 Eksiği tamamla',cls:'brass',a:'shortAd'}]});return}toast('Kasada yeterli para yok!');sfx.bad();return}
   if(tv){const ti=itemById(c.trade);S.inv=S.inv.filter(x=>x.id!==c.trade);stat('trade');if(ti&&ti.fake&&!(c.type==='bilir'||c.type==='kurnaz')&&R()<.35)S.pending.push({n:ti.n,i:ti.i,fine:r10(tv*1.2),rep:10});setTimeout(()=>toast('🔄 Takas yapıldı: '+(ti?ti.n:'')+' verildi'),300)}
   S.money-=cash;it.paid=price;it.isNew=true;S.stats.buys++;logT('buy',it,-price);gainXP(10);
   sfx.cash();flt('−'+fmt(cash),'var(--pom)');
@@ -1749,7 +1756,7 @@ function sellerOffer(){
   if(o<c.minAccept*.45){c.patience-=2;if(c.patience<=0){finish('leave',pick(L.insult));sfx.bad();return}say(pick(L.insult));save();render();return}
   c.patience--;
   if(c.patience<=0){finish('leave',pick(L.leave));sfx.bad();return}
-  const na=r10(Math.max(c.minAccept,o+(c.ask-o)*.55));
+  c.nego=1;const na=r10(Math.max(c.minAccept,o+(c.ask-o)*.55));
   c.ask=Math.min(na,c.ask);
   say(tpl(c.ask<=c.minAccept?pick(L.last):pick(L.counter),{p:fmt(c.ask)}));
   if(S.offer>c.ask)S.offer=c.ask;save();render();
@@ -1831,7 +1838,7 @@ function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(e
 function dblBonus(cash){return r10(Math.min(cash,2000+S.day*250))}
 function renderEveHub(){ensureShip();genLots();
   const cash=S.money-S.stats.start,invNow=invValue(),invD=invNow-(S.stats.startInv||0),net=cash+invD,st=dayStars(net);
-  const LBL={web:'Web mağaza',cirak:'Çırak sattı',buy:'Dükkân alış',sell:'Dükkân satış',fee:'Masraf',auc:'Mezat alış',aus:'Mezat satış'};
+  const LBL={web:'Web mağaza',cirak:'Çırak sattı',buy:'Dükkân alış',sell:'Dükkân satış',fee:'Masraf',auc:'Mezat alış',aus:'Mezat satış',gift:'Hediye'};
   const log=S.log||[];
   const rows=log.length?log.map(l=>`<div class="lrow"><span class="li">${l.k?icon({k:l.k,pl:l.pl,id:l.id||"lg",cond:l.c||3,i:l.i,known:{}}):l.i}</span><span class="ln">${esc(l.n)}<small>${LBL[l.t]||''}</small></span><b class="${l.amt>=0?'pos':'neg'}">${l.amt>=0?'+':'−'}${fmt(Math.abs(l.amt))}</b></div>`).join(''):'<p class="sub" style="margin:0">Bugün hiç alışveriş yapmadın.</p>';
   const open=S.lots.list.filter(l=>l.status==='open').length,lab=S.inv.filter(x=>x.lab).length,rp=S.inv.filter(x=>!x.lab&&!x.cert&&!x.chest&&x.cond<5).length,B=S.bank,us=unsent().length,web=S.inv.filter(x=>x.web).length,unread=Math.max(0,S.reviews.length-(S.seenRev||0));
@@ -1843,6 +1850,7 @@ function renderEveHub(){ensureShip();genLots();
      <div class="eh2r"><small>Net kazanç</small><b class="cnt ${net>=0?'pos':'neg'}" data-v="${net}" data-sign="1">0</b></div></div>
    <div class="sum3"><div><small>Nakit</small><b class="${cash>=0?'pos':'neg'}">${cash>=0?'+':'−'}${fmt(Math.abs(cash))}</b></div><div><small>Raf değeri</small><b class="${invD>=0?'pos':'neg'}">${invD>=0?'+':'−'}${fmt(Math.abs(invD))}</b></div><div><small>Kasa</small><b>${fmt(S.money)}</b></div></div>
    ${cash>0&&S.dblDay!==S.day&&adOk()?`<button class="b brass adwide" data-act="dblAd">📺 Bugünkü kârı 2 katına çıkar<small>+${fmt(dblBonus(cash))} ekstra</small></button>`:''}
+   ${giftRow()}
    ${alerts.length?`<div class="alerts">${alerts.map(a=>`<button class="al ${a[0]}" data-act="eve:${a[2]}"><i></i>${a[1]}<span>›</span></button>`).join('')}</div>`:''}
    ${marketLine()}${ordersSec()}
    <section class="grp"><h3>Satış</h3>
@@ -2427,7 +2435,7 @@ function renderLive(){const a=AU;if(!a){eve='auction';return renderAucList()}con
    <div class="feed2" id="auFeed"></div>
    ${a.done?res:(a.mode==='buy'?`<div class="incs">${[1,2,5].map(k=>`<button class="inc" data-act="auBid:${k}">+${fmt(inc(a.bid)*k)}</button>`).join('')}</div>
      <div class="btns"><button class="tb ghost" data-act="auQuit">Çekil</button><button class="tb big" id="auBtn" data-act="auBid">Teklif Ver</button></div>`
-     :`<p class="tnote center">Alıcılar teklif veriyor… Satış bedelinden %${commis()} komisyon kesilir.</p>`)}</div>`,a.mode,{live:true})}
+     :`<p class="tnote center">Alıcılar teklif veriyor… Satış bedelinden %${commis()} komisyon kesilir.</p>${!a.adUsed&&adOk()?`<button class="tb adx" id="auAd" data-act="auAd">📺 Yeni teklifçi çağır<small>Zengin bir alıcı mezata katılsın</small></button>`:''}`)}</div>`,a.mode,{live:true})}
 function auPaint(){if(!AU)return;const t=$('#auT');if(!t)return;const left=Math.max(0,AU.end-performance.now());
   const tt=AU.done?'Bitti':(left/1000).toFixed(1);if(t.textContent!==tt){t.textContent=tt;t.classList.toggle('hot',!AU.done&&left<4000)}
   const ring=$('#auRing');if(ring){ring.style.strokeDashoffset=(119.4*(1-Math.min(1,left/AU.dur))).toFixed(1);ring.setAttribute('stroke',left<4000?'#c23a2f':'#2a8a5a')}
@@ -3152,9 +3160,24 @@ function loginCheck(){ensureLive();const td=today();if(S.lastLogin===td)return;c
   modal({icon:'🎁',title:`Günlük ödül · ${S.streak}. gün serisi`,body:`<div class="lgrid">${boxes}</div>Her gün gir, seriyi bozma. 7. gün büyük ödül!`,btns:[{t:`Al · ${fmt(rw)}`,cls:'ghost',a:'loginTake'},{t:'📺 2 katını al',cls:'brass',a:'loginAd'}]})}
 function loginTake(m){S.money+=S.loginRw*m;stat('login');S.st.bestStreak=Math.max(S.st.bestStreak||0,S.streak);closeModal();sfx.cash();burst(18);toast(`+${fmt(S.loginRw*m)} günlük ödül`);save();render()}
 /* ---- rewarded ad placeholder (replace with AdMob in the Android build) ---- */
-function adOk(){return (S.adD===S.day?(S.adN||0):0)<10}
+let SHORT=null;
+function giftRow(){const g=S.gift||{};const free=g.d!==S.day,adg=g.d===S.day&&g.ad!==S.day&&adOk();const hasInv=S.inv.some(x=>!x.chest&&!x.lab);
+  const vip=hasInv&&S.vipAsk!==S.day&&adOk();
+  if(!free&&!adg&&!vip)return'';
+  return `<div class="gifts">${free?`<button class="b mint adwide" data-act="gift">🎁 Günlük hediye kutusu<small>Bedava · günde 1</small></button>`:adg?`<button class="b brass adwide" data-act="giftAd">📺 Bir hediye kutusu daha<small>Reklam izle</small></button>`:''}
+   ${vip?`<button class="b adsm adwide" data-act="vipAd">📺 Yarın zengin koleksiyoncu gelsin<small>Rafındaki en değerli mala yüksek fiyat verir</small></button>`:''}</div>`}
+function openGift(){const x=R();let icon,title,body;
+  if(x<.62||S.inv.length>=invCap()){const m=r10((120+S.day*35)*rf(.8,1.4));S.money+=m;logT('gift',{n:'Hediye kutusu',i:'🎁'},m);icon='💰';title='+'+fmt(m);body='Kutudan para çıktı, kasaya koydun.';sfx.cash()}
+  else if(x<.92){const it=newItem(pick(catPool()),{cond:2+Math.floor(R()*3)});it.paid=0;it.isNew=true;S.inv.push(it);colAdd(it);icon=it.i;title=it.n;body='Kutudan bir parça çıktı, rafına koydun.';sfx.ok()}
+  else{const m=r10((400+S.day*90)*rf(1,1.5));S.money+=m;logT('gift',{n:'Hediye kutusu',i:'🎁'},m);icon='💎';title='BÜYÜK İKRAMİYE! +'+fmt(m);body='Bugün şanslı günündesin!';sfx.cash();try{burst(24)}catch(e){}}
+  save();modal({icon,title,body,btns:[{t:'Harika',cls:'brass',a:'closeModal'}]});render()}
+function adOk(){return (S.adD===S.day?(S.adN||0):0)<15}
+/* Geçiş reklamı yöneticisi: ilk 3 gün yok, iki geçiş arası ≥3 dk, ödüllü reklamdan sonra 3 dk yok, Premium'da hiç yok */
+let IST_T=0,RW_T=0;const IST_GAP=180000;
+function istReady(){const N=window.NATIVE;return !noAds()&&S.day>=4&&N&&N.isNative&&N.interstitial&&Date.now()-IST_T>=IST_GAP&&Date.now()-RW_T>=IST_GAP}
+function istMaybe(cb){if(!istReady()){cb&&cb();return}IST_T=Date.now();NATIVE.interstitial().catch(()=>{}).finally(()=>{try{AC&&AC.resume()}catch(e){}cb&&cb()})}
 function adUse(){if(S.adD!==S.day){S.adD=S.day;S.adN=0}S.adN++}
-function adShow(cb,label,f){if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
+function adShow(cb,label,f){RW_T=Date.now();if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
 function adShow0(cb,label){closeModal();const el=document.createElement('div');el.className='adbox';el.innerHTML=`<div class="adcard"><span class="adtag">REKLAM</span><b>${label||'Ödüllü reklam'}</b><p>Uygulamada burada 15 saniyelik ödüllü reklam oynayacak. Şimdilik test modu.</p><div class="adbar"><i></i></div><small id="adT">5</small></div>`;
   $('#app').appendChild(el);let n=5;const iv=setInterval(()=>{n--;const t=$('#adT');if(t)t.textContent=n;if(n<=0){clearInterval(iv);el.remove();sfx.ok();cb()}},1000)}
 /* ---- daily events ---- */
@@ -3741,6 +3764,7 @@ function renderPanel(){
      <div class="grid2"><div class="mini"><span class="lbl">Günlük kâr</span><b class="${prof>=0?'pos':'neg'}">${prof>=0?'+':''}${fmt(prof)}</b></div>
      <div class="mini"><span class="lbl">Raftaki mal</span><b>${fmt(invV)}</b></div>
      <div class="mini"><span class="lbl">Alış</span><b>${S.stats.buys}</b></div><div class="mini"><span class="lbl">Satış</span><b>${S.stats.sells}</b></div></div></div>
+     ${giftRow()}
      <button class="b brass" data-act="newDay">Kepenkleri Aç<small>Gün ${S.day+1}</small></button></div>`}
   if(!c)return `<div class="panel"><button class="b brass" data-act="open">Dükkânı Aç</button></div>`;
   if(c.done)return `<div class="panel"><div class="wait">${c.result==='deal'?'Anlaşma tamam. Sıradaki müşteri geliyor…':'Müşteri gidiyor…'}</div></div>`;
@@ -3748,6 +3772,7 @@ function renderPanel(){
   if(c.kind==='seller'){const it=c.item;
     return `<div class="panel deal2 dz">${talkPop(c)}${dzInfo('İstediği',fmt(c.ask),it)}
       ${dzOffer('Teklifin')}${dzChips()}
+      ${c.nego&&!c.lastAd&&adOk()?`<button class="dz-adp" data-act="lastAd" ${dis}>📺 Son pazarlık: <b>%10 daha ucuza</b> al</button>`:''}
       <div class="dz-main"><button class="b brass" id="offerGo" data-act="offer" ${busy||!(S.offer>0||c.trade)?'disabled':''}>Teklif Ver</button>
        <button class="b mint" data-act="acceptAsk" ${dis}>Kabul Et<small>${fmt(c.ask)}</small></button></div>
       <div class="dz-tools">${dzTool('inspect',IC.look,'İncele',it.chest)}${dzTool('expert',IC.expert,'Uzman '+fmt(expertFee()),it.known.expert||it.chest)}${dzTool('talkMenu',IC.talk,'Konuş',busy)}${dzTool('pass',IC.x,'Vazgeç',busy,'red')}</div></div>`}
@@ -3755,6 +3780,7 @@ function renderPanel(){
     return `<div class="panel deal2 dz">${talkPop(c)}${dzInfo('Maliyetin',fmt(it.paid),it)}
       ${knowsFake?`<button class="toggle sm ${c.honest?'on':''}" data-act="honest"><span class="sw"></span><span><b>Dürüst ol:</b> replika olduğunu söyle</span></button>`:''}
       ${dzOffer('Fiyatın')}${dzChips()}
+      ${c.counter&&!c.lastAd&&adOk()?`<button class="dz-adp" data-act="lastAd" ${dis}>📺 Son pazarlık: <b>%10 daha fazla</b> al</button>`:''}
       <div class="dz-main"><button class="b brass" id="offerGo" data-act="propose" ${busy||!(S.offer>0)?'disabled':''}>Fiyatı Söyle</button>
        ${c.counter?`<button class="b mint" data-act="takeCounter" ${dis}>Kabul Et<small>${fmt(c.counter)}</small></button>`:`<div class="dz-wait">Müşteri henüz teklif vermedi</div>`}</div>
       <div class="dz-tools">${dzTool('talkMenu',IC.talk,'Konuş',busy)}${dzTool('decline',IC.x,'Satmaktan vazgeç',busy,'red')}</div></div>`}
@@ -3839,6 +3865,17 @@ document.addEventListener('click',e=>{
   if(a.startsWith('trade:')){const c=S.cust;if(c){c.trade=a.slice(6);c.tradeOpen=false;sfx.ok();updOffer();render()}return}
   if(a==='untrade'){const c=S.cust;if(c){c.trade=null;sfx.tap();render()}return}
   if(a==='loginTake'){loginTake(1);return}
+  if(a==='gift'){const g=S.gift=S.gift||{};if(g.d===S.day)return;g.d=S.day;openGift();return}
+  if(a==='giftAd'){const g=S.gift=S.gift||{};if(g.ad===S.day)return;adShow(()=>{adUse();g.ad=S.day;openGift()},'Bir hediye kutusu daha');return}
+  if(a==='vipAd'){if(S.vipAsk===S.day)return;adShow(()=>{adUse();S.vipAsk=S.day;S.vipDay=S.day+1;save();render();toast('💼 Yarın sabah ilk müşterin cebi dolu bir koleksiyoncu olacak!')},'Zengin koleksiyoncu çağır');return}
+  if(a==='shortAd'){const o=SHORT;SHORT=null;if(!o||S.cust!==o.c)return closeModal();adShow(()=>{adUse();o.c.shortAd=1;S.money+=o.short;logT('gift',{n:'Reklam desteği',i:'📺'},o.short);doBuy(o.price)},'Eksik parayı tamamla');return}
+  if(a==='lastAd'){const c=S.cust;if(!c||c.done||c.lastAd)return;adShow(()=>{adUse();if(S.cust!==c||c.done)return;c.lastAd=1;
+      if(c.kind==='seller'){c.ask=r10(c.ask*.9);c.minAccept=Math.min(c.minAccept,c.ask);say(tpl('Peki, senin hatırın için son fiyat {p}.',{p:fmt(c.ask)}))}
+      else{c.counter=r10(c.counter*1.1);c.maxPay=Math.max(c.maxPay,c.counter);say(tpl('Tamam, bir kerelik {p} veriyorum.',{p:fmt(c.counter)}))}
+      sfx.ok();save();render()},'Son pazarlık');return}
+  if(a==='auAd'){if(!AU||AU.done||AU.mode!=='sell'||AU.adUsed)return;const left=Math.max(2000,AU.end-performance.now());clearInterval(AU.tk);AU.adUsed=1;
+    const resume=()=>{if(!AU||AU.done)return;AU.end=performance.now()+left+3000;AU.nextNpc=performance.now()+400;clearInterval(AU.tk);AU.tk=setInterval(auTick,100);render()};
+    adShow(()=>{adUse();const base=Math.max(AU.bid,AU.final||0,AU.it?r10(val(AU.it)*.6):0);AU.final=r10(base*rf(1.2,1.35));toast('💼 Zengin bir alıcı mezata katıldı!');resume()},'Yeni teklifçi çağır',()=>{AU.adUsed=0;resume()});return}
   if(a==='dblAd'){const cash=S.money-S.stats.start;if(cash<=0||S.dblDay===S.day)return;const b=dblBonus(cash);adShow(()=>{adUse();S.dblDay=S.day;S.money+=b;sfx.cash();burst(18);toast(`+${fmt(b)} ekstra kâr!`);save();render()},'Bugünkü kârı 2 katına çıkar');return}
   if(a.startsWith('repAd:')){const id=a.slice(6);adShow(()=>{adUse();S.repAd=S.day;doRepair(id,true)},'Usta bedava tamir etsin');return}
   if(a==='sellAd'){adShow(()=>{adUse();genLots();S.lots.sold=Math.max(0,Math.min(S.lots.sold,sellCap())-1);S.lots.adx=1;toast('+1 satış hakkı');save();render()},'+1 mezat satış hakkı');return}
@@ -3855,7 +3892,7 @@ document.addEventListener('click',e=>{
   if(a==='mapClose'){const v=$('#mapv');if(v)v.remove();sfx.tap();render();return}
   if(a.startsWith('mapSel:')){MAPSEL=a.slice(7);sfx.tap();mapRender();return}
   if(a.startsWith('mapBuy:')){mapBuy(a.slice(7));return}
-  if(a.startsWith('mapMove:')){mapMove(a.slice(8));return}
+  if(a.startsWith('mapMove:')){mapMove(a.slice(8));setTimeout(()=>istMaybe(),900);return}
   if(a.startsWith('pack:')){startPack(a.slice(5));return}
   if(a.startsWith('pkbox:')){pkAct('box',a.slice(6));return}
   if(a.startsWith('pkfirm:')){pkAct('firm',a.slice(7));return}
@@ -3875,7 +3912,7 @@ document.addEventListener('click',e=>{
   if(a==='goSkills'){b.remove&&b.classList.contains('lvlup')&&b.remove();closeModal();S.tab='skills';sfx.tap();render();return}
   if(a==='persuade'){persuade();return}
   if(a.startsWith('eve:')&&!unlocked(a.slice(4))){toast(UNL[a.slice(4)]+'. günde açılacak');sfx.bad();return}
-  if(a.startsWith('eve:')){if(AU&&!AU.done){toast('Mezat bitene kadar bekle');return}AU=null;eve=a.slice(4);if(eve!=='kargo')PK=null;sfx.tap();render();$('#main').scrollTop=0;return}
+  if(a.startsWith('eve:')){if(AU&&!AU.done){toast('Mezat bitene kadar bekle');return}if(AU&&AU.done&&istReady()){AU=null;const ev=a.slice(4);istMaybe(()=>{eve=ev;if(eve!=='kargo')PK=null;render();const m=$('#main');if(m)m.scrollTop=0});return}AU=null;eve=a.slice(4);if(eve!=='kargo')PK=null;sfx.tap();render();$('#main').scrollTop=0;return}
   if(a.startsWith('lot:')){startLot(a.slice(4));return}
   if(a.startsWith('sellLot:')){startSell(a.slice(8));return}
   if(a.startsWith('auBid:')){auBid(+a.slice(6));return}
@@ -3914,7 +3951,7 @@ document.addEventListener('click',e=>{
     case 'takeCounter':doSell(c.counter,c.honest&&itemById(c.itemId).fake);break;
     case 'decline':buyerDecline();break;
     case 'honest':c.honest=!c.honest;sfx.tap();save();render();break;
-    case 'newDay':if(S.day>=2&&S.day%2===0&&!noAds()&&window.NATIVE&&NATIVE.interstitial){const b=document.querySelectorAll('[data-act=newDay]');b.forEach(x=>x.disabled=true);NATIVE.interstitial().finally(()=>{try{AC&&AC.resume()}catch(e){}startDay()})}else startDay();break;
+    case 'newDay':if(S.day%2===0&&istReady()){const b=document.querySelectorAll('[data-act=newDay]');b.forEach(x=>x.disabled=true);istMaybe(startDay)}else startDay();break;
     case 'open':nextCustomer();break;
     case 'closeModal':closeModal();break;
     case 'closeModalNext':closeModal();nextCustomer();break;
