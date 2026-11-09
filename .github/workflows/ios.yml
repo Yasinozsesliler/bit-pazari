@@ -36,6 +36,7 @@ jobs:
         run: |
           python3 build.py
           npx cap sync ios
+          mkdir -p $RUNNER_TEMP/log && python3 tools/skan_merge.py | tee $RUNNER_TEMP/log/skan.log
 
       - name: Derleme kontrolü (simülatör, imzasız)
         run: |
