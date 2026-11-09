@@ -38,6 +38,14 @@ jobs:
           npx cap sync ios
           mkdir -p $RUNNER_TEMP/log && python3 tools/skan_merge.py | tee $RUNNER_TEMP/log/skan.log
 
+      - name: Swift paketlerini indir (yeniden denemeli)
+        run: |
+          for i in 1 2 3 4 5; do
+            xcodebuild -resolvePackageDependencies -project ios/App/App.xcodeproj -scheme App && exit 0
+            echo "Paket indirme denemesi $i başarısız, 30 sn sonra tekrar"; sleep 30
+          done
+          exit 1
+
       - name: Derleme kontrolü (simülatör, imzasız)
         run: |
           set -o pipefail
