@@ -1544,7 +1544,7 @@ function fermanAct(a){const c=S.cust,it=c.itemId&&itemById(c.itemId);
 function chestSeller(){return mkSeller(chestItem(),'kurnaz',{name:'Paltolu Adam',seed:777,ask:350,minAccept:250,line:'Ne içinde olduğunu ben de bilmiyorum. Anahtarı kayıp. 350 ₺, açarsan şansına.',tag:'Gizemli'})}
 
 function nextCustomer(){
-  if(S.ci>=dayLen()){S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();sfx.door();save();render();setTimeout(()=>showTip('evening'),700);return}
+  if(S.ci>=dayLen()){T('day_end',{cash:Math.round(S.money),rep:Math.round(S.rep||0),inv:S.inv.length});if([3,7,14,30,60].includes(S.day))T('day_reached_'+S.day,{});S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();sfx.door();save();render();setTimeout(()=>showTip('evening'),700);return}
   let c;
   if(S.day===1&&S.ci===1&&S.story.riza==='none')c=rizaSeller();
   else if(S.day===3&&S.ci===0&&(S.story.riza==='bought'||S.story.riza==='sold'))c=rizaReturn();
@@ -1654,7 +1654,7 @@ const expertFee=()=>has('e3')?15:40;
 const sellCap=()=>has('m1')?3:2;
 const commis=()=>has('m1')?5:10;
 const xpNeed=l=>Math.round(80*Math.pow(l,1.35));
-function gainXP(n){S.xp=(S.xp||0)+Math.round(n);let up=0;while(S.xp>=xpNeed(S.lv)){S.xp-=xpNeed(S.lv);S.lv++;S.sp+=S.lv%5===0?2:1;up++}
+function gainXP(n){S.xp=(S.xp||0)+Math.round(n);let up=0;while(S.xp>=xpNeed(S.lv)){S.xp-=xpNeed(S.lv);S.lv++;S.sp+=S.lv%5===0?2:1;up++}if(up){T('level_up',{level:S.lv});TU('shop_level',S.lv)}
   if(up){setTimeout(()=>{sfx.ok();setTimeout(sfx.cash,180);const el=document.createElement('div');el.className='lvlup';el.setAttribute('data-act','goSkills');
     el.innerHTML=`<small>SEVİYE ATLADIN</small><b>${S.lv}</b><span>+${up} yetenek puanı · dokun, harca</span>`;$('#app').appendChild(el);setTimeout(()=>el.remove(),3400);renderTop();renderNav()},700)}
   save()}
@@ -1831,7 +1831,11 @@ let eve='hub',AU=null;
 const NPCB=['@koleksiyon34','@eskici_rıza','@kartcı06','@retro_ayşe','@mezatçı','@tarihi_eşya','@antikacı_ali','@forma_avcısı'];
 function val(it){let v=it.appear;if(it.cert&&it.cert.auth)v=r10(v*GMUL[it.cert.grade]);return v}
 function invValue(){return S.inv.reduce((a,x)=>a+(x.chest?0:(x.known.expert&&x.fake?x.worth:val(x))),0)}
-function logT(t,it,amt){(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
+/* Analitik: olay gönder (telefonda Firebase'e, tarayıcıda hiçbir şey) */
+function T(n,p){try{window.NATIVE&&NATIVE.track&&NATIVE.track(n,Object.assign({day:S.day||0,level:S.lv||1},p||{}))}catch(e){}}
+function TU(k,v){try{window.NATIVE&&NATIVE.userProp&&NATIVE.userProp(k,v)}catch(e){}}
+const TX={buy:'item_buy',sell:'item_sell',aus:'auction_sell',gift:'gift_cash'};
+function logT(t,it,amt){if(TX[t])T(TX[t],{item:String(it.k||it.n||'').slice(0,40),amount:Math.round(amt||0),pack:it.pack||'base'});(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
 const certTag=it=>it.cert?(it.cert.auth?`<span class="slab">ONAY ${it.cert.grade}</span>`:'<span class="chip bad">Replika</span>'):it.lab?'<span class="chip warn">Lab\'da</span>':'';
 const dayStars=n=>n<=0?1:n<250?2:n<700?3:n<1400?4:5;
 function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();return renderEveHub()}
@@ -3175,9 +3179,9 @@ function adOk(){return (S.adD===S.day?(S.adN||0):0)<15}
 /* Geçiş reklamı yöneticisi: ilk 3 gün yok, iki geçiş arası ≥3 dk, ödüllü reklamdan sonra 3 dk yok, Premium'da hiç yok */
 let IST_T=0,RW_T=0;const IST_GAP=180000;
 function istReady(){const N=window.NATIVE;return !noAds()&&S.day>=4&&N&&N.isNative&&N.interstitial&&Date.now()-IST_T>=IST_GAP&&Date.now()-RW_T>=IST_GAP}
-function istMaybe(cb){if(!istReady()){cb&&cb();return}IST_T=Date.now();NATIVE.interstitial().catch(()=>{}).finally(()=>{try{AC&&AC.resume()}catch(e){}cb&&cb()})}
+function istMaybe(cb){if(!istReady()){cb&&cb();return}IST_T=Date.now();T('interstitial_show',{});NATIVE.interstitial().catch(()=>{}).finally(()=>{try{AC&&AC.resume()}catch(e){}cb&&cb()})}
 function adUse(){if(S.adD!==S.day){S.adD=S.day;S.adN=0}S.adN++}
-function adShow(cb,label,f){RW_T=Date.now();if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
+function adShow(cb0,label,f){RW_T=Date.now();const lb=String(label||'').slice(0,40);T('ad_offer_click',{placement:lb});const cb=()=>{T('ad_reward',{placement:lb,premium:noAds()?1:0});cb0()};if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
 function adShow0(cb,label){closeModal();const el=document.createElement('div');el.className='adbox';el.innerHTML=`<div class="adcard"><span class="adtag">REKLAM</span><b>${label||'Ödüllü reklam'}</b><p>Uygulamada burada 15 saniyelik ödüllü reklam oynayacak. Şimdilik test modu.</p><div class="adbar"><i></i></div><small id="adT">5</small></div>`;
   $('#app').appendChild(el);let n=5;const iv=setInterval(()=>{n--;const t=$('#adT');if(t)t.textContent=n;if(n<=0){clearInterval(iv);el.remove();sfx.ok();cb()}},1000)}
 /* ---- daily events ---- */
@@ -3596,7 +3600,7 @@ function renderMenu(){if(screen!=='name')return renderMenu2();
     <button class="b ghost" data-act="howto">Nasıl Oynanır</button>
     <button class="b ghost" data-act="mute">${S.mute?'Ses: Kapalı':'Ses: Açık'}</button></div>
     <p class="mfoot">BİR OZS STUDIO OYUNU</p></div>`}
-function startNamed(){const inp=$('#shopIn');let n=(inp&&inp.value||'').trim().slice(0,22);if(!n){toast('Önce dükkânına bir isim ver');sfx.bad();if(inp)inp.focus();return}
+function startNamed(){T('new_game',{});const inp=$('#shopIn');let n=(inp&&inp.value||'').trim().slice(0,22);if(!n){toast('Önce dükkânına bir isim ver');sfx.bad();if(inp)inp.focus();return}
   const mute=S.mute;S=fresh();S.mute=mute;S.shop=n;S.intro=false;ensureEcon();ensureLive();S.lastLogin=today();S.streak=1;save();musicStart();lastCustId=null;shownMoney=null;screen='game';sfx.ok();render();
   modal({icon:'🏺',title:esc(n),body:'Dededen kalma dükkânı devraldın. Ucuza al, pahalıya sat. Ama dikkat: her parlayan altın değil. Sahte mal satarsan zabıta kapıya dayanır. Dürüst esnaf mı olacaksın, kurnaz tüccar mı?',btns:[{t:'İlk Müşteri',cls:'brass',a:'intro'}]})}
 
@@ -4002,7 +4006,7 @@ const PACK_PREVIEW=false;
 function packOwned(id){return PACK_PREVIEW||!iapLive()&&!IAP_SIM&&!!(window.NATIVE&&NATIVE.isNative)||!!(ENT.premium||ENT[id])||!!(S.packs&&S.packs[id])}
 function noAds(){return !!ENT.premium}
 let PROD={},PROD_T=0,storeFrom='menu',storeBusy=0;
-function entApply(ids){const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});
+function entApply(ids){TU('premium',ids.some(i=>IAP_K[i]==='premium')?'yes':'no');const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});
   const ch=JSON.stringify(want)!==JSON.stringify(ENT);if(ch){ENT=want;entSave();render()}}
 window.BP_IAP_UPDATE=(pid,ok)=>{const k=IAP_K[pid];if(!k)return;if(ok&&!ENT[k]){ENT[k]=1;entSave();iapThanks(k)}else if(!ok&&ENT[k]){delete ENT[k];entSave()}render()};
 function iapSync(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;N.iap.owned().then(entApply).catch(()=>{})}
@@ -4014,7 +4018,8 @@ async function iapBuy(k){if(storeBusy)return;const N=window.NATIVE;
   if(IAP_SIM){ENT[k]=1;entSave();iapThanks(k);render();return}
   if(!(N&&N.iapOn&&N.iap)){toast('Satın alma yalnızca App Store sürümünde.');return}
   storeBusy=1;render();let r='error';try{r=await N.iap.buy(IAP[k])}catch(e){}storeBusy=0;
-  if(r==='ok'){ENT[k]=1;entSave();iapThanks(k)}
+  T('iap_result',{product:k,result:r});
+  if(r==='ok'){ENT[k]=1;entSave();iapThanks(k);TU('premium',ENT.premium?'yes':'no')}
   else if(r==='pending')toast('Satın alma onay bekliyor. Onaylanınca otomatik açılacak.');
   else if(r==='error')toast('Satın alma tamamlanamadı. Biraz sonra tekrar dene.');
   render()}
@@ -4052,7 +4057,7 @@ function renderStore(){
     <button class="st-restore" data-act="iapRestore" ${storeBusy?'disabled':''}>Satın Alımları Geri Yükle</button>
     <p class="st-legal">Tüm ürünler tek seferlik satın almadır, abonelik değildir. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
    </div></div>`}
-function storeOpen(){storeFrom=screen==='store'?storeFrom:screen;screen='store';iapLoad();sfx.tap();closeModal();render();const m=$('#main');if(m)m.scrollTop=0}
+function storeOpen(){T('store_open',{from:String(screen)});storeFrom=screen==='store'?storeFrom:screen;screen='store';iapLoad();sfx.tap();closeModal();render();const m=$('#main');if(m)m.scrollTop=0}
 function packTeaser(){if(packOwned('tarih')||!iapLive())return '';
   return `<div class="card st-teaser" data-act="store"><div class="st-ti">⚔️</div><div><b>Tarih Paketi</b><small>Kılıç, kalkan, miğfer… 42 yeni eşya ve Kayıp Ferman hikâyesi</small></div><span>Mağaza ›</span></div>`}
 setTimeout(iapSync,1500);

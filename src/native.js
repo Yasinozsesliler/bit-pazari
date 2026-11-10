@@ -8,6 +8,7 @@ import { StatusBar, Style } from "@capacitor/status-bar";
 import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob";
 import { ADS } from "./ads.config.js";
 import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
+import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 
 const isNative = Capacitor.isNativePlatform();
 const platform = Capacitor.getPlatform();
@@ -142,6 +143,17 @@ if (N.iapOn) {
     try { window.BP_IAP_UPDATE && window.BP_IAP_UPDATE(t.productIdentifier, okTx(t)); } catch (e) {}
   }).catch(() => {});
 }
+
+
+/* ---------- Firebase Analytics (yalnızca telefonda; tarayıcıda sessiz) ---------- */
+N.track = (name, params) => {
+  if (!N.isNative) return;
+  try { FirebaseAnalytics.logEvent({ name, params: params || {} }).catch(() => {}); } catch (e) {}
+};
+N.userProp = (key, value) => {
+  if (!N.isNative) return;
+  try { FirebaseAnalytics.setUserProperty({ key, value: String(value) }).catch(() => {}); } catch (e) {}
+};
 
 /* ---------- Yerel bildirimler ---------- */
 N.askNotif = async () => {
