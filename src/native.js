@@ -8,6 +8,7 @@ import { StatusBar, Style } from "@capacitor/status-bar";
 import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob";
 import { ADS } from "./ads.config.js";
 import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
+import { Purchases, PURCHASES_ARE_COMPLETED_BY_TYPE, STOREKIT_VERSION } from "@revenuecat/purchases-capacitor";
 import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 
 const isNative = Capacitor.isNativePlatform();
@@ -123,6 +124,7 @@ N.iap = {
     if (!N.iapOn) return "error";
     try {
       const t = await NativePurchases.purchaseProduct({ productIdentifier: id, productType: INAPP, quantity: 1 });
+      if (okTx(t)) rcRecord(id);
       return okTx(t) ? "ok" : "error";
     } catch (e) {
       const m = String((e && (e.message || e.code)) || e).toLowerCase();
@@ -137,10 +139,31 @@ N.iap = {
     return N.iap.owned();
   },
 };
+/* RevenueCat: yalnızca gözlemci (satın almayı oyun yapar, RevenueCat kaydeder ve raporlar) */
+const RC_KEY = "appl_JYRJqxyxHKPvuKcahmHlMCqnJfs"; /* herkese açık SDK anahtarı */
+let rcReady = null;
+function rcInit() {
+  if (rcReady) return rcReady;
+  rcReady = Purchases.configure({
+    apiKey: RC_KEY,
+    purchasesAreCompletedBy: { type: PURCHASES_ARE_COMPLETED_BY_TYPE.MY_APP, storeKitVersion: STOREKIT_VERSION.STOREKIT_2 },
+  }).then(() => {
+    /* önceki sürümlerde satın alanları bir kez RevenueCat'e aktar */
+    let done = false; try { done = localStorage.getItem("bitpazari.rcsync") === "1"; } catch (e) {}
+    if (!done) Purchases.syncPurchases().then(() => { try { localStorage.setItem("bitpazari.rcsync", "1"); } catch (e) {} }).catch(() => {});
+    return true;
+  }).catch(() => false);
+  return rcReady;
+}
+function rcRecord(id) {
+  try { rcInit().then((ok) => { if (ok) Purchases.recordPurchase({ productID: id }).catch(() => {}); }); } catch (e) {}
+}
 if (N.iapOn) {
+  try { rcInit(); } catch (e) {}
   /* Aile onayı (Ask to Buy) gibi sonradan gelen ya da iade edilen işlemler */
   NativePurchases.addListener("transactionUpdated", (t) => {
     try { window.BP_IAP_UPDATE && window.BP_IAP_UPDATE(t.productIdentifier, okTx(t)); } catch (e) {}
+    if (okTx(t)) rcRecord(t.productIdentifier);
   }).catch(() => {});
 }
 
