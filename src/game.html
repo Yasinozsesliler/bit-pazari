@@ -1361,6 +1361,42 @@ input.kpIn{caret-color:transparent}
 .m3-dock{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 .rsx,.mapv{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 .viewer{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+/* 1.2.2 */
+.capbar.ms{position:relative;width:100%;overflow:visible}.capbar.ms i{border-radius:4px}
+.capbar.ms b{position:absolute;top:-3px;width:3px;height:14px;margin-left:-1.5px;border-radius:2px;background:#5a4632;z-index:1}.capbar.ms b.on{background:#ffd77a;box-shadow:0 0 6px #ffd77a}
+.colhead .cnext{display:block;margin-top:6px;font-size:11px;color:var(--muted)}
+.ser.gold{box-shadow:inset 0 0 0 2px #ffd77a,0 0 18px rgba(255,215,122,.25)}
+.serf .gnext{display:block;margin-top:2px;font-size:11px;color:#ffd77a}
+.ekshead,.rivhead{display:flex;gap:12px;align-items:center}
+.eksart,.rivface{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:32px;background:linear-gradient(180deg,#2a3a4a,#141c24);box-shadow:inset 0 0 0 1px rgba(95,176,240,.4)}
+.rivface{background:linear-gradient(180deg,#4a1f1a,#1d0c09);box-shadow:inset 0 0 0 1px rgba(217,71,62,.5)}
+.eksinfo,.rivst{flex-direction:row;justify-content:space-between;text-align:center}.eksinfo>div,.rivst>div{flex:1;display:flex;flex-direction:column;gap:2px}
+.eksinfo small,.rivst small{font-size:10.5px;color:var(--muted)}.eksinfo b,.rivst b{font-size:15px}
+.eksbar{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);background:#150e08;border-radius:12px;padding:8px 12px;box-shadow:inset 0 0 0 1px var(--line)}
+.eksbar b{color:var(--fg)}
+.ekstage{position:relative;height:170px;display:grid;place-items:center;border-radius:20px;background:radial-gradient(circle at 50% 40%,#2a2016,#120c07);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .3s}
+.ekstage .myglow{background:radial-gradient(closest-side,rgba(95,176,240,.35),transparent)}
+.ekstage.right{box-shadow:inset 0 0 0 2px var(--mint),0 0 24px rgba(120,209,162,.3)}.ekstage.wrong{box-shadow:inset 0 0 0 2px var(--pom),0 0 24px rgba(217,71,62,.3)}
+.eksitem{position:relative;width:120px;height:120px;display:grid;place-items:center;font-size:72px}.eksitem svg,.eksitem img,.eksitem canvas{max-width:120px;max-height:120px}
+.eksts{display:flex;flex-direction:column;gap:6px}
+.ekst{display:flex;gap:10px;align-items:center;text-align:left;border:none;border-radius:14px;padding:9px 12px;background:#1d140d;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line);font:inherit}
+.ekst:disabled{opacity:.55}.ekst.open{opacity:1}
+.ekst .ti{flex:none;font-size:22px}.ekst .tt{display:flex;flex-direction:column;min-width:0}.ekst small{font-size:12px;color:var(--muted);font-weight:700}
+.ekst.open.ok{box-shadow:inset 0 0 0 1px rgba(120,209,162,.6)}.ekst.open.ok small{color:#a6e6c4}
+.ekst.open.bad{box-shadow:inset 0 0 0 1px rgba(217,71,62,.7)}.ekst.open.bad small{color:#ff9d93}
+.ekst.open.mid{box-shadow:inset 0 0 0 1px rgba(232,171,60,.6)}.ekst.open.mid small{color:#ffd77a}
+.eksv{border-radius:14px;padding:10px 12px;font-size:13.5px;line-height:1.45}.eksv.ok{background:rgba(120,209,162,.12);box-shadow:inset 0 0 0 1px rgba(120,209,162,.5)}.eksv.no{background:rgba(217,71,62,.12);box-shadow:inset 0 0 0 1px rgba(217,71,62,.55)}
+.eksres{align-items:center;text-align:center}.eksbig{font-size:48px}.eksrw{font-size:24px}
+.eksdots{display:flex;gap:6px}.eksdots i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px}
+.eksdots i.ok{background:rgba(120,209,162,.2);color:var(--mint)}.eksdots i.no{background:rgba(217,71,62,.2);color:#ff8c80}
+.rivsc{gap:6px}.rivrow{display:flex;justify-content:space-between;font-size:14px}.rivsc small{color:var(--muted);font-size:11.5px}
+.rivbar{height:12px;border-radius:6px;background:linear-gradient(90deg,#3a1512,var(--pom));overflow:hidden}.rivbar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint-dark),var(--mint))}
+.rivch{display:flex;flex-direction:column;gap:6px}.rivch>div{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--muted)}
+.rivch i{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;background:#2a1d13;box-shadow:inset 0 0 0 1px var(--line)}
+.rivch .done{color:var(--fg)}.rivch .done i{background:var(--mint-dark);color:#fff}.rivch .cur{color:#ffd77a}.rivch .cur i{background:var(--brass-dark);color:#fff}
+.rs.ok{color:var(--mint);border-color:rgba(120,209,162,.55);background:rgba(120,209,162,.12)}
+.cemban{border-radius:12px;padding:8px 10px;font-size:12.5px;line-height:1.35;background:linear-gradient(90deg,rgba(217,71,62,.22),rgba(217,71,62,.08));box-shadow:inset 0 0 0 1px rgba(217,71,62,.55);color:#ffd3cd;animation:cemPulse 1.6s ease-in-out infinite}
+@keyframes cemPulse{50%{box-shadow:inset 0 0 0 1px rgba(255,120,100,.95)}}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1544,6 +1580,7 @@ function fermanAct(a){const c=S.cust,it=c.itemId&&itemById(c.itemId);
 function chestSeller(){return mkSeller(chestItem(),'kurnaz',{name:'Paltolu Adam',seed:777,ask:350,minAccept:250,line:'Ne içinde olduğunu ben de bilmiyorum. Anahtarı kayıp. 350 ₺, açarsan şansına.',tag:'Gizemli'})}
 
 function nextCustomer(){
+  if(S.cust)rivAfter(S.cust);
   if(S.ci>=dayLen()){T('day_end',{cash:Math.round(S.money),rep:Math.round(S.rep||0),inv:S.inv.length});if([3,7,14,30,60].includes(S.day))T('day_reached_'+S.day,{});S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();sfx.door();save();render();setTimeout(()=>showTip('evening'),700);return}
   let c;
   if(S.day===1&&S.ci===1&&S.story.riza==='none')c=rizaSeller();
@@ -1552,6 +1589,7 @@ function nextCustomer(){
   else if(S.vipDay===S.day&&S.ci===0&&S.inv.some(x=>!x.chest&&!x.lab)){c=spawnBuyer(1);S.vipDay=0}
   else if((S.day===2&&S.ci===3)||(S.day>3&&R()<(has('z2')?.045:.02)))c=chestSeller();
   else{const pB=S.inv.filter(x=>!x.chest&&!x.lab).length?Math.min(.8,(S.inv.length>=6?.65:.42)+.08*((S.up&&S.up.vitrin)||0)):0;c=R()<Math.min(.9,pB+(pB?evBuyerP():0))?spawnBuyer():spawnSeller()}
+  if(c)c=rivJump(c);
   S.ci++;S.cust=c;
   S.offer=0;
   sfx.door();save();render();
@@ -1767,7 +1805,7 @@ function expert(){const c=S.cust,it=c.item;if(it.known.expert||it.chest)return;
   S.money-=ef;logT('fee',{n:'Uzman: '+it.n,i:'🎓'},-ef);sfx.tap();it.known.expert=true;it.known.insp=true;it.known.lo=it.known.hi=it.appear;it.known.suspect=it.fake;
   if(it.fake)it.known.lo=it.known.hi=it.worth;
   if(it.fake)stat('fakeSpot');toast(it.fake?'Uzman: Bu bir replika!':'Uzman: Orijinal parça.'+(it.rar?' Üstelik '+RN[it.rar].toLocaleLowerCase('tr-TR')+'!':''));save();render()}
-function passSeller(){sfx.tap();const c=S.cust;if(c.story)S.story.riza='gone';finish('pass',pick(L.pass));if(!c.story&&S.day>=3&&(c.item.rar||c.item.appear>900)&&R()<.5)setTimeout(()=>toast('😼 Kurnaz Cemil kapıda bekliyordu, malı hemen kaptı!'),1300)}
+function passSeller(){sfx.tap();const c=S.cust;if(c.story)S.story.riza='gone';finish('pass',pick(L.pass));if(!c.story&&S.day>=3&&(c.item.rar||c.item.appear>900)&&!c.cemil&&R()<.5)setTimeout(()=>toast('😼 Kurnaz Cemil kapıda bekliyordu, malı hemen kaptı!'),1300)}
 
 function buyerPropose(price){
   const c=S.cust,it=itemById(c.itemId),p=price!=null?price:S.offer;if(!(p>0)){toast('Önce fiyatını belirle');return}sfx.tap();
@@ -1838,7 +1876,7 @@ const TX={buy:'item_buy',sell:'item_sell',aus:'auction_sell',gift:'gift_cash'};
 function logT(t,it,amt){if(TX[t])T(TX[t],{item:String(it.k||it.n||'').slice(0,40),amount:Math.round(amt||0),pack:it.pack||'base'});(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
 const certTag=it=>it.cert?(it.cert.auth?`<span class="slab">ONAY ${it.cert.grade}</span>`:'<span class="chip bad">Replika</span>'):it.lab?'<span class="chip warn">Lab\'da</span>':'';
 const dayStars=n=>n<=0?1:n<250?2:n<700?3:n<1400?4:5;
-function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();return renderEveHub()}
+function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();return renderEveHub()}
 function dblBonus(cash){return r10(Math.min(cash,2000+S.day*250))}
 function renderEveHub(){ensureShip();genLots();
   const cash=S.money-S.stats.start,invNow=invValue(),invD=invNow-(S.stats.startInv||0),net=cash+invD,st=dayStars(net);
@@ -1864,6 +1902,7 @@ function renderEveHub(){ensureShip();genLots();
    <section class="grp"><h3>Atölye</h3>
     ${R('lab','lab','#5fb0f0','ONAY Lab','Sertifikayla değer kat',lab?`${lab} bekliyor`:'')}
     ${R('repair','tamir','#9aa1a8','Tamir Atölyesi','Yıpranmış malı onar',rp?`${rp} ürün`:'')}</section>
+   ${hubExtra()}
    <section class="grp"><h3>İşletme</h3>
     ${R('bank','banka','#e8ab3c','Çarşı Bankası','Birikim ve kredi',B.loan?`Borç ${fmt(B.loan)}`:B.sav?fmt(B.sav):'',B.loan&&B.due-S.day<=1?'warn':'')}
     ${R('shop','dukkan','#78d1a2','Dükkân ve Görünüm','Geliştir, süsle',`${S.inv.length}/${invCap()} raf`)}
@@ -2058,8 +2097,8 @@ function doRepair(id,free){const x=itemById(id);if(!x)return;const c=free?0:repC
     else{sfx.bad();toast('Usta beceremedi. Ücret gitti, mal aynı.')}save();render()},1300)}
 
 function startDay(){
-  S.day++;S.ci=0;S.phase='shop';S.log=[];eve='hub';AU=null;
-  PK=null;const msgs=locMorning().concat(liveMorning(),labResults(),bankMorning(),shipMorning(),webMorning());
+  const yd=(S.log||[]).reduce((t,l)=>t+(l.t==='gift'?0:(+l.amt||0)),0);S.day++;S.ci=0;S.phase='shop';S.log=[];eve='hub';AU=null;
+  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
   const ex=S.pending.splice(0);let fineTot=0;
   if(ex.length){let fine=0,rep=0;ex.forEach(e=>{fine+=has('z4')?r10(e.fine/2):e.fine;rep+=e.rep});S.money-=fine;fineTot=fine;addRep(-rep);shake=true;sfx.bad();
     msgs.push(`🚨 <b>Zabıta kapıda!</b> Sattığın sahte ${ex.map(e=>e.n).join(', ')} ortaya çıktı. Ceza ${fmt(fine)}, itibar −${rep}.`)}
@@ -3774,7 +3813,7 @@ function renderPanel(){
   if(c.done)return `<div class="panel"><div class="wait">${c.result==='deal'?'Anlaşma tamam. Sıradaki müşteri geliyor…':'Müşteri gidiyor…'}</div></div>`;
   const dis=busy?'disabled':'';
   if(c.kind==='seller'){const it=c.item;
-    return `<div class="panel deal2 dz">${talkPop(c)}${dzInfo('İstediği',fmt(c.ask),it)}
+    return `<div class="panel deal2 dz">${talkPop(c)}${c.cemil?`<div class="cemban">😼 <b>Kurnaz Cemil</b> ${fmt(c.cemil)} verdi. Üstüne çıkmazsan mal onun!</div>`:''}${dzInfo('İstediği',fmt(c.ask),it)}
       ${dzOffer('Teklifin')}${dzChips()}
       ${c.nego&&!c.lastAd&&adOk()?`<button class="dz-adp" data-act="lastAd" ${dis}>📺 Son pazarlık: <b>%10 daha ucuza</b> al</button>`:''}
       <div class="dz-main"><button class="b brass" id="offerGo" data-act="offer" ${busy||!(S.offer>0||c.trade)?'disabled':''}>Teklif Ver</button>
@@ -3893,6 +3932,13 @@ document.addEventListener('click',e=>{
   if(a==='closeLegend'){b.remove();return}
   if(a==='musicT'){S.music=S.music===false;if(S.music===false)musicStop();save();render();return}
   if(a==='mapOpen'){mapOpen();return}
+  if(a==='goCol'){closeModal();S.phase!=='dayEnd'||(eve='hub');S.tab='skills';ustTab='col';sfx.tap();render();const m=$('#main');if(m)m.scrollTop=0;return}
+  if(a==='eksStart'){eksStart();return}
+  if(a==='eksAd'){const e=S.eks=S.eks||{};if(e.ad===S.day)return;adShow(()=>{adUse();e.ad=S.day;e.extra=1;eksStart()},'Bir ekspertiz masası daha');return}
+  if(a.startsWith('eksT:')){eksTool(a.slice(5));return}
+  if(a.startsWith('eksA:')){eksAnswer(a.slice(5));return}
+  if(a==='eksNext'){eksNext();return}
+  if(a==='eksClose'){EKS=null;sfx.tap();render();return}
   if(a==='mapClose'){const v=$('#mapv');if(v)v.remove();sfx.tap();render();return}
   if(a.startsWith('mapSel:')){MAPSEL=a.slice(7);sfx.tap();mapRender();return}
   if(a.startsWith('mapBuy:')){mapBuy(a.slice(7));return}
@@ -3927,7 +3973,7 @@ document.addEventListener('click',e=>{
   if(a.startsWith('rep:')){doRepair(a.slice(4));return}
   if(a.startsWith('diy:')){rsOpen(a.slice(4));return}
   if(a.startsWith('xt:')){xtUse(a.slice(3));return}
-  if(a==='menuContinue'){screen='game';ensureLive();sfx.ok();shownMoney=null;setTimeout(loginCheck,600);musicStart();if(!S.cust&&S.phase!=='dayEnd')nextCustomer();else render();return}
+  if(a==='menuContinue'){screen='game';ensureLive();sfx.ok();shownMoney=null;setTimeout(loginCheck,600);setTimeout(()=>colPop(0),4000);musicStart();if(!S.cust&&S.phase!=='dayEnd')nextCustomer();else render();return}
   if(a==='store'){storeOpen();return}
   if(a==='storeBack'){screen=storeFrom==='store'?'menu':storeFrom;sfx.tap();render();return}
   if(a.startsWith('buy:')){iapBuy(a.slice(4));return}
@@ -4126,6 +4172,149 @@ SERIES.push(
 (function(){const add=(id,a)=>{const L=LOCS.find(l=>l.id===id);if(L)a.forEach(x=>{if(!L.cats.includes(x))L.cats.push(x)})};
   add('bit',['savas']);add('kadikoy',['zirh']);add('kapali',['saray','kilic']);add('galata',['migfer','antik']);add('nisantasi',['saray','antik'])})();
 const TARIH=new Set(CATH.map(c=>c.k));
+
+/* ===================== 1.2.2: Koleksiyon Defteri · Ekspertiz Masası · Kurnaz Cemil ===================== */
+
+/* ---------- Koleksiyon Defteri: yeni seriler, Altın Sayfa, kilometre taşları ---------- */
+SERIES.push(
+ {id:'mutfak',n:'Anneannemin Mutfağı',d:'Bakır ve porselen',c:'#d0582a',ks:['cezve','semaver','ibrik','tabak','utu','lamba'],rw:2200,bonus:'Mutfak eşyaları %10 daha pahalıya satılır'},
+ {id:'konak',n:'Konak Salonu',d:'Eski İstanbul evi',c:'#9b7bd0',ks:['vazo','tablo','daktilo','telefon','satranc','kandil'],rw:3200,bonus:'Salon eşyaları %10 daha pahalıya satılır'},
+ {id:'sampiyon',n:'Şampiyonlar Vitrini',d:'Kupalar ve imzalar',c:'#f0c24a',ks:['eldiven','basket','madalya','kupa','voleybol','atki'],rw:3800,bonus:'Bu spor hatıraları %10 daha pahalıya satılır'});
+(function(){const add=(id,a)=>{const L=LOCS.find(l=>l.id===id);if(L)a.forEach(x=>{if(!L.cats.includes(x))L.cats.push(x)})};
+  add('bit',['mutfak','konak']);add('kadikoy',['sampiyon']);add('kapali',['mutfak']);add('galata',['konak']);add('nisantasi',['sampiyon'])})();
+const COLMS=[[25,1000,'Meraklı'],[50,3000,'Koleksiyoncu'],[75,6000,'Müzeci'],[100,15000,'Efsane Koleksiyoncu']];
+const colSer=()=>SERIES.filter(s=>!s.pack||packOwned(s.pack));
+const colTot=()=>colSer().reduce((a,s)=>a+s.ks.length,0);
+const colHave=()=>colSer().reduce((a,s)=>a+s.ks.filter(k=>S.col&&S.col[k]!=null).length,0);
+const colGold=s=>s.ks.every(k=>S.col&&S.col[k]>=1);
+const colTitle=()=>{S.colMs=S.colMs||{};let t='Acemi Toplayıcı';COLMS.forEach(([p,,n])=>{if(S.colMs[p])t=n});return t};
+function colCheck(){S.col=S.col||{};S.colDone=S.colDone||{};S.colGold=S.colGold||{};S.colMs=S.colMs||{};const out=[];
+  colSer().forEach(s=>{if(serDone(s)&&!S.colDone[s.id]){S.colDone[s.id]=S.day;S.money+=s.rw;stat('series');out.push(`🏆 <b>${s.n}</b> serisi tamamlandı: +${fmt(s.rw)}. ${s.bonus}.`)}
+    if(serDone(s)&&colGold(s)&&!S.colGold[s.id]){const g=r10(s.rw*1.5);S.colGold[s.id]=S.day;S.money+=g;stat('gold');T('col_gold',{set:s.id});out.push(`✨ <b>${s.n}</b> artık <b>Altın Sayfa</b>! Tüm parçalar nadir ya da üstü: +${fmt(g)}`)}});
+  const pc=colHave()/Math.max(1,colTot())*100;
+  COLMS.forEach(([p,rw,t])=>{if(pc>=p&&!S.colMs[p]){S.colMs[p]=S.day;S.money+=rw;gainXP(50);T('col_milestone',{p});out.push(`📒 Defterin <b>%${p}</b> doldu. Yeni unvanın: <b>${t}</b> · +${fmt(rw)}`)}});
+  return out}
+let colPopT=0;
+function colPop(tries){clearTimeout(colPopT);if(screen!=='game')return;if(modalEl&&(tries||0)<6){colPopT=setTimeout(()=>colPop((tries||0)+1),2500);return}
+  const m=colCheck();if(!m.length)return;save();sfx.ok();setTimeout(sfx.cash,180);burst(40);
+  modal({icon:'<span class="bigtrophy">📒</span>',title:'Koleksiyon Defteri',body:m.join('<br><br>'),btns:[{t:'Tamam',cls:'ghost',a:'closeModal'},{t:'Deftere Bak',cls:'brass',a:'goCol'}]});try{renderTop()}catch(e){}}
+const colAdd0=colAdd;
+colAdd=function(it){colAdd0(it);colPopT=setTimeout(()=>colPop(0),3400)};
+function colNext(){/* en çok yaklaşılan seri */let best=null;colSer().forEach(s=>{if(S.colDone&&S.colDone[s.id])return;const n=s.ks.filter(k=>S.col&&S.col[k]!=null).length;if(!best||n>best.n)best={s,n}});return best}
+function renderCol(){const tot=colTot(),have=colHave(),pc=have/Math.max(1,tot)*100;S.colMs=S.colMs||{};S.colGold=S.colGold||{};
+  const nx=COLMS.find(([p])=>!S.colMs[p]);const nb=colNext();
+  return `<div class="colhead"><div style="min-width:0"><span class="lbl">Koleksiyon Defteri</span><h2 class="h">${have} / ${tot}</h2>
+     <div class="capbar ms">${COLMS.map(([p])=>`<b class="${S.colMs[p]?'on':''}" style="left:${p}%"></b>`).join('')}<i style="width:${pc}%"></i></div>
+     <small class="cnext">Unvan: <b>${colTitle()}</b><br>${nx?`%${nx[0]} dolunca: <b>${nx[2]}</b> unvanı ve ${fmt(nx[1])}`:'Defter tamamen doldu. Efsanesin!'}</small></div>
+    <div class="rlegend">${RN.map((n,i)=>`<span><i style="background:${RC[i]}"></i>${n}</span>`).join('')}</div></div>
+   <p class="sub" style="margin:0">Aldığın her ürün deftere işlenir. Seriyi tamamla, ödülü ve kalıcı satış bonusunu kap. Bir serinin tüm parçalarını <b>nadir ya da üstü</b> kalitede toplarsan sayfa <b>Altın Sayfa</b> olur, ödülün 1,5 katını alırsın.${nb?`<br>En yakın seri: <b>${nb.s.n}</b> (${nb.n}/${nb.s.ks.length})`:''}</p>
+   ${SERIES.map(s=>{const n=s.ks.filter(k=>S.col&&S.col[k]!=null).length,done=!!(S.colDone&&S.colDone[s.id]),gold=!!S.colGold[s.id],gn=s.ks.filter(k=>S.col&&S.col[k]>=1).length;
+     return `<div class="ser${done?' done':''}${gold?' gold':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${gold?'✨ ':''}${s.n}${s.pack?' <em class="pktag">📜 Tarih Paketi</em>':''}</b><small>${s.d}</small></div><span class="sern">${gold?'Altın Sayfa':done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
+      <div class="slots">${s.ks.map(k=>{const got=S.col&&S.col[k]!=null,r=got?S.col[k]:0,c=catOf(k);return `<div class="slot${got?' got':''}" style="--rc:${RC[r]}" title="${got?c.n:'?'}"><span class="sic">${icon({k,i:c.i,cond:4,id:'col'+k,known:{}})}</span><small>${got?c.n:'???'}</small>${got&&r?`<i class="sr">${RN[r]}</i>`:''}</div>`}).join('')}</div>
+      <div class="serf">${gold?`<span class="pos">✓ ${s.bonus} · Altın Sayfa ödülü alındı</span>`:done?`<span class="pos">✓ ${s.bonus}</span><span class="gnext">Altın Sayfa: ${gn}/${s.ks.length} nadir · +${fmt(r10(s.rw*1.5))}</span>`:`<span>Ödül: <b>${fmt(s.rw)}</b> + ${s.bonus.toLocaleLowerCase('tr-TR')}</span>`}</div></div>`}).join('')}`}
+
+/* ---------- Ekspertiz Masası (günlük mini oyun) ---------- */
+const EKSN=5,EKSB=2;
+const EKS_TL={mag:['🔍','Büyüteç'],uv:['🔦','UV Lamba'],w:['⚖️','Terazi']};
+const EKS_TX={
+ mag:{ok:['Damga net ve derin; usta işi, eğri büğrü değil.','İşçilik elde yapılmış, küçük kusurlar çok doğal.','Vida başları el yapımı, hepsi birbirinden biraz farklı.','Ayar damgası dönemine uygun, kenarları zamanla aşınmış.','Dikiş ve birleşim yerleri eski usul.'],
+      bad:['Damga sığ ve bulanık, sonradan basılmış gibi.','Kenarlarda kalıp çizgisi var: seri üretim.','Yazı karakteri döneme uymuyor, fazla kusursuz.','Vidalar modern yıldız başlı.','"Made in" yazısı kazınmış ama izi duruyor.'],
+      mid:['Bir köşede tamir izi var ama işçilik eski.','Hafif çizikler var, kullanım izi olabilir.']},
+ uv:{ok:['UV altında yüzey eşit ve mat: eski cila.','Floresan iz yok, yüzey yaşına uygun.','Patina doğal, boya katmanları eski.'],
+     bad:['UV altında yüzey parladı: yeni boya ya da vernik!','Etiket bölgesi mor parladı: yeni kağıt.','Patina fırçayla sonradan sürülmüş.','Yapıştırıcı izleri neon gibi parlıyor.'],
+     mid:['Küçük bir rötuş parladı, bölgesel tamir olabilir.']},
+ w:{ok:['Ağırlık beklenene çok yakın.','Malzeme yoğunluğu doğru, dolgu yok.','Terazi tam olması gereken ağırlığı gösterdi.'],
+    bad:['Beklenenden belirgin şekilde hafif: içi dolgu!','Fazla ağır: içine kurşun koymuşlar.','Gümüş diye satılıyor ama yoğunluk pirinç.','Ağırlık seri üretim plastik gibi.'],
+    mid:['Biraz hafif ama tolerans içinde.']}};
+let EKS=null;
+const eksRw=()=>Math.min(400,100+S.day*10);
+function eksRound(){const cat=pick(catPool().filter(c=>c.f)),fake=R()<.5,cond=1+Math.floor(R()*5);
+  const tools=['mag','uv','w'],cl={};
+  if(fake){const dec=pick(tools);tools.forEach(t=>{cl[t]=t===dec?(R()<.5?'ok':'mid'):'bad'})}
+  else{const odd=R()<.45?pick(tools):null;tools.forEach(t=>{cl[t]=t===odd?'mid':'ok'})}
+  const tx={};tools.forEach(t=>tx[t]=pick(EKS_TX[t][cl[t]]));
+  const v=r10(cat.v*COND[cond-1]*rf(.9,1.15));
+  return{cat,fake,cond,cl,tx,used:[],ans:null,ask:r10(v*rf(.55,.8)),v}}
+function eksStart(){const e=S.eks=S.eks||{};if(e.d===S.day&&!e.extra){toast('Bugünkü masa bitti. Yarın yine gel!');return}if(e.d===S.day)e.extra=0;e.d=S.day;
+  EKS={i:0,ok:0,rounds:Array.from({length:EKSN},eksRound),done:false};sfx.ok();save();render();const m=$('#main');if(m)m.scrollTop=0}
+function eksTool(t){if(!EKS||EKS.done)return;const r=EKS.rounds[EKS.i];if(r.ans||r.used.includes(t)||r.used.length>=EKSB)return;r.used.push(t);sfx.tap();render()}
+function eksAnswer(a){if(!EKS||EKS.done)return;const r=EKS.rounds[EKS.i];if(r.ans)return;r.ans=a;const right=(a==='fake')===r.fake;r.right=right;
+  if(right){EKS.ok++;sfx.ok();flt('✓','var(--mint)')}else{sfx.bad();shake=true}render()}
+function eksNext(){if(!EKS)return;if(EKS.i<EKSN-1){EKS.i++;sfx.tap();render();return}
+  EKS.done=true;const rw=EKS.ok*eksRw()+(EKS.ok===EKSN?500:0);EKS.rw=rw;S.money+=rw;if(rw)logT('gift',{n:'Ekspertiz Masası',i:'🔎'},rw);gainXP(EKS.ok*8+(EKS.ok===EKSN?40:0));
+  stat('eksOK',EKS.ok);stat('eksPlay');if(EKS.ok===EKSN)stat('eksPerfect');S.eksBest=Math.max(S.eksBest||0,EKS.ok);T('ekspertiz_end',{score:EKS.ok});
+  if(EKS.ok>=4){burst(30);setTimeout(sfx.cash,150)}save();render()}
+function renderEks(){const e=S.eks||{};const back='<button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button>';
+  const head=`<div class="ekshead"><span class="eksart">🔎</span><div style="min-width:0"><span class="lbl">GÜNLÜK MİNİ OYUN</span><h2 class="h">Ekspertiz Masası</h2><p class="sub" style="margin:0">Masaya ${EKSN} parça gelir. Her birinde en fazla ${EKSB} alet kullan, sonra karar ver: <b>Gerçek mi, sahte mi?</b></p></div></div>`;
+  if(!EKS){const played=e.d===S.day;
+    return `<div class="eve eksp">${head}
+     <div class="ecard eksinfo"><div><small>Doğru başına</small><b>${fmt(eksRw())}</b></div><div><small>5/5 bonusu</small><b>+${fmt(500)}</b></div><div><small>En iyi skorun</small><b>${S.eksBest||0}/${EKSN}</b></div></div>
+     ${played?`<p class="sub" style="margin:0;text-align:center">Bugünkü masanı oynadın. Yarın yeni parçalar gelecek.</p>${e.ad!==S.day&&adOk()?'<button class="b brass" data-act="eksAd">📺 Bir masa daha aç<small>Reklam izle</small></button>':''}`:'<button class="b brass" data-act="eksStart">Masaya Otur<small>Bugünkü 5 parça hazır</small></button>'}
+     ${back}</div>`}
+  if(EKS.done){const ok=EKS.ok;
+    return `<div class="eve eksp">${head}<div class="ecard eksres"><span class="eksbig">${ok===EKSN?'🏅':ok>=3?'👍':'🧐'}</span><h2 class="h">${ok} / ${EKSN} doğru</h2>
+     <p class="sub" style="margin:0">${ok===EKSN?'Kusursuz! Çarşının en keskin gözü sensin.':ok>=3?'İyi iş. Gözün alışıyor.':'Sahteciler bugün seni kandırdı. Aletleri akıllıca seç!'}</p>
+     <div class="eksdots">${EKS.rounds.map(r=>`<i class="${r.right?'ok':'no'}">${r.right?'✓':'✗'}</i>`).join('')}</div>
+     <b class="pos eksrw">+${fmt(EKS.rw)}</b></div>
+     <button class="b brass" data-act="eksClose">Tamam</button></div>`}
+  const r=EKS.rounds[EKS.i],it={k:r.cat.k,i:r.cat.i,cond:r.cond,id:'eks'+EKS.i+'_'+S.day,known:{}},left=EKSB-r.used.length;
+  const tools=Object.keys(EKS_TL).map(t=>{const u=r.used.includes(t)||!!r.ans,show=r.used.includes(t)||r.ans;
+    return `<button class="ekst${show?' open '+r.cl[t]:''}" data-act="eksT:${t}" ${r.ans||r.used.includes(t)||left<=0?'disabled':''}><span class="ti">${EKS_TL[t][0]}</span><span class="tt"><b>${EKS_TL[t][1]}</b><small>${show?r.tx[t]:left>0?'Kullan':'Alet hakkın bitti'}</small></span></button>`}).join('');
+  return `<div class="eve eksp"><div class="eksbar"><span>Parça <b>${EKS.i+1}/${EKSN}</b></span><span>Doğru <b class="pos">${EKS.ok}</b></span><span>Alet hakkı <b>${r.ans?'–':left}</b></span></div>
+   <div class="ekstage${r.ans?(r.right?' right':' wrong'):''}"><div class="myglow"></div><div class="eksitem">${icon(it)}</div></div>
+   <h2 class="myname" style="margin:0">${r.cat.n}</h2><div class="mycond" style="justify-content:center"><span class="stars">${stars(r.cond)}</span>${CONDN[r.cond-1]}</div>
+   <p class="sub" style="margin:0;text-align:center">Satıcı "orijinal" diyor ve <b>${fmt(r.ask)}</b> istiyor. Orijinali piyasada ~${fmt(r.v)}.</p>
+   <div class="eksts">${tools}</div>
+   ${r.ans?`<div class="eksv ${r.right?'ok':'no'}"><b>${r.right?'Doğru bildin!':'Yanıldın!'}</b> Bu parça ${r.fake?'<b>SAHTE</b>. '+(r.ans==='real'?`Alsaydın ${fmt(r.ask)} çöpe giderdi.`:'Sahteciyi yakaladın.'):'<b>ORİJİNAL</b>. '+(r.ans==='fake'?`${fmt(r.v-r.ask)} kârlık fırsatı kaçırdın.`:`${fmt(r.v-r.ask)} kâr cebinde.`)}</div>
+     <button class="b brass" data-act="eksNext">${EKS.i<EKSN-1?'Sıradaki Parça':'Sonucu Gör'}</button>`
+   :`<div class="dz-main"><button class="b mint" data-act="eksA:real">✓ Gerçek</button><button class="b pom" data-act="eksA:fake">✗ Sahte</button></div>`}</div>`}
+
+/* ---------- Kurnaz Cemil: haftalık rekabet ve hikâye ---------- */
+const RIV_CH=[
+ {t:'Çarşıda İlk Kapışma',w:'Cemil kepenk indirirken homurdandı: "Şans eseri, çırak. Gelecek hafta görürüz."',l:'Cemil vitrinine "Çarşının 1 numarası" yazısı astı. Sinir bozucu.'},
+ {t:'Müşteri Avı',w:'Cemil\'in müdavimleri bu hafta senin dükkâna kaydı. Kahvede adın konuşuluyor.',l:'Cemil senin müşterilerine kulağına indirim fısıldıyor. Dikkat et!'},
+ {t:'Sahtekâr Kim?',w:'Zabıta, Cemil\'in vitrininde replika yakaladı! Çarşı artık sana güveniyor.',l:'Cemil senin sahte mal sattığını yaydı. Kanıtı yok ama dedikodu çabuk yayılır.'},
+ {t:'Son Pazarlık',w:'Cemil kapına geldi: "Pes ediyorum usta. Çarşının en iyisi sensin." Elini sıktı. Gözünde hâlâ o kurnaz parıltı var ama…',l:'Cemil yeni bir tezgâh açtı. Yarış kızışıyor.'}];
+const RIVQ=['Bu hafta da benim, çırak!','Dükkânın tozlu, müşterin kaçar.','Cebim derin, sabrım da.','Gözün mallarda değil, bende olsun.'];
+function ensureRiv(){ensureLive();const r=S.riv=S.riv||{};if(r.ws==null)Object.assign(r,{ws:S.day,me:0,him:0,ch:0,win:0,loss:0,steal:0,beat:0,avg:0,last:''});return r}
+const rivLeft=()=>{const r=ensureRiv();return Math.max(0,7-(S.day-r.ws))};
+function rivMorning(yd){const r=ensureRiv(),out=[];if(S.day<3){r.ws=S.day;r.me=r.him=0;return out}
+  r.me+=Math.max(0,yd);const base=r.avg||(250+S.day*60);r.him+=r10(base*rf(.7,1.2)*(1+.07*Math.min(r.ch,4)));
+  if(S.day-r.ws>=7){const win=r.me>=r.him,c=RIV_CH[Math.min(r.ch,RIV_CH.length-1)],story=r.ch<RIV_CH.length;
+    r.avg=r10(r.me/7);T('rival_week',{win:win?1:0,ch:r.ch});
+    if(win){const rw=story?1500+r.ch*1500+(r.ch===RIV_CH.length-1?8500:0):2000;S.money+=rw;addRep(3);r.win++;gainXP(60);
+      out.push(`🥊 <b>Haftalık yarış bitti: KAZANDIN!</b> Sen ${fmt(r.me)} · Cemil ${fmt(r.him)}<br>${story?`<i>${c.t}:</i> ${c.w}<br>`:''}Ödül: <b>${fmt(rw)}</b> ve itibar +3`);if(story)r.ch++;r.last=story?c.w:'Rövanş haftasını da kazandın.'}
+    else{r.loss++;addRep(-1);out.push(`😼 <b>Haftalık yarışı Cemil kazandı.</b> Sen ${fmt(r.me)} · Cemil ${fmt(r.him)}<br>${story?`<i>${c.t}:</i> ${c.l}`:'"'+pick(RIVQ)+'"'} İtibar −1.`);r.last=story?c.l:'Cemil rövanşı aldı.'}
+    r.ws=S.day;r.me=0;r.him=0;out.push(`📅 Yeni hafta başladı. ${r.ch<RIV_CH.length?`Sıradaki bölüm: <b>${RIV_CH[r.ch].t}</b>`:'Rövanş haftası: ödül '+fmt(2000)}`)}
+  else if(S.day-r.ws===1&&S.day>=4)out.push(`🥊 <b>Kurnaz Cemil</b> bu hafta da yarışa girdi. 7 günde kim daha çok kazanırsa çarşı onu konuşacak!`);
+  return out}
+function rivJump(c){if(!c||c.kind!=='seller'||c.story||c.fst||c.item.chest||S.day<4)return c;const it=c.item;if(!(it.rar||it.appear>=700))return c;if(R()>.25)return c;
+  const bid=r10(c.ask*rf(1.05,1.2));c.cemil=bid;c.ask=r10(bid*1.1);c.minAccept=Math.min(c.ask,r10(bid*1.03));c.patience=Math.max(1,c.patience-1);c.maxPat=Math.max(c.patience,c.maxPat);
+  c.line=`Karşıdaki Cemil Usta ${fmt(bid)} verdi ama önce sana sordum. Üstüne çıkarsan mal senin.`;return c}
+function rivAfter(c){if(!c||!c.cemil||c.rivDone)return;c.rivDone=1;const r=ensureRiv();
+  if(c.result==='deal'){r.beat++;stat('cemilBeat');setTimeout(()=>toast('💢 Cemil\'in elinden kaptın! "Bunu ödeteceğim, çırak!"'),900)}
+  else{r.steal++;r.him+=r10(c.item.appear*.4);setTimeout(()=>toast('😼 Cemil malı kaptı. Haftalık yarışta öne geçti!'),500)}}
+function renderRiv(){const r=ensureRiv(),left=rivLeft(),tot=Math.max(1,r.me+r.him),pm=r.me/tot*100,ch=Math.min(r.ch,RIV_CH.length);const lead=r.me>=r.him;
+  return `<div class="eve rivp"><div class="rivhead"><span class="rivface">😼</span><div style="min-width:0"><span class="lbl">RAKİP</span><h2 class="h">Kurnaz Cemil</h2><p class="sub" style="margin:0">Karşı dükkânın sahibi. Mezatlarda sana teklif yarıştırır, kapındaki satıcılara araya girer. Her hafta kim daha çok kazanırsa çarşı onu konuşur.</p></div></div>
+   <div class="ecard rivsc"><div class="rivrow"><span>Sen</span><b class="pos">${fmt(r.me)}</b></div><div class="rivbar"><i style="width:${pm}%"></i></div><div class="rivrow"><span>Cemil</span><b class="neg">${fmt(r.him)}</b></div>
+    <small>${S.day<3?'Yarış 3. günde başlıyor.':left>0?`${left} gün kaldı · ${lead?'Öndesin, bırakma!':'Gerideysin, gaza bas!'}`:'Hafta yarın sabah kapanıyor.'}</small></div>
+   <div class="ecard"><h3 class="eh">Hikâye</h3><div class="rivch">${RIV_CH.map((c,i)=>`<div class="${i<ch?'done':i===ch?'cur':''}"><i>${i<ch?'✓':i+1}</i><span>${c.t}</span></div>`).join('')}</div>
+    <p class="sub" style="margin:8px 0 0">${ch>=RIV_CH.length?'Cemil pes etti. Artık rövanş haftalarında 2.000 ₺ için yarışıyorsunuz.':r.last||'Bir haftayı kazanınca hikâye ilerler.'}</p></div>
+   <div class="ecard rivst"><div><small>Hafta</small><b>${r.win}G · ${r.loss}M</b></div><div><small>Kaptığın</small><b>${r.beat}</b></div><div><small>Kaptırdığın</small><b>${r.steal}</b></div><div><small>Mezat</small><b>${(S.rival||{}).w||0}G · ${(S.rival||{}).l||0}M</b></div></div>
+   <p class="sub" style="margin:0">İpucu: Cemil bazen değerli görünen <b>sahte</b> mallara da dalar. Üstüne çıkmadan önce incele!</p>
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+ACH.push(['keskin','🔎','Keskin Göz','Ekspertiz Masası\'nda 5/5 yap',()=>(S.st||{}).eksPerfect||0,1,1500],
+ ['eksper','🧐','Baş Eksper','Ekspertiz Masası\'nda 50 kez doğru bil',()=>(S.st||{}).eksOK||0,50,3000],
+ ['altin','✨','Altın Sayfa','Bir seriyi Altın Sayfa yap',()=>(S.st||{}).gold||0,1,2500],
+ ['cemil1','🥊','Rekabet Başladı','Haftalık yarışta Cemil\'i yen',()=>(S.riv||{}).win||0,1,1500],
+ ['cemil2','💢','Elinden Kap','Cemil\'in araya girdiği 5 malı al',()=>(S.riv||{}).beat||0,5,1500],
+ ['cemil4','👑','Çarşının Tek Hâkimi','Cemil hikâyesini bitir',()=>(S.riv||{}).ch||0,RIV_CH.length,5000]);
+function hubExtra(){const r=ensureRiv(),e=S.eks||{},nb=colNext();const eksOpen=S.day>=2;
+  return `<section class="grp"><h3>Koleksiyon ve Rekabet</h3>
+   <button class="erow2" style="--tc:#e8ab3c" data-act="goCol"><span class="ri" style="font-size:22px">📒</span><span class="rt"><b>Koleksiyon Defteri</b><small>${colTitle()}${nb?' · '+nb.s.n+' '+nb.n+'/'+nb.s.ks.length:''}</small></span><span class="rs">${colHave()}/${colTot()}</span><span class="chev">›</span></button>
+   ${eksOpen?`<button class="erow2" style="--tc:#5fb0f0" data-act="eve:eks"><span class="ri" style="font-size:22px">🔎</span><span class="rt"><b>Ekspertiz Masası</b><small>Gerçek mi sahte mi? Günlük mini oyun</small></span>${e.d!==S.day?'<span class="rs info">Hazır</span>':''}<span class="chev">›</span></button>`:'<div class="erow2 locked"><span class="ri" style="font-size:22px">🔎</span><span class="rt"><b>Ekspertiz Masası</b><small>2. günde açılır</small></span><span class="lk">🔒</span></div>'}
+   <button class="erow2" style="--tc:#d9473e" data-act="eve:riv"><span class="ri" style="font-size:22px">😼</span><span class="rt"><b>Kurnaz Cemil</b><small>${S.day<3?'Yarış 3. günde başlıyor':`Haftalık yarış · ${rivLeft()} gün kaldı`}</small></span>${S.day>=3?`<span class="rs ${r.me>=r.him?'ok':'warn'}">${r.me>=r.him?'Öndesin':'Gerideysin'}</span>`:''}<span class="chev">›</span></button></section>`}
+
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
 function catPool(){return CAT.filter(c=>!c.pack||c.free||packOwned(c.pack))}
 
