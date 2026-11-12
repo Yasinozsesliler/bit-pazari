@@ -1461,6 +1461,32 @@ input.kpIn{caret-color:transparent}
 .dc.got{background:radial-gradient(circle,#ffe7a8,#c8925a);animation:hopIn .4s ease-out}.dc.got img,.dc.got .tico{width:90%;height:90%;object-fit:contain}
 .dc.miss{background:#2a1c10;opacity:.75}.dc .mis{filter:grayscale(1);opacity:.6;font-size:16px}
 .dleg{display:flex;gap:4px;align-items:center}.dleg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-left:4px}.dleg i.h3{background:#d9473e}.dleg i.h0{background:#3a2716}
+/* gelir */
+.moncard{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;border:none;font:inherit;color:var(--fg);border-radius:16px;padding:12px 14px;background:linear-gradient(135deg,#3a2a08,#140e04);box-shadow:inset 0 0 0 1px rgba(255,215,122,.55),0 6px 18px rgba(0,0,0,.35)}
+.moncard .mch{display:flex;justify-content:space-between;align-items:center}
+.moncard .mck{font-size:10.5px;letter-spacing:1.6px;font-weight:900;color:#c9a35a}
+.moncard .mcpop{font-size:10px;font-weight:900;letter-spacing:.8px;color:#1a1204;background:#ffd77a;border-radius:6px;padding:2px 7px}
+.moncard .mcm{display:flex;justify-content:space-between;align-items:baseline;font-size:17px}.moncard .mcm b{color:#ffd77a}
+.moncard .mcm s{color:var(--muted);font-size:13px;margin-right:6px}
+.moncard small{color:#d9c8a6;font-size:12px;line-height:1.35;font-weight:600}
+.moncard.deal{background:linear-gradient(135deg,#5a1410,#1c0604);box-shadow:inset 0 0 0 1px rgba(255,120,100,.7),0 0 22px rgba(217,71,62,.3)}
+.moncard.deal .mck{color:#ffb3a8}.moncard.deal .mct{font-variant-numeric:tabular-nums;color:#fff;font-size:15px}
+.moncard.own{flex-direction:row;align-items:center;gap:10px;background:#1a1405;font-size:13px}.moncard.own b{color:#ffd77a}
+.moncard.hour{flex-direction:row;align-items:center;gap:10px;background:linear-gradient(135deg,#123048,#060f18);box-shadow:inset 0 0 0 1px rgba(95,176,240,.55)}
+.moncard.hour>span:first-child{font-size:24px}.moncard.hour>div{flex:1;min-width:0;display:flex;flex-direction:column}.moncard.hour b{font-size:14px}
+.moncard.hour.dim{opacity:.85}.hbarm{width:60px;height:6px;border-radius:3px;background:#0a1a28;overflow:hidden}.hbarm i{display:block;height:100%;background:#5fb0f0}
+.offlist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}.offlist span{font-size:11.5px;font-weight:800;padding:4px 8px;border-radius:8px;background:rgba(255,215,122,.12);color:#ffd77a}
+.offdeal{margin-top:10px;padding:8px 10px;border-radius:12px;background:rgba(217,71,62,.18);box-shadow:inset 0 0 0 1px rgba(217,71,62,.6);font-size:14px}.offdeal s{opacity:.6;margin-right:4px}.offdeal b{color:#ffd77a;font-size:17px}
+.monnudge{position:fixed;left:12px;right:12px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#2e2206,#0c0d10);box-shadow:inset 0 0 0 1px #8a6a1e,0 10px 30px rgba(0,0,0,.5);animation:hopIn .35s ease-out}
+.monnudge>span{font-size:22px}.monnudge>div{flex:1;display:flex;flex-direction:column}.monnudge b{color:#ffd77a;font-size:13.5px}.monnudge small{color:#c9b892;font-size:11.5px}
+.monnudge .mnx{border:none;background:none;color:#8a7a5a;font-size:16px;padding:4px}
+.st-card.deal{box-shadow:inset 0 0 0 2px #ff7a6a,0 0 30px rgba(217,71,62,.35)}
+.st-cd{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:12px;background:rgba(0,0,0,.3);font-size:13px}.st-cd b{font-variant-numeric:tabular-nums;font-size:18px;color:#fff}
+.st-px{display:flex;gap:10px;align-items:baseline;justify-content:center;margin:6px 0}.st-px s{opacity:.55;font-size:16px}.st-px b{font-size:28px;color:#ffd77a}
+.st-tbl{border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,215,122,.25);margin:4px 0 10px;font-size:12.5px}
+.st-tr{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:4px;padding:7px 10px;border-top:1px solid rgba(255,215,122,.12)}.st-tr span:not(:first-child),.st-tr b{text-align:center}
+.st-tr b{color:#ffd77a}.st-thd{border-top:none;background:rgba(0,0,0,.3);font-weight:900;font-size:11.5px;color:#c9a35a}
+.pktag.lock{cursor:pointer;text-decoration:underline}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1956,7 +1982,7 @@ function renderEveHub(){ensureShip();genLots();
      <div class="eh2r"><small>Net kazanç</small><b class="cnt ${net>=0?'pos':'neg'}" data-v="${net}" data-sign="1">0</b></div></div>
    <div class="sum3"><div><small>Nakit</small><b class="${cash>=0?'pos':'neg'}">${cash>=0?'+':'−'}${fmt(Math.abs(cash))}</b></div><div><small>Raf değeri</small><b class="${invD>=0?'pos':'neg'}">${invD>=0?'+':'−'}${fmt(Math.abs(invD))}</b></div><div><small>Kasa</small><b>${fmt(S.money)}</b></div></div>
    ${cash>0&&S.dblDay!==S.day&&adOk()?`<button class="b brass adwide" data-act="dblAd">📺 Bugünkü kârı 2 katına çıkar<small>+${fmt(dblBonus(cash))} ekstra</small></button>`:''}
-   ${giftRow()}
+   ${monCard()}${giftRow()}
    ${alerts.length?`<div class="alerts">${alerts.map(a=>`<button class="al ${a[0]}" data-act="eve:${a[2]}"><i></i>${a[1]}<span>›</span></button>`).join('')}</div>`:''}
    ${marketLine()}${ordersSec()}
    <section class="grp"><h3>Satış</h3>
@@ -2167,7 +2193,7 @@ function startDay(){
   const ex=S.pending.splice(0);let fineTot=0;
   if(ex.length){let fine=0,rep=0;ex.forEach(e=>{fine+=has('z4')?r10(e.fine/2):e.fine;rep+=e.rep});S.money-=fine;fineTot=fine;addRep(-rep);shake=true;sfx.bad();
     msgs.push(`🚨 <b>Zabıta kapıda!</b> Sattığın sahte ${ex.map(e=>e.n).join(', ')} ortaya çıktı. Ceza ${fmt(fine)}, itibar −${rep}.`)}
-  cirakGrant(msgs);S.stats={start:S.money,buys:0,sells:0,startInv:invValue()};save();
+  cirakGrant(msgs);S.stats={start:S.money,buys:0,sells:0,startInv:invValue()};save();setTimeout(()=>{try{monDaily()}catch(e){}},3500);
   if(msgs.length){const fb=ex.length&&adOk()?r10(fineTot/2):0;S.fineBack=fb;modal({icon:ex.length?'🚨':'📜',title:'Sabah haberleri',body:msgs.join('<br><br>'),btns:fb>0?[{t:'Dükkânı Aç',cls:'ghost',a:'closeModalNext'},{t:`📺 Cezanın yarısını geri al (${fmt(fb)})`,cls:'brass',a:'fineAd'}]:[{t:'Dükkânı Aç',cls:'brass',a:'closeModalNext'}]});render();return}
   nextCustomer()}
 
@@ -3283,9 +3309,9 @@ function adOk(){return (S.adD===S.day?(S.adN||0):0)<15}
 /* Geçiş reklamı yöneticisi: ilk 3 gün yok, iki geçiş arası ≥3 dk, ödüllü reklamdan sonra 3 dk yok, Premium'da hiç yok */
 let IST_T=0,RW_T=0;const IST_GAP=180000;
 function istReady(){const N=window.NATIVE;return !noAds()&&S.day>=4&&N&&N.isNative&&N.interstitial&&Date.now()-IST_T>=IST_GAP&&Date.now()-RW_T>=IST_GAP}
-function istMaybe(cb){if(!istReady()){cb&&cb();return}IST_T=Date.now();T('interstitial_show',{});NATIVE.interstitial().catch(()=>{}).finally(()=>{try{AC&&AC.resume()}catch(e){}cb&&cb()})}
+function istMaybe(cb){if(!istReady()){cb&&cb();return}IST_T=Date.now();T('interstitial_show',{});NATIVE.interstitial().catch(()=>{}).finally(()=>{try{AC&&AC.resume()}catch(e){}cb&&cb();try{monInter()}catch(e){}})}
 function adUse(){if(S.adD!==S.day){S.adD=S.day;S.adN=0}S.adN++}
-function adShow(cb0,label,f){RW_T=Date.now();const lb=String(label||'').slice(0,40);T('ad_offer_click',{placement:lb});const cb=()=>{T('ad_reward',{placement:lb,premium:noAds()?1:0});cb0()};if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
+function adShow(cb0,label,f){RW_T=Date.now();const lb=String(label||'').slice(0,40);T('ad_offer_click',{placement:lb});const cb=()=>{T('ad_reward',{placement:lb,premium:noAds()?1:0});cb0();try{monRewarded()}catch(e){}};if(noAds()){closeModal();try{sfx.ok()}catch(e){}cb();return}return adShow0(cb,label,f)}
 function adShow0(cb,label){closeModal();const el=document.createElement('div');el.className='adbox';el.innerHTML=`<div class="adcard"><span class="adtag">REKLAM</span><b>${label||'Ödüllü reklam'}</b><p>Uygulamada burada 15 saniyelik ödüllü reklam oynayacak. Şimdilik test modu.</p><div class="adbar"><i></i></div><small id="adT">5</small></div>`;
   $('#app').appendChild(el);let n=5;const iv=setInterval(()=>{n--;const t=$('#adT');if(t)t.textContent=n;if(n<=0){clearInterval(iv);el.remove();sfx.ok();cb()}},1000)}
 /* ---- daily events ---- */
@@ -4067,6 +4093,9 @@ document.addEventListener('click',e=>{
   if(a==='store'){storeOpen();return}
   if(a==='storeBack'){screen=storeFrom==='store'?'menu':storeFrom;sfx.tap();render();return}
   if(a.startsWith('buy:')){iapBuy(a.slice(4));return}
+  if(a.startsWith('offerGo:')){T('offer_click',{r:a.slice(8)});storeOpen();return}
+  if(a.startsWith('offerNo:')){T('offer_dismiss',{r:a.slice(8)});closeModal();return}
+  if(a==='hourStart'){hourStart();return}
   if(a==='iapRestore'){iapRestore();return}
   if(a==='menuNew'){screen='name';sfx.tap();render();setTimeout(()=>{const i=$('#shopIn');if(i)i.focus()},50);return}
   if(a==='menuBack'){screen='menu';sfx.tap();render();return}
@@ -4134,28 +4163,28 @@ const METAL=new Set([...WATCH,...JEWEL,'sikke','madalya','kupa','semaver','cezve
 const ENT_KEY='bitpazari.ent';
 let ENT=(()=>{try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{}}catch(e){return {}}})();
 function entSave(){try{localStorage.setItem(ENT_KEY,JSON.stringify(ENT))}catch(e){}}
-const IAP={premium:'com.ozsstudio.bitpazari.premium',cirak:'com.ozsstudio.bitpazari.cirak',tarih:'com.ozsstudio.bitpazari.tarih'};
+const IAP={premium:'com.ozsstudio.bitpazari.premium',firsat:'com.ozsstudio.bitpazari.premium_firsat',cirak:'com.ozsstudio.bitpazari.cirak',tarih:'com.ozsstudio.bitpazari.tarih'};
 const IAP_K=Object.fromEntries(Object.entries(IAP).map(([k,v])=>[v,k]));
 const IAP_SIM=/[?&]iapsim/.test(location.search);
 function iapLive(){const N=window.NATIVE;return !(N&&N.isNative)||!!N.iapOn}
 const PACK_PREVIEW=false;
 function packOwned(id){return PACK_PREVIEW||!iapLive()&&!IAP_SIM&&!!(window.NATIVE&&NATIVE.isNative)||!!(ENT.premium||ENT[id])||!!(S.packs&&S.packs[id])}
-function noAds(){return !!ENT.premium}
+function noAds(){return !!ENT.premium||hourOn()}
 let PROD={},PROD_T=0,storeFrom='menu',storeBusy=0;
-function entApply(ids){TU('premium',ids.some(i=>IAP_K[i]==='premium')?'yes':'no');const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});
+function entApply(ids){TU('premium',ids.some(i=>IAP_K[i]==='premium')?'yes':'no');const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});if(want.firsat)want.premium=1;
   const ch=JSON.stringify(want)!==JSON.stringify(ENT);if(ch){ENT=want;entSave();render()}}
-window.BP_IAP_UPDATE=(pid,ok)=>{const k=IAP_K[pid];if(!k)return;if(ok&&!ENT[k]){ENT[k]=1;entSave();iapThanks(k)}else if(!ok&&ENT[k]){delete ENT[k];entSave()}render()};
+window.BP_IAP_UPDATE=(pid,ok)=>{const k=IAP_K[pid];if(!k)return;if(ok&&!ENT[k]){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k)}else if(!ok&&ENT[k]){delete ENT[k];entSave()}render()};
 function iapSync(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;N.iap.owned().then(entApply).catch(()=>{})}
 function iapLoad(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;if(Date.now()-PROD_T<6e4&&Object.keys(PROD).length)return;
   N.iap.products(Object.values(IAP)).then(ps=>{PROD_T=Date.now();ps.forEach(p=>PROD[p.identifier]=p);if(screen==='store')render()}).catch(()=>{})}
 function iapThanks(k){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}
-  toast(k==='premium'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':k==='cirak'?'Çırak Paketi açıldı!':'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.');if(k==='premium'||k==='cirak')setTimeout(()=>cirakGrant(),700)}
+  toast(k==='premium'||k==='firsat'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':k==='cirak'?'Çırak Paketi açıldı!':'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.');if(k==='premium'||k==='firsat'||k==='cirak')setTimeout(()=>cirakGrant(),700);if(k==='premium'||k==='firsat')T('premium_buy',{k})}
 async function iapBuy(k){if(storeBusy)return;const N=window.NATIVE;
-  if(IAP_SIM){ENT[k]=1;entSave();iapThanks(k);render();return}
+  if(IAP_SIM){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k);render();return}
   if(!(N&&N.iapOn&&N.iap)){toast('Satın alma yalnızca App Store sürümünde.');return}
   storeBusy=1;render();let r='error';try{r=await N.iap.buy(IAP[k])}catch(e){}storeBusy=0;
   T('iap_result',{product:k,result:r});
-  if(r==='ok'){ENT[k]=1;entSave();iapThanks(k);TU('premium',ENT.premium?'yes':'no')}
+  if(r==='ok'){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k);TU('premium',ENT.premium?'yes':'no')}
   else if(r==='pending')toast('Satın alma onay bekliyor. Onaylanınca otomatik açılacak.');
   else if(r==='error')toast('Satın alma tamamlanamadı. Biraz sonra tekrar dene.');
   render()}
@@ -4174,12 +4203,14 @@ function renderStore(){
    <header class="st-head"><button class="st-back" data-act="storeBack" aria-label="Geri"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div><small>BİT PAZARI</small><h1>Mağaza</h1></div></header>
    <div class="st-list">
+    ${storeDealCard()}
     <section class="st-card prem">
      <span class="st-flag">EN İYİ FIRSAT</span>
      <div class="st-ic">👑</div>
      <h2>Premium</h2>
      <p class="st-lead">Hepsi bir arada, tek seferlik.</p>
      <ul><li>📜 <b>Tarih Paketi</b> ve 🧢 <b>Çırak Paketi</b> dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 <b>Reklamsız oyun:</b> geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
+     ${storeTable()}
      ${btn('premium')}
     </section>
     <section class="st-card">
@@ -4306,7 +4337,7 @@ function renderCol(){const tot=colTot(),have=colHave(),pc=have/Math.max(1,tot)*1
     <div class="rlegend">${RN.map((n,i)=>`<span><i style="background:${RC[i]}"></i>${n}</span>`).join('')}</div></div>
    <p class="sub" style="margin:0">Aldığın her ürün deftere işlenir. Seriyi tamamla, ödülü ve kalıcı satış bonusunu kap. Bir serinin tüm parçalarını <b>nadir ya da üstü</b> kalitede toplarsan sayfa <b>Altın Sayfa</b> olur, ödülün 1,5 katını alırsın.${nb?`<br>En yakın seri: <b>${nb.s.n}</b> (${nb.n}/${nb.s.ks.length})`:''}</p>
    ${SERIES.map(s=>{const n=s.ks.filter(k=>S.col&&S.col[k]!=null).length,done=!!(S.colDone&&S.colDone[s.id]),gold=!!S.colGold[s.id],gn=s.ks.filter(k=>S.col&&S.col[k]>=1).length;
-     return `<div class="ser${done?' done':''}${gold?' gold':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${gold?'✨ ':''}${s.n}${s.pack?' <em class="pktag">📜 Tarih Paketi</em>':''}</b><small>${s.d}</small></div><span class="sern">${gold?'Altın Sayfa':done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
+     return `<div class="ser${done?' done':''}${gold?' gold':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${gold?'✨ ':''}${s.n}${s.pack?(packOwned(s.pack)?' <em class="pktag">📜 Tarih Paketi</em>':' <em class="pktag lock" data-act="store">🔒 Tarih Paketi · Aç</em>'):''}</b><small>${s.d}</small></div><span class="sern">${gold?'Altın Sayfa':done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
       <div class="slots">${s.ks.map(k=>{const got=S.col&&S.col[k]!=null,r=got?S.col[k]:0,c=catOf(k);return `<div class="slot${got?' got':''}" style="--rc:${RC[r]}" title="${got?c.n:'?'}"><span class="sic">${icon({k,i:c.i,cond:4,id:'col'+k,known:{}})}</span><small>${got?c.n:'???'}</small>${got&&r?`<i class="sr">${RN[r]}</i>`:''}</div>`}).join('')}</div>
       <div class="serf">${gold?`<span class="pos">✓ ${s.bonus} · Altın Sayfa ödülü alındı</span>`:done?`<span class="pos">✓ ${s.bonus}</span><span class="gnext">Altın Sayfa: ${gn}/${s.ks.length} nadir · +${fmt(r10(s.rw*1.5))}</span>`:`<span>Ödül: <b>${fmt(s.rw)}</b> + ${s.bonus.toLocaleLowerCase('tr-TR')}</span>`}</div></div>`}).join('')}`}
 
@@ -4600,7 +4631,7 @@ ACH.push(['hurda','💎','Hurdadan Hazine','Hurda Kasası\'ndan efsanevi parça 
 
 const colAdd1=colAdd;colAdd=function(it){colAdd1(it);try{evtCol(it)}catch(e){}};
 /* test kancası: yalnızca ?bptest ile */
-if(/[?&]bptest/.test(location.search))window.BP_TEST={S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
+if(/[?&]bptest/.test(location.search))window.BP_TEST={MON:()=>MON,monRewarded:()=>monRewarded(),offer:r=>offerOpen(r,true),dealHos:()=>{MON.hos=Date.now();monSave()},inter:()=>monInter(),S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
 
 
 /* ===================== 1.4.0: Ev Boşaltma Mezatı · Rehin Masası · Garaj · Güvenlik · Anadolu Kazısı ===================== */
@@ -4799,6 +4830,79 @@ ACH.push(['evbos','🏚️','Ev Boşaltıcı','3 Ev Boşaltma Mezatı kazan',()=
  ['klasik','🚗','Klasikçi','Bir aracı baştan sona restore edip sat',()=>(S.st||{}).garDone||0,1,4000],
  ['bekci','🛡️','Mahalle Bekçisi','Bir hırsız yakalat',()=>(S.st||{}).thiefCaught||0,1,1500],
  ['arkeolog','🏛️','Gönüllü Arkeolog','Müzeye 5 eser teslim et',()=>(S.st||{}).eser||0,5,3000]);
+
+
+/* ===================== Gelir: teklif anları · Esnaf Saati · Hoş Geldin / Yılbaşı Fırsatı (YOL modeli) ===================== */
+var MON=(function(){try{return JSON.parse(localStorage.getItem('bitpazari.mon')||'{}')||{}}catch(e){return {}}})();
+var MON_S={ads:0,shown:false};
+var MON_H=3600e3;
+function monSave(){try{localStorage.setItem('bitpazari.mon',JSON.stringify(MON))}catch(e){}}
+function isPrem(){return !!ENT.premium}
+function hourOn(){return !!MON.hb&&Date.now()<MON.hb}
+function fmtLeft(ms){const s=Math.max(0,Math.floor(ms/1000)),d=Math.floor(s/86400),p=n=>String(n).padStart(2,'0');return (d?d+' gün ':'')+p(Math.floor(s%86400/3600))+':'+p(Math.floor(s%3600/60))+':'+p(s%60)}
+/* süreli fırsat: Premium'un aynısı, indirimli ayrı ürün. Pencereler gerçek, sayaç gerçek. */
+const DEAL_YB=['2026-12-20','2027-01-01'];
+function dealNow(){if(isPrem())return null;const now=Date.now();
+  const d=new Date(),t=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  if(t>=DEAL_YB[0]&&t<=DEAL_YB[1])return{k:'yilbasi',n:'Yılbaşı Fırsatı',ends:new Date(DEAL_YB[1]+'T23:59:59').getTime()};
+  if(MON.hos&&now<MON.hos+72*MON_H)return{k:'hos',n:'Hoş Geldin Fırsatı',ends:MON.hos+72*MON_H};return null}
+function dealReady(){const N=window.NATIVE;return !(N&&N.isNative)||!!priceOf('firsat')}
+function dealStartHos(){if(MON.hos||isPrem()||S.day<3||!iapLive()||!dealReady())return;MON.hos=Date.now();monSave();T('deal_start',{k:'hos'});
+  setTimeout(()=>{if(modalEl)return;modal({icon:'⏳',title:'Hoş Geldin Fırsatı!',body:`Çarşıya hoş geldin! Sadece <b>72 saat</b> boyunca Premium indirimli: Tarih Paketi, Çırak Paketi, reklamsız oyun ve gelecek tüm paketler.<div class="offdeal"><s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺149,99'}</b></div>`,btns:[{t:'Sonra',cls:'ghost',a:'closeModal'},{t:'Fırsatı Gör',cls:'brass',a:'store'}]})},2500)}
+/* teklif penceresi: oturumda en fazla bir; sıradan teklifler arası 20 saat; kilometre taşları bir kez ve beklemeye takılmaz */
+const OFFER_TX={
+ reklam:()=>['Reklamlardan sıkıldın mı?','Premium ile ödüllü reklam bonusları anında, videosuz gelir. Geçiş reklamı da yok.'],
+ reklam10:()=>[`${MON.rwTot||10} ödüllü reklam izledin`,'Premium ile bundan sonra bütün bonuslar tek bir video izlemeden gelir. Tek seferlik alım, abonelik yok.'],
+ gun7:()=>['Bir haftadır çarşıdasın!','Dükkânın büyüyor. Premium ile Tarih Paketi\'nin 42 eşyası, Çırak Necati ve reklamsız oyun senin.'],
+ seri:()=>['İlk serini tamamladın!','Koleksiyoncu ruhun var. Tarih Paketi 6 yeni seri ve 42 eşya getiriyor, Premium\'da hepsi dahil.'],
+ cemil:()=>['Cemil\'i yendin!','Çarşının yükselen yıldızı sensin. Premium ile reklamsız ve bütün paketlerle devam et.'],
+ grand:()=>['Büyük Mezat senin!','Büyük oynuyorsun. Premium ile Tarih Paketi\'nin efsanevi kılıç ve miğferleri de mezatlarda.'],
+ saat:()=>['Esnaf Saati bitti','Reklamsız bir saat nasıldı? Premium ile her gün böyle.']};
+function offerOpen(r,mode,tries){if(isPrem()||!iapLive()||screen!=='game')return;
+  if(mode==='milestone'?MON_S.shown:(!mode&&(MON_S.shown||Date.now()-(MON.last||0)<20*MON_H)))return;
+  if(modalEl||document.querySelector('.viewer')||(AU&&!AU.done)||(HA&&!HA.done)){if((tries||0)<8)setTimeout(()=>offerOpen(r,mode,(tries||0)+1),2500);return}
+  MON_S.shown=true;MON.last=Date.now();monSave();T('offer_show',{r});
+  const tx=OFFER_TX[r](),deal=dealNow();
+  modal({icon:'<span class="bigtrophy">👑</span>',title:tx[0],body:`${tx[1]}<div class="offlist"><span>📜 Tarih Paketi</span><span>🧢 Çırak Paketi</span><span>🚫 Reklamsız</span><span>🎁 Videosuz bonus</span></div>${deal?`<div class="offdeal">⏳ ${deal.n}: <s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺149,99'}</b><br><small>${fmtLeft(deal.ends-Date.now())} kaldı</small></div>`:''}`,
+    btns:[{t:'Şimdi değil',cls:'ghost',a:'offerNo:'+r},{t:deal?'Fırsatı Gör':'Premium\'a Bak',cls:'brass',a:'offerGo:'+r}]})}
+function milestone(r){if(isPrem()||MON['m_'+r]||MON_S.shown)return;MON['m_'+r]=1;monSave();setTimeout(()=>offerOpen(r,'milestone'),1800)}
+function monRewarded(){if(isPrem()||hourOn())return;MON_S.ads++;MON.rwTot=(MON.rwTot||0)+1;
+  if(!MON.hak&&!hourOn()){MON.hn=(MON.hn||0)+1;if(MON.hn>=10){MON.hn=0;MON.hak=1;monSave();T('hour_earned',{});setTimeout(()=>toast('⏰ Esnaf Saati kazandın! Akşam ekranından 1 saatlik reklamsız oyunu başlat.'),1300);return}}
+  MON.rw10=(MON.rw10||0)+1;
+  if(MON.rw10>=10&&Date.now()-(MON.w10||0)>7*24*MON_H&&!MON_S.shown){MON.w10=Date.now();MON.rw10=0;monSave();setTimeout(()=>offerOpen('reklam10','milestone'),1500);return}
+  monSave();if(MON_S.ads===3)setTimeout(()=>offerOpen('reklam'),1500)}
+function hourStart(){if(!MON.hak||hourOn())return;MON.hak=0;MON.hb=Date.now()+MON_H;MON.ho=0;monSave();T('hour_start',{});sfx.ok();burst(20);toast('⏰ Esnaf Saati başladı: 1 saat reklamsız, bonuslar videosuz!');render()}
+function hourCheck(){if(MON.hb&&!hourOn()&&!MON.ho){MON.ho=1;monSave();offerOpen('saat','milestone')}}
+setInterval(()=>{try{if(screen==='game')hourCheck()}catch(e){}},30000);
+/* geçiş reklamından sonra günde en fazla bir küçük not */
+function monInter(){if(isPrem()||!iapLive()||Date.now()-(MON.gd||0)<24*MON_H)return;MON.gd=Date.now();monSave();T('nudge_show',{});
+  const el=document.createElement('div');el.className='monnudge';el.innerHTML='<span>👑</span><div><b>Reklamsız oyna</b><small>Premium: reklam yok, bonuslar videosuz</small></div><button class="b brass sm" data-act="store">Bak</button><button class="mnx" aria-label="Kapat">✕</button>';
+  el.querySelector('.mnx').onclick=()=>el.remove();el.querySelector('[data-act=store]').addEventListener('click',()=>el.remove());$('#app').appendChild(el);setTimeout(()=>el.remove(),9000)}
+/* günlük kontroller (sabah) */
+function monDaily(){if(S.day>=7)milestone('gun7');if((S.st||{}).series)milestone('seri');if((S.riv||{}).win)milestone('cemil');if((S.st||{}).grand)milestone('grand');dealStartHos()}
+/* akşam ekranı kartları */
+function monCard(){if(!iapLive())return'';
+  if(isPrem())return `<div class="moncard own"><span>👑</span><b>Premium aktif · Teşekkürler!</b></div>`;
+  const deal=dealNow();let h='';
+  if(deal&&dealReady())h+=`<button class="moncard deal" data-act="store"><div class="mch"><span class="mck">⏳ ${deal.n.toLocaleUpperCase('tr-TR')}</span><b class="mct" data-ends="${deal.ends}">${fmtLeft(deal.ends-Date.now())}</b></div><div class="mcm"><b>Premium</b><span><s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺149,99'}</b></span></div><small>Tarih + Çırak Paketi, reklamsız oyun, gelecek tüm paketler</small></button>`;
+  else h+=`<button class="moncard" data-act="store"><div class="mch"><span class="mck">PAKETLER</span><span class="mcpop">EN İYİ DEĞER</span></div><div class="mcm"><b>👑 Premium</b><span>${priceOf('premium')||''}</span></div><small>Tarih Paketi, Çırak Paketi, reklamsız oyun ve gelecek tüm paketler. Tek seferlik.</small></button>`;
+  if(MON.hak)h+=`<button class="moncard hour" data-act="hourStart"><span>⏰</span><div><b>Esnaf Saati hazır!</b><small>1 saat reklamsız oyna, bonuslar videosuz</small></div><span class="rs ok">Başlat</span></button>`;
+  else if(hourOn())h+=`<div class="moncard hour"><span>⏰</span><div><b>Esnaf Saati sürüyor</b><small class="mct" data-ends="${MON.hb}">${fmtLeft(MON.hb-Date.now())}</small></div></div>`;
+  else if(adOk()&&(MON.hn||0)>0)h+=`<div class="moncard hour dim"><span>⏰</span><div><b>Esnaf Saati · ${MON.hn||0}/10</b><small>10 ödüllü reklam izle, 1 saat reklamsız oyna</small></div><div class="hbarm"><i style="width:${(MON.hn||0)*10}%"></i></div></div>`;
+  return h}
+setInterval(()=>{document.querySelectorAll('.mct[data-ends]').forEach(el=>{el.textContent=fmtLeft(+el.dataset.ends-Date.now())})},1000);
+/* mağazadaki fırsat kartı ve ücretsiz/premium tablosu */
+function storeDealCard(){const deal=dealNow();if(!deal||!dealReady())return'';
+  return `<section class="st-card prem deal"><span class="st-flag">⏳ ${deal.n.toLocaleUpperCase('tr-TR')}</span><div class="st-ic">👑</div><h2>Premium · İndirimli</h2><p class="st-lead">Premium'un aynısı, sadece bu süre boyunca indirimli.</p>
+   <div class="st-cd"><span>Kalan süre</span><b class="mct" data-ends="${deal.ends}">${fmtLeft(deal.ends-Date.now())}</b></div>
+   <div class="st-px"><s>${priceOf('premium')||'₺249,99'}</s><b>${priceOf('firsat')||'₺149,99'}</b></div>
+   <button class="st-buy gold" data-act="buy:firsat" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':'Fırsatı Yakala'}</button></section>`}
+function storeTable(){return `<div class="st-tbl"><div class="st-tr st-thd"><span></span><span>Ücretsiz</span><span>👑 Premium</span></div>
+  <div class="st-tr"><span>Geçiş reklamı</span><span>Var</span><b>Yok</b></div>
+  <div class="st-tr"><span>Ödüllü bonuslar</span><span>Video ile</span><b>Anında</b></div>
+  <div class="st-tr"><span>Tarih Paketi (42 eşya)</span><span>—</span><b>✓</b></div>
+  <div class="st-tr"><span>Çırak Paketi</span><span>—</span><b>✓</b></div>
+  <div class="st-tr"><span>Gelecek paketler</span><span>—</span><b>✓</b></div></div>`}
 
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
 function catPool(){return CAT.filter(c=>(!c.pack||c.free||packOwned(c.pack))&&(!c.ev||evtOn(c.ev)))}
