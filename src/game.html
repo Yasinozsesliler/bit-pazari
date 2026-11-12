@@ -1420,6 +1420,47 @@ input.kpIn{caret-color:transparent}
 .stallul{margin:0 0 4px;padding-left:2px;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
 .pcard.grand{box-shadow:inset 0 0 0 2px #ffd77a,0 0 20px rgba(255,215,122,.22)}
 .pgrand{border-radius:10px;padding:7px 10px;margin:2px 0;font-size:11.5px;font-weight:800;letter-spacing:.3px;background:linear-gradient(90deg,#fff1c9,#fff8e6);color:#7a4a08;box-shadow:inset 0 0 0 1px #e8b84a}
+/* 1.4.0 */
+.houseart,.rehinart,.garart,.secart,.digart{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:30px;background:linear-gradient(180deg,#3a2a18,#160e06);box-shadow:inset 0 0 0 1px rgba(200,146,90,.45)}
+.rehinart{background:linear-gradient(180deg,#173a2a,#08170f);box-shadow:inset 0 0 0 1px rgba(120,209,162,.45)}
+.garart{background:linear-gradient(180deg,#2a2e33,#101214);box-shadow:inset 0 0 0 1px rgba(154,161,168,.5)}
+.secart{background:linear-gradient(180deg,#16304a,#08121c);box-shadow:inset 0 0 0 1px rgba(95,176,240,.45)}
+.digart{background:linear-gradient(180deg,#4a2614,#1c0d05);box-shadow:inset 0 0 0 1px rgba(208,88,42,.5)}
+.hcard{gap:10px}.hcard.closed{opacity:.6}
+.hhead{display:flex;gap:10px;align-items:center;justify-content:space-between}.hhead small{display:block;color:var(--muted);font-size:12px;font-weight:600}
+.hnote{margin:0;font-size:13px;font-style:italic;color:#e8d9bf;line-height:1.4}
+.hsils{display:flex;gap:8px}.hsilc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.hsilc small{font-size:10.5px;color:var(--muted);line-height:1.25}
+.hsil{width:68px;height:68px;border-radius:14px;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#3a2c1c,#120c06);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.hsil img,.hsil .tico{width:62px;height:62px;object-fit:contain;filter:brightness(0) drop-shadow(0 0 6px rgba(255,215,122,.35));opacity:.9}
+.hsil.open img,.hsil.open .tico{filter:none;opacity:1}
+.hest{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}.hest b{color:var(--fg)}
+.pbtns2{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}.pbtns2 .b.brass{flex:1}
+.hlive{gap:10px}.htbar{height:8px;border-radius:4px;background:#2a1d13;overflow:hidden}.htbar i{display:block;height:100%;background:linear-gradient(90deg,var(--pom),#ffd77a);transition:width .1s linear}
+.hrow2{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}.hlead.you{color:var(--mint);font-weight:800}
+.hbig{text-align:center}.hbig small{display:block;font-size:11px;color:var(--muted);letter-spacing:1px}.hbig b{font-size:32px;color:#ffd77a}
+.hfeed{display:flex;flex-direction:column;gap:4px}.hfrow{display:flex;justify-content:space-between;font-size:13px;padding:6px 10px;border-radius:10px;background:#1d140d}.hfrow.me{background:rgba(120,209,162,.12)}
+.hincs{display:flex;gap:8px}.hincs .b{flex:1}
+.hopen{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hop{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:14px;background:#1d140d;box-shadow:inset 0 0 0 1px var(--line);text-align:center;opacity:0;transform:scale(.6) rotateY(90deg);animation:hopIn .5s cubic-bezier(.2,1.4,.4,1) forwards}
+.hop img,.hop .tico{width:58px;height:58px;object-fit:contain}.hop small{font-size:10.5px;line-height:1.2}.hop .rtag{position:absolute;top:4px;right:4px;font-size:9px}.hop em{font-size:9.5px;color:#ff9d93;font-style:normal}
+@keyframes hopIn{to{opacity:1;transform:none}}
+.rehc{gap:10px}.rehh{display:flex;gap:10px;align-items:center}.rehic{flex:none;width:56px;height:56px;border-radius:14px;display:grid;place-items:center;background:#241a10;box-shadow:inset 0 0 0 1px var(--line)}
+.rehic img,.rehic .tico{width:50px;height:50px;object-fit:contain}.rehh small{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:12px;font-weight:600}
+.rhdue{font-size:12px;color:#ffd77a;white-space:nowrap}
+.garcard{gap:10px}.garcar{flex:none;width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-size:34px;background:#241a10}
+.garcar.dirty{filter:grayscale(1) sepia(.6) brightness(.8)}
+.garstage{align-items:center;text-align:center;gap:8px}.garcar.big{width:auto;height:auto;font-size:96px;background:none;filter:grayscale(calc(1 - var(--pr))) sepia(calc((1 - var(--pr))*.7)) brightness(calc(.75 + var(--pr)*.3))}
+.garstage .capbar{width:100%}
+.garrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}.garrow:last-of-type{border-bottom:none}
+.gq{font-size:12px}.gq.q1{color:#ffb38a}.gq.q2{color:#a6e6c4}.gq.q3{color:#ffd77a}
+.dgrid{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:4px;padding:8px;border-radius:16px;background:linear-gradient(180deg,#5a3a1c,#3a2410);box-shadow:inset 0 0 0 1px rgba(0,0,0,.4)}
+.dc{aspect-ratio:1;border:none;border-radius:8px;background:radial-gradient(circle at 40% 35%,#8a6234,#5e3e1e);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25);display:grid;place-items:center;padding:0;font-size:20px}
+.dc:not(:disabled):active{transform:scale(.92)}
+.dc.dug{box-shadow:inset 0 3px 6px rgba(0,0,0,.45)}.dc.h0{background:#3a2716}.dc.h1{background:#6b3b1c}.dc.h2{background:#a8471f}.dc.h3{background:#d9473e}
+.dc.got{background:radial-gradient(circle,#ffe7a8,#c8925a);animation:hopIn .4s ease-out}.dc.got img,.dc.got .tico{width:90%;height:90%;object-fit:contain}
+.dc.miss{background:#2a1c10;opacity:.75}.dc .mis{filter:grayscale(1);opacity:.6;font-size:16px}
+.dleg{display:flex;gap:4px;align-items:center}.dleg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-left:4px}.dleg i.h3{background:#d9473e}.dleg i.h0{background:#3a2716}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1899,7 +1940,7 @@ const TX={buy:'item_buy',sell:'item_sell',aus:'auction_sell',gift:'gift_cash'};
 function logT(t,it,amt){if(TX[t])T(TX[t],{item:String(it.k||it.n||'').slice(0,40),amount:Math.round(amt||0),pack:it.pack||'base'});(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
 const certTag=it=>it.cert?(it.cert.auth?`<span class="slab">ONAY ${it.cert.grade}</span>`:'<span class="chip bad">Replika</span>'):it.lab?'<span class="chip warn">Lab\'da</span>':'';
 const dayStars=n=>n<=0?1:n<250?2:n<700?3:n<1400?4:5;
-function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();return renderEveHub()}
+function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();if(eve==='house')return renderHouse();if(eve==='houseLive')return renderHouseLive();if(eve==='rehin')return renderRehin();if(eve==='gar')return renderGar();if(eve==='sec')return renderSec();if(eve==='dig')return renderDig();return renderEveHub()}
 function dblBonus(cash){return r10(Math.min(cash,2000+S.day*250))}
 function renderEveHub(){ensureShip();genLots();
   const cash=S.money-S.stats.start,invNow=invValue(),invD=invNow-(S.stats.startInv||0),net=cash+invD,st=dayStars(net);
@@ -1925,7 +1966,7 @@ function renderEveHub(){ensureShip();genLots();
    <section class="grp"><h3>Atölye</h3>
     ${R('lab','lab','#5fb0f0','ONAY Lab','Sertifikayla değer kat',lab?`${lab} bekliyor`:'')}
     ${R('repair','tamir','#9aa1a8','Tamir Atölyesi','Yıpranmış malı onar',rp?`${rp} ürün`:'')}</section>
-   ${hubExtra()}${hubExtra2()}
+   ${hubExtra()}${hubExtra3()}${hubExtra2()}
    <section class="grp"><h3>İşletme</h3>
     ${R('bank','banka','#e8ab3c','Çarşı Bankası','Birikim ve kredi',B.loan?`Borç ${fmt(B.loan)}`:B.sav?fmt(B.sav):'',B.loan&&B.due-S.day<=1?'warn':'')}
     ${R('shop','dukkan','#78d1a2','Dükkân ve Görünüm','Geliştir, süsle',`${S.inv.length}/${invCap()} raf`)}
@@ -2122,7 +2163,7 @@ function doRepair(id,free){const x=itemById(id);if(!x)return;const c=free?0:repC
 
 function startDay(){
   const yd=(S.log||[]).reduce((t,l)=>t+(l.t==='gift'?0:(+l.amt||0)),0);S.day++;S.ci=0;S.phase='shop';S.log=[];eve='hub';AU=null;
-  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),muzeMorning(),stallMorning(),panoMorning(yd),evtMorning(),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
+  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),muzeMorning(),stallMorning(),panoMorning(yd),evtMorning(),rehinMorning(),secMorning(),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
   const ex=S.pending.splice(0);let fineTot=0;
   if(ex.length){let fine=0,rep=0;ex.forEach(e=>{fine+=has('z4')?r10(e.fine/2):e.fine;rep+=e.rep});S.money-=fine;fineTot=fine;addRep(-rep);shake=true;sfx.bad();
     msgs.push(`🚨 <b>Zabıta kapıda!</b> Sattığın sahte ${ex.map(e=>e.n).join(', ')} ortaya çıktı. Ceza ${fmt(fine)}, itibar −${rep}.`)}
@@ -3971,6 +4012,23 @@ document.addEventListener('click',e=>{
   if(a==='stallUp'){stallAct('up');return}
   if(a.startsWith('stallIn:')){stallIn(a.slice(8));return}
   if(a.startsWith('stallOut:')){stallOut(a.slice(9));return}
+  if(a.startsWith('hGo:')){hGo(a.slice(4));return}
+  if(a.startsWith('hPeekAd:')){hPeekAd(a.slice(8));return}
+  if(a==='hBid'){hBid(1);return}
+  if(a.startsWith('hBid:')){hBid(+a.slice(5));return}
+  if(a==='hQuit'){hQuit();return}
+  if(a.startsWith('rhExp:')){rhAct('exp',a.slice(6));return}
+  if(a.startsWith('rhNo:')){rhAct('no',a.slice(5));return}
+  if(a.startsWith('rhGive:')){const q=a.slice(7).split(':');rhAct('give',q[0],q[1]);return}
+  if(a.startsWith('garBuy:')){garAct('buy',a.slice(7));return}
+  if(a.startsWith('garWork:')){garAct('work',a.slice(8));return}
+  if(a==='garSell'){garAct('sell');return}
+  if(a==='garAd'){garAd();return}
+  if(a.startsWith('secBuy:')){secBuy(a.slice(7));return}
+  if(a==='digStart'){digStart();return}
+  if(a==='digAd'){digAd();return}
+  if(a==='digClose'){DG=null;sfx.tap();render();return}
+  if(a.startsWith('dig:')){digTap(a.slice(4));return}
   if(a==='mapClose'){const v=$('#mapv');if(v)v.remove();sfx.tap();render();return}
   if(a.startsWith('mapSel:')){MAPSEL=a.slice(7);sfx.tap();mapRender();return}
   if(a.startsWith('mapBuy:')){mapBuy(a.slice(7));return}
@@ -3994,7 +4052,7 @@ document.addEventListener('click',e=>{
   if(a==='goSkills'){b.remove&&b.classList.contains('lvlup')&&b.remove();closeModal();S.tab='skills';sfx.tap();render();return}
   if(a==='persuade'){persuade();return}
   if(a.startsWith('eve:')&&!unlocked(a.slice(4))){toast(UNL[a.slice(4)]+'. günde açılacak');sfx.bad();return}
-  if(a.startsWith('eve:')){if(AU&&!AU.done){toast('Mezat bitene kadar bekle');return}if(AU&&AU.done&&istReady()){AU=null;const ev=a.slice(4);istMaybe(()=>{eve=ev;if(eve!=='kargo')PK=null;render();const m=$('#main');if(m)m.scrollTop=0});return}AU=null;eve=a.slice(4);if(eve!=='kargo')PK=null;sfx.tap();render();$('#main').scrollTop=0;return}
+  if(a.startsWith('eve:')){if((AU&&!AU.done)||(HA&&!HA.done)){toast('Mezat bitene kadar bekle');return}if(AU&&AU.done&&istReady()){AU=null;const ev=a.slice(4);istMaybe(()=>{eve=ev;if(eve!=='kargo')PK=null;render();const m=$('#main');if(m)m.scrollTop=0});return}AU=null;eve=a.slice(4);if(eve!=='kargo')PK=null;sfx.tap();render();$('#main').scrollTop=0;return}
   if(a.startsWith('lot:')){startLot(a.slice(4));return}
   if(a.startsWith('sellLot:')){startSell(a.slice(8));return}
   if(a.startsWith('auBid:')){auBid(+a.slice(6));return}
@@ -4542,7 +4600,205 @@ ACH.push(['hurda','💎','Hurdadan Hazine','Hurda Kasası\'ndan efsanevi parça 
 
 const colAdd1=colAdd;colAdd=function(it){colAdd1(it);try{evtCol(it)}catch(e){}};
 /* test kancası: yalnızca ?bptest ile */
-if(/[?&]bptest/.test(location.search))window.BP_TEST={S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()}};
+if(/[?&]bptest/.test(location.search))window.BP_TEST={S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
+
+
+/* ===================== 1.4.0: Ev Boşaltma Mezatı · Rehin Masası · Garaj · Güvenlik · Anadolu Kazısı ===================== */
+
+/* ---------- Ev Boşaltma Mezatı ---------- */
+const HOUSES=[
+ ['Emekli bir saatçinin evi','Cihangir',['saat','beyefendi'],'Duvarda tik tak sesleri, vitrinli bir dolap dolusu kutu.'],
+ ['Dededen kalma apartman dairesi','Moda',['muzik','oyuncak'],'Salonda örtülü büyük bir eşya, çocuk odasında sandıklar.'],
+ ['Eski bir yalının müştemilatı','Arnavutköy',['kasif','konak'],'Denize bakan odada pirinç aletler parlıyor.'],
+ ['Taşınan bir öğretmenin evi','Fatih',['mutfak','konak'],'Mutfak dolapları tıka basa, duvarda tablolar.'],
+ ['Spor tutkunu bir emeklinin evi','Kadıköy',['stad','sampiyon'],'Duvarlarda çerçeveli formalar, köşede bir kupa rafı.'],
+ ['Kuyumcu teyzenin evi','Kapalıçarşı',['takı','osmanli'],'Yatak odasında kilitli bir çekmece, sedefli bir kutu.']];
+const HPEEK=['Kapı aralığından görünen','Pencereden seçilen','Örtünün altındaki'];
+function houseGen(){const h=pick(HOUSES),n=5+Math.floor(R()*4),items=[];
+  for(let i=0;i<n;i++){let cat;const sid=pick(h[2]),s=SERIES.find(x=>x.id===sid);
+    if(i===0&&R()<.35){cat=pick(catPool().filter(c=>c.v<=260))}
+    else if(s&&R()<.6){const k=pick(s.ks);cat=CAT.find(c=>c.k===k)}
+    if(!cat||(cat.pack&&!packOwned(cat.pack)))cat=pick(catPool().filter(c=>!c.ev));
+    items.push(newItem(cat,{fake:!!cat.f&&R()<.12}))}
+  const total=items.reduce((a,it)=>a+(it.fake?it.worth:val(it)),0);
+  const order=items.map((_,i)=>i).sort(()=>R()-.5);const peek=[order[0],order[1],order[2]];
+  if(R()<.5){const best=items.reduce((b,it,i)=>(it.fake?it.worth:val(it))>(items[b].fake?items[b].worth:val(items[b]))?i:b,0);if(!peek.includes(best))peek[0]=best}
+  return{id:uid(),t:h[0],loc:h[1],note:h[3],items,total,peek,open:[],start:r10(Math.max(300,total*rf(.15,.24))),est:[r10(total*rf(.4,.65)),r10(total*rf(1.15,1.6))],status:'open'}}
+function houseEnsure(){S.house=S.house||{};if(S.house.d!==S.day){S.house={d:S.day,list:S.day>=5?[houseGen()].concat(S.day>=10&&R()<.5?[houseGen()]:[]):[],ad:0}}return S.house}
+const sil=(it,open)=>`<span class="hsil${open?' open':''}">${icon(it)}</span>`;
+function renderHouse(){const H=houseEnsure();
+  return `<div class="eve housep"><div class="rivhead"><span class="houseart">🏚️</span><div style="min-width:0"><span class="lbl">KÖR MEZAT</span><h2 class="h">Ev Boşaltma Mezatı</h2><p class="sub" style="margin:0">Mirasçılar evi topluca satıyor. İçeriye sadece kapı aralığından bakabilirsin. Teklifini ver, kazanırsan evin içinden ne çıkarsa senin!</p></div></div>
+   ${H.list.length?H.list.map(l=>`<div class="ecard hcard${l.status!=='open'?' closed':''}"><div class="hhead"><div style="min-width:0"><b>${l.t}</b><small>📍 ${l.loc} · ${l.items.length} parça eşya</small></div>${l.status==='won'?'<span class="rs ok">Kazandın</span>':l.status==='lost'?'<span class="rs">Kapandı</span>':''}</div>
+     <p class="hnote">“${l.note}”</p>
+     <div class="hsils">${l.peek.map(i=>`<div class="hsilc">${sil(l.items[i],l.open.includes(i))}<small>${l.open.includes(i)?l.items[i].n:pick(HPEEK)+' bir eşya'}</small></div>`).join('')}</div>
+     <div class="hest"><span>Emlakçının tahmini: <b>${fmt(l.est[0])} – ${fmt(l.est[1])}</b></span><span>Açılış: <b>${fmt(l.start)}</b></span></div>
+     ${l.status==='open'?`<div class="pbtns2">${!H.ad&&adOk()?`<button class="b ghost sm" data-act="hPeekAd:${l.id}">📺 Bir daha bak</button>`:''}<button class="b brass" data-act="hGo:${l.id}">Mezata Gir</button></div>`:''}</div>`).join('')
+   :`<div class="ecard" style="text-align:center"><span style="font-size:40px">🏚️</span><p class="sub" style="margin:0">${S.day<5?'Ev boşaltma ilanları 5. günden itibaren gelir.':'Bu akşam ilan yok. Yarın yeni ev ilanlarına bak.'}</p></div>`}
+   <p class="sub" style="margin:0">İpucu: Emlakçının tahmini bazen çok iyimserdir. Silüetlere iyi bak, değerli bir parça seçebiliyor musun?</p>
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function hPeekAd(id){const H=houseEnsure(),l=H.list.find(x=>x.id===id);if(!l||H.ad)return;adShow(()=>{adUse();H.ad=1;const c=l.peek.filter(i=>!l.open.includes(i));if(c.length)l.open.push(pick(c));save();render()},'Eve bir daha bak')}
+let HA=null;
+function hGo(id){const H=houseEnsure(),l=H.list.find(x=>x.id===id);if(!l||l.status!=='open')return;const now=performance.now();
+  const rivals=['Kurnaz Cemil','Hurdacı Rıfat','Eskici Nuri'];
+  HA={l,bid:l.start,leader:'—',you:false,dur:13000,end:now+13000,max:r10(l.total*rf(.5,.98)),rivals,feed:[],nextNpc:now+rf(900,1800),done:false};
+  eve='houseLive';sfx.door();render();HA.tk=setInterval(hTick,100)}
+function hBid(mm){mm=mm||1;if(!HA||HA.done||HA.you)return;const nb=HA.leader==='—'?HA.bid:HA.bid+inc(HA.bid)*mm;if(nb>S.money){toast('Kasada yeterli para yok');sfx.bad();return}
+  HA.bid=nb;HA.you=true;HA.leader='Sen';HA.feed.unshift({w:'Sen',v:nb});tone(880,.06,'triangle',.05);buzz(15);if(HA.end-performance.now()<4000)HA.end+=2500;HA.nextNpc=performance.now()+rf(700,1500);hPaint()}
+function hTick(){if(!HA)return;const now=performance.now();
+  if(!HA.done&&now>=HA.nextNpc){if(HA.you||HA.leader==='—'){const nb=HA.leader==='—'?HA.bid:HA.bid+inc(HA.bid);if(nb<=HA.max&&R()<.78){HA.bid=nb;HA.you=false;HA.leader=pick(HA.rivals);HA.feed.unshift({w:HA.leader,v:nb});if(HA.end-now<4000)HA.end+=2200;tone(380,.06,'triangle',.04)}}HA.nextNpc=now+rf(800,1700)}
+  if(!HA.done&&now>=HA.end)hEnd();else hPaint()}
+function hEnd(){HA.done=true;clearInterval(HA.tk);const l=HA.l;
+  if(HA.you){l.status='won';S.money-=HA.bid;logT('auc',{n:'Ev boşaltma: '+l.t,i:'🏚️'},-HA.bid);stat('houseWin');T('house_win',{bid:HA.bid,total:l.total});HA.result='win';sfx.cash();if(HA.leader==='Sen'&&HA.feed.some(f=>f.w==='Kurnaz Cemil')){const r=ensureRiv();r.beat++}}
+  else{l.status='lost';HA.result='lost';sfx.bad();T('house_lose',{})}
+  save();render()}
+function hPaint(){if(!HA)return;const t=$('#hlT');if(!t)return;const left=Math.max(0,HA.end-performance.now());t.textContent=HA.done?'Bitti':(left/1000).toFixed(1)+' sn';
+  const bar=$('#hlBar');if(bar)bar.style.width=(100*Math.min(1,left/HA.dur)).toFixed(1)+'%';
+  $('#hlBid').textContent=fmt(HA.bid);const ld=$('#hlLead');ld.textContent=HA.leader==='—'?'Henüz teklif yok':HA.you?'Önde sensin':'Önde: '+HA.leader;ld.className='hlead'+(HA.you?' you':'');
+  const fd=$('#hlFeed');if(fd&&fd.dataset.n!==String(HA.feed.length)){fd.dataset.n=HA.feed.length;fd.innerHTML=HA.feed.slice(0,3).map(f=>`<div class="hfrow${f.w==='Sen'?' me':''}"><span>${f.w==='Kurnaz Cemil'?'😼 ':''}${f.w}</span><b>${fmt(f.v)}</b></div>`).join('')}
+  const b=$('#hlBtn');if(b){b.disabled=HA.you||HA.done;b.innerHTML=HA.you?'Önde sensin<small>rakipleri bekle</small>':`Teklif Ver<small>${fmt(HA.leader==='—'?HA.bid:HA.bid+inc(HA.bid))}</small>`}}
+function renderHouseLive(){const a=HA;if(!a){eve='house';return renderHouse()}const l=a.l;
+  if(a.done){if(a.result==='lost')return `<div class="eve housep"><div class="ecard" style="text-align:center"><span style="font-size:44px">🔑</span><h2 class="h">Ev başkasına gitti</h2><p class="sub" style="margin:0">${a.leader==='—'?'Teklif vermedin.':`${a.leader} ${fmt(a.bid)} ile kaptı.`} İçinde ne vardı, hiç bilemeyeceksin…</p></div><button class="b ghost" data-act="eve:house">Tamam</button></div>`;
+    return renderHouseOpen()}
+  return `<div class="eve housep"><div class="ecard hlive"><div class="hhead"><div style="min-width:0"><b>${l.t}</b><small>📍 ${l.loc} · ${l.items.length} parça</small></div><span class="lvlive"><i></i>CANLI</span></div>
+    <div class="hsils">${l.peek.map(i=>`<div class="hsilc">${sil(l.items[i],l.open.includes(i))}</div>`).join('')}</div>
+    <div class="htbar"><i id="hlBar" style="width:100%"></i></div><div class="hrow2"><span id="hlT">—</span><span id="hlLead" class="hlead">—</span></div>
+    <div class="hbig"><small>GÜNCEL TEKLİF</small><b id="hlBid">${fmt(a.bid)}</b></div><div id="hlFeed" class="hfeed"></div></div>
+   <div class="dz-main"><button class="b ghost" data-act="hQuit">Çekil</button><button class="b brass" id="hlBtn" data-act="hBid">Teklif Ver</button></div>
+   <div class="hincs">${[2,5].map(k=>`<button class="b ghost sm" data-act="hBid:${k}">+${k} kat artır</button>`).join('')}</div></div>`}
+function hQuit(){if(!HA||HA.done)return;if(HA.you){toast('Öndeyken çekilemezsin');return}HA.end=performance.now();hEnd()}
+function renderHouseOpen(){const a=HA,l=a.l;if(!l.cleared)houseClear(l);const val0=l.items.reduce((s,it)=>s+(it.fake?it.worth:val(it)),0);
+  return `<div class="eve housep"><div class="ecard" style="text-align:center"><span style="font-size:42px">🔑</span><h2 class="h">Ev senin! Kapıyı açtın…</h2><p class="sub" style="margin:0">${fmt(a.bid)} ödedin. İçeriden ${l.items.length} parça çıktı.</p></div>
+   <div class="hopen">${l.items.map((it,i)=>`<div class="hop" style="animation-delay:${.15+i*.22}s">${icon(it)}<small>${it.n}</small>${it.rar?`<i class="rtag r${it.rar}">${RN[it.rar]}</i>`:''}${it.hurda?'<em>Hurdacıya</em>':''}</div>`).join('')}</div>
+   <div class="ecard rivst"><div><small>Ödenen</small><b>${fmt(a.bid)}</b></div><div><small>İçerik (tahmini)</small><b class="${val0>=a.bid?'pos':'neg'}">${fmt(val0)}</b></div><div><small>Hurdacıya</small><b>${fmt(l.hurdaT||0)}</b></div></div>
+   <p class="sub" style="margin:0">Eşyalar rafına kondu. Sahte olabilecekleri incelemeyi unutma. Raf dolduysa fazlası hurdacıya satıldı.</p>
+   <button class="b brass" data-act="eve:house">Tamam</button></div>`}
+function houseClear(l){l.cleared=1;let hT=0;l.items.forEach(it=>{it.paid=r10(HA.bid/l.items.length);it.isNew=true;
+    if(S.inv.length<invCap()){S.inv.push(it);colAdd(it);stat('buy')}else{const p=r10((it.fake?it.worth:val(it))*.4);S.money+=p;hT+=p;it.hurda=1;logT('sell',it,p)}});
+  l.hurdaT=hT;const v=l.items.reduce((s,it)=>s+(it.fake?it.worth:val(it)),0);if(v>=HA.bid*2){burst(50);setTimeout(sfx.cash,200)}else if(v>=HA.bid)burst(20);save()}
+
+/* ---------- Rehin Masası ---------- */
+const REHIN_ST=['Kira günü geldi, ay sonu ödeyip alacağım.','Düğün masrafı çıktı, bir haftaya getiririm parayı.','Dükkânıma mal alacağım, satınca gelirim.','Oğlanın okul taksiti… Emanet olsun, söz.','Araba bozuldu usta, maaş yatınca alırım.'];
+function rehinEnsure(){S.rehin=S.rehin||{d:0,req:[],act:[]};if(S.rehin.d!==S.day){S.rehin.d=S.day;S.rehin.req=S.day>=6?Array.from({length:1+(R()<.45?1:0)},rehinReq):[]}return S.rehin}
+function rehinReq(){const cat=pick(catPool().filter(c=>c.v>=300&&!c.ev));const it=newItem(cat,{fake:!!cat.f&&R()<.28});return{id:uid(),who:pick(NAMES),it,loan:r10(it.appear*rf(.35,.55)),days:3+Math.floor(R()*4),story:pick(REHIN_ST)}}
+const REH_R=[[.15,'%15 faiz',.8],[.3,'%30 faiz',.55]];
+function renderRehin(){const r=rehinEnsure();
+  return `<div class="eve rehinp"><div class="rivhead"><span class="rehinart">🤝</span><div style="min-width:0"><span class="lbl">ARKA KAPI</span><h2 class="h">Rehin Masası</h2><p class="sub" style="margin:0">Paraya sıkışan mahalleli eşyasını bırakıp borç istiyor. Vadesinde faiziyle gelirse kâr senin, gelmezse eşya senin. Ama eşya <b>sahteyse</b> paran gider!</p></div></div>
+   ${r.req.length?r.req.map(q=>{const k=q.it.known;return `<div class="ecard rehc"><div class="rehh"><span class="rehic">${icon(q.it)}</span><div style="min-width:0;flex:1"><b>${q.it.n}</b><small><span class="pav" style="background:${avc(q.who)}">${ini(q.who)}</span>${q.who} · ${q.days} gün vade</small></div></div>
+     <p class="hnote">“${q.story}”</p>
+     <div class="hest"><span>İstediği borç: <b>${fmt(q.loan)}</b></span><span>${k.expert?(q.it.fake?'<b class="neg">Uzman: SAHTE</b>':`<b class="pos">Uzman: Orijinal · ${fmt(val(q.it))}</b>`):'Değeri bilinmiyor'}</span></div>
+     <div class="pbtns2">${k.expert?'':`<button class="b ghost sm" data-act="rhExp:${q.id}">🎓 Uzmana göster (${fmt(expertFee())})</button>`}<button class="b ghost sm" data-act="rhNo:${q.id}">Reddet</button></div>
+     <div class="dz-main">${REH_R.map(([rt,lb],i)=>`<button class="b ${i?'pom':'mint'}" data-act="rhGive:${q.id}:${i}" ${S.money<q.loan?'disabled':''}>Ver · ${lb}<small>Dönüşte ${fmt(r10(q.loan*(1+rt)))}</small></button>`).join('')}</div>
+     <small class="panonote">Yüksek faiz daha çok kazandırır ama müşteri geri gelmeyebilir.</small></div>`}).join('')
+   :`<div class="ecard" style="text-align:center"><span style="font-size:40px">🤝</span><p class="sub" style="margin:0">${S.day<6?'Rehin talepleri 6. günden itibaren gelir.':'Bu akşam kapı çalan yok.'}</p></div>`}
+   ${r.act.length?`<div class="ecard"><h3 class="eh">Rehin Kasası</h3>${r.act.map(a=>erow(a.it,`<span class="rhdue">${fmt(a.loan)} · ${a.due-S.day<=0?'bugün':a.due-S.day+' gün'}</span>`)).join('')}</div>`:''}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function rhAct(kind,id,ri){const r=rehinEnsure(),q=r.req.find(x=>x.id===id);if(!q)return;
+  if(kind==='exp'){const ef=expertFee();if(S.money<ef){toast('Uzman için '+fmt(ef)+' lazım');return}S.money-=ef;logT('fee',{n:'Uzman: '+q.it.n,i:'🎓'},-ef);const it=q.it;it.known.expert=it.known.insp=true;it.known.suspect=it.fake;it.known.lo=it.known.hi=it.fake?it.worth:it.appear;if(it.fake)stat('fakeSpot');sfx.tap();toast(it.fake?'Uzman: Bu bir replika!':'Uzman: Orijinal parça.')}
+  if(kind==='no'){r.req=r.req.filter(x=>x.id!==id);sfx.tap()}
+  if(kind==='give'){const rt=REH_R[+ri];if(S.money<q.loan){toast('Kasada yeterli para yok');sfx.bad();return}S.money-=q.loan;logT('buy',{n:'Rehin: '+q.it.n,i:'🤝'},-q.loan);
+    r.act.push({id:q.id,who:q.who,it:q.it,loan:q.loan,rate:rt[0],p:rt[2],due:S.day+q.days});r.req=r.req.filter(x=>x.id!==id);stat('rehinGive');T('rehin_give',{rate:rt[0]});sfx.cash();toast('🤝 Anlaştınız. Eşya rehin kasasında.')}
+  save();render()}
+function rehinMorning(){const r=rehinEnsure(),out=[],keep=[];
+  r.act.forEach(a=>{if(a.due>S.day){keep.push(a);return}
+    const p=a.it.fake?.12:a.p;
+    if(R()<p){const pay=r10(a.loan*(1+a.rate));S.money+=pay;logT('sell',{n:'Rehin geri ödendi: '+a.it.n,i:'🤝'},pay);stat('rehinBack');addRep(1);out.push(`🤝 <b>${a.who}</b> sözünde durdu: ${a.it.n} için <b>${fmt(pay)}</b> ödeyip eşyasını aldı. Faiz kârın: ${fmt(pay-a.loan)}.`)}
+    else{const it=a.it;it.paid=a.loan;it.isNew=true;S.inv.push(it);colAdd(it);stat('rehinKeep');
+      out.push(a.it.fake?`😬 <b>${a.who}</b> gelmedi. Rehin bıraktığı ${it.n} artık senin ama… bir sorun var gibi. İncelemeyi unutma!`:`📦 <b>${a.who}</b> vadesinde gelmedi. Rehindeki ${it.n} artık senin (değeri ~${fmt(val(it))}).`)}});
+  r.act=keep;return out}
+
+/* ---------- Garaj: klasik araç restorasyonu ---------- */
+const CARS={
+ vespa:{n:'1965 Vespa',i:'🛵',buy:6000,sell:[15000,24000],day:7,parts:[['motor','Motor revizyonu',1800],['kaporta','Kaporta ve pas temizliği',1200],['boya','Orijinal renk boya',1400],['sele','Deri sele',600],['far','Krom far ve aynalar',800]]},
+ murat:{n:'1972 Murat 124',i:'🚗',buy:15000,sell:[40000,64000],day:10,parts:[['motor','Motor rektifiyesi',4500],['kaporta','Kaporta ve kaynak',3500],['boya','Fabrika rengi boya',3200],['dosem','İç döşeme',2200],['jant','Jant ve lastik',1600],['far','Far, stop ve kromlar',1400]]}};
+const QN=['','Vasat','İyi','Usta işi'];
+function garEnsure(){S.gar=S.gar||{car:null,parts:{},wd:0,ad:0,done:{}};return S.gar}
+function garProg(){const g=garEnsure();if(!g.car)return 0;const C=CARS[g.car];return C.parts.filter(p=>g.parts[p[0]]).length/C.parts.length}
+function garPrice(){const g=garEnsure(),C=CARS[g.car];const q=C.parts.reduce((a,p)=>a+(g.parts[p[0]]||0),0)/C.parts.length;return r10(C.sell[0]+(C.sell[1]-C.sell[0])*((q-1)/2))}
+function renderGar(){const g=garEnsure();
+  if(!g.car)return `<div class="eve garp"><div class="rivhead"><span class="garart">🔧</span><div style="min-width:0"><span class="lbl">ARKA SOKAKTAKİ GARAJ</span><h2 class="h">Garaj</h2><p class="sub" style="margin:0">Hurda bir klasik al, parça parça restore et, koleksiyoncuya servet değerinde sat. Her akşam bir parça üzerinde çalışabilirsin.</p></div></div>
+   ${Object.entries(CARS).map(([id,C])=>{const lock=S.day<C.day;return `<div class="ecard garcard"><div class="rehh"><span class="garcar dirty">${C.i}</span><div style="min-width:0;flex:1"><b>${C.n}</b><small>${C.parts.length} parça · restore sonrası ${fmt(C.sell[0])}–${fmt(C.sell[1])}</small></div></div>
+    ${lock?`<p class="sub" style="margin:0">🔒 ${C.day}. günde açılır</p>`:`<button class="b brass" data-act="garBuy:${id}" ${S.money<C.buy?'disabled':''}>Hurdayı Al<small>${fmt(C.buy)}</small></button>`}${g.done[id]?`<small class="panonote">✓ Daha önce ${g.done[id]} tane restore ettin</small>`:''}</div>`}).join('')}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`;
+  const C=CARS[g.car],pr=garProg(),done=pr>=1,worked=g.wd===S.day,extra=g.ad===S.day;
+  return `<div class="eve garp"><div class="ecard garstage"><span class="garcar big" style="--pr:${pr}">${C.i}</span><b>${C.n}</b><div class="capbar"><i style="width:${pr*100}%"></i></div><small>${Math.round(pr*100)}% restore edildi</small></div>
+   <div class="ecard"><h3 class="eh">Parçalar</h3>${C.parts.map(([k,n,c])=>{const q=g.parts[k];return `<div class="garrow"><span>${q?'✅':'⚙️'} ${n}</span>${q?`<b class="gq q${q}">${QN[q]}</b>`:`<button class="b brass sm" data-act="garWork:${k}" ${(worked&&(!extra||g.used2===S.day))||S.money<c?'disabled':''}>Çalış · ${fmt(c)}</button>`}</div>`}).join('')}
+    ${!done&&worked&&(!extra||g.used2===S.day)?`<p class="sub" style="margin:8px 0 0">Bugünlük usta yoruldu. Yarın devam.</p>${g.ad!==S.day&&adOk()?'<button class="b ghost sm" data-act="garAd">📺 Usta bir parça daha yapsın</button>':''}`:''}</div>
+   ${done?`<div class="ecard" style="text-align:center"><p class="sub" style="margin:0">Araba pırıl pırıl! Klasik otomobil koleksiyoncusu kapıda:</p><h2 class="h pos">${fmt(garPrice())}</h2><button class="b brass" data-act="garSell">Sat ve Anahtarı Teslim Et</button></div>`:''}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function garAct(kind,arg){const g=garEnsure();
+  if(kind==='buy'){if(g.car)return;const C=CARS[arg];if(!C||S.money<C.buy||S.day<C.day){sfx.bad();return}S.money-=C.buy;g.car=arg;g.parts={};g.wd=0;logT('buy',{n:'Hurda '+C.n,i:C.i},-C.buy);T('garage_buy',{car:arg});sfx.cash();toast(C.i+' Hurda garaja çekildi. İşe koyul!')}
+  if(kind==='work'){const C=CARS[g.car];if(!C)return;const p=C.parts.find(x=>x[0]===arg);if(!p||g.parts[arg])return;if(g.wd===S.day&&g.ad!==S.day)return;if(g.wd===S.day&&g.ad===S.day&&g.used2===S.day)return;if(S.money<p[2]){toast('Kasada yeterli para yok');sfx.bad();return}
+    if(g.wd===S.day)g.used2=S.day;S.money-=p[2];logT('fee',{n:p[1],i:'🔧'},-p[2]);const x=R();g.parts[arg]=x<.2?1:x<.75?2:3;g.wd=S.day;stat('garPart');sfx.ok();[0,200,400].forEach(d=>tone(300,.05,'square',.04,d/1000));toast(`${p[1]}: ${QN[g.parts[arg]]}`)}
+  if(kind==='sell'){if(garProg()<1)return;const C=CARS[g.car],pr=garPrice();S.money+=pr;logT('sell',{n:C.n,i:C.i},pr);g.done[g.car]=(g.done[g.car]||0)+1;stat('garDone');gainXP(150);addRep(4);T('garage_sell',{car:g.car,price:pr});
+    burst(60);sfx.cash();modal({icon:C.i,title:'Satıldı!',body:`${C.n} koleksiyoncunun garajında yerini aldı. Kasana <b>${fmt(pr)}</b> girdi, itibar +4.`,btns:[{t:'Harika',cls:'brass',a:'closeModal'}]});g.car=null;g.parts={}}
+  save();render()}
+function garAd(){const g=garEnsure();if(g.ad===S.day)return;adShow(()=>{adUse();g.ad=S.day;save();render()},'Usta bir parça daha yapsın')}
+
+/* ---------- Hırsız ve Güvenlik ---------- */
+const SEC=[['Kapı kilidi',0,0],['Güvenlik kamerası',3500,.55],['Çelik kepenk ve alarm',8000,.9]];
+const secLv=()=>S.sec||0;
+function secMorning(){if(S.day<6)return[];const its=S.inv.filter(x=>!x.lab&&!x.chest&&x.k!=='anahtar');if(!its.length||R()>.07)return[];
+  T('thief',{lv:secLv()});
+  if(R()<SEC[secLv()][2]){stat('thiefCaught');addRep(2);return[`🚨 Gece dükkâna hırsız girmeye çalıştı ama <b>${SEC[secLv()][0].toLocaleLowerCase('tr-TR')}</b> sayesinde yakalandı! Mahalle seni konuşuyor: itibar +2.`]}
+  const it=its.sort((a,b)=>val(b)-val(a))[Math.floor(R()*Math.min(3,its.length))];S.inv=S.inv.filter(x=>x.id!==it.id);stat('stolen');
+  return[`🦹 <b>Gece dükkâna hırsız girdi!</b> Rafından <b>${it.n}</b> çalındı (değeri ~${fmt(val(it))}). Akşam ekranındaki <b>Güvenlik</b>'ten önlem alabilirsin.`]}
+function renderSec(){const lv=secLv();
+  return `<div class="eve secp"><div class="rivhead"><span class="secart">🛡️</span><div style="min-width:0"><span class="lbl">DÜKKÂN</span><h2 class="h">Güvenlik</h2><p class="sub" style="margin:0">Raflar dolup değerli mallar arttıkça hırsızların da gözü dükkâna dönüyor. Önlem al, malını koru.</p></div></div>
+   <div class="ecard rivst"><div><small>Yakalama şansı</small><b>%${Math.round(SEC[lv][2]*100)}</b></div><div><small>Yakalanan</small><b>${(S.st||{}).thiefCaught||0}</b></div><div><small>Çalınan</small><b>${(S.st||{}).stolen||0}</b></div></div>
+   ${SEC.slice(1).map((s,i)=>{const l=i+1,own=lv>=l;return `<div class="erow2${own?'':''}" style="--tc:#5fb0f0"><span class="ri" style="font-size:22px">${l===1?'📹':'🔒'}</span><span class="rt"><b>${s[0]}</b><small>Hırsızı %${Math.round(s[2]*100)} ihtimalle yakalar</small></span>${own?'<span class="rs ok">Kurulu</span>':lv===l-1?`<button class="b brass sm" data-act="secBuy:${l}" ${S.money<s[1]?'disabled':''}>${fmt(s[1])}</button>`:'<span class="lk">🔒</span>'}</div>`}).join('')}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function secBuy(l){l=+l;if(secLv()!==l-1||S.money<SEC[l][1])return;S.money-=SEC[l][1];S.sec=l;logT('fee',{n:SEC[l][0],i:'🛡️'},-SEC[l][1]);T('sec_buy',{lv:l});sfx.ok();toast('🛡️ '+SEC[l][0]+' kuruldu');save();render()}
+
+/* ---------- Anadolu Kazısı ---------- */
+const DIGN=6,DIGP=12;
+const DIG_HOME=['cezve','ibrik','tabak','kandil','lamba','utu','nazarlik','fes'];
+function digEser(){const pk=packOwned('tarih')?['denarius','solidus','lidya','amfora','romakandil','fibula','gunes']:['amfora'];return pick(pk.concat(['sikke']))}
+function digNew(){const cells=Array.from({length:DIGN*DIGN},(_,i)=>i).sort(()=>R()-.5);
+  const finds=[{c:cells[0],k:digEser(),eser:1},{c:cells[1],k:pick(DIG_HOME)},{c:cells[2],k:pick(DIG_HOME)}].concat(R()<.4?[{c:cells[3],k:pick(DIG_HOME)}]:[]);
+  return{finds,dug:[],left:DIGP,done:false,got:[]}}
+let DG=null;
+function digEnsure(){S.dig=S.dig||{};if(S.dig.d!==S.day)S.dig={d:S.day,n:0,ad:0};return S.dig}
+function digDist(i){const x=i%DIGN,y=Math.floor(i/DIGN);let m=99;DG.finds.forEach(f=>{if(DG.got.includes(f.c))return;const d=Math.abs(f.c%DIGN-x)+Math.abs(Math.floor(f.c/DIGN)-y);m=Math.min(m,d)});return m}
+function digStart(){const d=digEnsure();if(d.n>=(d.ad?2:1))return;d.n++;DG=digNew();T('dig_start',{});sfx.ok();save();render()}
+function digTap(i){i=+i;if(!DG||DG.done||DG.dug.includes(i)||DG.left<=0)return;DG.dug.push(i);DG.left--;
+  const f=DG.finds.find(x=>x.c===i);if(f){DG.got.push(i);sfx.ok();burst(14);tone(990,.08,'triangle',.05)}else{tone(140+R()*40,.05,'square',.04);buzz(10)}
+  if(DG.left<=0||DG.got.length===DG.finds.length)digFinish();render()}
+function digFinish(){DG.done=true;let ik=0;const msgs=[];
+  DG.finds.filter(f=>DG.got.includes(f.c)).forEach(f=>{const cat=CAT.find(c=>c.k===f.k);if(!cat)return;
+    if(f.eser){const v=r10(cat.v*rf(.4,.6));ik+=v;stat('eser');msgs.push(`🏛️ ${cat.n} müzeye teslim edildi: ikramiye <b>${fmt(v)}</b>`);addRep(1)}
+    else{const it=newItem(cat,{cond:1+Math.floor(R()*3)});it.paid=0;it.isNew=true;if(S.inv.length<invCap()){S.inv.push(it);colAdd(it);msgs.push(`📦 ${it.n} rafına kondu`)}else msgs.push(`📦 ${it.n} bulundu ama raf dolu, toprağa geri gömüldü`)}});
+  if(ik){S.money+=ik;logT('gift',{n:'Müze ikramiyesi',i:'🏛️'},ik)}DG.msgs=msgs;stat('digDone');T('dig_end',{found:DG.got.length});save()}
+function renderDig(){const d=digEnsure();
+  const head=`<div class="rivhead"><span class="digart">⛏️</span><div style="min-width:0"><span class="lbl">RUHSATLI KAZI</span><h2 class="h">Anadolu Kazısı</h2><p class="sub" style="margin:0">Müze ekibine gönüllü katıldın. Tarlayı kaz, toprak rengi yaklaştıkça kızarır. Tarihi <b>eserler müzeye teslim edilir</b>, sana ikramiye verilir. Eski ev eşyaları ise rafına gelir.</p></div></div>`;
+  if(!DG){const can=d.n<(d.ad?2:1);
+    return `<div class="eve digp">${head}<div class="ecard" style="text-align:center"><span style="font-size:42px">🏺</span><p class="sub" style="margin:0">Her gün ${DIGP} kazma hakkınla bir kazı yapabilirsin.${packOwned('tarih')?'':'<br><small>Tarih Paketi ile Lidya sikkesi, Hitit güneş kursu gibi antik eserler de çıkar.</small>'}</p></div>
+     ${can?'<button class="b brass" data-act="digStart">Kazıya Başla</button>':d.ad||!adOk()?'<p class="sub" style="text-align:center;margin:0">Bugünkü kazı bitti. Yarın yeni tarla.</p>':'<button class="b ghost" data-act="digAd">📺 Bir kazı daha<small>Reklam izle</small></button>'}
+     <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+  const cells=Array.from({length:DIGN*DIGN},(_,i)=>{const dug=DG.dug.includes(i),f=DG.finds.find(x=>x.c===i),got=dug&&f;let cls='dc',inner='';
+    if(got){cls+=' got';const cat=CAT.find(c=>c.k===f.k);inner=icon({k:f.k,i:cat?cat.i:'?',cond:3,id:'dig'+f.k,known:{}})}
+    else if(dug){const m=digDist(i);cls+=' dug '+(m<=1?'h3':m<=2?'h2':m<=3?'h1':'h0')}
+    else if(DG.done&&f){cls+=' miss';const cat=CAT.find(c=>c.k===f.k);inner=`<span class="mis">${cat?cat.i:'?'}</span>`}
+    return `<button class="${cls}" data-act="dig:${i}" ${dug||DG.done?'disabled':''}>${inner}</button>`}).join('');
+  return `<div class="eve digp"><div class="eksbar"><span>Kazma hakkı <b>${DG.left}</b></span><span>Bulunan <b class="pos">${DG.got.length}/${DG.finds.length}</b></span><span class="dleg"><i class="h3"></i>sıcak <i class="h0"></i>soğuk</span></div>
+   <div class="dgrid" style="--n:${DIGN}">${cells}</div>
+   ${DG.done?`<div class="ecard">${DG.msgs.length?DG.msgs.join('<br>'):'Bu sefer eli boş döndün. Toprak cimri çıktı!'}</div><button class="b brass" data-act="digClose">Tamam</button>`:'<p class="sub" style="margin:0;text-align:center">Kazdığın yerin rengi en yakın buluntuya uzaklığı gösterir: kırmızı çok yakın, kahverengi uzak.</p>'}</div>`}
+function digAd(){const d=digEnsure();if(d.ad)return;adShow(()=>{adUse();d.ad=1;save();digStart()},'Bir kazı daha')}
+
+/* ---------- akşam menüsü bölümü ---------- */
+function hubExtra3(){const H=houseEnsure(),r=rehinEnsure(),g=garEnsure(),d=digEnsure();const open=H.list.filter(l=>l.status==='open').length;
+  const row=(act,ic,c,t,sub,st,cls,lockDay)=>S.day<lockDay?`<div class="erow2 locked"><span class="ri" style="font-size:22px">${ic}</span><span class="rt"><b>${t}</b><small>${lockDay}. günde açılır</small></span><span class="lk">🔒</span></div>`:`<button class="erow2" style="--tc:${c}" data-act="${act}"><span class="ri" style="font-size:22px">${ic}</span><span class="rt"><b>${t}</b><small>${sub}</small></span>${st?`<span class="rs ${cls||''}">${st}</span>`:''}<span class="chev">›</span></button>`;
+  const due=r.act.filter(a=>a.due-S.day<=1).length;
+  return `<section class="grp"><h3>Fırsatlar</h3>
+   ${row('eve:house','🏚️','#c8925a','Ev Boşaltma Mezatı','İçini görmeden ev al',open?open+' ilan':'',open?'info':'',5)}
+   ${row('eve:rehin','🤝','#78d1a2','Rehin Masası',r.act.length?`${r.act.length} rehin kasada`:'Borç ver, faiz kazan',r.req.length?r.req.length+' talep':due?'vade yakın':'',r.req.length?'info':'',6)}
+   ${row('eve:dig','⛏️','#d0582a','Anadolu Kazısı','Kaz, bul, müzeye teslim et',d.n<(d.ad?2:1)?'Hazır':'',d.n<(d.ad?2:1)?'info':'',6)}
+   ${row('eve:gar','🔧','#9aa1a8','Garaj',g.car?`${CARS[g.car].n} · %${Math.round(garProg()*100)}`:'Klasik araç restore et',g.car&&garProg()>=1?'Satışa hazır':g.car&&g.wd!==S.day?'Çalışılabilir':'',g.car?'ok':'',7)}
+   ${row('eve:sec','🛡️','#5fb0f0','Güvenlik',`Hırsızı yakalama şansı %${Math.round(SEC[secLv()][2]*100)}`,'','',6)}</section>`}
+ACH.push(['evbos','🏚️','Ev Boşaltıcı','3 Ev Boşaltma Mezatı kazan',()=>(S.st||{}).houseWin||0,3,2500],
+ ['rehinci','🤝','Rehinci Esnaf','10 rehin faiziyle geri ödensin',()=>(S.st||{}).rehinBack||0,10,3000],
+ ['klasik','🚗','Klasikçi','Bir aracı baştan sona restore edip sat',()=>(S.st||{}).garDone||0,1,4000],
+ ['bekci','🛡️','Mahalle Bekçisi','Bir hırsız yakalat',()=>(S.st||{}).thiefCaught||0,1,1500],
+ ['arkeolog','🏛️','Gönüllü Arkeolog','Müzeye 5 eser teslim et',()=>(S.st||{}).eser||0,5,3000]);
 
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
 function catPool(){return CAT.filter(c=>(!c.pack||c.free||packOwned(c.pack))&&(!c.ev||evtOn(c.ev)))}
