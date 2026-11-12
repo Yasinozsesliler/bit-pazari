@@ -14,6 +14,7 @@ import { InAppReview } from "@capacitor-community/in-app-review";
 import { Share } from "@capacitor/share";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { registerPlugin } from "@capacitor/core";
+import { Device } from "@capacitor/device";
 const GameCenter = registerPlugin("GameCenter");
 
 const isNative = Capacitor.isNativePlatform();
@@ -26,13 +27,36 @@ const N = { isNative, platform, notifPerm: "default" };
 window.NATIVE = N;
 
 /* ---------- Kayıt: localStorage + Preferences yedeği (WebView verisi silinirse geri yükler) ---------- */
+/* Dil: ilk açılışta cihaz diline göre seçilir (Türkçe değilse İngilizce). Mevcut kaydı olan oyuncu Türkçe'de kalır. */
+const LANG_KEY = "bitpazari.lang";
+N.lang = document.documentElement.lang === "en" ? "en" : "tr";
+async function wantLang() {
+  let l = null;
+  try { l = localStorage.getItem(LANG_KEY); } catch (e) {}
+  if (l === "tr" || l === "en") return l;
+  let had = false; try { had = !!localStorage.getItem(KEY); } catch (e) {}
+  if (had) l = "tr";
+  else { let code = ""; try { code = (await Device.getLanguageCode()).value || ""; } catch (e) { code = navigator.language || ""; } l = /^tr/i.test(code) ? "tr" : "en"; }
+  try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+  return l;
+}
+N.setLang = (l) => {
+  try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+  try { Preferences.set({ key: LANG_KEY, value: l }); } catch (e) {}
+  location.replace(l === "en" ? "en.html" : "index.html");
+};
 window.__BP_PRE = (async () => {
   if (!isNative) return;
   try {
     const ls = localStorage.getItem(KEY);
     const { value } = await Preferences.get({ key: KEY });
     if (!ls && value) localStorage.setItem(KEY, value);
+    const lv = (await Preferences.get({ key: LANG_KEY })).value;
+    if (lv && !localStorage.getItem(LANG_KEY)) localStorage.setItem(LANG_KEY, lv);
   } catch (e) {}
+  const want = await wantLang();
+  try { Preferences.set({ key: LANG_KEY, value: want }); } catch (e) {}
+  if (want !== N.lang) { location.replace(want === "en" ? "en.html" : "index.html"); await new Promise(() => {}); }
 })();
 let saveT = 0;
 N.backup = (now) => {
@@ -195,7 +219,7 @@ N.shareImage = async (dataUrl, text, url) => {
     if (N.isNative) {
       const name = "bitpazari-" + Date.now() + ".png";
       const w = await Filesystem.writeFile({ path: name, data: dataUrl.split(",")[1], directory: Directory.Cache });
-      await Share.share({ text, url, files: [w.uri], dialogTitle: "Paylaş" });
+      await Share.share({ text, url, files: [w.uri], dialogTitle: N.lang === "en" ? "Share" : "Paylaş" });
       return true;
     }
     const blob = await (await fetch(dataUrl)).blob();
@@ -237,11 +261,12 @@ async function scheduleAll() {
   const now = Date.now(), list = [];
   let S = {};
   try { S = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
-  const name = S.shop || "Dükkânın";
+  const EN = N.lang === "en";
+  const name = S.shop || (EN ? "Your shop" : "Dükkânın");
   const add = (id, at, body) => { if (at > now + 5000) list.push({ id, title: "Bit Pazarı", body, schedule: { at: new Date(at) } }); };
   const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(10, 0, 0, 0);
-  add(1, t.getTime(), `${name} kepenkleri açmanı bekliyor. Günlük giriş ödülün hazır!`);
-  add(2, now + 3 * 86400e3, "Kurnaz Cemil kapışılacak mallarını kaptı bile… Pazara dönme vakti!");
+  add(1, t.getTime(), EN ? `${name} is waiting for you to raise the shutters. Your daily login reward is ready!` : `${name} kepenkleri açmanı bekliyor. Günlük giriş ödülün hazır!`);
+  add(2, now + 3 * 86400e3, EN ? "Sly Cemil is already snapping up the hottest deals… Time to get back to the bazaar!" : "Kurnaz Cemil kapışılacak mallarını kaptı bile… Pazara dönme vakti!");
   try { const p = await LocalNotifications.getPending(); if (p.notifications.length) await LocalNotifications.cancel(p); } catch (e) {}
   if (list.length) try { await LocalNotifications.schedule({ notifications: list }); } catch (e) {}
 }
