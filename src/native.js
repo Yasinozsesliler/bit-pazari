@@ -10,6 +10,7 @@ import { ADS } from "./ads.config.js";
 import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
 import { Purchases, PURCHASES_ARE_COMPLETED_BY_TYPE, STOREKIT_VERSION } from "@revenuecat/purchases-capacitor";
 import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
+import { InAppReview } from "@capacitor-community/in-app-review";
 
 const isNative = Capacitor.isNativePlatform();
 const platform = Capacitor.getPlatform();
@@ -176,6 +177,12 @@ N.track = (name, params) => {
 N.userProp = (key, value) => {
   if (!N.isNative) return;
   try { FirebaseAnalytics.setUserProperty({ key, value: String(value) }).catch(() => {}); } catch (e) {}
+};
+
+/* ---------- Mağaza puanı (Apple/Google kendi penceresini gösterir; sıklığı sistem sınırlar) ---------- */
+N.askReview = () => {
+  if (!N.isNative) return false;
+  try { InAppReview.requestReview().catch(() => {}); return true; } catch (e) { return false; }
 };
 
 /* ---------- Yerel bildirimler ---------- */

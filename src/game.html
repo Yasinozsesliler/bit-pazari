@@ -1487,6 +1487,10 @@ input.kpIn{caret-color:transparent}
 .st-tr{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:4px;padding:7px 10px;border-top:1px solid rgba(255,215,122,.12)}.st-tr span:not(:first-child),.st-tr b{text-align:center}
 .st-tr b{color:#ffd77a}.st-thd{border-top:none;background:rgba(0,0,0,.3);font-weight:900;font-size:11.5px;color:#c9a35a}
 .pktag.lock{cursor:pointer;text-decoration:underline}
+
+.tzimg{width:150px;height:150px;margin:8px auto 2px;display:grid;place-items:center;border-radius:18px;background:radial-gradient(circle,rgba(232,171,60,.22),transparent 70%)}.modal .tzimg img.tico{width:150px!important;height:150px!important;object-fit:contain;transform:scale(1.35)}
+.tzval{font-size:14px;margin:4px 0 8px}.tzlock{display:block;background:rgba(232,171,60,.12);border:1px solid rgba(232,171,60,.35);border-radius:12px;padding:8px 10px;line-height:1.4}
+.premhint{display:block;width:100%;margin:-4px 0 10px;background:none;border:0;color:#e8ab3c;font:800 12.5px Nunito,sans-serif;text-align:center;padding:4px;opacity:.9}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1910,7 +1914,7 @@ function buyerPropose(price){
   say(tpl(pick(L.bcounter),{p:fmt(c.counter)}));save();render()}
 function doSell(price,honest){
   const c=S.cust,it=itemById(c.itemId);
-  S.money+=price;S.inv=S.inv.filter(x=>x.id!==it.id);S.stats.sells++;logT('sell',it,price);stat('sell');S.st.bestProfit=Math.max(S.st.bestProfit||0,price-it.paid);gainXP(10+Math.max(0,price-it.paid)/15);
+  S.money+=price;S.inv=S.inv.filter(x=>x.id!==it.id);S.stats.sells++;logT('sell',it,price);if(price-it.paid>=1500&&price>=it.paid*1.6)happyMoment('sale');stat('sell');S.st.bestProfit=Math.max(S.st.bestProfit||0,price-it.paid);gainXP(10+Math.max(0,price-it.paid)/15);
   sfx.cash();flt('+'+fmt(price),'var(--mint)');if(price-it.paid>=Math.max(400,it.paid*.6))setTimeout(()=>burst(),150);
   if(it.story==='riza')S.story.riza='sold';
   if(it.fake){if(honest){stat('honest');addRep(3);finish('deal',pick(L.honest));toast('Dürüst esnaf: itibar +3');return}
@@ -1981,7 +1985,7 @@ function renderEveHub(){ensureShip();genLots();
       <div class="dstars sm">${[1,2,3,4,5].map(k=>`<i class="${k<=st?'on':''}" style="animation-delay:${.3+k*.1}s">★</i>`).join('')}</div></div>
      <div class="eh2r"><small>Net kazanç</small><b class="cnt ${net>=0?'pos':'neg'}" data-v="${net}" data-sign="1">0</b></div></div>
    <div class="sum3"><div><small>Nakit</small><b class="${cash>=0?'pos':'neg'}">${cash>=0?'+':'−'}${fmt(Math.abs(cash))}</b></div><div><small>Raf değeri</small><b class="${invD>=0?'pos':'neg'}">${invD>=0?'+':'−'}${fmt(Math.abs(invD))}</b></div><div><small>Kasa</small><b>${fmt(S.money)}</b></div></div>
-   ${cash>0&&S.dblDay!==S.day&&adOk()?`<button class="b brass adwide" data-act="dblAd">📺 Bugünkü kârı 2 katına çıkar<small>+${fmt(dblBonus(cash))} ekstra</small></button>`:''}
+   ${cash>0&&S.dblDay!==S.day&&adOk()?`<button class="b brass adwide" data-act="dblAd">📺 Bugünkü kârı 2 katına çıkar<small>+${fmt(dblBonus(cash))} ekstra</small></button>${premHint()}`:''}
    ${monCard()}${giftRow()}
    ${alerts.length?`<div class="alerts">${alerts.map(a=>`<button class="al ${a[0]}" data-act="eve:${a[2]}"><i></i>${a[1]}<span>›</span></button>`).join('')}</div>`:''}
    ${marketLine()}${ordersSec()}
@@ -2038,7 +2042,7 @@ function auTick(){if(!AU)return;const now=performance.now();
       AU.nextNpc=now+rf(500,1200)}}
   if(!AU.done&&now>=AU.end)auEnd();else auPaint()}
 function auEnd(){AU.done=true;clearInterval(AU.tk);
-  if(AU.mode==='buy'){const l=AU.l;if(AU.you){l.status='won';const it=l.it;S.money-=AU.bid;it.paid=AU.bid;it.isNew=true;S.inv.push(it);colAdd(it);stat('buy');stat('aucWin');logT('auc',it,-AU.bid);sfx.cash();AU.result='win';gainXP(15);if(l.rival){S.rival.w++;setTimeout(()=>toast('😼 Cemil\'i alt ettin!'),400)}if(l.grand){stat('grand');T('grand_win',{});setTimeout(()=>{burst(44);toast('🏆 Haftanın Büyük Mezatı senin!')},600)}}
+  if(AU.mode==='buy'){const l=AU.l;if(AU.you){l.status='won';happyMoment(l.grand?'grand':'auction');const it=l.it;S.money-=AU.bid;it.paid=AU.bid;it.isNew=true;S.inv.push(it);colAdd(it);stat('buy');stat('aucWin');logT('auc',it,-AU.bid);sfx.cash();AU.result='win';gainXP(15);if(l.rival){S.rival.w++;setTimeout(()=>toast('😼 Cemil\'i alt ettin!'),400)}if(l.grand){stat('grand');T('grand_win',{});setTimeout(()=>{burst(44);toast('🏆 Haftanın Büyük Mezatı senin!')},600)}}
     else{l.status='lost';AU.result='lost';sfx.bad();if(l.rival&&AU.leader===RIVAL)S.rival.l++;if(l.grand)T('grand_lose',{})}}
   else{const it=AU.it;if(AU.leader==='—'){AU.result='unsold';sfx.bad()}
     else{const net=r10(AU.bid*(1-commis()/100));S.money+=net;S.inv=S.inv.filter(x=>x.id!==it.id);S.lots.sold++;logT('aus',it,net);stat('aucSell');S.st.bestProfit=Math.max(S.st.bestProfit||0,net-it.paid);AU.net=net;AU.result='sold';if(net-it.paid>=Math.max(400,it.paid*.6))setTimeout(()=>burst(),200);shipNew(it,AU.leader,AU.bid,'mezat');gainXP(15+Math.max(0,net-it.paid)/15);sfx.cash();
@@ -4094,6 +4098,8 @@ document.addEventListener('click',e=>{
   if(a==='storeBack'){screen=storeFrom==='store'?'menu':storeFrom;sfx.tap();render();return}
   if(a.startsWith('buy:')){iapBuy(a.slice(4));return}
   if(a.startsWith('offerGo:')){T('offer_click',{r:a.slice(8)});storeOpen();return}
+  if(a==='tzGo'){T('tease_click',{});storeOpen();return}
+  if(a==='tzNo'){closeModal();sfx.tap();return}
   if(a.startsWith('offerNo:')){T('offer_dismiss',{r:a.slice(8)});closeModal();return}
   if(a==='hourStart'){hourStart();return}
   if(a==='iapRestore'){iapRestore();return}
@@ -4631,7 +4637,7 @@ ACH.push(['hurda','💎','Hurdadan Hazine','Hurda Kasası\'ndan efsanevi parça 
 
 const colAdd1=colAdd;colAdd=function(it){colAdd1(it);try{evtCol(it)}catch(e){}};
 /* test kancası: yalnızca ?bptest ile */
-if(/[?&]bptest/.test(location.search))window.BP_TEST={MON:()=>MON,monRewarded:()=>monRewarded(),offer:r=>offerOpen(r,true),dealHos:()=>{MON.hos=Date.now();monSave()},inter:()=>monInter(),S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
+if(/[?&]bptest/.test(location.search))window.BP_TEST={tease:()=>{closeModal();MON_S.shown=false;MON.tz=0;tarihTease()},why:()=>[packOwned("tarih"),iapLive(),screen,MON_S.shown,!!modalEl,S.day],happy:t=>happyMoment(t),MON:()=>MON,monRewarded:()=>monRewarded(),offer:r=>offerOpen(r,true),dealHos:()=>{MON.hos=Date.now();monSave()},inter:()=>monInter(),S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
 
 
 /* ===================== 1.4.0: Ev Boşaltma Mezatı · Rehin Masası · Garaj · Güvenlik · Anadolu Kazısı ===================== */
@@ -4679,7 +4685,7 @@ function hTick(){if(!HA)return;const now=performance.now();
   if(!HA.done&&now>=HA.nextNpc){if(HA.you||HA.leader==='—'){const nb=HA.leader==='—'?HA.bid:HA.bid+inc(HA.bid);if(nb<=HA.max&&R()<.78){HA.bid=nb;HA.you=false;HA.leader=pick(HA.rivals);HA.feed.unshift({w:HA.leader,v:nb});if(HA.end-now<4000)HA.end+=2200;tone(380,.06,'triangle',.04)}}HA.nextNpc=now+rf(800,1700)}
   if(!HA.done&&now>=HA.end)hEnd();else hPaint()}
 function hEnd(){HA.done=true;clearInterval(HA.tk);const l=HA.l;
-  if(HA.you){l.status='won';S.money-=HA.bid;logT('auc',{n:'Ev boşaltma: '+l.t,i:'🏚️'},-HA.bid);stat('houseWin');T('house_win',{bid:HA.bid,total:l.total});HA.result='win';sfx.cash();if(HA.leader==='Sen'&&HA.feed.some(f=>f.w==='Kurnaz Cemil')){const r=ensureRiv();r.beat++}}
+  if(HA.you){l.status='won';happyMoment('house');S.money-=HA.bid;logT('auc',{n:'Ev boşaltma: '+l.t,i:'🏚️'},-HA.bid);stat('houseWin');T('house_win',{bid:HA.bid,total:l.total});HA.result='win';sfx.cash();if(HA.leader==='Sen'&&HA.feed.some(f=>f.w==='Kurnaz Cemil')){const r=ensureRiv();r.beat++}}
   else{l.status='lost';HA.result='lost';sfx.bad();T('house_lose',{})}
   save();render()}
 function hPaint(){if(!HA)return;const t=$('#hlT');if(!t)return;const left=Math.max(0,HA.end-performance.now());t.textContent=HA.done?'Bitti':(left/1000).toFixed(1)+' sn';
@@ -4760,7 +4766,7 @@ function garAct(kind,arg){const g=garEnsure();
   if(kind==='buy'){if(g.car)return;const C=CARS[arg];if(!C||S.money<C.buy||S.day<C.day){sfx.bad();return}S.money-=C.buy;g.car=arg;g.parts={};g.wd=0;logT('buy',{n:'Hurda '+C.n,i:C.i},-C.buy);T('garage_buy',{car:arg});sfx.cash();toast(C.i+' Hurda garaja çekildi. İşe koyul!')}
   if(kind==='work'){const C=CARS[g.car];if(!C)return;const p=C.parts.find(x=>x[0]===arg);if(!p||g.parts[arg])return;if(g.wd===S.day&&g.ad!==S.day)return;if(g.wd===S.day&&g.ad===S.day&&g.used2===S.day)return;if(S.money<p[2]){toast('Kasada yeterli para yok');sfx.bad();return}
     if(g.wd===S.day)g.used2=S.day;S.money-=p[2];logT('fee',{n:p[1],i:'🔧'},-p[2]);const x=R();g.parts[arg]=x<.2?1:x<.75?2:3;g.wd=S.day;stat('garPart');sfx.ok();[0,200,400].forEach(d=>tone(300,.05,'square',.04,d/1000));toast(`${p[1]}: ${QN[g.parts[arg]]}`)}
-  if(kind==='sell'){if(garProg()<1)return;const C=CARS[g.car],pr=garPrice();S.money+=pr;logT('sell',{n:C.n,i:C.i},pr);g.done[g.car]=(g.done[g.car]||0)+1;stat('garDone');gainXP(150);addRep(4);T('garage_sell',{car:g.car,price:pr});
+  if(kind==='sell'){if(garProg()<1)return;const C=CARS[g.car],pr=garPrice();happyMoment('garage');S.money+=pr;logT('sell',{n:C.n,i:C.i},pr);g.done[g.car]=(g.done[g.car]||0)+1;stat('garDone');gainXP(150);addRep(4);T('garage_sell',{car:g.car,price:pr});
     burst(60);sfx.cash();modal({icon:C.i,title:'Satıldı!',body:`${C.n} koleksiyoncunun garajında yerini aldı. Kasana <b>${fmt(pr)}</b> girdi, itibar +4.`,btns:[{t:'Harika',cls:'brass',a:'closeModal'}]});g.car=null;g.parts={}}
   save();render()}
 function garAd(){const g=garEnsure();if(g.ad===S.day)return;adShow(()=>{adUse();g.ad=S.day;save();render()},'Usta bir parça daha yapsın')}
@@ -4879,7 +4885,7 @@ function monInter(){if(isPrem()||!iapLive()||Date.now()-(MON.gd||0)<24*MON_H)ret
   const el=document.createElement('div');el.className='monnudge';el.innerHTML='<span>👑</span><div><b>Reklamsız oyna</b><small>Premium: reklam yok, bonuslar videosuz</small></div><button class="b brass sm" data-act="store">Bak</button><button class="mnx" aria-label="Kapat">✕</button>';
   el.querySelector('.mnx').onclick=()=>el.remove();el.querySelector('[data-act=store]').addEventListener('click',()=>el.remove());$('#app').appendChild(el);setTimeout(()=>el.remove(),9000)}
 /* günlük kontroller (sabah) */
-function monDaily(){if(S.day>=7)milestone('gun7');if((S.st||{}).series)milestone('seri');if((S.riv||{}).win)milestone('cemil');if((S.st||{}).grand)milestone('grand');dealStartHos()}
+function monDaily(){if(S.day>=7)milestone('gun7');if((S.st||{}).series)milestone('seri');if((S.riv||{}).win)milestone('cemil');if((S.st||{}).grand)milestone('grand');const h0=MON.hos;dealStartHos();if(MON.hos===h0)setTimeout(()=>{try{tarihTease()}catch(e){}},4600)}
 /* akşam ekranı kartları */
 function monCard(){if(!iapLive())return'';
   if(isPrem())return `<div class="moncard own"><span>👑</span><b>Premium aktif · Teşekkürler!</b></div>`;
@@ -4904,6 +4910,21 @@ function storeTable(){return `<div class="st-tbl"><div class="st-tr st-thd"><spa
   <div class="st-tr"><span>Çırak Paketi</span><span>—</span><b>✓</b></div>
   <div class="st-tr"><span>Gelecek paketler</span><span>—</span><b>✓</b></div></div>`}
 
+
+/* ===================== 1.4.1: mağaza puanı · Tarih Paketi vitrini · reklam yanında Premium notu ===================== */
+/* Mutlu anda Apple'ın puan penceresi. Apple yılda en fazla 3 kez gösterir; biz de 20 günde bir ile sınırlıyoruz. */
+const RV_GAP=20*24*MON_H;let RV_S=false;
+function happyMoment(tag){try{if(RV_S||S.day<3||Date.now()-(MON.rvAt||0)<RV_GAP||(MON.rvN||0)>=3)return;const N=window.NATIVE;if(!(N&&N.isNative&&N.askReview))return;
+  RV_S=true;setTimeout(()=>{if(modalEl||(AU&&!AU.done)||(HA&&!HA.done)){RV_S=false;return}MON.rvAt=Date.now();MON.rvN=(MON.rvN||0)+1;monSave();T('review_ask',{tag});N.askReview()},2200)}catch(e){}}
+/* Tarih Paketi'ni görmeyen oyuncuya ara sıra kapıya gelen bir tarihî parça: görür, inceler, alamaz. */
+const TZ_WHO=[['Emekli bir albay','Dedemden kalma, cepheden getirmiş.'],['Konaktan bir hanımefendi','Paşa dedemizin odasından çıktı.'],['Genç bir kazı işçisi','Köyde ahırın altından çıktı, ne olduğunu bilmiyorum.'],['Yaşlı bir müzayedeci','Bunu ancak sen değerlendirirsin dediler.']];
+function tarihTease(){if(packOwned('tarih')||!iapLive()||screen!=='game'||MON_S.shown||modalEl||S.day<4||S.day-(MON.tz||0)<4)return;
+  const all=CAT.filter(c=>c.pack==='tarih'),top=all.filter(c=>c.v>=2500),pool=top.length?top:all;if(!pool.length)return;const c=pick(pool),w=pick(TZ_WHO),it=newItemBase(c,{cond:4});
+  MON.tz=S.day;MON.tzN=(MON.tzN||0)+1;monSave();MON_S.shown=true;T('tease_show',{k:c.k});
+  modal({icon:'🚪',title:'Kapıda biri var',body:`<b>${w[0]}</b> elinde <b>${c.n}</b> ile geldi: “${w[1]}”<div class="tzimg">${icon(it)}</div><div class="tzval">Tahmini değer <b>${fmt(r10(c.v*.9))} – ${fmt(r10(c.v*1.4))}</b></div><small class="tzlock">🔒 Bu parça <b>Tarih Paketi</b>'nde. Paketi açınca kılıç, kalkan ve miğferler pazarda, mezatlarda karşına çıkar. Premium'da dahil.</small>`,
+    btns:[{t:'Geri gönder',cls:'ghost',a:'tzNo'},{t:'Pakete Bak',cls:'brass',a:'tzGo'}]})}
+/* Akşam ekranında ödüllü reklamın altında küçük not */
+function premHint(){if(isPrem()||!iapLive())return '';return `<button class="premhint" data-act="store">👑 Premium'da bonuslar videosuz, anında</button>`}
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
 function catPool(){return CAT.filter(c=>(!c.pack||c.free||packOwned(c.pack))&&(!c.ev||evtOn(c.ev)))}
 
