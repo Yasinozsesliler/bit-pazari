@@ -11,7 +11,7 @@
 | Ad | Bit Pazarı: Antika Simülatörü | aynı | Marka + "antika" + "simülatör" zaten içinde |
 | Alt başlık | Pazarlık Et, Al Sat, Zengin Ol | aynı | "pazarlık" ve "al sat" en güçlü kelimeler |
 | Anahtar kelimeler (TR) | dükkan,esnaf,tüccar,ticaret,tycoon,işletme,saat,koleksiyon,müzayede,mezat,sahte,istanbul,eşya,mağaza | `simülasyon,market,dükkan,esnaf,tüccar,tycoon,mezat,müzayede,hazine,koleksiyon,tamir,kazı,sahte,eşya` (99/100) | "simülasyon" ve "market" çok aranıyor (market simülatörü kitlesi); "hazine", "tamir", "kazı" yeni özellikler. "saat", "istanbul", "işletme", "mağaza", "ticaret" az aranıyor, çıkarıldı |
-| Keywords (EN) | flea,market,bargain,trade,tycoon,business,store,collector,auction,fake,merchant,offline,life,idle | `flea,market,bargain,trade,tycoon,collector,auction,fake,merchant,offline,treasure,garage,restore,dig` (99/100) | Yeni özellikler; "business,store,life,idle" zayıf |
+| Keywords (EN) | flea,market,bargain,trade,tycoon,business,store,collector,auction,fake,merchant,offline,life,idle | `flea,market,bargain,trade,tycoon,collector,auction,fake,merchant,offline,treasure,garage,restore,dig` (100/100) | Yeni özellikler; "business,store,life,idle" zayıf |
 
 ## Ekran görüntüleri (6.3" / 1206×2622) yeni sıra
 1. PAZARLIK ET (mevcut 1. görsel, karakter ve pazarlık en iyi kanca)
