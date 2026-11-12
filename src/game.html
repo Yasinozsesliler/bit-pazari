@@ -1397,6 +1397,29 @@ input.kpIn{caret-color:transparent}
 .rs.ok{color:var(--mint);border-color:rgba(120,209,162,.55);background:rgba(120,209,162,.12)}
 .cemban{border-radius:12px;padding:8px 10px;font-size:12.5px;line-height:1.35;background:linear-gradient(90deg,rgba(217,71,62,.22),rgba(217,71,62,.08));box-shadow:inset 0 0 0 1px rgba(217,71,62,.55);color:#ffd3cd;animation:cemPulse 1.6s ease-in-out infinite}
 @keyframes cemPulse{50%{box-shadow:inset 0 0 0 1px rgba(255,120,100,.95)}}
+/* 1.3.0 */
+.evthead{display:flex;gap:12px;align-items:center}
+.evtart{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:32px;background:linear-gradient(180deg,#123a24,#07160d);box-shadow:inset 0 0 0 1px rgba(79,209,138,.45)}
+.evtrow{background:linear-gradient(90deg,rgba(42,138,90,.18),transparent 70%)}
+.evbarrow{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.muzeart,.panoart,.stallart{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:30px;background:linear-gradient(180deg,#2d2440,#140f20);box-shadow:inset 0 0 0 1px rgba(166,139,214,.4)}
+.panoart{background:linear-gradient(180deg,#3a2a14,#1a1106);box-shadow:inset 0 0 0 1px rgba(200,146,90,.45)}
+.stallart{background:linear-gradient(180deg,#3a2414,#190e05);box-shadow:inset 0 0 0 1px rgba(232,146,90,.45)}
+.mystc{gap:10px}
+.mysthead{display:flex;gap:10px;align-items:center}
+.mystbox{flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:26px;background:#241a10;box-shadow:inset 0 0 0 1px var(--line)}
+.mysthead small{display:block;color:var(--muted);font-size:12px;line-height:1.4;font-weight:600}
+.panoc .panohead{display:flex;gap:10px;align-items:center}
+.panoc .panoic{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:#241a10;box-shadow:inset 0 0 0 1px var(--line)}
+.panoc .panohead small{display:block;color:var(--muted);font-size:12px;line-height:1.35;font-weight:600}
+.panoc.act{box-shadow:inset 0 0 0 2px rgba(232,171,60,.5)}
+.panoc.done{opacity:.75}
+.panoc .rivch{margin-top:10px}
+.panorw{margin-left:auto;font-size:12px;color:#ffd77a;flex:none}
+.panonote{display:block;margin-top:8px;font-size:11.5px;color:var(--muted)}
+.stallul{margin:0 0 4px;padding-left:2px;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.pcard.grand{box-shadow:inset 0 0 0 2px #ffd77a,0 0 20px rgba(255,215,122,.22)}
+.pgrand{border-radius:10px;padding:7px 10px;margin:2px 0;font-size:11.5px;font-weight:800;letter-spacing:.3px;background:linear-gradient(90deg,#fff1c9,#fff8e6);color:#7a4a08;box-shadow:inset 0 0 0 1px #e8b84a}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1876,7 +1899,7 @@ const TX={buy:'item_buy',sell:'item_sell',aus:'auction_sell',gift:'gift_cash'};
 function logT(t,it,amt){if(TX[t])T(TX[t],{item:String(it.k||it.n||'').slice(0,40),amount:Math.round(amt||0),pack:it.pack||'base'});(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
 const certTag=it=>it.cert?(it.cert.auth?`<span class="slab">ONAY ${it.cert.grade}</span>`:'<span class="chip bad">Replika</span>'):it.lab?'<span class="chip warn">Lab\'da</span>':'';
 const dayStars=n=>n<=0?1:n<250?2:n<700?3:n<1400?4:5;
-function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();return renderEveHub()}
+function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();return renderEveHub()}
 function dblBonus(cash){return r10(Math.min(cash,2000+S.day*250))}
 function renderEveHub(){ensureShip();genLots();
   const cash=S.money-S.stats.start,invNow=invValue(),invD=invNow-(S.stats.startInv||0),net=cash+invD,st=dayStars(net);
@@ -1885,7 +1908,7 @@ function renderEveHub(){ensureShip();genLots();
   const rows=log.length?log.map(l=>`<div class="lrow"><span class="li">${l.k?icon({k:l.k,pl:l.pl,id:l.id||"lg",cond:l.c||3,i:l.i,known:{}}):l.i}</span><span class="ln">${esc(l.n)}<small>${LBL[l.t]||''}</small></span><b class="${l.amt>=0?'pos':'neg'}">${l.amt>=0?'+':'−'}${fmt(Math.abs(l.amt))}</b></div>`).join(''):'<p class="sub" style="margin:0">Bugün hiç alışveriş yapmadın.</p>';
   const open=S.lots.list.filter(l=>l.status==='open').length,lab=S.inv.filter(x=>x.lab).length,rp=S.inv.filter(x=>!x.lab&&!x.cert&&!x.chest&&x.cond<5).length,B=S.bank,us=unsent().length,web=S.inv.filter(x=>x.web).length,unread=Math.max(0,S.reviews.length-(S.seenRev||0));
   const R=(act,art,c,t,sub,stat,cls)=>!unlocked(act)?lockRow(art,t,act):`<button class="erow2" style="--tc:${c}" data-act="eve:${act}"><span class="ri">${ART[art]}</span><span class="rt"><b>${t}</b><small>${sub}</small></span>${stat?`<span class="rs ${cls||''}">${stat}</span>`:''}<span class="chev">›</span></button>`;
-  const alerts=[];if(us)alerts.push(['warn',`${us} paket kargo bekliyor`,'kargo']);if(B.loan&&B.due-S.day<=1)alerts.push(['warn',`Kredi vadesi ${B.due-S.day<=0?'bugün':'yarın'} doluyor`,'bank']);if(unread)alerts.push(['info',`${unread} yeni mağaza yorumu`,'web']);
+  const alerts=[];if(us)alerts.push(['warn',`${us} paket kargo bekliyor`,'kargo']);if(B.loan&&B.due-S.day<=1)alerts.push(['warn',`Kredi vadesi ${B.due-S.day<=0?'bugün':'yarın'} doluyor`,'bank']);if(unread)alerts.push(['info',`${unread} yeni mağaza yorumu`,'web']);if(grandOpen())alerts.push(['info','🏆 Haftanın Büyük Mezatı bu akşam!','auction']);
   return `<div class="eve eve2">
    <div class="eh2"><span class="eh2art">${ART.shutter}</span><div class="eh2l"><span class="lbl">${S.day}. GÜN SONU</span><h2>Kepenk İndi</h2>
       <div class="dstars sm">${[1,2,3,4,5].map(k=>`<i class="${k<=st?'on':''}" style="animation-delay:${.3+k*.1}s">★</i>`).join('')}</div></div>
@@ -1902,7 +1925,7 @@ function renderEveHub(){ensureShip();genLots();
    <section class="grp"><h3>Atölye</h3>
     ${R('lab','lab','#5fb0f0','ONAY Lab','Sertifikayla değer kat',lab?`${lab} bekliyor`:'')}
     ${R('repair','tamir','#9aa1a8','Tamir Atölyesi','Yıpranmış malı onar',rp?`${rp} ürün`:'')}</section>
-   ${hubExtra()}
+   ${hubExtra()}${hubExtra2()}
    <section class="grp"><h3>İşletme</h3>
     ${R('bank','banka','#e8ab3c','Çarşı Bankası','Birikim ve kredi',B.loan?`Borç ${fmt(B.loan)}`:B.sav?fmt(B.sav):'',B.loan&&B.due-S.day<=1?'warn':'')}
     ${R('shop','dukkan','#78d1a2','Dükkân ve Görünüm','Geliştir, süsle',`${S.inv.length}/${invCap()} raf`)}
@@ -1915,7 +1938,7 @@ function countUps(){document.querySelectorAll('.cnt').forEach(el=>{const v=+el.d
 /* auctions */
 function genLots(){if(S.lots&&S.lots.day===S.day)return;
   S.lots={day:S.day,sold:0,list:[0,1,2].map(()=>{const sp=R()<.55;const cat=pick(catPool().filter(c=>sp?c.sp:!c.sp));const rating=+rf(2.4,5).toFixed(1);
-    const it=newItem(cat,{fake:!!cat.f&&R()<(5-rating)/5*.9});return{id:uid(),it,rating,start:r10(it.appear*rf(.3,.5)),status:'open',user:pick(NPCB),rival:S.day>=3&&R()<.35}})};save()}
+    const it=newItem(cat,{fake:!!cat.f&&R()<(5-rating)/5*.9});return{id:uid(),it,rating,start:r10(it.appear*rf(.3,.5)),status:'open',user:pick(NPCB),rival:S.day>=3&&R()<.35}})};if(S.day>=7&&S.day%7===0)S.lots.list.unshift(grandLot());save()}
 function tabletWrap_old(inner,tab){return `<div class="eve"><div class="tablet"><div class="tcam"></div><div class="tscreen">
   <div class="tbar"><span class="tlogo">e<b>Mezat</b></span><span class="tclock">${S.day}. gün · 21:4${S.day%10} · ▮▮▮</span></div>
   <div class="ttabs"><button class="${tab==='buy'?'on':''}" data-act="eve:auction">Açık Artırmalar</button><button class="${tab==='sell'?'on':''}" data-act="eve:sell">Mal Sat</button></div>
@@ -1927,7 +1950,7 @@ function renderAucList_old(){genLots();
    +'<p class="tnote">Satıcı puanı düşükse ürünün sahte çıkma ihtimali yüksek. Kazandığın ürünler rafına gelir. Son saniyelerde gelen teklif süreyi uzatır.</p>','buy')}
 const inc=b=>Math.max(10,stepOf(b)*2);
 function startLot(id){genLots();const l=S.lots.list.find(x=>x.id===id);if(!l||l.status!=='open')return;const now=performance.now();
-  AU={mode:'buy',l,bid:l.start,leader:'—',you:false,dur:15000,end:now+15000,npcMax:r10(l.it.appear*rf(.7,1.12)*(has('m2')?.93:1)*(l.rival?1.2:1)),feed:[],nextNpc:now+rf(1200,2200),done:false};
+  AU={mode:'buy',l,bid:l.start,leader:'—',you:false,dur:15000,end:now+15000,npcMax:r10(l.it.appear*rf(.7,1.12)*(has('m2')?.93:1)*(l.rival?1.2:1)*(l.grand?rf(1.0,1.28):1)),feed:[],nextNpc:now+rf(1200,2200),done:false};
   eve='live';sfx.door();render();AU.tk=setInterval(auTick,100)}
 function startSell(id){const it=itemById(id);if(!it)return;genLots();if(S.lots.sold>=sellCap()){toast('Bu akşam en fazla '+sellCap()+' mal satabilirsin');return}
   const v=it.known.expert&&it.fake?it.worth:val(it);const now=performance.now();
@@ -1948,8 +1971,8 @@ function auTick(){if(!AU)return;const now=performance.now();
       AU.nextNpc=now+rf(500,1200)}}
   if(!AU.done&&now>=AU.end)auEnd();else auPaint()}
 function auEnd(){AU.done=true;clearInterval(AU.tk);
-  if(AU.mode==='buy'){const l=AU.l;if(AU.you){l.status='won';const it=l.it;S.money-=AU.bid;it.paid=AU.bid;it.isNew=true;S.inv.push(it);colAdd(it);stat('buy');stat('aucWin');logT('auc',it,-AU.bid);sfx.cash();AU.result='win';gainXP(15);if(l.rival){S.rival.w++;setTimeout(()=>toast('😼 Cemil\'i alt ettin!'),400)}}
-    else{l.status='lost';AU.result='lost';sfx.bad();if(l.rival&&AU.leader===RIVAL)S.rival.l++}}
+  if(AU.mode==='buy'){const l=AU.l;if(AU.you){l.status='won';const it=l.it;S.money-=AU.bid;it.paid=AU.bid;it.isNew=true;S.inv.push(it);colAdd(it);stat('buy');stat('aucWin');logT('auc',it,-AU.bid);sfx.cash();AU.result='win';gainXP(15);if(l.rival){S.rival.w++;setTimeout(()=>toast('😼 Cemil\'i alt ettin!'),400)}if(l.grand){stat('grand');T('grand_win',{});setTimeout(()=>{burst(44);toast('🏆 Haftanın Büyük Mezatı senin!')},600)}}
+    else{l.status='lost';AU.result='lost';sfx.bad();if(l.rival&&AU.leader===RIVAL)S.rival.l++;if(l.grand)T('grand_lose',{})}}
   else{const it=AU.it;if(AU.leader==='—'){AU.result='unsold';sfx.bad()}
     else{const net=r10(AU.bid*(1-commis()/100));S.money+=net;S.inv=S.inv.filter(x=>x.id!==it.id);S.lots.sold++;logT('aus',it,net);stat('aucSell');S.st.bestProfit=Math.max(S.st.bestProfit||0,net-it.paid);AU.net=net;AU.result='sold';if(net-it.paid>=Math.max(400,it.paid*.6))setTimeout(()=>burst(),200);shipNew(it,AU.leader,AU.bid,'mezat');gainXP(15+Math.max(0,net-it.paid)/15);sfx.cash();
       if(it.fake&&!it.cert&&R()<.5)S.pending.push({n:it.n,i:it.i,fine:r10(AU.bid*1.2),rep:6})}}
@@ -2087,6 +2110,7 @@ function rsFinish(){if(!RS||RS.done)return;RS.done=true;const x=RS.x,p=RS.p;cons
 function renderRepair(){const can=S.inv.filter(x=>!x.lab&&!x.cert&&!x.chest&&x.cond<5);
   return `<div class="eve"><div class="labHead"><div class="bench">🛠️</div><div style="min-width:0"><h2 class="h">Tamir Atölyesi</h2><p class="sub" style="margin:0">Ya kendin restore et (temizle, yapıştır, cilala) ya da Orhan Usta’ya bırak. Durum yükseldikçe değer artar.</p></div></div>
    <div class="ecard"><h3 class="eh">Tamir edilebilir</h3>${can.length?can.map(x=>erow(x,`<div class="rprev"><span class="stars">${stars(x.cond)}</span><span>↓</span><span class="stars">${stars(x.cond+1)}</span><small>%${Math.round(repChance(x)*100)} başarı</small></div><div class="rpbtns"><button class="b brass sm" data-act="diy:${x.id}" ${x.diy===S.day?'disabled':''}>Kendin Yap<small>${x.diy===S.day?'Yarın':'Malzeme '+fmt(rsFee(x))}</small></button><button class="b teal sm" data-act="rep:${x.id}">Ustaya Ver<small>${fmt(repCost(x))}</small></button>${S.repAd!==S.day&&adOk()?`<button class="b sm adsm" data-act="repAd:${x.id}">📺 Usta bedava</button>`:''}</div>`)).join(''):'<p class="sub" style="margin:0">Tamir edilecek ürün yok.</p>'}</div>
+   ${mystSec()}
    <p class="sub" style="margin:0">Sertifikalı ürünler mühürlü kutuda olduğu için tamir edilemez. Önce tamir, sonra sertifika daha yüksek not getirir.</p>
    <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
 function doRepair(id,free){const x=itemById(id);if(!x)return;const c=free?0:repCost(x);if(S.money<c){toast('Kasada yeterli para yok');sfx.bad();return}
@@ -2098,11 +2122,11 @@ function doRepair(id,free){const x=itemById(id);if(!x)return;const c=free?0:repC
 
 function startDay(){
   const yd=(S.log||[]).reduce((t,l)=>t+(l.t==='gift'?0:(+l.amt||0)),0);S.day++;S.ci=0;S.phase='shop';S.log=[];eve='hub';AU=null;
-  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
+  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),muzeMorning(),stallMorning(),panoMorning(yd),evtMorning(),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
   const ex=S.pending.splice(0);let fineTot=0;
   if(ex.length){let fine=0,rep=0;ex.forEach(e=>{fine+=has('z4')?r10(e.fine/2):e.fine;rep+=e.rep});S.money-=fine;fineTot=fine;addRep(-rep);shake=true;sfx.bad();
     msgs.push(`🚨 <b>Zabıta kapıda!</b> Sattığın sahte ${ex.map(e=>e.n).join(', ')} ortaya çıktı. Ceza ${fmt(fine)}, itibar −${rep}.`)}
-  S.stats={start:S.money,buys:0,sells:0,startInv:invValue()};save();
+  cirakGrant(msgs);S.stats={start:S.money,buys:0,sells:0,startInv:invValue()};save();
   if(msgs.length){const fb=ex.length&&adOk()?r10(fineTot/2):0;S.fineBack=fb;modal({icon:ex.length?'🚨':'📜',title:'Sabah haberleri',body:msgs.join('<br><br>'),btns:fb>0?[{t:'Dükkânı Aç',cls:'ghost',a:'closeModalNext'},{t:`📺 Cezanın yarısını geri al (${fmt(fb)})`,cls:'brass',a:'fineAd'}]:[{t:'Dükkânı Aç',cls:'brass',a:'closeModalNext'}]});render();return}
   nextCustomer()}
 
@@ -2445,16 +2469,16 @@ function tabletWrap(inner,tab,opts){opts=opts||{};genLots();const open=S.lots.li
   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
 function renderAucList(){genLots();
   const cards=S.lots.list.map(l=>{lotFill(l);const it=l.it,bad=l.rating<3.4,st=l.status;
-    return `<div class="pcard${st!=='open'?' closed':''}"><div class="pimg${bad?' blurimg':''}">${icon(it)}
+    return `<div class="pcard${st!=='open'?' closed':''}${l.grand?' grand':''}"><div class="pimg${bad?' blurimg':''}">${icon(it)}
        <span class="pbadge ${st==='open'?'live':st==='won'?'won':''}">${st==='open'?'<i></i>CANLI':st==='won'?'KAZANDIN':'KAPANDI'}</span>
        <span class="pwatch">${TI.heart}${l.watch}</span>${SIGNED.has(it.k)?'<span class="ptag">İmzalı</span>':''}</div>
       <div class="pbody"><b class="pname">${it.n}${rarTag(it,true)}</b>
        <div class="pmeta"><span class="stars">${stars(it.cond)}</span><span>${CONDN[it.cond-1]}</span></div>
        <div class="pseller"><span class="pav" style="background:${avc(l.user)}">${ini(l.user)}</span><span>${l.user}</span><span class="prate">★ ${l.rating}</span><span class="psale">${l.sales} satış</span></div>
-       ${l.rival&&st==='open'?'<div class="prival">😼 Kurnaz Cemil bu mezatı izliyor</div>':''}
+       ${l.grand?'<div class="pgrand">🏆 HAFTANIN BÜYÜK MEZATI · Tek parça, bu akşama özel</div>':''}${l.rival&&st==='open'?'<div class="prival">😼 Kurnaz Cemil bu mezatı izliyor</div>':''}
        ${bad?`<div class="pwarn">${TI.shield}Satıcı puanı düşük, fotoğraflar bulanık</div>`:''}
-       <div class="pprice"><div><small>Açılış</small><b>${fmt(l.start)}</b></div><div class="pbn"><small>Hemen Al</small><b>${fmt(l.bn)}</b></div></div>
-       ${st==='open'?`<div class="pbtns"><button class="tb" data-act="lot:${l.id}">${TI.gavel}Teklife Katıl</button><button class="tb out" data-act="buynow:${l.id}">${TI.bolt}Hemen Al</button></div>`:''}</div></div>`}).join('');
+       <div class="pprice"><div><small>Açılış</small><b>${fmt(l.start)}</b></div>${l.grand?'':`<div class="pbn"><small>Hemen Al</small><b>${fmt(l.bn)}</b></div>`}</div>
+       ${st==='open'?`<div class="pbtns"><button class="tb" data-act="lot:${l.id}">${TI.gavel}Teklife Katıl</button>${l.grand?'':`<button class="tb out" data-act="buynow:${l.id}">${TI.bolt}Hemen Al</button>`}</div>`:''}</div></div>`}).join('');
   return tabletWrap(`${cards}<p class="tnote">Son 4 saniyede gelen teklif süreyi uzatır. Kazandığın ürünler rafına gelir. Düşük puanlı satıcılarda sahte çıkma riski yüksektir.</p>`,'buy')}
 function buyNow(id){genLots();const l=S.lots.list.find(x=>x.id===id);if(!l||l.status!=='open')return;lotFill(l);
   if(S.inv.length>=invCap()){toast(fullMsg());sfx.bad();return}if(S.money<l.bn){toast('Kasada yeterli para yok');sfx.bad();return}
@@ -3566,7 +3590,7 @@ function wpick(w){const ks=Object.keys(w),tot=ks.reduce((a,k)=>a+w[k],0);let r=R
 const locPickSeller=()=>wpick(curLoc().sellers);
 const locPickBuyer=()=>wpick(curLoc().buyers);
 function locPickCat(){let c=locPickCat0();if(CATW.some(w=>w.k===c.k)&&R()<.4)c=locPickCat0();return c}
-function locPickCat0(){const L=curLoc();const cats=L.cats.filter(id=>{const s=SERIES.find(x=>x.id===id);return !(s&&s.pack&&!packOwned(s.pack))});if(!cats.length||R()<.45)return pick(catPool());const id=pick(cats),s=SERIES.find(x=>x.id===id);return s?catOf(pick(s.ks)):pick(catPool())}
+function locPickCat0(){if(evtOn('yb26')&&R()<.12)return pick(EVCAT);const L=curLoc();const cats=L.cats.filter(id=>{const s=SERIES.find(x=>x.id===id);return !(s&&s.pack&&!packOwned(s.pack))});if(!cats.length||R()<.45)return pick(catPool());const id=pick(cats),s=SERIES.find(x=>x.id===id);return s?catOf(pick(s.ks)):pick(catPool())}
 const locBuy=()=>curLoc().buy,locRare=()=>curLoc().rare,locDay=()=>curLoc().day;
 function locMorning(){const out=[];S.locs=S.locs||['bit'];if(S.nextLoc){S.loc=S.nextLoc;S.nextLoc=null;const L=curLoc();out.push(`🚚 <b>${L.n}</b>'ndaki dükkânında ilk gün! ${L.d}`)}
   const L=curLoc();if(L.rent){S.money-=L.rent;logT('fee',{n:'Kira: '+L.n,i:'🏠'},-L.rent);out.push(`🏠 ${L.n} kirası ödendi: <b>${fmt(L.rent)}</b>.`)}return out}
@@ -3939,6 +3963,14 @@ document.addEventListener('click',e=>{
   if(a.startsWith('eksA:')){eksAnswer(a.slice(5));return}
   if(a==='eksNext'){eksNext();return}
   if(a==='eksClose'){EKS=null;sfx.tap();render();return}
+  if(a==='mystBuy'){mystBuy();return}
+  if(a==='mystAd'){mystAd();return}
+  if(a.startsWith('muzeT:')){muzeT(a.slice(6));return}
+  if(a.startsWith('panoGo:')){panoStart(a.slice(7));return}
+  if(a==='stallBuy'){stallAct('buy');return}
+  if(a==='stallUp'){stallAct('up');return}
+  if(a.startsWith('stallIn:')){stallIn(a.slice(8));return}
+  if(a.startsWith('stallOut:')){stallOut(a.slice(9));return}
   if(a==='mapClose'){const v=$('#mapv');if(v)v.remove();sfx.tap();render();return}
   if(a.startsWith('mapSel:')){MAPSEL=a.slice(7);sfx.tap();mapRender();return}
   if(a.startsWith('mapBuy:')){mapBuy(a.slice(7));return}
@@ -4044,7 +4076,7 @@ const METAL=new Set([...WATCH,...JEWEL,'sikke','madalya','kupa','semaver','cezve
 const ENT_KEY='bitpazari.ent';
 let ENT=(()=>{try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{}}catch(e){return {}}})();
 function entSave(){try{localStorage.setItem(ENT_KEY,JSON.stringify(ENT))}catch(e){}}
-const IAP={premium:'com.ozsstudio.bitpazari.premium',tarih:'com.ozsstudio.bitpazari.tarih'};
+const IAP={premium:'com.ozsstudio.bitpazari.premium',cirak:'com.ozsstudio.bitpazari.cirak',tarih:'com.ozsstudio.bitpazari.tarih'};
 const IAP_K=Object.fromEntries(Object.entries(IAP).map(([k,v])=>[v,k]));
 const IAP_SIM=/[?&]iapsim/.test(location.search);
 function iapLive(){const N=window.NATIVE;return !(N&&N.isNative)||!!N.iapOn}
@@ -4059,7 +4091,7 @@ function iapSync(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;N.iap.ow
 function iapLoad(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;if(Date.now()-PROD_T<6e4&&Object.keys(PROD).length)return;
   N.iap.products(Object.values(IAP)).then(ps=>{PROD_T=Date.now();ps.forEach(p=>PROD[p.identifier]=p);if(screen==='store')render()}).catch(()=>{})}
 function iapThanks(k){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}
-  toast(k==='premium'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.')}
+  toast(k==='premium'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':k==='cirak'?'Çırak Paketi açıldı!':'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.');if(k==='premium'||k==='cirak')setTimeout(()=>cirakGrant(),700)}
 async function iapBuy(k){if(storeBusy)return;const N=window.NATIVE;
   if(IAP_SIM){ENT[k]=1;entSave();iapThanks(k);render();return}
   if(!(N&&N.iapOn&&N.iap)){toast('Satın alma yalnızca App Store sürümünde.');return}
@@ -4089,7 +4121,7 @@ function renderStore(){
      <div class="st-ic">👑</div>
      <h2>Premium</h2>
      <p class="st-lead">Hepsi bir arada, tek seferlik.</p>
-     <ul><li>📜 <b>Tarih Paketi</b> dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 <b>Reklamsız oyun:</b> geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
+     <ul><li>📜 <b>Tarih Paketi</b> ve 🧢 <b>Çırak Paketi</b> dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 <b>Reklamsız oyun:</b> geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
      ${btn('premium')}
     </section>
     <section class="st-card">
@@ -4099,6 +4131,13 @@ function renderStore(){
      <div class="st-th">${th2}</div>
      <ul><li>Kılıç, kalkan, miğfer, zırh, saray ve antik çağ eserleri</li><li>Yeni müşteriler: <b>Müze Küratörü</b> ve <b>Kaçakçı Necmi</b></li><li>Hikâye görevi: <b>Kayıp Ferman</b></li></ul>
      ${btn('tarih')}
+    </section>
+    <section class="st-card">
+     <div class="st-ic">🧢</div>
+     <h2>Çırak Paketi</h2>
+     <p class="st-lead">Hızlı başlangıç için küçük destek</p>
+     <ul><li>💰 <b>5.000 ₺</b> sermaye hemen kasana</li><li>🧢 <b>Çırak Necati</b> yanında başlar: her akşam 1 malını senin yerine satar</li><li>👑 Premium alanlara zaten dahildir</li></ul>
+     ${btn('cirak')}
     </section>
     <button class="st-restore" data-act="iapRestore" ${storeBusy?'disabled':''}>Satın Alımları Geri Yükle</button>
     <p class="st-legal">Tüm ürünler tek seferlik satın almadır, abonelik değildir. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
@@ -4315,8 +4354,198 @@ function hubExtra(){const r=ensureRiv(),e=S.eks||{},nb=colNext();const eksOpen=S
    ${eksOpen?`<button class="erow2" style="--tc:#5fb0f0" data-act="eve:eks"><span class="ri" style="font-size:22px">🔎</span><span class="rt"><b>Ekspertiz Masası</b><small>Gerçek mi sahte mi? Günlük mini oyun</small></span>${e.d!==S.day?'<span class="rs info">Hazır</span>':''}<span class="chev">›</span></button>`:'<div class="erow2 locked"><span class="ri" style="font-size:22px">🔎</span><span class="rt"><b>Ekspertiz Masası</b><small>2. günde açılır</small></span><span class="lk">🔒</span></div>'}
    <button class="erow2" style="--tc:#d9473e" data-act="eve:riv"><span class="ri" style="font-size:22px">😼</span><span class="rt"><b>Kurnaz Cemil</b><small>${S.day<3?'Yarış 3. günde başlıyor':`Haftalık yarış · ${rivLeft()} gün kaldı`}</small></span>${S.day>=3?`<span class="rs ${r.me>=r.him?'ok':'warn'}">${r.me>=r.him?'Öndesin':'Gerideysin'}</span>`:''}<span class="chev">›</span></button></section>`}
 
+
+/* ===================== 1.3.0: Yılbaşı · Hurda Kasası · Müze Katı · Mahalle Panosu · Büyük Mezat · Pasaj Tezgâhı · Çırak Paketi ===================== */
+
+/* ---------- Yılbaşı Pazarı (gerçek tarihe bağlı etkinlik) ---------- */
+const EVTS={yb26:{n:'Yılbaşı Bit Pazarı',ic:'🎄',from:'2026-11-25',to:'2027-01-06'}};
+function evtOn(id){const e=EVTS[id];if(!e)return false;const d=new Date();const t=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return t>=e.from&&t<=e.to}
+function evtLeft(id){const e=EVTS[id];const ms=new Date(e.to+'T23:59:59')-new Date();return Math.max(0,Math.ceil(ms/864e5))}
+const EVCAT=[
+ {k:'camsus',n:'El Boyaması Cam Süs',i:'🎄',v:380,ev:'yb26'},
+ {k:'piyango',n:'1979 Piyango Bileti',i:'🎫',v:650,f:1,ev:'yb26'},
+ {k:'kartpostal',n:'Nostaljik Yılbaşı Kartı',i:'💌',v:260,ev:'yb26'},
+ {k:'karkuresi',n:'Müzikli Kar Küresi',i:'🔮',v:900,f:1,ev:'yb26'},
+ {k:'tepelik',n:'Gümüş Çam Tepeliği',i:'⭐',v:1200,f:1,ev:'yb26'},
+ {k:'isikdizisi',n:'60\'lar Işık Dizisi',i:'💡',v:520,ev:'yb26'}];
+CAT.push(...EVCAT);
+const EV_RW=7500;
+function evtMorning(){if(!evtOn('yb26'))return[];S.evCol=S.evCol||{};const out=[];
+  if(!S.evSeen){S.evSeen=1;T('evt_start',{});out.push(`🎄 <b>Yılbaşı Bit Pazarı başladı!</b> ${evtLeft('yb26')} gün boyunca pazarda yılbaşına özel 6 eşya dolaşacak. Altısını da toplarsan <b>${fmt(EV_RW)}</b> ödül senin. Akşam ekranındaki Yılbaşı Pazarı'ndan takip et.`)}
+  return out}
+function evtCol(it){if(!it)return;const _c=CAT.find(x=>x.k===it.k);if(!_c||!_c.ev)return;S.evCol=S.evCol||{};if(S.evCol[it.k])return;S.evCol[it.k]=1;T('evt_item',{k:it.k});
+  const have=EVCAT.filter(c=>S.evCol[c.k]).length;
+  if(have<EVCAT.length){setTimeout(()=>toast(`🎄 Yılbaşı koleksiyonu: ${have}/${EVCAT.length}`),1300);return}
+  if(S.evDone)return;S.evDone=1;S.money+=EV_RW;stat('evt');gainXP(120);T('evt_done',{});
+  setTimeout(()=>{burst(60);sfx.ok();setTimeout(sfx.cash,200);modal({icon:'<span class="bigtrophy">🎄</span>',title:'Yılbaşı koleksiyonu tamam!',body:`Yılbaşına özel 6 parçanın hepsini topladın. Çarşının en şenlikli vitrini seninki!<br><br>Ödül: <b>${fmt(EV_RW)}</b>`,btns:[{t:'Mutlu yıllar!',cls:'brass',a:'closeModal'}]})},1600)}
+function renderEvt(){S.evCol=S.evCol||{};const have=EVCAT.filter(c=>S.evCol[c.k]).length,on=evtOn('yb26');
+  return `<div class="eve evtp"><div class="evthead"><span class="evtart">🎄</span><div style="min-width:0"><span class="lbl">SINIRLI SÜRELİ ETKİNLİK</span><h2 class="h">Yılbaşı Bit Pazarı</h2><p class="sub" style="margin:0">${on?`Yılbaşına özel 6 nostaljik parça pazarda dolaşıyor. Satıcılardan ve mezattan toplayabilirsin. <b>${evtLeft('yb26')} gün kaldı.</b>`:'Etkinlik sona erdi. Gelecek yıl görüşürüz!'}</p></div></div>
+   <div class="ecard"><div class="evbarrow"><b>${have} / ${EVCAT.length}</b><span>Ödül: <b>${fmt(EV_RW)}</b></span></div>
+    <div class="slots">${EVCAT.map(c=>{const got=S.evCol[c.k];return `<div class="slot${got?' got':''}" style="--rc:#4fd18a"><span class="sic">${icon({k:c.k,i:c.i,cond:4,id:'ev'+c.k,known:{}})}</span><small>${got?c.n:'???'}</small></div>`}).join('')}</div>
+    ${S.evDone?'<p class="pos" style="margin:8px 0 0;text-align:center">✓ Koleksiyon tamamlandı, ödül alındı</p>':''}</div>
+   <p class="sub" style="margin:0">İpucu: Yılbaşı eşyaları her satıcıda çıkmaz. Ne kadar çok müşteriyle görüşürsen şansın o kadar yüksek. Kar küresi, tepelik ve piyango biletinin sahtesi de dolaşıyor, gözünü dört aç!</p>
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+
+/* ---------- Hurda Kasası (restorasyon kumarı) ---------- */
+function mystCost(){return r10((350+S.day*30)*rf(.85,1.15))}
+function mystEnsure(){S.myst=S.myst||{};if(S.myst.d!==S.day){S.myst={d:S.day,cost:mystCost(),used:0,ad:0}}return S.myst}
+function mystSec(){if(S.day<3)return'';const m=mystEnsure();const can=m.used<1||(m.ad&&m.used<2);
+  return `<div class="ecard mystc"><div class="mysthead"><span class="mystbox">🧰</span><div style="min-width:0"><h3 class="eh">Hurda Kasası</h3><small>Orhan Usta'nın deposundan çıkma, içinden ne çıkacağı belirsiz bir parça. Restore edelim de görelim: çöp mü, hazine mi?</small></div></div>
+   ${can?`<button class="b brass" data-act="mystBuy">Kasayı Aç ve Restore Et<small>${fmt(m.cost)} · günde 1 hak</small></button>`:m.used<2&&adOk()?`<button class="b ghost" data-act="mystAd">📺 Bir kasa daha<small>Reklam izle</small></button>`:'<p class="sub" style="margin:0;text-align:center">Bugünlük kasa bitti. Yarın yenisi gelir.</p>'}</div>`}
+function mystBuy(){const m=mystEnsure();if(m.used>=(m.ad?2:1))return;
+  if(S.money<m.cost){toast('Kasada yeterli para yok');sfx.bad();return}
+  if(S.inv.length>=invCap()){toast(fullMsg());sfx.bad();return}
+  S.money-=m.cost;m.used++;logT('fee',{n:'Hurda Kasası',i:'🧰'},-m.cost);T('myst_open',{});
+  modal({icon:'<span class="hammer">🔨</span>',title:'Restorasyon sürüyor…',body:'Orhan Usta tozu kiri söküyor, parça yavaş yavaş ortaya çıkıyor…',btns:[]});
+  [0,280,560,840,1120].forEach(d=>tone(240+d/8,.06,'square',.05,d/1000));
+  setTimeout(()=>{closeModal();
+    const x=R();let tier,cat,opt={cond:5};
+    if(x<.2){tier='cop';cat=pick(catPool().filter(c=>c.v<=400&&!c.sp));opt={cond:2}}
+    else if(x<.75){tier='orta';cat=pick(catPool().filter(c=>c.v>=m.cost*.8&&c.v<=m.cost*2.6))||pick(catPool());opt={cond:3+Math.floor(R()*2)}}
+    else if(x<.95){tier='iyi';cat=pick(catPool().filter(c=>c.v>=m.cost*1.6))||pick(catPool());opt={cond:4,rar:1+(R()<.3?1:0)}}
+    else{tier='hazine';cat=pick(catPool().filter(c=>c.v>=m.cost*2))||pick(catPool());opt={cond:5,rar:3};stat('mystT')}
+    const it=newItem(cat,opt);it.paid=m.cost;it.isNew=true;S.inv.push(it);colAdd(it);stat('myst');
+    const M={cop:['🗑️','Tüh… çöp çıktı',`Kasadan ${it.n} çıktı ama hali harap. En azından rafa koyduk, belki birkaç kuruş eder.`],
+      orta:['🧰','Fena değil!',`Kasadan temiz bir ${it.n} çıktı. Restore edilmiş hali gayet satılır.`],
+      iyi:['✨','Güzel parça!',`Bak sen! Kasadan ${it.n} çıktı, hem de ${RN[it.rar||0].toLocaleLowerCase('tr-TR')} cinsinden. Usta eline sağlık.`],
+      hazine:['💎','HAZİNE!',`İnanılmaz! Kasadan <b>Efsanevi ${it.n}</b> çıktı! Orhan Usta bile gözlerine inanamıyor. Bu parça servet eder!`]}[tier];
+    if(tier==='hazine'){burst(60);sfx.ok();setTimeout(sfx.cash,250)}else if(tier==='iyi'){burst(26);sfx.ok()}else if(tier==='cop')sfx.bad();else sfx.ok();
+    modal({icon:M[0],title:M[1],body:`${icon(it)}<br>${M[2]}<br><br><small>Tahmini değer: ${tier==='cop'?'düşük':'incele de gör'} · Ödenen: ${fmt(m.cost)}</small>`,btns:[{t:'Rafa Koy',cls:'brass',a:'closeModal'}]});
+    save();render()},1500)}
+function mystAd(){const m=mystEnsure();if(m.ad||m.used<1)return;adShow(()=>{adUse();m.ad=1;save();render();toast('🧰 Yeni bir kasa geldi!')},'Bir hurda kasası daha')}
+
+/* ---------- Müze Katı ---------- */
+function muzeEx(){S.muze=S.muze||{ex:{}};return S.muze}
+const muzeList=()=>SERIES.filter(s=>S.colDone&&S.colDone[s.id]);
+const muzeInc=s=>r10(s.rw*.06*(S.colGold&&S.colGold[s.id]?2:1));
+function muzeMorning(){const m=muzeEx(),exs=muzeList().filter(s=>m.ex[s.id]);if(!exs.length)return[];
+  let tot=0;exs.forEach(s=>tot+=muzeInc(s));S.money+=tot;logT('gift',{n:'Müze giriş ücretleri',i:'🏛️'},tot);stat('muzeInc',tot);
+  const out=[`🏛️ Müze Katı'nı bugün ${8+Math.floor(R()*30)} kişi gezdi: giriş ücretlerinden <b>${fmt(tot)}</b> kazandın.`];
+  if(exs.length>=2&&!S.vipDay&&R()<.3&&S.inv.some(x=>!x.chest&&!x.lab)){S.vipDay=S.day;out.push('🧳 Sergini gezen zengin bir turist dükkânına da uğrayacak. İyi ağırla!')}
+  return out}
+function renderMuze(){const m=muzeEx(),list=muzeList(),exN=list.filter(s=>m.ex[s.id]).length;
+  return `<div class="eve muzep"><div class="rivhead"><span class="muzeart">🏛️</span><div style="min-width:0"><span class="lbl">DÜKKÂNIN ÜST KATI</span><h2 class="h">Müze Katı</h2><p class="sub" style="margin:0">Tamamladığın koleksiyon serilerini sergiye koy. Her sergi her sabah giriş ücreti kazandırır, Altın Sayfa serileri <b>2 kat</b> kazandırır. 2+ sergi varsa ara sıra zengin turistler dükkâna da uğrar.</p></div></div>
+   ${list.length?`<div class="ecard rivst"><div><small>Sergide</small><b>${exN}</b></div><div><small>Günlük gelir</small><b class="pos">+${fmt(list.filter(s=>m.ex[s.id]).reduce((a,s)=>a+muzeInc(s),0))}</b></div><div><small>Toplam kazanç</small><b>${fmt((S.st||{}).muzeInc||0)}</b></div></div>
+   ${list.map(s=>{const on=!!m.ex[s.id],gold=S.colGold&&S.colGold[s.id];
+     return `<button class="erow2" style="--tc:${s.c}" data-act="muzeT:${s.id}"><span class="ri" style="font-size:22px">${on?'🏛️':'📦'}</span><span class="rt"><b>${gold?'✨ ':''}${s.n}</b><small>${on?`Sergide · her sabah +${fmt(muzeInc(s))}`:'Depoda duruyor'}</small></span><span class="rs ${on?'ok':''}">${on?'Sergide':'Sergile'}</span></button>`}).join('')}`
+   :'<div class="ecard" style="text-align:center"><span style="font-size:40px">🏛️</span><p class="sub" style="margin:0">Müze Katı boş. Koleksiyon Defteri\'nde bir seriyi tamamla, burada sergile ve her sabah para kazan.</p></div>'}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function muzeT(id){const m=muzeEx();if(!(S.colDone&&S.colDone[id]))return;m.ex[id]=m.ex[id]?0:1;if(m.ex[id]){stat('muzeEx');T('muze_exhibit',{s:id})}sfx.tap();save();render()}
+
+/* ---------- Mahalle Panosu (görev zincirleri) ---------- */
+const PANO=[
+ {id:'muhtar',ic:'🧔',t:'Muhtarın Ricası',d:'Muhtar Sabri Bey mahalleye hareket gelsin istiyor.',
+  steps:[{d:'Dükkânda 3 mal sat',k:'sell',n:3,rw:800,say:'Tezgâh şenlendi, eline sağlık!'},
+   {d:'1 özel sipariş teslim et',k:'order',n:1,rw:1500,say:'Sözünün eri çıktın, mahalle memnun.'},
+   {d:'Bir günü 1.500 ₺+ kârla kapat',k:'profit',n:1500,rw:3000,say:'Sen bu çarşının yüz akısın evlat!'}],frw:'İtibar +5',fr:()=>addRep(5)},
+ {id:'kahve',ic:'☕',t:'Kahvehane İddiası',d:'Kahvedekiler "bu çocuk beceremez" diye tutuşmuş. Göster onlara.',
+  steps:[{d:'Online mezatta 2 mal kazan',k:'aucWin',n:2,rw:1200,say:'Mezatta eli çabukmuş dediler.'},
+   {d:'Ekspertizde 4 doğru bil',k:'eksOK',n:4,rw:1500,say:'Gözünden sahte kaçmıyor, kahve bunu konuşuyor.'},
+   {d:'Cemil\'in araya girdiği 1 malı kap',k:'cemilBeat',n:1,rw:4000,say:'İddiayı kazandın! Kahvede çaylar senden değil, ONLARDAN.'}],frw:'İtibar +3',fr:()=>addRep(3)},
+ {id:'nebahat',ic:'📚',t:'Sahaf Nebahat\'in Listesi',d:'Emekli sahaf Nebahat Hanım, hatırı sayılır bir koleksiyoncu. Seni sınamak istiyor.',
+  steps:[{d:'5 mal satın al',k:'buy',n:5,rw:1000,say:'Alıcı gözün varmış, devam.'},
+   {d:'2 mal tamir ettir',k:'repair',n:2,rw:1500,say:'Esere saygı duyana eser de saygı duyar.'},
+   {d:'Nadir veya üstü 1 parça bul',k:'rare',n:1,rw:5000,say:'İşte bu! Sen artık benim gözümde gerçek bir antikacısın.'}],frw:'İtibar +4',fr:()=>addRep(4)}];
+function panoEnsure(){S.pano=S.pano||{cur:null,step:0,base:0,done:{}};return S.pano}
+const panoCh=()=>PANO.find(c=>c.id===panoEnsure().cur);
+function panoProg(){const p=panoEnsure(),c=panoCh();if(!c)return 0;const g=c.steps[p.step];if(!g||g.k==='profit')return 0;return Math.max(0,((S.st||{})[g.k]||0)-p.base)}
+function panoStart(id){const p=panoEnsure();if(p.cur||p.done[id])return;p.cur=id;p.step=0;const g=PANO.find(c=>c.id===id).steps[0];p.base=g.k==='profit'?0:((S.st||{})[g.k]||0);T('pano_start',{c:id});sfx.ok();save();render()}
+function panoMorning(yd){const p=panoEnsure(),c=panoCh();if(!c)return[];const out=[];
+  let guard=0;
+  while(p.cur&&guard++<5){const g=c.steps[p.step];if(!g)break;
+    const ok=g.k==='profit'?yd>=g.n:panoProg()>=g.n;if(!ok)break;
+    S.money+=g.rw;gainXP(30);T('pano_step',{c:c.id,s:p.step});
+    out.push(`📌 <b>${c.t}:</b> "${g.d}" tamam! <i>"${g.say}"</i> Ödül: <b>${fmt(g.rw)}</b>`);
+    p.step++;
+    if(p.step>=c.steps.length){p.done[c.id]=1;p.cur=null;stat('pano');c.fr&&c.fr();
+      out.push(`🏅 <b>${c.t}</b> görev zinciri bitti! Ek ödül: ${c.frw}.${Object.keys(p.done).length>=PANO.length?' Panodaki tüm ricaları yerine getirdin, mahalle seni bağrına bastı!':''}`);
+      if(Object.keys(p.done).length>=PANO.length&&!S.panoAll){S.panoAll=1;S.money+=2500;out.push(`🎉 Mahalle aranızda para topladı: <b>${fmt(2500)}</b>`)}
+      break}
+    const ng=c.steps[p.step];p.base=ng.k==='profit'?0:((S.st||{})[ng.k]||0);
+    out.push(`📌 Sıradaki görev: <b>${ng.d}</b>`)}
+  return out}
+function renderPano(){const p=panoEnsure(),c=panoCh();
+  return `<div class="eve panop"><div class="rivhead"><span class="panoart">📌</span><div style="min-width:0"><span class="lbl">KAHVEHANENİN YANI</span><h2 class="h">Mahalle Panosu</h2><p class="sub" style="margin:0">Mahallelinin ricaları panoda asılı. Bir zincir seç, görevleri sırayla bitir. Ödüller her sabah muhtarlıktan gelir.</p></div></div>
+   ${PANO.map(ch=>{const done=p.done[ch.id],act=p.cur===ch.id;
+    return `<div class="ecard panoc${act?' act':''}${done?' done':''}"><div class="panohead"><span class="panoic">${ch.ic}</span><div style="min-width:0;flex:1"><b>${ch.t}</b><small>${ch.d}</small></div>${done?'<span class="rs ok">✓ Bitti</span>':act?'':(p.cur?'':`<button class="b brass sm" data-act="panoGo:${ch.id}">Başla</button>`)}</div>
+     ${(act||done)?`<div class="rivch">${ch.steps.map((g,i)=>{const st=done||i<p.step?'done':act&&i===p.step?'cur':'';
+       const prog=act&&i===p.step&&g.k!=='profit'?` · ${Math.min(g.n,panoProg())}/${g.n}`:'';
+       return `<div class="${st}"><i>${st==='done'?'✓':i+1}</i><span>${g.d}${prog}</span><b class="panorw">${fmt(g.rw)}</b></div>`}).join('')}
+      <div class="${done?'done':''}"><i>🏅</i><span>Zincir ödülü</span><b class="panorw">${ch.frw}</b></div></div>`:''}
+     ${act&&ch.steps[p.step]&&ch.steps[p.step].k==='profit'?'<small class="panonote">Bu görev gün sonunda, o günkü alım-satım kârına bakılarak sayılır.</small>':''}</div>`}).join('')}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+
+/* ---------- Haftanın Büyük Mezatı ---------- */
+function grandLot(){const pool=catPool().filter(c=>c.v>=1200);const cat=pool.length?pick(pool):pick(catPool());
+  const it=newItem(cat,{cond:4+(R()<.5?1:0),rar:2+(R()<.45?1:0),fake:false});
+  return{id:uid(),it,rating:5,start:r10(it.appear*rf(.42,.55)),status:'open',user:'Pera Müzayede Evi',rival:true,grand:1}}
+const grandOpen=()=>S.lots&&S.lots.list.some(l=>l.grand&&l.status==='open');
+
+/* ---------- Pasaj Tezgâhı (ikinci dükkân) ---------- */
+const STALL_PRICE=25000,STALL_CAP=[3,5,8],STALL_UP=[12000,25000];
+function stallEnsure(){S.stall=S.stall||{own:0,lv:0,items:[]};return S.stall}
+const stallCap=()=>STALL_CAP[stallEnsure().lv];
+function stallMorning(){const st=stallEnsure();if(!st.own||!st.items.length)return[];
+  const sold=[],keep=[];let tot=0;
+  let comp=0;st.items.forEach(it=>{if(R()<.5+.06*st.lv){
+      if(it.fake&&R()<.3){addRep(-2);comp++;sold.push(it);return}
+      const p=r10((it.known&&it.known.expert&&it.fake?it.worth:val(it))*rf(.85,1.1)*.9);
+      S.money+=p;tot+=p;logT('cirak',it,p);stat('stall');sold.push(it)}
+    else keep.push(it)});
+  st.items=keep;if(!sold.length)return['⛺ Pasaj Tezgâhı: bugün satış olmadı, mallar tezgâhta duruyor.'];
+  T('stall_sell',{n:sold.length});
+  const out=[`⛺ <b>Pasaj Tezgâhı</b> dün ${sold.length-comp} mal sattı: kasana <b>${fmt(tot)}</b> girdi (pasaj komisyonu düşüldü).`];
+  if(comp)out.push(`😠 Tezgâhtaki bir mal <b>sahte</b> çıktı! Müşteri parasını geri aldı, pasajda adın kötüye çıktı: itibar −2.`);
+  return out}
+function renderStall(){const st=stallEnsure();
+  if(!st.own)return `<div class="eve stallp"><div class="rivhead"><span class="stallart">⛺</span><div style="min-width:0"><span class="lbl">AVRUPA PASAJI</span><h2 class="h">Pasaj Tezgâhı</h2><p class="sub" style="margin:0">Beyoğlu'ndaki tarihi pasajda ikinci bir tezgâh. Mallarını koy, tezgâhtar her gün senin yerine satsın. Sen neredeysen ol, tezgâh çalışır.</p></div></div>
+   <div class="ecard"><ul class="stallul"><li>⛺ ${STALL_CAP[0]} mal kapasiteli tezgâh (geliştirilebilir)</li><li>💰 Her mal her sabah ~%50 ihtimalle satılır</li><li>✂️ Satıştan %10 pasaj komisyonu kesilir</li><li>📈 Satışlar haftalık Cemil yarışına da sayılır</li></ul>
+   <button class="b brass" data-act="stallBuy" ${S.money<STALL_PRICE?'disabled':''}>Tezgâhı Kirala<small>${fmt(STALL_PRICE)} · tek seferlik</small></button>
+   ${S.day<10?'<small class="panonote">İpucu: acele etme, önce sermaye biriktir.</small>':''}</div>
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`;
+  const inv=S.inv.filter(x=>!x.lab&&!x.chest&&!x.web&&x.k!=='anahtar');
+  return `<div class="eve stallp"><div class="rivhead"><span class="stallart">⛺</span><div style="min-width:0"><span class="lbl">AVRUPA PASAJI</span><h2 class="h">Pasaj Tezgâhı</h2><p class="sub" style="margin:0">Tezgâhtaki her mal her sabah ~%${50+6*st.lv} ihtimalle satılır, %10 komisyon kesilir.</p></div></div>
+   <div class="ecard rivst"><div><small>Tezgâhta</small><b>${st.items.length}/${stallCap()}</b></div><div><small>Toplam satış</small><b>${(S.st||{}).stall||0}</b></div><div><small>Seviye</small><b>${st.lv+1}</b></div></div>
+   ${st.lv<STALL_UP.length?`<button class="b ghost" data-act="stallUp" ${S.money<STALL_UP[st.lv]?'disabled':''}>Tezgâhı Büyüt: ${STALL_CAP[st.lv+1]} mal<small>${fmt(STALL_UP[st.lv])}</small></button>`:''}
+   <div class="ecard"><h3 class="eh">Tezgâhtakiler</h3>${st.items.length?st.items.map(x=>erow(x,`<button class="b ghost sm" data-act="stallOut:${x.id}">Geri Al</button>`)).join(''):'<p class="sub" style="margin:0">Tezgâh boş. Aşağıdan mal koy.</p>'}</div>
+   <div class="ecard"><h3 class="eh">Rafından koy</h3>${inv.length?inv.map(x=>erow(x,`<button class="b brass sm" data-act="stallIn:${x.id}" ${st.items.length>=stallCap()?'disabled':''}>Tezgâha Koy</button>`)).join(''):'<p class="sub" style="margin:0">Rafında uygun mal yok.</p>'}</div>
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function stallAct(a){const st=stallEnsure();
+  if(a==='buy'){if(st.own)return;if(S.money<STALL_PRICE){toast('Kasada yeterli para yok');sfx.bad();return}S.money-=STALL_PRICE;st.own=1;logT('fee',{n:'Pasaj Tezgâhı kirası',i:'⛺'},-STALL_PRICE);T('stall_open',{});sfx.cash();burst(30);toast('⛺ Pasaj Tezgâhı senin! Mal koymayı unutma.')}
+  if(a==='up'){const c=STALL_UP[st.lv];if(c==null||S.money<c){sfx.bad();return}S.money-=c;st.lv++;logT('fee',{n:'Tezgâh büyütme',i:'⛺'},-c);sfx.ok();toast('Tezgâh büyüdü: '+stallCap()+' mal')}
+  save();render()}
+function stallIn(id){const st=stallEnsure();if(st.items.length>=stallCap())return;const it=itemById(id);if(!it)return;S.inv=S.inv.filter(x=>x.id!==id);st.items.push(it);sfx.tap();save();render()}
+function stallOut(id){const st=stallEnsure();const it=st.items.find(x=>x.id===id);if(!it)return;if(S.inv.length>=invCap()){toast(fullMsg());sfx.bad();return}st.items=st.items.filter(x=>x.id!==id);S.inv.push(it);sfx.tap();save();render()}
+
+/* ---------- Çırak Paketi ---------- */
+function cirakGrant(msgs){if(!(ENT.premium||ENT.cirak)||S.cirakG)return;S.cirakG=1;ensureEcon();
+  S.money+=5000;if((S.up.cirak||0)<1)S.up.cirak=1;save();
+  const tx='Çırak Paketi açıldı: kasana <b>5.000 ₺</b> sermaye girdi ve <b>Çırak Necati</b> artık her akşam senin yerine 1 mal satıyor.';
+  if(msgs)msgs.push('🧢 '+tx);else setTimeout(()=>modal({icon:'🧢',title:'Çırak Necati iş başında!',body:tx,btns:[{t:'Süper',cls:'brass',a:'closeModal'}]}),600)}
+
+/* ---------- akşam menüsü ek bölümü ---------- */
+function hubExtra2(){const st=stallEnsure(),p=panoEnsure(),c=panoCh(),ml=muzeList(),m=muzeEx(),exN=ml.filter(s=>m.ex[s.id]).length;
+  const evRow=evtOn('yb26')?`<button class="erow2 evtrow" style="--tc:#2a8a5a" data-act="eve:evt"><span class="ri" style="font-size:22px">🎄</span><span class="rt"><b>Yılbaşı Bit Pazarı</b><small>Sınırlı etkinlik · ${evtLeft('yb26')} gün kaldı</small></span><span class="rs ${S.evDone?'ok':'info'}">${S.evDone?'Tamam':(EVCAT.filter(x=>(S.evCol||{})[x.k]).length)+'/'+EVCAT.length}</span><span class="chev">›</span></button>`:'';
+  const panoSub=c?`${c.t} · ${c.steps[p.step]?c.steps[p.step].d:''}`:Object.keys(p.done).length>=PANO.length?'Tüm ricalar tamam':'Yeni görev zincirleri asılı';
+  return `<section class="grp"><h3>Mahalle</h3>
+   ${evRow}
+   ${S.day>=4?`<button class="erow2" style="--tc:#c8925a" data-act="eve:pano"><span class="ri" style="font-size:22px">📌</span><span class="rt"><b>Mahalle Panosu</b><small>${panoSub}</small></span>${c?'<span class="rs info">Görevde</span>':''}<span class="chev">›</span></button>`:'<div class="erow2 locked"><span class="ri" style="font-size:22px">📌</span><span class="rt"><b>Mahalle Panosu</b><small>4. günde açılır</small></span><span class="lk">🔒</span></div>'}
+   ${ml.length?`<button class="erow2" style="--tc:#a68bd6" data-act="eve:muze"><span class="ri" style="font-size:22px">🏛️</span><span class="rt"><b>Müze Katı</b><small>${exN?exN+' sergi · her sabah gelir':'Tamamlanan serileri sergile'}</small></span>${exN?`<span class="rs ok">+${fmt(ml.filter(s=>m.ex[s.id]).reduce((a,s)=>a+muzeInc(s),0))}/gün</span>`:''}<span class="chev">›</span></button>`:''}
+   ${S.day>=8||st.own?`<button class="erow2" style="--tc:#e8925a" data-act="eve:stall"><span class="ri" style="font-size:22px">⛺</span><span class="rt"><b>Pasaj Tezgâhı</b><small>${st.own?`${st.items.length}/${stallCap()} mal tezgâhta`:'İkinci dükkânını aç'}</small></span>${st.own&&!st.items.length?'<span class="rs warn">Boş</span>':''}<span class="chev">›</span></button>`:'<div class="erow2 locked"><span class="ri" style="font-size:22px">⛺</span><span class="rt"><b>Pasaj Tezgâhı</b><small>8. günde açılır</small></span><span class="lk">🔒</span></div>'}</section>`}
+ACH.push(['hurda','💎','Hurdadan Hazine','Hurda Kasası\'ndan efsanevi parça çıkar',()=>(S.st||{}).mystT||0,1,2000],
+ ['grand1','🏆','Büyük Mezat Fatihi','Haftanın Büyük Mezatı\'nı kazan',()=>(S.st||{}).grand||0,1,2000],
+ ['grand3','👑','Mezat Kralı','3 Büyük Mezat kazan',()=>(S.st||{}).grand||0,3,5000],
+ ['pano3','📌','Mahallenin Gözdesi','Panodaki 3 görev zincirini de bitir',()=>(S.st||{}).pano||0,3,3000],
+ ['pasaj','⛺','Pasaj Esnafı','Pasaj Tezgâhı\'nda 15 mal sat',()=>(S.st||{}).stall||0,15,2500],
+ ['muzeci','🏛️','Müze Müdürü','4 seriyi aynı anda sergile',()=>{const m=S.muze||{ex:{}};return Object.values(m.ex||{}).filter(Boolean).length},4,3000],
+ ['yilbasi','🎄','Yılbaşı Koleksiyoncusu','Yılbaşı setinin 6 parçasını topla',()=>(S.st||{}).evt||0,1,2500]);
+
+const colAdd1=colAdd;colAdd=function(it){colAdd1(it);try{evtCol(it)}catch(e){}};
+/* test kancası: yalnızca ?bptest ile */
+if(/[?&]bptest/.test(location.search))window.BP_TEST={S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()}};
+
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
-function catPool(){return CAT.filter(c=>!c.pack||c.free||packOwned(c.pack))}
+function catPool(){return CAT.filter(c=>(!c.pack||c.free||packOwned(c.pack))&&(!c.ev||evtOn(c.ev)))}
 
 /* ---------- 3B modeller ---------- */
 function hShapeExt(sh,depth,m,bev){return new THREE.ExtrudeGeometry(sh,{depth,bevelEnabled:true,bevelSize:bev==null?.012:bev,bevelThickness:bev==null?.012:bev,bevelSegments:2,curveSegments:24})}
