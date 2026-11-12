@@ -1491,6 +1491,22 @@ input.kpIn{caret-color:transparent}
 .tzimg{width:150px;height:150px;margin:8px auto 2px;display:grid;place-items:center;border-radius:18px;background:radial-gradient(circle,rgba(232,171,60,.22),transparent 70%)}.modal .tzimg img.tico{width:150px!important;height:150px!important;object-fit:contain;transform:scale(1.35)}
 .tzval{font-size:14px;margin:4px 0 8px}.tzlock{display:block;background:rgba(232,171,60,.12);border:1px solid rgba(232,171,60,.35);border-radius:12px;padding:8px 10px;line-height:1.4}
 .premhint{display:block;width:100%;margin:-4px 0 10px;background:none;border:0;color:#e8ab3c;font:800 12.5px Nunito,sans-serif;text-align:center;padding:4px;opacity:.9}
+
+.sharechip{position:absolute;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;background:linear-gradient(#f3c25e,#e8ab3c 55%,#a8721c);color:#2b1a0f;border:0;border-radius:999px;padding:10px 18px;font:900 15px Nunito,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.45);animation:shpop .35s cubic-bezier(.2,1.6,.4,1)}
+.sharechip small{font-weight:800;opacity:.75}
+@keyframes shpop{from{transform:translateX(-50%) scale(.6);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+.kbbar{display:block;height:6px;border-radius:6px;background:rgba(255,255,255,.12);margin-top:5px;overflow:hidden}.kbbar i{display:block;height:100%;background:linear-gradient(90deg,#f29bb2,#e8ab3c);border-radius:6px}
+.kbbar.big{height:12px;margin:8px 0}.kbbig{font:900 40px Nunito,sans-serif;color:#78d1a2;margin:10px 0 0}
+.szprog{display:flex;justify-content:space-between;font-size:14px}.szown{color:#e8ab3c;font-weight:900;text-align:center;margin:6px 0 0}
+.szhead{display:grid;grid-template-columns:34px 1fr 1fr;gap:6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:0 4px;margin:4px 0}.szhead .gold{color:#e8ab3c}
+.szr{display:grid;grid-template-columns:34px 1fr 1fr;gap:6px;align-items:center;margin:0 0 6px;opacity:.55}.szr.on{opacity:1}
+.szn{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);font-weight:900;font-size:13px}.szr.on .szn{background:#e8ab3c;color:#2b1a0f}
+.szc{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:inherit;border-radius:12px;padding:9px 6px;font:800 12.5px Nunito,sans-serif;min-height:42px}
+.szc.gold{border-color:rgba(232,171,60,.4);background:rgba(232,171,60,.08)}.szc.can{background:#78d1a2;color:#0d1f1c;border-color:#78d1a2;animation:szp 1.4s infinite}.szc.gold.can{background:#e8ab3c;border-color:#e8ab3c;color:#2b1a0f}.szc.got{opacity:.5}
+@keyframes szp{50%{transform:scale(1.04)}}
+.stic{font-size:34px;width:52px;height:52px;display:grid;place-items:center;border-radius:14px;background:rgba(255,255,255,.07);flex:none}.stc.on{border-color:rgba(120,209,162,.5)}
+.lkrow{opacity:.7;font-size:13px;text-align:center;padding:6px}
+.lsrow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:14px 0 10px}.lsd{border-radius:10px;padding:6px 2px;background:rgba(255,255,255,.07);font:900 12px Nunito,sans-serif;display:flex;flex-direction:column;gap:2px}.lsd small{font-size:9.5px;opacity:.7;font-weight:800}.lsd.got{background:#78d1a2;color:#0d1f1c}.lsd.big{background:rgba(232,171,60,.25)}.lsd.big.got{background:#e8ab3c;color:#2b1a0f}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1914,7 +1930,7 @@ function buyerPropose(price){
   say(tpl(pick(L.bcounter),{p:fmt(c.counter)}));save();render()}
 function doSell(price,honest){
   const c=S.cust,it=itemById(c.itemId);
-  S.money+=price;S.inv=S.inv.filter(x=>x.id!==it.id);S.stats.sells++;logT('sell',it,price);if(price-it.paid>=1500&&price>=it.paid*1.6)happyMoment('sale');stat('sell');S.st.bestProfit=Math.max(S.st.bestProfit||0,price-it.paid);gainXP(10+Math.max(0,price-it.paid)/15);
+  S.money+=price;S.inv=S.inv.filter(x=>x.id!==it.id);S.stats.sells++;logT('sell',it,price);if(price-it.paid>=1500&&price>=it.paid*1.6)happyMoment('sale');kbAdd(price-it.paid);shareSale(it,it.paid,price);stat('sell');S.st.bestProfit=Math.max(S.st.bestProfit||0,price-it.paid);gainXP(10+Math.max(0,price-it.paid)/15);
   sfx.cash();flt('+'+fmt(price),'var(--mint)');if(price-it.paid>=Math.max(400,it.paid*.6))setTimeout(()=>burst(),150);
   if(it.story==='riza')S.story.riza='sold';
   if(it.fake){if(honest){stat('honest');addRep(3);finish('deal',pick(L.honest));toast('Dürüst esnaf: itibar +3');return}
@@ -1970,7 +1986,7 @@ const TX={buy:'item_buy',sell:'item_sell',aus:'auction_sell',gift:'gift_cash'};
 function logT(t,it,amt){if(TX[t])T(TX[t],{item:String(it.k||it.n||'').slice(0,40),amount:Math.round(amt||0),pack:it.pack||'base'});(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
 const certTag=it=>it.cert?(it.cert.auth?`<span class="slab">ONAY ${it.cert.grade}</span>`:'<span class="chip bad">Replika</span>'):it.lab?'<span class="chip warn">Lab\'da</span>':'';
 const dayStars=n=>n<=0?1:n<250?2:n<700?3:n<1400?4:5;
-function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();if(eve==='house')return renderHouse();if(eve==='houseLive')return renderHouseLive();if(eve==='rehin')return renderRehin();if(eve==='gar')return renderGar();if(eve==='sec')return renderSec();if(eve==='dig')return renderDig();return renderEveHub()}
+function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();if(eve==='house')return renderHouse();if(eve==='houseLive')return renderHouseLive();if(eve==='rehin')return renderRehin();if(eve==='gar')return renderGar();if(eve==='sec')return renderSec();if(eve==='dig')return renderDig();if(eve==='sezon')return renderSezon();if(eve==='staff')return renderStaff();return renderEveHub()}
 function dblBonus(cash){return r10(Math.min(cash,2000+S.day*250))}
 function renderEveHub(){ensureShip();genLots();
   const cash=S.money-S.stats.start,invNow=invValue(),invD=invNow-(S.stats.startInv||0),net=cash+invD,st=dayStars(net);
@@ -1996,7 +2012,7 @@ function renderEveHub(){ensureShip();genLots();
    <section class="grp"><h3>Atölye</h3>
     ${R('lab','lab','#5fb0f0','ONAY Lab','Sertifikayla değer kat',lab?`${lab} bekliyor`:'')}
     ${R('repair','tamir','#9aa1a8','Tamir Atölyesi','Yıpranmış malı onar',rp?`${rp} ürün`:'')}</section>
-   ${hubExtra()}${hubExtra3()}${hubExtra2()}
+   ${hubExtra()}${hubExtra3()}${hubExtra4()}${hubExtra2()}
    <section class="grp"><h3>İşletme</h3>
     ${R('bank','banka','#e8ab3c','Çarşı Bankası','Birikim ve kredi',B.loan?`Borç ${fmt(B.loan)}`:B.sav?fmt(B.sav):'',B.loan&&B.due-S.day<=1?'warn':'')}
     ${R('shop','dukkan','#78d1a2','Dükkân ve Görünüm','Geliştir, süsle',`${S.inv.length}/${invCap()} raf`)}
@@ -2193,11 +2209,11 @@ function doRepair(id,free){const x=itemById(id);if(!x)return;const c=free?0:repC
 
 function startDay(){
   const yd=(S.log||[]).reduce((t,l)=>t+(l.t==='gift'?0:(+l.amt||0)),0);S.day++;S.ci=0;S.phase='shop';S.log=[];eve='hub';AU=null;
-  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),muzeMorning(),stallMorning(),panoMorning(yd),evtMorning(),rehinMorning(),secMorning(),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
+  PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),muzeMorning(),stallMorning(),panoMorning(yd),evtMorning(),rehinMorning(),secMorning(),staffMorning(),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
   const ex=S.pending.splice(0);let fineTot=0;
   if(ex.length){let fine=0,rep=0;ex.forEach(e=>{fine+=has('z4')?r10(e.fine/2):e.fine;rep+=e.rep});S.money-=fine;fineTot=fine;addRep(-rep);shake=true;sfx.bad();
     msgs.push(`🚨 <b>Zabıta kapıda!</b> Sattığın sahte ${ex.map(e=>e.n).join(', ')} ortaya çıktı. Ceza ${fmt(fine)}, itibar −${rep}.`)}
-  cirakGrant(msgs);S.stats={start:S.money,buys:0,sells:0,startInv:invValue()};save();setTimeout(()=>{try{monDaily()}catch(e){}},3500);
+  cirakGrant(msgs);S.stats={start:S.money,buys:0,sells:0,startInv:invValue()};try{gcDaily(yd)}catch(e){}save();setTimeout(()=>{try{monDaily()}catch(e){}},3500);
   if(msgs.length){const fb=ex.length&&adOk()?r10(fineTot/2):0;S.fineBack=fb;modal({icon:ex.length?'🚨':'📜',title:'Sabah haberleri',body:msgs.join('<br><br>'),btns:fb>0?[{t:'Dükkânı Aç',cls:'ghost',a:'closeModalNext'},{t:`📺 Cezanın yarısını geri al (${fmt(fb)})`,cls:'brass',a:'fineAd'}]:[{t:'Dükkânı Aç',cls:'brass',a:'closeModalNext'}]});render();return}
   nextCustomer()}
 
@@ -4098,6 +4114,11 @@ document.addEventListener('click',e=>{
   if(a==='storeBack'){screen=storeFrom==='store'?'menu':storeFrom;sfx.tap();render();return}
   if(a.startsWith('buy:')){iapBuy(a.slice(4));return}
   if(a.startsWith('offerGo:')){T('offer_click',{r:a.slice(8)});storeOpen();return}
+  if(a==='kbOpen'){kbOpen();return}
+  if(a==='gcShow'){gcShow();return}
+  if(a.startsWith('szClaim:')){const q=a.split(':');szClaim(+q[1],q[2]==='1');return}
+  if(a.startsWith('stHire:')){stAct('hire',a.slice(7));return}
+  if(a.startsWith('stFire:')){stAct('fire',a.slice(7));return}
   if(a==='tzGo'){T('tease_click',{});storeOpen();return}
   if(a==='tzNo'){closeModal();sfx.tap();return}
   if(a.startsWith('offerNo:')){T('offer_dismiss',{r:a.slice(8)});closeModal();return}
@@ -4169,7 +4190,9 @@ const METAL=new Set([...WATCH,...JEWEL,'sikke','madalya','kupa','semaver','cezve
 const ENT_KEY='bitpazari.ent';
 let ENT=(()=>{try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{}}catch(e){return {}}})();
 function entSave(){try{localStorage.setItem(ENT_KEY,JSON.stringify(ENT))}catch(e){}}
-const IAP={premium:'com.ozsstudio.bitpazari.premium',firsat:'com.ozsstudio.bitpazari.premium_firsat',cirak:'com.ozsstudio.bitpazari.cirak',tarih:'com.ozsstudio.bitpazari.tarih'};
+const IAP={premium:'com.ozsstudio.bitpazari.premium',firsat:'com.ozsstudio.bitpazari.premium_firsat',cirak:'com.ozsstudio.bitpazari.cirak',tarih:'com.ozsstudio.bitpazari.tarih',kumbara:'com.ozsstudio.bitpazari.kumbara',sezon:'com.ozsstudio.bitpazari.sezon'};
+const CONS={kumbara:1,sezon:1};
+function consGrant(k){if(k==='kumbara')kbBreak();if(k==='sezon')szGoldGrant();T('cons_buy',{k});save();render()}
 const IAP_K=Object.fromEntries(Object.entries(IAP).map(([k,v])=>[v,k]));
 const IAP_SIM=/[?&]iapsim/.test(location.search);
 function iapLive(){const N=window.NATIVE;return !(N&&N.isNative)||!!N.iapOn}
@@ -4177,19 +4200,24 @@ const PACK_PREVIEW=false;
 function packOwned(id){return PACK_PREVIEW||!iapLive()&&!IAP_SIM&&!!(window.NATIVE&&NATIVE.isNative)||!!(ENT.premium||ENT[id])||!!(S.packs&&S.packs[id])}
 function noAds(){return !!ENT.premium||hourOn()}
 let PROD={},PROD_T=0,storeFrom='menu',storeBusy=0;
-function entApply(ids){TU('premium',ids.some(i=>IAP_K[i]==='premium')?'yes':'no');const want={};ids.forEach(id=>{const k=IAP_K[id];if(k)want[k]=1});if(want.firsat)want.premium=1;
+function entApply(ids){TU('premium',ids.some(i=>IAP_K[i]==='premium')?'yes':'no');const want={};ids.forEach(id=>{const k=IAP_K[id];if(k&&!CONS[k])want[k]=1});if(want.firsat)want.premium=1;
   const ch=JSON.stringify(want)!==JSON.stringify(ENT);if(ch){ENT=want;entSave();render()}}
-window.BP_IAP_UPDATE=(pid,ok)=>{const k=IAP_K[pid];if(!k)return;if(ok&&!ENT[k]){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k)}else if(!ok&&ENT[k]){delete ENT[k];entSave()}render()};
+window.BP_IAP_UPDATE=(pid,ok)=>{const k=IAP_K[pid];if(!k)return;if(CONS[k]){MON.pend=MON.pend||{};if(ok&&MON.pend[k]){delete MON.pend[k];monSave();consGrant(k)}return}if(ok&&!ENT[k]){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k)}else if(!ok&&ENT[k]){delete ENT[k];entSave()}render()};
 function iapSync(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;N.iap.owned().then(entApply).catch(()=>{})}
 function iapLoad(){const N=window.NATIVE;if(!(N&&N.iapOn&&N.iap))return;if(Date.now()-PROD_T<6e4&&Object.keys(PROD).length)return;
   N.iap.products(Object.values(IAP)).then(ps=>{PROD_T=Date.now();ps.forEach(p=>PROD[p.identifier]=p);if(screen==='store')render()}).catch(()=>{})}
 function iapThanks(k){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}
   toast(k==='premium'||k==='firsat'?'Premium açıldı! Tüm paketler ve reklamsız oyun senin.':k==='cirak'?'Çırak Paketi açıldı!':'Tarih Paketi açıldı! Kılıçlar, kalkanlar ve miğferler pazarda.');if(k==='premium'||k==='firsat'||k==='cirak')setTimeout(()=>cirakGrant(),700);if(k==='premium'||k==='firsat')T('premium_buy',{k})}
 async function iapBuy(k){if(storeBusy)return;const N=window.NATIVE;
+  if(CONS[k]&&k==='kumbara'&&(MON.kb||0)<KB_MIN){toast('Kumbarada henüz yeterli para yok');return}
+  if(CONS[k]&&k==='sezon'&&szEnsure().gold){toast('Bu sezonun Altın Yolu zaten açık');return}
+  if(IAP_SIM&&CONS[k]){consGrant(k);return}
   if(IAP_SIM){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k);render();return}
   if(!(N&&N.iapOn&&N.iap)){toast('Satın alma yalnızca App Store sürümünde.');return}
   storeBusy=1;render();let r='error';try{r=await N.iap.buy(IAP[k])}catch(e){}storeBusy=0;
   T('iap_result',{product:k,result:r});
+  if(r==='ok'&&CONS[k]){consGrant(k);render();return}
+  if(r==='pending'&&CONS[k]){MON.pend=MON.pend||{};MON.pend[k]=1;monSave()}
   if(r==='ok'){ENT[k]=1;if(k==='firsat')ENT.premium=1;entSave();iapThanks(k);TU('premium',ENT.premium?'yes':'no')}
   else if(r==='pending')toast('Satın alma onay bekliyor. Onaylanınca otomatik açılacak.');
   else if(r==='error')toast('Satın alma tamamlanamadı. Biraz sonra tekrar dene.');
@@ -4234,8 +4262,15 @@ function renderStore(){
      <ul><li>💰 <b>5.000 ₺</b> sermaye hemen kasana</li><li>🧢 <b>Çırak Necati</b> yanında başlar: her akşam 1 malını senin yerine satar</li><li>👑 Premium alanlara zaten dahildir</li></ul>
      ${btn('cirak')}
     </section>
+    <section class="st-card">
+     <div class="st-ic">🎟️</div>
+     <h2>Sezon Kartı</h2>
+     <p class="st-lead">Bu ayın Altın Yolu: ${szDaysLeft()} gün kaldı</p>
+     <ul><li>🌟 <b>Efsanevi eşyalar</b> ve büyük para ödülleri</li><li>⏰ <b>2 Esnaf Saati</b>: reklamsız, videosuz bonus</li><li>🏆 25. basamakta <b>${fmt(25000)}</b> büyük ödül</li></ul>
+     ${szEnsure().gold?`<div class="st-own">✓ Bu sezon açık</div>`:`<button class="st-buy" data-act="buy:sezon" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':priceOf('sezon')?esc(priceOf('sezon'))+' · Satın Al':'Satın Al'}</button>`}
+    </section>
     <button class="st-restore" data-act="iapRestore" ${storeBusy?'disabled':''}>Satın Alımları Geri Yükle</button>
-    <p class="st-legal">Tüm ürünler tek seferlik satın almadır, abonelik değildir. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
+    <p class="st-legal">Abonelik yoktur. Premium, Tarih ve Çırak Paketi tek seferlik satın almadır; Kumbara ve Sezon Kartı her seferinde ayrı satın alınır. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
    </div></div>`}
 function storeOpen(){T('store_open',{from:String(screen)});storeFrom=screen==='store'?storeFrom:screen;screen='store';iapLoad();sfx.tap();closeModal();render();const m=$('#main');if(m)m.scrollTop=0}
 function packTeaser(){if(packOwned('tarih')||!iapLive())return '';
@@ -4637,7 +4672,7 @@ ACH.push(['hurda','💎','Hurdadan Hazine','Hurda Kasası\'ndan efsanevi parça 
 
 const colAdd1=colAdd;colAdd=function(it){colAdd1(it);try{evtCol(it)}catch(e){}};
 /* test kancası: yalnızca ?bptest ile */
-if(/[?&]bptest/.test(location.search))window.BP_TEST={tease:()=>{closeModal();MON_S.shown=false;MON.tz=0;tarihTease()},why:()=>[packOwned("tarih"),iapLive(),screen,MON_S.shown,!!modalEl,S.day],happy:t=>happyMoment(t),MON:()=>MON,monRewarded:()=>monRewarded(),offer:r=>offerOpen(r,true),dealHos:()=>{MON.hos=Date.now();monSave()},inter:()=>monInter(),S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
+if(/[?&]bptest/.test(location.search))window.BP_TEST={sz:()=>szSync(),kb:v=>{MON.kb=v;monSave()},ls:()=>{MON.lsd='';lsCheck()},staff:()=>staffMorning(),share:()=>shareCanvas({it:S.inv[0]||giveItem(2),title:'Bugünkü vurgunum!',l1:'500 ₺ aldım · 9.000 ₺ sattım',big:'+8.500 ₺ kâr'}),tease:()=>{closeModal();MON_S.shown=false;MON.tz=0;tarihTease()},why:()=>[packOwned("tarih"),iapLive(),screen,MON_S.shown,!!modalEl,S.day],happy:t=>happyMoment(t),MON:()=>MON,monRewarded:()=>monRewarded(),offer:r=>offerOpen(r,true),dealHos:()=>{MON.hos=Date.now();monSave()},inter:()=>monInter(),S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
 
 
 /* ===================== 1.4.0: Ev Boşaltma Mezatı · Rehin Masası · Garaj · Güvenlik · Anadolu Kazısı ===================== */
@@ -4925,6 +4960,124 @@ function tarihTease(){if(packOwned('tarih')||!iapLive()||screen!=='game'||MON_S.
     btns:[{t:'Geri gönder',cls:'ghost',a:'tzNo'},{t:'Pakete Bak',cls:'brass',a:'tzGo'}]})}
 /* Akşam ekranında ödüllü reklamın altında küçük not */
 function premHint(){if(isPrem()||!iapLive())return '';return `<button class="premhint" data-act="store">👑 Premium'da bonuslar videosuz, anında</button>`}
+
+/* ===================== 1.5.0: paylaşım kartı · kumbara · sezon kartı · liderlik · çalışanlar · giriş serisi ===================== */
+const dayKey=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const monKey=()=>dayKey().slice(0,7);
+function giveItem(rar,why){const pool=catPool().filter(c=>!c.ev);const it=newItem(pick(pool),{cond:4,fake:false,rar});it.paid=0;it.isNew=true;S.inv.push(it);colAdd(it);if(why)logT('gift',it,0);return it}
+
+/* ---------- 1) Paylaşım kartı ---------- */
+const SITE_URL='https://bitpazari.vercel.app';
+function shareCanvas(o){const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');
+  const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#1d4a42');bg.addColorStop(1,'#0d1f1c');g.fillStyle=bg;g.fillRect(0,0,W,H);
+  const rg=g.createRadialGradient(W/2,560,40,W/2,560,520);rg.addColorStop(0,'rgba(232,171,60,.38)');rg.addColorStop(1,'rgba(232,171,60,0)');g.fillStyle=rg;g.fillRect(0,0,W,H);
+  g.strokeStyle='rgba(232,171,60,.55)';g.lineWidth=6;g.strokeRect(36,36,W-72,H-72);
+  g.textAlign='center';g.fillStyle='#e8ab3c';g.font='900 64px Cinzel, Georgia, serif';g.fillText('BİT PAZARI',W/2,150);
+  g.fillStyle='#f5e8cc';g.font='800 44px Nunito, sans-serif';g.fillText(o.title,W/2,222);
+  return new Promise(res=>{const draw=img=>{if(img){const s=560;g.drawImage(img,W/2-s/2,270,s,s)}else{g.font='300px serif';g.fillText(o.it.i||'🏺',W/2,700)}
+    g.fillStyle='#ffffff';g.font='900 64px Nunito, sans-serif';const nm=o.it.n.length>26?o.it.n.slice(0,25)+'…':o.it.n;g.fillText(nm,W/2,920);
+    g.font='800 46px Nunito, sans-serif';g.fillStyle='#a7bfb8';g.fillText(o.l1,W/2,1000);
+    g.fillStyle='#78d1a2';g.font='900 92px Nunito, sans-serif';g.fillText(o.big,W/2,1110);
+    g.fillStyle='#f5e8cc';g.font='800 36px Nunito, sans-serif';g.fillText("App Store'da ücretsiz · "+SITE_URL.replace('https://',''),W/2,1240);
+    res(cv.toDataURL('image/png'))};
+    const u=thumbURL(o.it);if(!u){draw(null);return}const img=new Image();img.onload=()=>draw(img);img.onerror=()=>draw(null);img.src=u})}
+let SHARE_O=null;
+function shareOffer(o){SHARE_O=o;document.querySelectorAll('.sharechip').forEach(e=>e.remove());T('share_offer',{k:o.kind});
+  const el=document.createElement('button');el.className='sharechip';el.innerHTML='📸 <b>Bunu paylaş</b><small>'+esc(o.big)+'</small>';el.onclick=()=>{el.remove();shareGo()};$('#app').appendChild(el);setTimeout(()=>el.remove(),8000)}
+async function shareGo(){const o=SHARE_O;if(!o)return;sfx.tap();toast('Kart hazırlanıyor…');
+  const png=await shareCanvas(o);const N=window.NATIVE,txt=o.text+' #BitPazarı';
+  const ok=N&&N.shareImage?await N.shareImage(png,txt,SITE_URL):false;T('share_done',{k:o.kind,ok:ok?1:0});
+  if(ok){MON.shN=(MON.shN||0)+1;if(!MON.shB){MON.shB=1;S.money+=500;toast('İlk paylaşımın için kasana 500 ₺ eklendi!');save()}monSave()}}
+function shareSale(it,paid,price){const pr=price-paid;if(pr<2500||price<paid*2)return;
+  setTimeout(()=>shareOffer({kind:'sale',it,title:'Bugünkü vurgunum!',l1:`${fmt(paid)} aldım · ${fmt(price)} sattım`,big:'+'+fmt(pr)+' kâr',text:`Bit Pazarı'nda ${fmt(paid)}'ye aldığım ${it.n} için ${fmt(price)} aldım!`}),900)}
+function shareFind(it,title){setTimeout(()=>shareOffer({kind:'find',it,title,l1:'Değeri',big:fmt(val(it)),text:`Bit Pazarı'nda ${it.n} buldum! Değeri ${fmt(val(it))}.`}),900)}
+
+/* ---------- 2) Kumbara ---------- */
+const KB_MAX=30000,KB_MIN=3000;
+function kbAdd(profit){if(profit<=0||S.day<3)return;MON.kb=Math.min(KB_MAX,(MON.kb||0)+Math.round(profit*.06));monSave()}
+function kbCard(){if(!iapLive()||S.day<3)return '';const v=MON.kb||0,p=Math.round(v/KB_MAX*100);
+  return `<button class="erow2 kbrow" style="--tc:#f29bb2" data-act="kbOpen"><span class="ri" style="font-size:22px">🐷</span><span class="rt"><b>Kumbara · ${fmt(v)}</b><small>${v>=KB_MIN?'Kırmaya hazır!':'Her kârın bir kısmı buraya birikir'}</small><span class="kbbar"><i style="width:${p}%"></i></span></span>${v>=KB_MIN?'<span class="rs ok">Kır</span>':''}<span class="chev">›</span></button>`}
+function kbOpen(){const v=MON.kb||0;sfx.tap();T('kumbara_open',{v});
+  modal({icon:'🐷',title:'Kumbara',body:`Sattıkça kârının bir kısmı kumbaraya düşüyor. Kumbara en fazla <b>${fmt(KB_MAX)}</b> alır.<div class="kbbig">${fmt(v)}</div><div class="kbbar big"><i style="width:${Math.round(v/KB_MAX*100)}%"></i></div>${v<KB_MIN?`<small>Kırmak için en az ${fmt(KB_MIN)} birikmeli.</small>`:`<small>Kırınca biriken paranın tamamı kasana geçer, kumbara sıfırdan dolmaya başlar.</small>`}`,
+    btns:v>=KB_MIN?[{t:'Sonra',cls:'ghost',a:'closeModal'},{t:`Kır · ${priceOf('kumbara')||'Satın Al'}`,cls:'brass',a:'buy:kumbara'}]:[{t:'Tamam',cls:'brass',a:'closeModal'}]})}
+function kbBreak(){const v=MON.kb||0;MON.kb=0;monSave();S.money+=v;logT('gift',{n:'Kumbara',i:'🐷'},v);save();closeModal();sfx.cash&&sfx.cash();burst(30);flt('+'+fmt(v),'var(--mint)');toast(`Kumbara kırıldı! ${fmt(v)} kasana geçti.`);T('kumbara_break',{v})}
+
+/* ---------- 3) Sezon Kartı ---------- */
+const SZ_TIERS=25,SZ_STEP=100,SZ_W={sells:8,buys:4,aucWin:20,houseWin:40,eser:15,garDone:60,chest:6,rehinBack:12};
+function szEnsure(){const id=monKey();if(!MON.sz||MON.sz.id!==id){MON.sz={id,sp:0,fr:{},gd:{},gold:!!(MON.szNext===id),snap:szSnap()};monSave()}return MON.sz}
+function szSnap(){const st=S.st||{};const o={};Object.keys(SZ_W).forEach(k=>o[k]=st[k==='sells'?'sell':k==='buys'?'buy':k]||0);return o}
+function szSync(){const z=szEnsure(),now=szSnap();let add=0;Object.keys(SZ_W).forEach(k=>{const d=Math.max(0,(now[k]||0)-(z.snap[k]||0));add+=d*SZ_W[k]});if(add){z.sp=Math.min(SZ_TIERS*SZ_STEP,z.sp+add);z.snap=now;monSave()}else z.snap=now;return z}
+function szTier(z){return Math.floor(z.sp/SZ_STEP)}
+function szRew(i,gold){/* i: 1..25 */if(gold){if(i===SZ_TIERS)return{t:'item',rar:3,m:25000};if(i%5===0)return{t:'item',rar:3,m:0};if(i===10||i===20)return{t:'hour'};return{t:'money',m:500+i*120}}
+  if(i%5===0)return{t:'item',rar:2,m:0};return{t:'money',m:200+i*60}}
+function szRewTx(r){return r.t==='money'?fmt(r.m):r.t==='hour'?'⏰ Esnaf Saati':r.rar>=3?'🌟 Efsanevi eşya'+(r.m?' + '+fmt(r.m):''):'💎 Nadir eşya'}
+function szClaim(i,gold){const z=szSync();if(szTier(z)<i)return;const box=gold?z.gd:z.fr;if(box[i])return;if(gold&&!z.gold){kbStoreNudge();return}
+  const r=szRew(i,gold);box[i]=1;monSave();
+  if(r.t==='money'){S.money+=r.m;logT('gift',{n:'Sezon ödülü',i:'🎟️'},r.m);flt('+'+fmt(r.m),'var(--mint)')}
+  else if(r.t==='hour'){MON.hak=1;monSave();toast('⏰ Esnaf Saati kazandın! Akşam ekranından başlat.')}
+  else{const it=giveItem(r.rar,true);if(r.m){S.money+=r.m;logT('gift',{n:'Sezon büyük ödülü',i:'🏆'},r.m)}toast(`${it.n} rafına kondu!`);if(r.rar>=3)shareFind(it,'Sezon ödülüm!')}
+  sfx.ok();save();T('season_claim',{i,gold:gold?1:0});render()}
+function kbStoreNudge(){toast('Altın yolu açmak için Sezon Kartı gerekli');}
+function szDaysLeft(){const d=new Date(),e=new Date(d.getFullYear(),d.getMonth()+1,1);return Math.max(1,Math.ceil((e-d)/864e5))}
+function renderSezon(){const z=szSync(),t=szTier(z),inT=z.sp%SZ_STEP;const rows=[];
+  for(let i=1;i<=SZ_TIERS;i++){const fr=szRew(i,false),gd=szRew(i,true),reach=t>=i;
+    const cell=(r,gold)=>{const got=(gold?z.gd:z.fr)[i];const can=reach&&!got&&(!gold||z.gold);return `<button class="szc ${gold?'gold':''} ${got?'got':''} ${can?'can':''}" data-act="szClaim:${i}:${gold?1:0}" ${can?'':'disabled'}>${got?'✓':gold&&!z.gold?'🔒':''} ${szRewTx(r)}</button>`};
+    rows.push(`<div class="szr ${reach?'on':''}"><span class="szn">${i}</span>${cell(fr,false)}${cell(gd,true)}</div>`)}
+  return `<div class="eve"><div class="rivhead"><span class="rehinart">🎟️</span><div style="min-width:0"><span class="lbl">${z.id.replace('-',' / ')} SEZONU · ${szDaysLeft()} GÜN KALDI</span><h2 class="h">Sezon Kartı</h2><p class="sub" style="margin:0">Sat, al, mezat kazan, kaz: her iş sezon puanı getirir. Her ${SZ_STEP} puanda bir basamak açılır.</p></div></div>
+   <div class="ecard"><div class="szprog"><b>Basamak ${t}/${SZ_TIERS}</b><span>${t>=SZ_TIERS?'Tamamlandı!':inT+' / '+SZ_STEP+' puan'}</span></div><div class="kbbar big"><i style="width:${t>=SZ_TIERS?100:inT}%"></i></div>
+   ${z.gold?'<p class="szown">👑 Altın Yol açık</p>':`<button class="b brass" data-act="buy:sezon" ${storeBusy?'disabled':''}>Altın Yolu Aç · ${priceOf('sezon')||'Satın Al'}<small>Efsanevi eşyalar, 2 Esnaf Saati, ${fmt(25000)} büyük ödül</small></button>`}</div>
+   <div class="szhead"><span></span><b>Ücretsiz</b><b class="gold">Altın Yol</b></div>${rows.join('')}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function szGoldGrant(){const z=szEnsure();z.gold=true;monSave();toast('Altın Yol açıldı! Ulaştığın basamakların ödüllerini topla.');T('season_buy',{id:z.id})}
+
+/* ---------- 4) Game Center liderlik ---------- */
+const GC_LB={week:'bp_weekly_best_day',worth:'bp_net_worth'};
+function gcOn(){const N=window.NATIVE;return !!(N&&N.isNative&&N.gc&&N.gc.on)}
+function gcDaily(yd){if(!gcOn())return;const N=window.NATIVE;N.gc.signIn().then(ok=>{if(!ok)return;if(yd>0)N.gc.submit(GC_LB.week,yd);N.gc.submit(GC_LB.worth,S.money+invValue())}).catch(()=>{})}
+function gcShow(){const N=window.NATIVE;if(!gcOn()){toast('Liderlik tablosu iPhone sürümünde');return}T('leaderboard_open',{});N.gc.show('').then(ok=>{if(!ok)toast('Game Center\'a giriş yapılamadı. Ayarlar > Game Center\'dan giriş yapabilirsin.')})}
+setTimeout(()=>{try{if(gcOn())window.NATIVE.gc.signIn()}catch(e){}},7000);
+
+/* ---------- 5) Çalışanlar ---------- */
+const STAFF={
+ res:{n:'Hikmet Usta',r:'Restoratör',i:'🧰',day:8,wage:700,d:'Her sabah yıpranmış bir eşyanı onarır, değerini artırır.'},
+ eks:{n:'Nermin Hanım',r:'Eksper',i:'🔎',day:10,wage:900,d:'Her sabah rafındaki 2 eşyayı inceler: sahte mi, gerçek değeri ne?'},
+ sah:{n:'Kalpazan Kemal',r:'Sahtekâr',i:'🎭',day:12,wage:1200,d:'Ara sıra değerli bir parçanın replikasını yapar. Satarsan kâr büyük, yakalanırsan ceza da.'}};
+function stEnsure(){S.staff=S.staff||{};return S.staff}
+function staffMorning(){const sf=stEnsure(),out=[];let wage=0;
+  Object.keys(STAFF).forEach(k=>{if(!sf[k])return;const s=STAFF[k];wage+=s.wage;
+    if(k==='res'){const c=S.inv.filter(x=>!x.chest&&!x.fake&&x.cond<5&&x.k!=='anahtar').sort((a,b)=>val(b)-val(a))[0];if(c){c.cond=Math.min(5,(c.cond||3)+1);c.appear=r10(c.appear*1.15);out.push(`🧰 Hikmet Usta <b>${c.n}</b> eşyanı onardı. Yeni değeri ${fmt(val(c))}.`)}}
+    if(k==='eks'){const c=S.inv.filter(x=>!x.chest&&!(x.known&&x.known.expert)).slice(0,2);c.forEach(it=>{it.known=it.known||{};it.known.expert=it.known.insp=true;it.known.suspect=!!it.fake;it.known.lo=it.known.hi=it.fake?it.worth:it.appear;if(it.fake)stat('fakeSpot')});
+      if(c.length)out.push(`🔎 Nermin Hanım ${c.map(x=>`<b>${x.n}</b>: ${x.fake?'<b class="neg">SAHTE</b>':fmt(val(x))}`).join(', ')}`)}
+    if(k==='sah'&&R()<.4){const c=pick(S.inv.filter(x=>!x.chest&&!x.fake&&val(x)>=600&&x.k!=='anahtar'&&x.k!=='kart'));if(c){const f=JSON.parse(JSON.stringify(c));f.id=uid();f.fake=true;f.worth=r10(c.appear*.08);f.paid=0;f.isNew=true;f.known={insp:true,lo:f.worth,hi:f.worth,suspect:true,expert:true};S.inv.push(f);out.push(`🎭 Kalpazan Kemal bir <b>${c.n}</b> replikası yaptı. Rafında, “sahte” etiketli.`)}}});
+  if(wage){S.money-=wage;logT('fee',{n:'Çalışan maaşları',i:'👥'},-wage);out.push(`👥 Çalışan maaşları: −${fmt(wage)}`)}
+  return out}
+function renderStaff(){const sf=stEnsure();
+  return `<div class="eve"><div class="rivhead"><span class="rehinart">👥</span><div style="min-width:0"><span class="lbl">DÜKKÂN</span><h2 class="h">Çalışanlar</h2><p class="sub" style="margin:0">Usta bir ekip dükkânı sen yokken de çalıştırır. Maaşlar her sabah kasadan ödenir.</p></div></div>
+   ${Object.entries(STAFF).map(([k,s])=>{const lock=S.day<s.day,on=!!sf[k];return `<div class="ecard stc ${on?'on':''}"><div class="rehh"><span class="stic">${s.i}</span><div style="min-width:0;flex:1"><b>${s.n}</b><small>${s.r} · Günlük maaş ${fmt(s.wage)}</small></div></div><p class="hnote">${s.d}</p>
+     ${lock?`<div class="lkrow">🔒 ${s.day}. günde işe alınabilir</div>`:on?`<button class="b ghost sm" data-act="stFire:${k}">İşten çıkar</button>`:`<button class="b mint" data-act="stHire:${k}">İşe al · ilk maaş ${fmt(s.wage)}</button>`}</div>`}).join('')}
+   <button class="b ghost" data-act="eve:hub">Akşam İşlerine Dön</button></div>`}
+function stAct(kind,k){const sf=stEnsure(),s=STAFF[k];if(!s)return;
+  if(kind==='hire'){if(S.day<s.day)return;if(S.money<s.wage){toast('Kasada yeterli para yok');sfx.bad();return}S.money-=s.wage;logT('fee',{n:s.n+' işe başladı',i:s.i},-s.wage);sf[k]=1;sfx.ok();toast(`${s.n} işe başladı!`);T('staff_hire',{k})}
+  if(kind==='fire'){delete sf[k];sfx.tap();toast(`${s.n} ile yollar ayrıldı.`)}
+  save();render()}
+
+/* ---------- 6) 7 günlük giriş serisi ---------- */
+const LS_REW=[500,1000,1500,2500,3500,5000,'big'];
+function lsCheck(){if(screen!=='game'||modalEl||document.querySelector('.lvlup,.achpop,.viewer')||S.day<2||(AU&&!AU.done)||(HA&&!HA.done))return;const t=dayKey();if(MON.lsd===t)return;
+  const y=new Date(Date.now()-864e5),yk=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');
+  MON.lsn=MON.lsd===yk?((MON.lsn||0)%7)+1:1;MON.lsd=t;monSave();const n=MON.lsn,r=LS_REW[n-1];
+  let got;if(r==='big'){const it=giveItem(3,true);S.money+=10000;logT('gift',{n:'7. gün ödülü',i:'🎁'},10000);got=`<b>${fmt(10000)}</b> ve efsanevi bir <b>${it.n}</b>!`;shareFind(it,'7 gün üst üste geldim!')}else{S.money+=r;logT('gift',{n:'Giriş ödülü',i:'🎁'},r);got=`<b>${fmt(r)}</b>`}
+  save();T('streak_claim',{n});
+  modal({icon:'🎁',title:`Giriş serisi · ${n}. gün`,body:`Bugünün ödülü ${got}<div class="lsrow">${LS_REW.map((v,i)=>`<span class="lsd ${i<n?'got':''} ${i===6?'big':''}"><small>${i+1}. gün</small>${v==='big'?'🎁':fmt(v).replace(' ₺','')}</span>`).join('')}</div><small>Her gün gel, 7. günde büyük ödül! Bir gün kaçırırsan seri baştan başlar.</small>`,btns:[{t:'Topla',cls:'brass',a:'closeModal'}]});render()}
+setInterval(()=>{try{lsCheck()}catch(e){}},2500);
+
+/* ---------- Akşam ekranı grubu ---------- */
+function hubExtra4(){const z=szSync(),t=szTier(z);let szCan=0;for(let i=1;i<=t;i++){if(!z.fr[i])szCan++;if(z.gold&&!z.gd[i])szCan++}const sf=stEnsure(),nst=Object.keys(sf).length;
+  return `<section class="grp"><h3>Dükkân</h3>
+   <button class="erow2" style="--tc:#e8ab3c" data-act="eve:sezon"><span class="ri" style="font-size:22px">🎟️</span><span class="rt"><b>Sezon Kartı · ${t}/${SZ_TIERS}</b><small>${szDaysLeft()} gün kaldı${z.gold?' · Altın Yol':''}</small></span>${szCan?`<span class="rs ok">${szCan} ödül</span>`:''}<span class="chev">›</span></button>
+   ${S.day<8?`<div class="erow2 locked"><span class="ri" style="font-size:22px">👥</span><span class="rt"><b>Çalışanlar</b><small>8. günde açılır</small></span><span class="lk">🔒</span></div>`:`<button class="erow2" style="--tc:#78d1a2" data-act="eve:staff"><span class="ri" style="font-size:22px">👥</span><span class="rt"><b>Çalışanlar</b><small>${nst?nst+' kişi çalışıyor':'Usta, eksper, sahtekâr'}</small></span><span class="chev">›</span></button>`}
+   ${kbCard()}
+   ${gcOn()?`<button class="erow2" style="--tc:#5fb0f0" data-act="gcShow"><span class="ri" style="font-size:22px">🏆</span><span class="rt"><b>Liderlik Tablosu</b><small>Haftanın esnafı ve en zengin dükkânlar</small></span><span class="chev">›</span></button>`:''}</section>`}
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
 function catPool(){return CAT.filter(c=>(!c.pack||c.free||packOwned(c.pack))&&(!c.ev||evtOn(c.ev)))}
 

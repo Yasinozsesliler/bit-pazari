@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import GameKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -40,5 +41,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                           sessionRole: connectingSceneSession.role)
         config.delegateClass = SceneDelegate.self
         return config
+    }
+}
+
+// MARK: - Game Center (liderlik tabloları) — küçük yerel Capacitor eklentisi
+
+class MainViewController: CAPBridgeViewController {
+    override open func capacitorDidLoad() {
+        bridge?.registerPluginInstance(GameCenterPlugin())
+    }
+}
+
+@objc(GameCenterPlugin)
+public class GameCenterPlugin: CAPPlugin, CAPBridgedPlugin, GKGameCenterControllerDelegate {
+    public let identifier = "GameCenterPlugin"
+    public let jsName = "GameCenter"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "signIn", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "submitScore", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "showLeaderboard", returnType: CAPPluginReturnPromise)
+    ]
+
+    @objc func signIn(_ call: CAPPluginCall) {
+        let player = GKLocalPlayer.local
+        if player.isAuthenticated { call.resolve(["ok": true, "name": player.displayName]); return }
+        var done = false
+        player.authenticateHandler = { [weak self] vc, error in
+            if let vc = vc {
+                DispatchQueue.main.async { self?.bridge?.viewController?.present(vc, animated: true) }
+                return
+            }
+            if done { return }
+            done = true
+            if player.isAuthenticated { call.resolve(["ok": true, "name": player.displayName]) }
+            else { call.resolve(["ok": false, "error": error?.localizedDescription ?? "not authenticated"]) }
+        }
+    }
+
+    @objc func submitScore(_ call: CAPPluginCall) {
+        guard GKLocalPlayer.local.isAuthenticated else { call.resolve(["ok": false]); return }
+        let id = call.getString("id") ?? ""
+        let score = call.getInt("score") ?? 0
+        GKLeaderboard.submitScore(score, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [id]) { error in
+            call.resolve(["ok": error == nil])
+        }
+    }
+
+    @objc func showLeaderboard(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            let id = call.getString("id")
+            let vc: GKGameCenterViewController
+            if let id = id, !id.isEmpty {
+                vc = GKGameCenterViewController(leaderboardID: id, playerScope: .global, timeScope: .allTime)
+            } else {
+                vc = GKGameCenterViewController(state: .leaderboards)
+            }
+            vc.gameCenterDelegate = self
+            self.bridge?.viewController?.present(vc, animated: true)
+            call.resolve(["ok": true])
+        }
+    }
+
+    public func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true)
     }
 }

@@ -11,6 +11,10 @@ import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
 import { Purchases, PURCHASES_ARE_COMPLETED_BY_TYPE, STOREKIT_VERSION } from "@revenuecat/purchases-capacitor";
 import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 import { InAppReview } from "@capacitor-community/in-app-review";
+import { Share } from "@capacitor/share";
+import { Filesystem, Directory } from "@capacitor/filesystem";
+import { registerPlugin } from "@capacitor/core";
+const GameCenter = registerPlugin("GameCenter");
 
 const isNative = Capacitor.isNativePlatform();
 const platform = Capacitor.getPlatform();
@@ -183,6 +187,44 @@ N.userProp = (key, value) => {
 N.askReview = () => {
   if (!N.isNative) return false;
   try { InAppReview.requestReview().catch(() => {}); return true; } catch (e) { return false; }
+};
+
+/* ---------- Paylaşım kartı: PNG'yi önbelleğe yaz, sistem paylaşım sayfasını aç ---------- */
+N.shareImage = async (dataUrl, text, url) => {
+  try {
+    if (N.isNative) {
+      const name = "bitpazari-" + Date.now() + ".png";
+      const w = await Filesystem.writeFile({ path: name, data: dataUrl.split(",")[1], directory: Directory.Cache });
+      await Share.share({ text, url, files: [w.uri], dialogTitle: "Paylaş" });
+      return true;
+    }
+    const blob = await (await fetch(dataUrl)).blob();
+    const file = new File([blob], "bitpazari.png", { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text, url }); return true; }
+    const a = document.createElement("a"); a.href = dataUrl; a.download = "bitpazari.png"; a.click(); return true;
+  } catch (e) { return false; }
+};
+
+/* ---------- Game Center (yalnızca iOS) ---------- */
+let gcOk = null;
+N.gc = {
+  on: isIOS,
+  async signIn() {
+    if (!isIOS) return false;
+    if (gcOk !== null) return gcOk;
+    try { const r = await GameCenter.signIn(); gcOk = !!(r && r.ok); } catch (e) { gcOk = false; }
+    return gcOk;
+  },
+  async submit(id, score) {
+    if (!isIOS || !gcOk) return false;
+    try { const r = await GameCenter.submitScore({ id, score: Math.max(0, Math.round(score)) }); return !!(r && r.ok); } catch (e) { return false; }
+  },
+  async show(id) {
+    if (!isIOS) return false;
+    if (!(await N.gc.signIn())) return false;
+    try { await GameCenter.showLeaderboard({ id: id || "" }); return true; } catch (e) { return false; }
+  },
+  ready: () => !!gcOk,
 };
 
 /* ---------- Yerel bildirimler ---------- */
