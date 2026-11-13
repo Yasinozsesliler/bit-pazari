@@ -707,7 +707,7 @@ nav button{font-size:10px;letter-spacing:.04em;padding-inline:2px}
 .simg{flex:none;width:58px;height:58px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle,#fff,#efe8dc)}.simg .tico{width:50px;height:50px}.simg .cardIco{font-size:44px}
 .stx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.stx b{font-size:13.5px;color:#1d1a17}.stx>span{font-size:11px;color:#8a8178}.sval b{font-size:11px}
 /* nav v2 */
-#nav{display:block;border-top:none;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,#1d140d,#100a06);box-shadow:0 -1px 0 rgba(232,171,60,.35),0 -10px 24px rgba(0,0,0,.4)}
+#nav[hidden],#top[hidden]{display:none!important}#nav{display:block;border-top:none;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,#1d140d,#100a06);box-shadow:0 -1px 0 rgba(232,171,60,.35),0 -10px 24px rgba(0,0,0,.4)}
 #nav .dock{display:flex;gap:4px;padding:5px;border-radius:22px;background:#0b0704;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 0 0 1px rgba(232,171,60,.22)}
 #nav button{flex:1;min-width:0;border:none;border-radius:17px;padding:7px 2px 6px;background:none;color:#8f9e98;display:flex;flex-direction:column;align-items:center;gap:3px;text-transform:none;letter-spacing:0;transition:background .2s,color .2s}
 #nav button::before{content:none}
@@ -3973,8 +3973,8 @@ function renderMys_old(){const t=mysState();const m=S.mys;
 function renderNav_old(){const t=mysState();const dot=!S.mys.done?'<span class="badge"></span>':'';
   $('#nav').innerHTML=[['shop','🏪','Dükkân'],['inv','🧺','Raflar'],['skills','🌳','Ustalık'],['mystery','🔮','Günün Eşyası']].map(([k,i,n])=>`<button class="${S.tab===k?'on':''}" data-act="tab:${k}"><span class="ni">${i}</span>${n}${k==='mystery'?dot:k==='skills'&&S.sp?'<span class="badge"></span>':''}</button>`).join('')}
 function render(){
-  const inGame=screen==='game';$('#top').hidden=!inGame;$('#nav').hidden=!inGame;
-  if(!inGame){$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();return}
+  const inGame=screen==='game';let stNav=false;try{stNav=screen==='store'&&storeFrom==='game'}catch(e){}$('#top').hidden=!inGame;$('#nav').hidden=!(inGame||stNav);
+  if(!inGame){if(stNav)renderNav();$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();return}
   if(MH)MH.run=false;
   renderTop();renderNav();
   const main=$('#main');
@@ -4002,7 +4002,7 @@ window.BP_PAUSE=function(p){try{if(AC){p?AC.suspend():AC.resume()}}catch(e){}if(
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b||b.disabled)return;const a=b.dataset.act;const c=S.cust;
   if(a!=='reset'&&S.confirmReset){S.confirmReset=false}
-  if(a.startsWith('tab:')){S.tab=a.slice(4);sfx.tap();save();render();return}
+  if(a.startsWith('tab:')){if(screen==='store')screen='game';S.tab=a.slice(4);sfx.tap();save();render();const m=$('#main');if(m)m.scrollTop=0;return}
   if(a.startsWith('story:')){storyAct(a.slice(6));return}
   if(a.startsWith('q:')){S.offer=+a.slice(2);sfx.tap();updOffer();return}
   if(a.startsWith('nm:')){const i=$('#shopIn');if(i){i.value=a.slice(3);const t=$('#signTx');if(t)t.textContent=i.value}sfx.tap();return}
