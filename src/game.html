@@ -4994,8 +4994,8 @@ function dealNow(){if(isPrem())return null;const now=Date.now();
   if(t>=DEAL_YB[0]&&t<=DEAL_YB[1])return{k:'yilbasi',n:'Yılbaşı Fırsatı',ends:new Date(DEAL_YB[1]+'T23:59:59').getTime()};
   if(MON.hos&&now<MON.hos+72*MON_H)return{k:'hos',n:'Hoş Geldin Fırsatı',ends:MON.hos+72*MON_H};return null}
 function dealReady(){const N=window.NATIVE;return !(N&&N.isNative)||!!priceOf('firsat')}
-function dealStartHos(){if(MON.hos||isPrem()||S.day<3||!iapLive()||!dealReady())return;MON.hos=Date.now();monSave();T('deal_start',{k:'hos'});
-  setTimeout(()=>{if(modalEl)return;modal({icon:'⏳',title:'Hoş Geldin Fırsatı!',body:`Çarşıya hoş geldin! Sadece <b>72 saat</b> boyunca Premium indirimli: Tarih Paketi, Çırak Paketi, reklamsız oyun ve gelecek tüm paketler.<div class="offdeal"><s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺149,99'}</b></div>`,btns:[{t:'Sonra',cls:'ghost',a:'closeModal'},{t:'Fırsatı Gör',cls:'brass',a:'store'}]})},2500)}
+function dealStartHos(){if(MON.hos||isPrem()||S.day<2||!iapLive()||!dealReady())return;MON.hos=Date.now();monSave();T('deal_start',{k:'hos'});
+  setTimeout(()=>{if(modalEl)return;modal({icon:'⏳',title:'Hoş Geldin Fırsatı!',body:`Çarşıya hoş geldin! Sadece <b>72 saat</b> boyunca Premium <b>%30 indirimli</b>: Tarih Paketi, Çırak Paketi, reklamsız oyun ve gelecek tüm paketler.<div class="offdeal"><s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺174,99'}</b></div>`,btns:[{t:'Sonra',cls:'ghost',a:'closeModal'},{t:'Fırsatı Gör',cls:'brass',a:'store'}]})},2500)}
 /* teklif penceresi: oturumda en fazla bir; sıradan teklifler arası 20 saat; kilometre taşları bir kez ve beklemeye takılmaz */
 const OFFER_TX={
  reklam:()=>['Reklamlardan sıkıldın mı?','Premium ile ödüllü reklam bonusları anında, videosuz gelir. Geçiş reklamı da yok.'],
@@ -5010,7 +5010,7 @@ function offerOpen(r,mode,tries){if(isPrem()||!iapLive()||screen!=='game')return
   if(modalEl||document.querySelector('.viewer')||(AU&&!AU.done)||(HA&&!HA.done)){if((tries||0)<8)setTimeout(()=>offerOpen(r,mode,(tries||0)+1),2500);return}
   MON_S.shown=true;MON.last=Date.now();monSave();T('offer_show',{r});
   const tx=OFFER_TX[r](),deal=dealNow();
-  modal({icon:'<span class="bigtrophy">👑</span>',title:tx[0],body:`${tx[1]}<div class="offlist"><span>📜 Tarih Paketi</span><span>🧢 Çırak Paketi</span><span>🚫 Reklamsız</span><span>🎁 Videosuz bonus</span></div>${deal?`<div class="offdeal">⏳ ${deal.n}: <s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺149,99'}</b><br><small>${fmtLeft(deal.ends-Date.now())} kaldı</small></div>`:''}`,
+  modal({icon:'<span class="bigtrophy">👑</span>',title:tx[0],body:`${tx[1]}<div class="offlist"><span>📜 Tarih Paketi</span><span>🧢 Çırak Paketi</span><span>🚫 Reklamsız</span><span>🎁 Videosuz bonus</span></div>${deal?`<div class="offdeal">⏳ ${deal.n}: <s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺174,99'}</b><br><small>${fmtLeft(deal.ends-Date.now())} kaldı</small></div>`:''}`,
     btns:[{t:'Şimdi değil',cls:'ghost',a:'offerNo:'+r},{t:deal?'Fırsatı Gör':'Premium\'a Bak',cls:'brass',a:'offerGo:'+r}]})}
 function milestone(r){if(isPrem()||MON['m_'+r]||MON_S.shown)return;MON['m_'+r]=1;monSave();setTimeout(()=>offerOpen(r,'milestone'),1800)}
 function monRewarded(){if(isPrem()||hourOn())return;MON_S.ads++;MON.rwTot=(MON.rwTot||0)+1;
@@ -5031,7 +5031,7 @@ function monDaily(){if(S.day>=7)milestone('gun7');if((S.st||{}).series)milestone
 function monCard(){if(!iapLive())return'';
   if(isPrem())return `<div class="moncard own"><span>👑</span><b>Premium aktif · Teşekkürler!</b></div>`;
   const deal=dealNow();let h='';
-  if(deal&&dealReady())h+=`<button class="moncard deal" data-act="store"><div class="mch"><span class="mck">⏳ ${deal.n.toLocaleUpperCase('tr-TR')}</span><b class="mct" data-ends="${deal.ends}">${fmtLeft(deal.ends-Date.now())}</b></div><div class="mcm"><b>Premium</b><span><s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺149,99'}</b></span></div><small>Tarih + Çırak Paketi, reklamsız oyun, gelecek tüm paketler</small></button>`;
+  if(deal&&dealReady())h+=`<button class="moncard deal" data-act="store"><div class="mch"><span class="mck">⏳ ${deal.n.toLocaleUpperCase('tr-TR')}</span><b class="mct" data-ends="${deal.ends}">${fmtLeft(deal.ends-Date.now())}</b></div><div class="mcm"><b>Premium</b><span><s>${priceOf('premium')||'₺249,99'}</s> <b>${priceOf('firsat')||'₺174,99'}</b></span></div><small>Tarih + Çırak Paketi, reklamsız oyun, gelecek tüm paketler</small></button>`;
   else h+=`<button class="moncard" data-act="store"><div class="mch"><span class="mck">PAKETLER</span><span class="mcpop">EN İYİ DEĞER</span></div><div class="mcm"><b>👑 Premium</b><span>${priceOf('premium')||''}</span></div><small>Tarih Paketi, Çırak Paketi, reklamsız oyun ve gelecek tüm paketler. Tek seferlik.</small></button>`;
   if(MON.hak)h+=`<button class="moncard hour" data-act="hourStart"><span>⏰</span><div><b>Esnaf Saati hazır!</b><small>1 saat reklamsız oyna, bonuslar videosuz</small></div><span class="rs ok">Başlat</span></button>`;
   else if(hourOn())h+=`<div class="moncard hour"><span>⏰</span><div><b>Esnaf Saati sürüyor</b><small class="mct" data-ends="${MON.hb}">${fmtLeft(MON.hb-Date.now())}</small></div></div>`;
@@ -5042,7 +5042,7 @@ setInterval(()=>{document.querySelectorAll('.mct[data-ends]').forEach(el=>{el.te
 function storeDealCard(){const deal=dealNow();if(!deal||!dealReady())return'';
   return `<section class="st-card prem deal"><span class="st-flag">⏳ ${deal.n.toLocaleUpperCase('tr-TR')}</span><div class="st-ic">👑</div><h2>Premium · İndirimli</h2><p class="st-lead">Premium'un aynısı, sadece bu süre boyunca indirimli.</p>
    <div class="st-cd"><span>Kalan süre</span><b class="mct" data-ends="${deal.ends}">${fmtLeft(deal.ends-Date.now())}</b></div>
-   <div class="st-px"><s>${priceOf('premium')||'₺249,99'}</s><b>${priceOf('firsat')||'₺149,99'}</b></div>
+   <div class="st-px"><s>${priceOf('premium')||'₺249,99'}</s><b>${priceOf('firsat')||'₺174,99'}</b></div>
    <button class="st-buy gold" data-act="buy:firsat" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':'Fırsatı Yakala'}</button></section>`}
 function storeTable(){return `<div class="st-tbl"><div class="st-tr st-thd"><span></span><span>Ücretsiz</span><span>👑 Premium</span></div>
   <div class="st-tr"><span>Geçiş reklamı</span><span>Var</span><b>Yok</b></div>

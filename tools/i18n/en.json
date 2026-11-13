@@ -2613,5 +2613,6 @@
 "Makul": "Fair",
 "Güvenli": "Safe",
 "Müşteri": "Them",
-"✎ Kendi teklifin<small>Tutarı sen yaz</small>": "✎ Your own offer<small>Type an amount</small>"
+"✎ Kendi teklifin<small>Tutarı sen yaz</small>": "✎ Your own offer<small>Type an amount</small>",
+"Çarşıya hoş geldin! Sadece <b>72 saat</b> boyunca Premium <b>%30 indirimli</b>: Tarih Paketi, Çırak Paketi, reklamsız oyun ve gelecek tüm paketler.<div class=\"offdeal\"><s>{0}</s> <b>{1}</b></div>": "Welcome to the bazaar! For just <b>72 hours</b>, Premium is <b>30% off</b>: History Pack, Apprentice Pack, ad-free play and all future packs.<div class=\"offdeal\"><s>{0}</s> <b>{1}</b></div>"
 }
