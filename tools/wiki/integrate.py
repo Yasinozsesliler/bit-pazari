@@ -26,9 +26,11 @@ if '/* ===== 1.6.0 Ansiklopedi =====' not in s:
   if(a==='wkList'){wikiHome();return}
   if(a.startsWith('wkser:')){wikiHome(a.slice(6));return}
   if(a==='wkHome'){wikiHome();return}
+  if(a.startsWith('og:')){ogSend(a.slice(3));return}
+  if(a==='customOffer'){sfx.tap();customOffer();return}
   if(a.startsWith('wkgo:')){const t=document.getElementById(a.slice(5)),el=$('#wiki');if(t&&el)el.scrollTo({top:t.offsetTop-56,behavior:'smooth'});return}
   if(a.startsWith('ust:')){""")
-  sub("else reactPreview()}}","else{reactPreview();rlSync(false)}}}")
+  sub("else reactPreview()}}","else{reactPreview();rlSync()}}}")
   sub("""  if(ustTab==='col')return `<div class="page ust">${seg}${renderCol()}</div>`;""","""  if(ustTab==='wiki')return `<div class="page ust">${seg}${wikiListHtml()}</div>`;
   if(ustTab==='col')return `<div class="page ust">${seg}${renderCol()}</div>`;""")
   sub("if(ustTab==='col')return `<div class=\"page ust\">${seg}${renderCol()}</div>`;","if(ustTab==='col')return `<div class=\"page ust\">${seg}${wikiBanner()}${renderCol()}</div>`;")

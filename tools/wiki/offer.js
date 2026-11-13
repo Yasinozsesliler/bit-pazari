@@ -1,29 +1,24 @@
-/* ===================== 1.6.0: yeni pazarlık paneli (cetvel) ===================== */
-const RLPX=12;let RLB=null;
-function rlConf(){const c=S.cust;if(!c)return null;let ref,max,marks;
-  if(c.kind==='seller'){ref=c.ask;max=r10(ref*1.25);marks=[[r10(ref*.5),'%50'],[r10(ref*.7),'%70'],[r10(ref*.85),'%85'],[ref,'İstediği']]}
-  else{const it=itemById(c.itemId);if(!it)return null;ref=Math.max(it.appear,it.paid);max=r10(ref*2.6);marks=[[it.paid||r10(ref*.5),'Maliyet'],[r10(ref*1.3),'×1.3'],[r10(ref*1.6),'×1.6'],[r10(ref*2),'×2']]}
-  let step=stepOf(ref*.3);while(max/step>260)step*=2;return{ref,max,step,marks,n:Math.ceil(max/step)}}
-function rlPct(){const c=S.cust;if(!c||!(S.offer>0))return '';const f=rlConf();if(!f)return '';
-  if(c.kind==='seller'){const p=Math.round(S.offer/f.ref*100);return `<span class="ofx ${p>=100?'g':p>=80?'y':'r'}">İstenene göre ${pct(p)}</span>`}
-  const it=itemById(c.itemId),p=it&&it.paid?Math.round((S.offer-it.paid)/it.paid*100):0;return it&&it.paid?`<span class="ofx ${p>=0?'g':'r'}">${p>=0?'+':''}${pct(p)} kâr</span>`:''}
-function dzInfo(l1,v1,it,extra){return `<div class="of-info"><div class="of-pill"><small>${l1}</small><b>${v1}</b></div><div class="of-pill of-val"><small>Tahmini değer</small><div class="dz-vv">${dzVal(it)}</div></div>${extra||''}</div>`}
-function dzOffer(lbl){const f=rlConf();if(!f)return '';let t='';
-  for(let i=0;i<=f.n;i++){const v=i*f.step,maj=i%5===0;t+=`<i class="${maj?'mj':''}" style="left:${i*RLPX}px">${maj&&v?`<em>${fmt(v).replace(/\s?₺/,'')}</em>`:''}</i>`}
-  const mk=f.marks.map(([v,l])=>`<button class="rl-mk" data-act="q:${v}" style="left:${v/f.step*RLPX}px">${l}</button>`).join('');
-  return `<div class="of-card"><div class="of-hd"><small>${lbl}</small><span id="ofPct">${rlPct()}</span></div>
-   <div class="of-num"><button class="of-sb" data-act="dec" aria-label="Azalt">−</button><button class="of-v" data-act="typeOffer" id="offerBox" aria-label="Tutarı elle yaz"><b id="offerV">${S.offer>0?fmt(S.offer):'<span class="ph">Kaydır ya da dokun</span>'}</b><span class="pen">✎</span></button><button class="of-sb" data-act="inc" aria-label="Artır">+</button></div>
-   <div class="rl" id="rl" data-step="${f.step}" data-max="${f.max}"><div class="rl-sp"></div><div class="rl-tr" style="width:${f.n*RLPX}px">${t}${mk}</div><div class="rl-sp"></div></div><div class="rl-nd"></div></div>`}
+/* ===================== 1.6.0: pazarlık masası (tek dokunuşla teklif) ===================== */
+function dzMood(o){const c=S.cust;if(!c)return 'warn';if(c.fz==null)c.fz=rf(.92,1.08);o+=c.kind==='seller'&&c.trade?tradeValOf(c):0;
+  if(c.kind==='seller'){if(o>=c.ask)return 'good';const r=o/(c.minAccept*c.fz);return r>=1?'good':r>=.8?'warn':'bad'}
+  const it=itemById(c.itemId);if(!it)return 'warn';const knows=it.fake&&(it.known.expert||it.known.suspect);const cap=(c.honest&&knows)?it.appear*.33:c.maxPay;const r=o/(cap*c.fz);return r<=1?'good':r<=1.3?'warn':'bad'}
+const DZE={good:'😊',warn:'😐',bad:'😠'};
+function dzCards(){const c=S.cust;if(!c)return[];
+  if(c.kind==='seller'){const a=c.ask,lo=c.hist&&c.hist.filter(h=>h.w==='p').map(h=>h.v).pop()||0;
+    const L=[['Cesur',.6,.3],['Makul',.75,.55],['Güvenli',.9,.8]];let pv=lo;const out=[];
+    L.forEach(([l,f,g])=>{let v=lo?r10(lo+(a-lo)*g):r10(a*f);if(v<=pv)v=pv+10;if(v<a){out.push([l,v]);pv=v}});return out}
+  const it=itemById(c.itemId);if(!it)return[];const b=Math.max(it.appear,it.paid);
+  return [['Güvenli',1.2],['Makul',1.5],['Cesur',1.9]].map(([l,f])=>[l,r10(b*f)])}
+function dzHist(){const c=S.cust;if(!c)return '';c.hist=c.hist||[];const h=c.hist.slice(-5);if(!h.length)return '';
+  return `<div class="hg-h">${h.map(x=>`<span class="hg-b ${x.w}">${x.w==='p'?'Sen':'Müşteri'} <b>${fmt(x.v)}</b></span>`).join('<i>›</i>')}</div>`}
+function dzOffer(lbl){const c=S.cust;const cs=dzCards();const showMood=has('z1')||S.lv>=1;
+  return `${dzHist()}<div class="hg-cards">${cs.map(([l,v])=>{const m=dzMood(v);return `<button class="hg-c ${m}" data-act="og:${v}" ${busy?'disabled':''}><small>${l}</small><b>${fmt(v)}</b><span class="hg-e">${showMood?DZE[m]:''}</span><em>${c.kind==='seller'?pct(Math.round(v/c.ask*100)):'×'+(v/Math.max(1,(itemById(c.itemId)||{}).appear||v)).toFixed(1)}</em></button>`}).join('')}</div>`}
 function dzChips(){return ''}
+function dzInfo(l1,v1,it,extra){return `<div class="of-info"><div class="of-pill"><small>${l1}</small><b>${v1}</b></div><div class="of-pill of-val"><small>Tahmini değer</small><div class="dz-vv">${dzVal(it)}</div></div>${extra||''}</div>`}
 function dzTool(act,ic,t,dis,cls){return `<button class="of-t ${cls||''}" data-act="${act}" ${dis?'disabled':''}><span>${ic}</span><small>${t}</small></button>`}
-function rlPaint(){const v=$('#offerV');if(v)v.innerHTML=S.offer>0?fmt(S.offer):'<span class="ph">Kaydır ya da dokun</span>';const p=$('#ofPct');if(p)p.innerHTML=rlPct();
-  const go=$('#offerGo');if(go){go.disabled=busy||!(S.offer>0||(S.cust&&S.cust.trade));let s=go.querySelector('small.ov');if(!s){s=document.createElement('small');s.className='ov';go.appendChild(s)}s.textContent=S.offer>0?fmt(S.offer):''}
-  document.querySelectorAll('.rl-mk').forEach(q=>q.classList.toggle('on',+q.dataset.act.slice(2)===S.offer))}
-function rlSync(smooth){const r=$('#rl');if(!r)return;const st=+r.dataset.step;const x=Math.max(0,(S.offer||0)/st*RLPX);RLB=Date.now()+(smooth?600:120);
-  try{r.scrollTo({left:x,behavior:smooth?'smooth':'auto'})}catch(e){r.scrollLeft=x}rlPaint()}
-let RLT=0,RLS=0;
-document.addEventListener('scroll',e=>{const r=e.target;if(!r||r.id!=='rl')return;if(RLB&&Date.now()<RLB)return;
-  const st=+r.dataset.step,mx=+r.dataset.max;let v=Math.round(r.scrollLeft/RLPX)*st;v=Math.max(0,Math.min(mx,v));if(v===S.offer)return;
-  S.offer=v;rlPaint();const now=Date.now();if(now-RLT>45){RLT=now;try{tone(1500,.012,'square',.012)}catch(_){}buzz(4)}
-  clearTimeout(RLS);RLS=setTimeout(()=>{reactPreview();save()},90)},true);
-function updOffer(){rlSync(true);const r=$('#offerR');if(r){if(S.offer>+r.max)r.max=S.offer;r.value=S.offer}reactPreview();save()}
+function rlSync(){const hh=$('.hg-h');if(hh)hh.scrollLeft=hh.scrollWidth;const go=$('#offerGo');if(!go)return;go.dataset.act='customOffer';go.disabled=!!busy;go.classList.add('hg-own');go.innerHTML=`✎ Kendi teklifin<small>Tutarı sen yaz</small>`}
+function customOffer(){const c=S.cust;if(!c||c.done)return;numPad({label:c.kind==='buyer'?'Fiyatın':'Teklifin',value:0,onDone:v=>{if(!(v>0))return;S.offer=v;c.kind==='seller'?sellerOffer():buyerPropose()}})}
+function ogSend(v){const c=S.cust;if(!c||c.done||busy)return;S.offer=+v;c.kind==='seller'?sellerOffer():buyerPropose()}
+const _sO0=sellerOffer;sellerOffer=function(){const c=S.cust;if(c){c.hist=c.hist||[];if(!c.hist.length)c.hist.push({w:'c',v:c.ask});const a0=c.ask;c.hist.push({w:'p',v:S.offer});_sO0();if(S.cust===c&&!c.done&&c.ask!==a0){c.hist.push({w:'c',v:c.ask});render()}}else _sO0()};
+const _bP0=buyerPropose;buyerPropose=function(p){const c=S.cust;if(c){c.hist=c.hist||[];const k0=c.counter;c.hist.push({w:'p',v:p!=null?p:S.offer});_bP0(p);if(S.cust===c&&!c.done&&c.counter&&c.counter!==k0){c.hist.push({w:'c',v:c.counter});render()}}else _bP0(p)};
+function updOffer(){reactPreview();save()}
