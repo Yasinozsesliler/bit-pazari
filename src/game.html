@@ -1507,97 +1507,113 @@ input.kpIn{caret-color:transparent}
 .stic{font-size:34px;width:52px;height:52px;display:grid;place-items:center;border-radius:14px;background:rgba(255,255,255,.07);flex:none}.stc.on{border-color:rgba(120,209,162,.5)}
 .lkrow{opacity:.7;font-size:13px;text-align:center;padding:6px}
 .lsrow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:14px 0 10px}.lsd{border-radius:10px;padding:6px 2px;background:rgba(255,255,255,.07);font:900 12px Nunito,sans-serif;display:flex;flex-direction:column;gap:2px}.lsd small{font-size:9.5px;opacity:.7;font-weight:800}.lsd.got{background:#78d1a2;color:#0d1f1c}.lsd.big{background:rgba(232,171,60,.25)}.lsd.big.got{background:#e8ab3c;color:#2b1a0f}
-/* ===== 1.6.0 Ansiklopedi ===== */
-.wiki{position:absolute;inset:0;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;background:radial-gradient(120% 80% at 50% 0%,#3a2a1a,#1a110a 70%);padding:0 0 calc(24px + env(safe-area-inset-bottom));animation:wkIn .28s ease-out}
-@keyframes wkIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.wk-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:linear-gradient(180deg,rgba(26,17,10,.97),rgba(26,17,10,.85));backdrop-filter:blur(6px)}
-.wk-back{border:none;background:none;color:var(--brass);font:900 15px var(--body);padding:6px 4px}
-.wk-page{margin:4px 12px 0;padding:18px 16px 20px;border-radius:6px;color:#2b2118;background:#f3ead6;background-image:radial-gradient(rgba(120,90,50,.07) 1px,transparent 1px),linear-gradient(180deg,#f7efdc,#efe3c8);background-size:4px 4px,100% 100%;box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 0 0 1px rgba(120,90,50,.25),inset 0 0 40px rgba(120,80,30,.12);font-family:"Lora",Georgia,"Times New Roman",serif;font-weight:500;user-select:text}
-.wk-brand{font-family:"Lora",Georgia,serif;font-style:italic;font-size:12px;color:#7a6650;letter-spacing:.02em}
-.wk-title{margin:2px 0 0;font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:28px;line-height:1.12;color:#1e160f}
-.wk-rule{height:1px;margin:8px 0 12px;background:linear-gradient(90deg,#a8916f,rgba(168,145,111,.15))}
-.wk-box{float:none;margin:0 0 12px;border:1px solid #c9b48f;background:#f9f3e4;border-radius:4px;padding:10px;box-shadow:0 1px 0 #fff inset}
-.wk-img{display:grid;place-items:center;height:150px;margin-bottom:8px;border-radius:3px;background:radial-gradient(circle at 50% 45%,#fffaf0,#e9dcc0 70%);box-shadow:inset 0 0 0 1px #d8c6a2,inset 0 -3px 0 color-mix(in srgb,var(--rc) 70%,transparent)}
-.wk-img{position:relative}.wk-img .tico{width:130px;height:130px}.wk-img .cardIco{font-size:110px}
-.wk-img.dark>*{filter:brightness(0) opacity(.55)}
-.wk-tbl{width:100%;border-collapse:collapse;font-size:13px}
-.wk-tbl th{width:38%;text-align:left;vertical-align:top;padding:5px 6px 5px 0;font-family:var(--body);font-weight:900;font-size:11px;letter-spacing:.03em;color:#6d5a44}
-.wk-tbl td{padding:5px 0;color:#2b2118;line-height:1.3}
-.wk-tbl tr+tr{border-top:1px solid #e3d5b8}
-.wk-ser{border:none;border-radius:999px;padding:2px 9px;font:900 11.5px var(--body);color:#fff;background:var(--sc);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
-.wk-good{color:#2e7d4f;font-weight:700}.wk-bad{color:#b23a2c;font-weight:700}.wk-dim{color:#7a6650}
-.wk-h{clear:both;margin:16px 0 6px;padding-bottom:3px;border-bottom:1px solid #c9b48f;font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:18px;color:#1e160f}
-.wk-p{margin:0 0 8px;font-size:14.5px;line-height:1.55}
-.wk-lead::first-letter{font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:2.4em;float:left;line-height:.9;margin:4px 6px 0 0;color:#8a5a1c}
-.wk-tip{padding:8px 10px;border-left:3px solid #c98a22;background:rgba(232,171,60,.12);border-radius:0 4px 4px 0}
-.wk-fact{display:flex;gap:10px;align-items:flex-start;margin:10px 0 2px;padding:10px 12px;border-radius:6px;background:#2b2118;color:#f3e6c9}
-.wk-fact>span{font-size:22px}.wk-fact small{display:block;font:900 10px var(--body);letter-spacing:.14em;text-transform:uppercase;color:#e8ab3c;margin-bottom:2px}.wk-fact p{margin:0;font-size:14px;line-height:1.5}
-.wk-rar{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:6px}
-.wk-rar th{font:900 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;color:#6d5a44;text-align:left;padding:4px 4px;border-bottom:2px solid #c9b48f}
-.wk-rar td{padding:6px 4px;border-bottom:1px solid #e3d5b8}.wk-rar td i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
-.wk-rar tr.got td{background:rgba(232,171,60,.13)}.wk-rar em{font-style:normal;color:#2e7d4f;font-weight:700}
-.wk-ul{margin:0 0 6px;padding:0;list-style:none}.wk-ul li{font-size:14px;line-height:1.45;padding:5px 0;border-bottom:1px dashed #d8c6a2}
-.wk-rec{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.wk-rec>div{text-align:center;padding:8px 2px;border-radius:6px;background:#f9f3e4;border:1px solid #d8c6a2}
-.wk-rec b{display:block;font-family:"Playfair Display",Georgia,serif;font-size:16px;color:#1e160f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wk-rec small{font:800 10px var(--body);color:#7a6650}
-.wk-sib{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.wk-sc{border:1px solid #d8c6a2;background:#f9f3e4;border-radius:6px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#2b2118}
-.wk-ic{position:relative;height:42px;display:grid;place-items:center}.wk-ic .tico{width:40px;height:40px}.wk-ic .cardIco{font-size:34px}.wk-nm{font:800 10.5px var(--body);letter-spacing:0;text-transform:none;line-height:1.15;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.wk-sc{position:relative}.wk-sc.lock .wk-ic{filter:grayscale(1) brightness(.6) opacity(.5)}
-.wk-locked{position:relative;margin:4px 0 6px;padding:12px;border-radius:6px;background:#efe2c5;border:1px dashed #b89c70;text-align:center}
-.wk-locked>span{font-size:24px}.wk-locked p{margin:4px 0 8px;font-size:14px;line-height:1.5}
-.wk-blur{display:grid;gap:6px}.wk-blur i{display:block;height:9px;border-radius:5px;background:linear-gradient(90deg,#d3c09b,#e2d3b3,#d3c09b);filter:blur(1px)}.wk-blur i:nth-child(2){width:88%}.wk-blur i:nth-child(3){width:64%}
-.wk-foot{margin:16px 0 0;font-size:11px;font-style:italic;color:#8d7a62;text-align:center}
-.wk-q{width:100%;border:none;border-radius:12px;padding:11px 14px;font:800 15px var(--body);color:var(--fg);background:#140d08;box-shadow:inset 0 0 0 1px rgba(232,171,60,.3);outline:none;user-select:text}
-.wk-f{display:flex;gap:6px}.wk-f button{flex:1;border:none;border-radius:10px;padding:8px 4px;font:900 12px var(--body);color:#bda98c;background:#1f150d;box-shadow:inset 0 0 0 1px rgba(232,171,60,.18)}.wk-f button.on{color:var(--ink);background:var(--brass)}
-.wk-g h4{display:flex;align-items:center;justify-content:space-between;margin:10px 0 6px;font-family:var(--serif);font-size:13px;letter-spacing:.08em;color:var(--sc)}.wk-g h4 em{font-style:normal;font-family:var(--body);font-size:11px;color:var(--muted)}
-.wk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.wk-it{position:relative;border:none;border-radius:10px;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center;gap:3px;background:linear-gradient(180deg,#24180f,#170f09);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,transparent);color:var(--fg)}
-.wk-it .wk-nm{font-size:10px;color:#d9c7a8}
-.wk-it.lock .wk-ic{filter:grayscale(1) brightness(.75) opacity(.4)}.wk-it.lock .wk-nm{color:#7d6e5a}.wk-it i{position:absolute;top:4px;right:5px;font-style:normal;font-size:10px}
+/* ===== 1.6.0 Ansiklopedi (Vikipedi görünümü) ===== */
+.wiki{position:absolute;inset:0;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff;color:#202122;animation:wkIn .25s ease-out;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-weight:400;font-size:15px;line-height:1.6;user-select:text}
+@keyframes wkIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wp-bar{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:4px;padding:calc(6px + env(safe-area-inset-top)) 8px 6px;background:#fff;border-bottom:1px solid #c8ccd1}
+.wp-ic{width:40px;height:40px;border:none;background:none;border-radius:4px;font-size:18px;color:#202122}
+.wp-ic:active{background:#eaecf0}
+.wp-logo{flex:1;display:flex;flex-direction:column;align-items:center;border:none;background:none;line-height:1;color:#000}
+.wp-logo b{font-family:"Linux Libertine","Georgia","Times",serif;font-weight:400;font-size:21px;letter-spacing:.06em;font-variant:small-caps}
+.wp-logo small{font-family:"Linux Libertine","Georgia","Times",serif;font-size:11.5px;letter-spacing:.12em;color:#54595d}
+.wp-page{padding:14px 16px calc(28px + env(safe-area-inset-bottom));max-width:720px;margin:0 auto}
+.wp-h1{margin:0;font-family:"Linux Libertine","Georgia","Times",serif;font-weight:400;font-size:28px;line-height:1.25;color:#000;padding-bottom:4px;border-bottom:1px solid #a2a9b1}
+.wp-tabs{display:flex;gap:16px;margin:6px 0 2px;font-size:13.5px}
+.wp-tabs span,.wp-tabs a,.wp-tabs em{font-style:normal;padding:4px 0;color:#36c;cursor:pointer}
+.wp-tabs .on{color:#202122;border-bottom:2px solid #36c;font-weight:600}.wp-tabs em{margin-left:auto;color:#72777d;cursor:default}
+.wp-sub{font-size:12.5px;color:#54595d;margin:4px 0 10px}
+.wkl{color:#36c;text-decoration:none;cursor:pointer}.wkl:active{text-decoration:underline}.wkl.red{color:#d73333}
+.wp-p{margin:0 0 10px}
+.wp-ib{width:100%;margin:0 0 14px;border:1px solid #a2a9b1;border-collapse:collapse;background:#f8f9fa;font-size:13px;line-height:1.45}
+.wp-ib th,.wp-ib td{padding:4px 8px;vertical-align:top;text-align:left}
+.wp-ib th{width:40%;font-weight:700}
+.wp-ibt{text-align:center!important;font-size:15.5px;padding:7px!important;background:color-mix(in srgb,var(--sc) 28%,#eaecf0)}
+.wp-ibi{text-align:center!important;padding:8px!important}
+.wp-img{display:grid;place-items:center;height:170px;background:#fff;border:1px solid #c8ccd1}
+.wp-img .tico{width:140px;height:140px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}.wp-img .cardIco{font-size:120px}
+.wp-img.dark .tico,.wp-img.dark .cardIco{filter:grayscale(1) brightness(0) opacity(.25)}
+.wp-cap{font-size:12px;color:#54595d;margin-top:4px}
+.wp-rd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--rc);vertical-align:0}
+.wp-toc{display:inline-block;margin:4px 0 12px;padding:8px 14px 8px 10px;border:1px solid #a2a9b1;background:#f8f9fa;font-size:13.5px}
+.wp-toc b{display:block;text-align:center;font-size:14px;margin-bottom:2px}.wp-toc ol{margin:0;padding-left:22px}.wp-toc li{line-height:1.7}
+.wp-h2{clear:both;margin:20px 0 8px;padding-bottom:3px;border-bottom:1px solid #a2a9b1;font-family:"Linux Libertine","Georgia","Times",serif;font-weight:400;font-size:22px;line-height:1.3;color:#000}
+.wp-dyk{margin:10px 0;padding:8px 12px;border:1px solid #a7d7f9;background:#f5faff;font-size:14px}.wp-dyk b{display:block;font-size:13px}.wp-dyk p{margin:2px 0 0}
+.wp-tbl{border-collapse:collapse;margin:0 0 8px;font-size:13.5px;background:#f8f9fa;border:1px solid #a2a9b1;width:100%}
+.wp-tbl th,.wp-tbl td{border:1px solid #a2a9b1;padding:5px 8px;text-align:left}
+.wp-tbl th{background:#eaecf0;font-weight:700}.wp-tbl tr.me td{background:#fef6e7;font-weight:600}
+.wp-ul{margin:0 0 10px;padding-left:20px}.wp-ul li{margin:3px 0}
+.wp-cols{columns:2;column-gap:20px}
+.wp-notes{margin:0;padding-left:22px;font-size:13px;color:#202122}
+.wp-cats{margin:22px 0 0;padding:6px 10px;border:1px solid #a2a9b1;background:#f8f9fa;font-size:13px}.wp-cats span{color:#36c}
+.wp-foot{margin-top:18px;padding-top:10px;border-top:1px solid #c8ccd1;font-size:12px;color:#54595d}.wp-foot p{margin:0 0 4px}
+.wp-miss{margin:0 0 14px;padding:10px 12px;border:1px solid #a2a9b1;border-left:4px solid #d73333;background:#fef6e7;font-size:14px}.wp-miss p{margin:4px 0 0}
+.wk-p{margin:0 0 10px}.wk-tip{padding:8px 12px;border:1px solid #c8ccd1;background:#f8f9fa}.wk-dim{color:#54595d;font-size:13.5px}
+.wp-home .wp-wel{text-align:center;padding:10px 6px 12px;margin-bottom:12px;border:1px solid #a2a9b1;background:#f6f6f6}
+.wp-wel h1{margin:0;font-family:"Linux Libertine","Georgia","Times",serif;font-weight:400;font-size:22px;line-height:1.3}
+.wp-wel p{margin:2px 0 0;font-size:13px;color:#54595d}.wp-wel .wp-cnt{color:#202122}
+.wp-search{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding:0 12px;border:1px solid #a2a9b1;border-radius:2px;background:#fff;box-shadow:inset 0 0 0 1px transparent}
+.wp-search:focus-within{border-color:#36c;box-shadow:inset 0 0 0 1px #36c}
+.wp-search input{flex:1;border:none;outline:none;height:40px;font:15px -apple-system,BlinkMacSystemFont,Arial,sans-serif;color:#202122;background:none;user-select:text}
+.wp-box{margin:0 0 14px;border:1px solid #a2a9b1;background:#fff}
+.wp-box h2{margin:0;padding:4px 10px;font-family:"Linux Libertine","Georgia","Times",serif;font-weight:400;font-size:17px;border-bottom:1px solid #a2a9b1;background:#eaecf0}
+.wp-box.wp-gr{border-color:#a3bfb1}.wp-box.wp-gr h2{background:#cef2e0;border-color:#a3bfb1}.wp-box.wp-bl{border-color:#a3b0bf}.wp-box.wp-bl h2{background:#cedff2;border-color:#a3b0bf}
+.wp-box{display:block}.wp-box h2{display:block}.wp-box>p,.wp-box>ul,.wp-box>div{margin:0;padding:8px 10px}.wp-box li,.wp-box p{font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;font-weight:400;letter-spacing:0}.wp-box ul{padding-left:28px}.wp-box li{margin:4px 0;font-size:14px}
+.wp-fe{display:flex;gap:10px;align-items:flex-start}.wp-fe p{margin:0;font-size:14px}
+.wp-fei{flex:none;display:grid;place-items:center;width:84px;height:84px;border:1px solid #c8ccd1;background:#f8f9fa}.wp-fei .tico{width:70px;height:70px}.wp-fei.dark .tico{filter:grayscale(1) brightness(0) opacity(.25)}
+.wp-leg{font-size:12.5px;color:#54595d}
+.wp-grp{padding:6px 10px!important;border-top:1px solid #eaecf0}.wp-grp h3{margin:0 0 2px;font-size:14.5px;font-weight:700}.wp-grp h3 small{font-weight:400;color:#72777d}.wp-grp p{margin:0;font-size:14px;line-height:1.75}
 .slot[data-act]{cursor:pointer}
 .vtop .vwiki{border:none;border-radius:999px;padding:6px 10px;margin-right:6px;font:900 12px var(--body);color:var(--ink);background:var(--brass);white-space:nowrap}
-/* ===== 1.6.0 Premium pazarlık paneli ===== */
-.dz{position:relative;gap:9px;padding:14px 14px 9px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,transparent 2px 9px),linear-gradient(180deg,#2b1d12 0%,#1b120a 55%,#120b06 100%);box-shadow:inset 0 2px 0 rgba(0,0,0,.55),inset 0 1px 0 rgba(255,214,140,.25)}
-.dz::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#8a6424 12%,#ffe29a 50%,#8a6424 88%,transparent)}
-.dz::after{content:"";position:absolute;left:50%;top:-5px;width:10px;height:10px;transform:translateX(-50%) rotate(45deg);background:linear-gradient(135deg,#ffe9b0,#c08a2c);box-shadow:0 0 8px rgba(255,200,100,.5)}
-.dz-info{position:relative;border-radius:10px;background:linear-gradient(180deg,#f8eed6,#ead9b3);box-shadow:0 3px 0 #7a5a2c,0 6px 14px rgba(0,0,0,.45),inset 0 0 0 1px #c9a86a,inset 0 0 0 4px #f8eed6,inset 0 0 0 5px rgba(160,120,60,.45)}
-.dz-c{padding:8px 13px}
-.dz-c+.dz-c{border-left:1px dashed rgba(122,90,44,.45)}
-.dz-c small{font-family:var(--serif);font-size:9px;letter-spacing:.16em;color:#8a6a40}
-.dz-big{font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:23px;color:#7a2418;font-variant-numeric:lining-nums tabular-nums}
-.dz-vv b{color:#2b1d12;font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:15.5px;font-variant-numeric:lining-nums}
-.dz-vv em{color:#7a6650}
-.dz-ask{color:#7a6650}.dz-ask u{color:#9a5a12}
-.dz-offer{grid-template-columns:50px 1fr 50px;align-items:center}
-.dz-sb{width:50px;height:50px;border-radius:50%;font-size:26px;color:#3a240e;background:radial-gradient(circle at 35% 30%,#fff2c6 0%,#f0c565 35%,#b8862b 75%,#7d5719 100%);box-shadow:0 3px 0 #5a3d10,0 5px 12px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,236,180,.55),inset 0 -3px 6px rgba(90,60,15,.45);text-shadow:0 1px 0 rgba(255,240,200,.6)}
-.dz-sb:active{transform:translateY(2px);box-shadow:0 1px 0 #5a3d10,inset 0 0 0 2px rgba(255,236,180,.55)}
-.dz .dz-box{height:60px;border-radius:14px;border:2px solid transparent;background:linear-gradient(180deg,#1d130b,#0f0905) padding-box,linear-gradient(135deg,#fff0bf,#b8862b 30%,#6e4c17 50%,#d9a748 75%,#fff0bf) border-box;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 6px 16px rgba(0,0,0,.5),inset 0 0 18px rgba(232,171,60,.12)}
-.dz .dz-box small{font-family:var(--serif);font-size:9px;letter-spacing:.2em;color:#c9a36a}
-.dz .dz-box b{font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:30px;line-height:1.05;font-variant-numeric:lining-nums tabular-nums;background:linear-gradient(180deg,#fff6d8 0%,#ffd77a 45%,#d69a2e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(0,0,0,.6))}
-.dz .dz-box b .ph{font-family:"Lora",Georgia,serif;font-style:italic;font-weight:500;font-size:16px;color:#8d7a62;-webkit-text-fill-color:#8d7a62}
-.dz-gauge{padding:0 4px}
-.dz-gt{position:relative;height:8px;border-radius:5px;background:linear-gradient(90deg,#5a1c14,#7a5a1c 55%,#2e5a3a 80%,#1f3d2a);box-shadow:inset 0 1px 2px rgba(0,0,0,.7),0 1px 0 rgba(255,214,140,.15)}
-.dz-gt i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:linear-gradient(180deg,rgba(255,233,170,.55),rgba(232,171,60,.25));transition:width .2s}
-.dz-gt b{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7d8,#e8b34c 55%,#8a5f1c);box-shadow:0 2px 5px rgba(0,0,0,.6),0 0 10px rgba(255,210,120,.55);transition:left .2s}
-.dz-gt s{position:absolute;top:-3px;bottom:-3px;width:1px;background:rgba(255,226,154,.55)}
-.dz-chips{gap:7px}
-.dz .dz-qc{border:none;border-radius:999px;padding:7px 4px;color:#e9d3a6;background:linear-gradient(180deg,#2a1c11,#1a110a);box-shadow:inset 0 0 0 1px rgba(232,171,60,.45),0 2px 0 #0b0704}
-.dz .dz-qc b{font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:13px;color:#ffd77a}
-.dz .dz-qc span{color:#bda98c;font-weight:800}
-.dz .dz-qc.on{background:linear-gradient(180deg,#ffe29a,#d69a2e);box-shadow:inset 0 0 0 1px #fff0bf,0 2px 0 #6e4c17}.dz .dz-qc.on b,.dz .dz-qc.on span{color:#3a240e}
-.dz-main .b{height:56px;border-radius:14px;font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:19px;letter-spacing:.02em}
-.dz-main .b.brass{color:#3a240e;background:linear-gradient(180deg,#fff2c6 0%,#f3c768 30%,#d69a2e 62%,#a8741f 100%);box-shadow:0 4px 0 #5a3d10,0 8px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,240,200,.5);text-shadow:0 1px 0 rgba(255,245,215,.7)}
-.dz-main .b.mint{color:#f6ead0;background:linear-gradient(180deg,#2f8a62 0%,#1d6446 55%,#124530 100%);box-shadow:0 4px 0 #0a2a1c,0 8px 18px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,226,154,.55),inset 0 1px 0 rgba(255,255,255,.25);text-shadow:0 1px 0 rgba(0,0,0,.45)}
-.dz-main .b small{font-family:var(--body);font-weight:900;font-size:11.5px;opacity:.9}
-.dz-wait{font-family:"Lora",Georgia,serif;font-style:italic;font-weight:500;color:#a8946f;box-shadow:inset 0 0 0 1px rgba(232,171,60,.28)}
-.dz-tools{margin-top:1px;padding:3px 4px;border-radius:12px;background:linear-gradient(180deg,#160e08,#0f0905);box-shadow:inset 0 0 0 1px rgba(232,171,60,.16)}
-.dz-t{color:#cdb894}
-.dz-t+.dz-t{border-left:1px solid rgba(232,171,60,.12);border-radius:0}
-@media (max-height:740px){.dz{padding-top:11px}.dz .dz-box{height:48px}.dz .dz-box b{font-size:25px}.dz-sb{width:44px;height:44px;font-size:22px}.dz-offer{grid-template-columns:44px 1fr 44px}.dz-main .b{height:48px;font-size:17px}}
 .ustseg .wkseg{flex:none;padding:9px 11px;font-size:15px}
 .wk-ban{display:flex;align-items:center;gap:10px;width:100%;border:none;border-radius:14px;padding:11px 14px;text-align:left;color:#2b2118;background:linear-gradient(180deg,#f8eed6,#e8d6ae);box-shadow:0 3px 0 #7a5a2c,inset 0 0 0 1px #c9a86a}
 .wk-ban>span{font-size:26px}.wk-ban div{flex:1;min-width:0}.wk-ban b{display:block;font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:16px}.wk-ban small{font:800 11.5px var(--body);color:#7a6650}.wk-ban i{font-style:normal;font-size:24px;color:#8a5a1c}
+/* ===== 1.6.0 Yeni pazarlık paneli ===== */
+.dz{gap:10px;padding:12px 14px 10px;background:linear-gradient(180deg,#1b140f,#120d09);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.of-info{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.of-pill{display:flex;flex-direction:column;justify-content:center;gap:1px;min-width:0;padding:7px 12px;border-radius:14px;background:#231a13;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.of-pill small{font:900 9.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#8f7f6a}
+.of-pill>b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums}
+.of-val .dz-vv b{font-size:14.5px;color:#f1e6d2}
+.of-card{position:relative;border-radius:20px;padding:10px 0 0;background:linear-gradient(180deg,#2a1f16,#1f1710);box-shadow:inset 0 0 0 1px rgba(242,179,74,.22),0 10px 24px rgba(0,0,0,.35);overflow:hidden}
+.of-hd{display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+.of-hd small{font:900 10px var(--body);letter-spacing:.16em;text-transform:uppercase;color:#c9a66a}
+.ofx{font:900 11px var(--body);padding:3px 9px;border-radius:999px}
+.ofx.g{color:#9ff0c2;background:rgba(80,200,130,.16)}.ofx.y{color:#ffd88a;background:rgba(242,179,74,.16)}.ofx.r{color:#ffaa9e;background:rgba(240,90,70,.16)}
+.of-num{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px;padding:2px 10px 0}
+.of-sb{width:40px;height:40px;border:none;border-radius:50%;font:400 24px var(--display);line-height:1;color:#f2b34a;background:#16100b;box-shadow:inset 0 0 0 1px rgba(242,179,74,.35)}
+.of-sb:active{transform:scale(.94)}
+.of-v{display:flex;align-items:center;justify-content:center;gap:6px;border:none;background:none;padding:0;min-width:0;height:52px}
+.of-v b{font-family:var(--display);font-weight:400;font-size:40px;line-height:1;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 2px 12px rgba(242,179,74,.25)}
+.of-v b .ph{font-family:var(--body);font-weight:800;font-size:15px;color:#8f7f6a;text-shadow:none}
+.of-v .pen{font-size:13px;color:#c9a66a;opacity:.8}
+.rl{position:relative;display:flex;overflow-x:auto;overflow-y:hidden;height:62px;margin-top:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;-webkit-mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
+.rl::-webkit-scrollbar{display:none}
+.rl-sp{flex:none;width:50%}
+.rl-tr{position:relative;flex:none;height:100%}
+.rl-tr i{position:absolute;bottom:0;width:2px;margin-left:-1px;height:12px;border-radius:1px;background:rgba(255,236,200,.28)}
+.rl-tr i.mj{height:22px;background:rgba(255,236,200,.6)}
+.rl-tr i em{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font:800 9.5px var(--body);font-style:normal;color:#8f7f6a;white-space:nowrap}
+.rl-mk{position:absolute;top:3px;transform:translateX(-50%);border:none;border-radius:999px;padding:3px 8px;font:900 10.5px var(--body);color:#f2b34a;background:rgba(242,179,74,.12);box-shadow:inset 0 0 0 1px rgba(242,179,74,.35);white-space:nowrap}
+.rl-mk::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:28px;background:rgba(242,179,74,.45)}
+.rl-mk.on{color:#1b140f;background:#f2b34a}
+.rl-nd{position:absolute;left:50%;bottom:0;width:3px;height:40px;margin-left:-1.5px;border-radius:2px;background:#f2b34a;box-shadow:0 0 12px rgba(242,179,74,.8);pointer-events:none}
+.rl-nd::before{content:"";position:absolute;left:50%;top:-7px;margin-left:-6px;border:6px solid transparent;border-top-color:#f2b34a}
+.dz-main{display:grid;grid-template-columns:1.45fr 1fr;gap:8px}
+.dz-main .b{height:56px;border-radius:16px;font-family:var(--display);font-size:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.dz-main .b small{font-family:var(--body);font-weight:900;font-size:12px;margin-top:2px;opacity:.85}
+.dz-main .b.brass{color:#1b120a;background:linear-gradient(180deg,#ffcf6e,#f2b34a 55%,#e09a2c);box-shadow:0 4px 0 #8a5a14,0 8px 18px rgba(242,179,74,.25)}
+.dz-main .b.brass:disabled{filter:none;opacity:1;color:#7d6e5a;background:#2a2017;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.dz-main .b.mint{color:#c9f5dc;background:#16261d;box-shadow:inset 0 0 0 1.5px #3fae74}
+.dz-main .b.mint small{color:#8fe0b3}
+.dz-wait{border-radius:16px;font-size:11.5px;color:#8f7f6a;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.dz-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:0}
+.of-t{display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;padding:2px 0;color:#bfae95;min-width:0}
+.of-t span{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#231a13;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.of-t svg{width:18px;height:18px;color:#f2b34a}
+.of-t small{font:800 10.5px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.of-t.red svg{color:#ff8c80}.of-t:disabled{opacity:.35}.of-t:active:not(:disabled) span{transform:scale(.94)}
+.dz-tools:has(.of-t:nth-child(2):last-child){grid-template-columns:repeat(2,1fr)}
+@media (max-height:740px){.dz{gap:7px;padding:9px 12px 7px}.of-v{height:44px}.of-v b{font-size:33px}.rl{height:54px}.dz-main .b{height:48px;font-size:17px}.of-t span{width:34px;height:34px}.of-pill{padding:5px 11px}.of-pill>b{font-size:18px}}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -3998,11 +4014,7 @@ function dzInfo(l1,v1,it,extra){return `<div class="dz-info"><div class="dz-c"><
   <div class="dz-c dz-v"><small>Tahmini değer</small><div class="dz-vv">${dzVal(it)}</div></div>${extra||''}</div>`}
 function dzOffer(lbl){return `<div class="dz-offer"><button class="dz-sb" data-act="dec" aria-label="Azalt">−</button>
   <button class="offerBox dz-box" data-act="typeOffer" id="offerBox" aria-label="Tutarı elle yaz"><small>${lbl} <span class="pen">✎</span></small><b id="offerV">${S.offer>0?fmt(S.offer):'<span class="ph">Tutar seç</span>'}</b></button>
-  <button class="dz-sb" data-act="inc" aria-label="Artır">+</button></div>${dzGauge()}`}
-function dzGauge(){const c=S.cust;if(!c)return'';let ref,max,ticks;
-  if(c.kind==='seller'){ref=c.ask;max=ref*1.15;ticks=[.5,.7,.85,1]}else{const it=itemById(c.itemId);if(!it)return'';ref=Math.max(it.appear,it.paid);max=ref*2.3;ticks=[1,1.3,1.6,2]}
-  const p=Math.min(1,Math.max(0,(S.offer||0)/max))*100;
-  return `<div class="dz-gauge" id="dzG"><div class="dz-gt"><i style="width:${p}%"></i>${ticks.map(v=>`<s style="left:${v*ref/max*100}%"></s>`).join('')}<b style="left:${p}%"></b></div></div>`}
+  <button class="dz-sb" data-act="inc" aria-label="Artır">+</button></div>`}
 function dzChips(){const c=S.cust;let ch=[];
   if(c.kind==='seller')ch=[['%50',r10(c.ask*.5)],['%70',r10(c.ask*.7)],['%85',r10(c.ask*.85)]];
   else{const it=itemById(c.itemId);if(!it)return'';const b=Math.max(it.appear,it.paid);ch=[['×1.3',r10(b*1.3)],['×1.6',r10(b*1.6)],['×2',r10(b*2)]]}
@@ -4078,7 +4090,7 @@ function render(){
   else if(S.tab==='inv')main.innerHTML=renderInv();
   else if(S.tab==='skills')main.innerHTML=renderUst();
   else main.innerHTML=renderMys();
-  shake=false;fitScene();if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else reactPreview()}}
+  shake=false;fitScene();if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync(false)}}}
 
 /* ---------- native hooks (Android geri tuşu / arka plan) ---------- */
 window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click();return true};
@@ -4109,8 +4121,10 @@ document.addEventListener('click',e=>{
   if(a==='ledger'){S.ledOpen=!S.ledOpen;save();return}
   if(a.startsWith('wiki:')){wikiOpen(a.slice(5));return}
   if(a==='wikiX'){sfx.tap();wikiClose();return}
-  if(a==='wkList'||a.startsWith('wkser:')){wikiClose();if($('#viewer'))closeViewer();screen='game';S.tab='skills';ustTab=a==='wkList'?'wiki':'col';sfx.tap();render();const mm=$('#main');if(mm)mm.scrollTop=0;return}
-  if(a.startsWith('wkf:')){WKF=a.slice(4);sfx.tap();render();return}
+  if(a==='wkList'){wikiHome();return}
+  if(a.startsWith('wkser:')){wikiHome(a.slice(6));return}
+  if(a==='wkHome'){wikiHome();return}
+  if(a.startsWith('wkgo:')){const t=document.getElementById(a.slice(5)),el=$('#wiki');if(t&&el)el.scrollTo({top:t.offsetTop-56,behavior:'smooth'});return}
   if(a.startsWith('ust:')){ustTab=a.slice(4);sfx.tap();render();$('#main').scrollTop=0;return}
   if(a==='goAch'){b.remove();S.tab='skills';ustTab='ach';closeModal();render();return}
   if(a==='talkMenu'){const c=S.cust;if(c){c.talkOpen=!c.talkOpen;c.tradeOpen=false;sfx.tap();render()}return}
@@ -4270,7 +4284,7 @@ document.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-act=
   holdT=setTimeout(go,420)});
 ['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,()=>clearTimeout(holdT)));
 document.addEventListener('keydown',e=>{if(e.target.id==='mysIn'&&e.key==='Enter')mysGuess();if(e.target.id==='shopIn'&&e.key==='Enter')startNamed()});
-function updOffer(){const g=$('#dzG');if(g)g.outerHTML=dzGauge();const v=$('#offerV');if(v)v.innerHTML=S.offer>0?fmt(S.offer):'<span class="ph">Tutar seç</span>';const go=$('#offerGo');if(go)go.disabled=busy||!(S.offer>0||(S.cust&&S.cust.trade));const r=$('#offerR');if(r){if(S.offer>+r.max)r.max=S.offer;r.value=S.offer}document.querySelectorAll('.qc[data-act^="q:"]').forEach(q=>q.classList.toggle('on',+q.dataset.act.slice(2)===S.offer));reactPreview();save()}
+function updOffer(){const v=$('#offerV');if(v)v.innerHTML=S.offer>0?fmt(S.offer):'<span class="ph">Tutar seç</span>';const go=$('#offerGo');if(go)go.disabled=busy||!(S.offer>0||(S.cust&&S.cust.trade));const r=$('#offerR');if(r){if(S.offer>+r.max)r.max=S.offer;r.value=S.offer}document.querySelectorAll('.qc[data-act^="q:"]').forEach(q=>q.classList.toggle('on',+q.dataset.act.slice(2)===S.offer));reactPreview();save()}
 
 /* ---------- 3D item viewer ---------- */
 const BACKNOTE={
@@ -5194,44 +5208,86 @@ function wkFake(c){if(!c.f)return `<p class="wk-p">Bu parçanın piyasada biline
   else if(typeof METAL!=='undefined'&&METAL.has(k))t=`🔍 <b>Büyüteç:</b> döküm izi ve yeni kaynak yerleri sahteyi ele verir. ⚖️ <b>Terazi:</b> içi boş ya da ucuz alaşım taklitler hafif kalır.`;
   else t=`🔦 <b>UV lamba:</b> taze boya, rötuş ve yapıştırıcı UV altında parlar. 🔍 <b>Büyüteç:</b> usta damgası ya da imza sığ ve bozuksa dikkat.`;
   return `<p class="wk-p">Bu parçanın sahtesi piyasada dolaşıyor. Ekspertiz çantasıyla incele:</p><p class="wk-p wk-tip">${t}</p><p class="wk-p wk-dim">Emin olamıyorsan <b>Uzman</b> çağır: kesin raporu o verir.</p>`}
-function wkInfoRow(l,v){return `<tr><th>${l}</th><td>${v}</td></tr>`}
+function wkLink(k,cls){const c=catOf(k),o=wkOpen(k);return `<a class="wkl${o?'':' red'}${cls?' '+cls:''}" data-act="wiki:${k}">${c.n}</a>`}
+function wkTop(){return `<div class="wp-bar"><button class="wp-ic" data-act="wkHome" aria-label="Ana sayfa">☰</button><button class="wp-logo" data-act="wkHome"><b>Bit Pazarı</b><small>Ansiklopedisi</small></button><button class="wp-ic" data-act="wkHome" aria-label="Ara">🔍</button><button class="wp-ic" data-act="wikiX" aria-label="Kapat">✕</button></div>`}
+function wkFooter(){return `<div class="wp-foot"><p>Bu sayfa en son ${S.day}. günde değiştirildi.</p><p>Metin, Bit Pazarı dükkân sahipleri tarafından yazılmıştır. <a class="wkl" data-act="wkHome">Ana Sayfa</a> · <a class="wkl" data-act="wikiX">Dükkâna dön</a></p></div>`}
 function wikiHtml(k){const c=catOf(k),d=WIKI[k]||['?','?','?','',''],open=wkOpen(k),s=wkSer(k),w=(S.wk&&S.wk[k])||{b:0,s:0,best:0,d:0},best=S.col&&S.col[k]!=null?S.col[k]:-1;
   const ico=icon({k,i:c.i,cond:4,id:'wk'+k,known:{}});
-  const serChip=s?`<button class="wk-ser" style="--sc:${s.c}" data-act="wkser:${s.id}">${s.n}</button>`:(c.ev?`<span class="wk-ser" style="--sc:#4fd18a">${EVTS[c.ev].n}</span>`:`<span class="wk-dim">Seri dışı parça</span>`);
-  const rows=wkInfoRow('Koleksiyon',serChip)+wkInfoRow('Dönem',d[0])+wkInfoRow('Köken',d[1])+wkInfoRow('Malzeme',d[2])+wkInfoRow('Taban değer',`≈ ${fmt(c.v)}`)+wkInfoRow('Sahtesi',c.f?'<span class="wk-bad">Var</span>':'<span class="wk-good">Bilinmiyor</span>')+wkInfoRow('En iyi bulduğun',best>=0?`<span style="color:${RC[best]}">${RN[best]}</span>`:'—');
-  const rar=`<table class="wk-rar"><thead><tr><th>Nadirlik</th><th>Şans</th><th>Değer</th></tr></thead><tbody>${RN.map((n,i)=>`<tr class="${best>=i?'got':''}"><td><i style="background:${RC[i]}"></i>${n}${best===i?' <em>✓</em>':''}</td><td>~${pct(RCH[i])}</td><td>×${RMUL[i]} · ${fmt(r10(c.v*RMUL[i]))}</td></tr>`).join('')}</tbody></table><p class="wk-p wk-dim">Şanslar temel değerlerdir. Lüks semtler ve dükkân yetenekleri nadir parça şansını artırır.</p>`;
-  const sib=s?`<div class="wk-sib">${s.ks.filter(x=>x!==k).map(x=>{const cc=catOf(x),o=wkOpen(x);return `<button class="wk-sc${o?'':' lock'}" data-act="wiki:${x}"><div class="wk-ic">${icon({k:x,i:cc.i,cond:4,id:'wks'+x,known:{}})}</div><div class="wk-nm">${cc.n}</div></button>`}).join('')}</div>`:'';
-  const rec=open?`<div class="wk-rec"><div><b>${w.b}</b><small>kez aldın</small></div><div><b>${w.s}</b><small>kez sattın</small></div><div><b>${w.best?fmt(w.best):'—'}</b><small>en iyi satış</small></div><div><b>${w.d?`${w.d}. gün`:'—'}</b><small>ilk buluş</small></div></div>`:'';
-  const body=open?`<h3 class="wk-h">Hakkında</h3><p class="wk-p wk-lead"><b>${c.n}</b>: ${d[3]}</p>
-    <div class="wk-fact"><span>💡</span><div><small>Biliyor muydun?</small><p>${d[4]}</p></div></div>`
-   :`<div class="wk-locked"><span>🔒</span><p><b>Bu sayfa henüz kilitli.</b> Parçayı bir kez satın aldığında ya da kazıda bulduğunda ansiklopedideki bütün bilgileri açılır.</p><div class="wk-blur"><i></i><i></i><i></i></div></div>`;
-  return `<div class="wk-top"><button class="wk-back" data-act="wkList">‹ Ansiklopedi</button><button class="vclose" data-act="wikiX" aria-label="Kapat">✕</button></div>
-   <div class="wk-page"><div class="wk-brand">Bit Pazarı Ansiklopedisi</div><h1 class="wk-title">${c.n}</h1><div class="wk-rule"></div>
-    <div class="wk-box"><div class="wk-img${open?'':' dark'}" style="--rc:${RC[Math.max(0,best)]}">${ico}</div><table class="wk-tbl">${rows}</table></div>
-    ${body}
-    <h3 class="wk-h">Nadirlik ve değer</h3>${rar}
-    <h3 class="wk-h">Sahtesini nasıl anlarsın?</h3>${wkFake(c)}
-    <h3 class="wk-h">Nerede bulunur?</h3><ul class="wk-ul">${wkFound(c).map(x=>`<li>${x}</li>`).join('')}</ul>
-    ${open?`<h3 class="wk-h">Senin kayıtların</h3>${rec}`:''}
-    ${s?`<h3 class="wk-h">${s.n} serisinin diğer parçaları</h3>${sib}`:''}
-    <p class="wk-foot">Bu sayfa en son ${S.day}. günde güncellendi.</p></div>`}
-let WKF='all';
-function wikiListHtml(){const all=CAT.filter(c=>WIKI[c.k]&&(!c.ev||S.evCol&&S.evCol[c.k]||evtOn(c.ev)||wkOpen(c.k)));const n=all.filter(c=>wkOpen(c.k)).length;
-  const groups=[];SERIES.forEach(s=>groups.push([s.n,s.c,s.ks.map(k=>catOf(k)).filter(c=>all.includes(c))]));
-  const inSer=new Set(SERIES.flatMap(s=>s.ks));const rest=all.filter(c=>!inSer.has(c.k)&&!c.ev),ev=all.filter(c=>c.ev);
-  if(rest.length)groups.push(['Diğer parçalar','#9aa1a8',rest]);if(ev.length)groups.push(['Yılbaşı koleksiyonu','#4fd18a',ev]);
-  const show=c=>WKF==='all'||(WKF==='got'?wkOpen(c.k):!wkOpen(c.k));
-  return `<div class="colhead"><div><span class="lbl">Bit Pazarı Ansiklopedisi</span><h2 class="h">${n} / ${all.length} sayfa</h2><div class="capbar"><i style="width:${n/Math.max(1,all.length)*100}%"></i></div></div><span class="bigtrophy sm">📖</span></div>
-   <p class="sub" style="margin:0">Her parçanın bir sayfası var. Bulduğun parçaların sayfası açılır: hikâyesi, nadirliği, sahtesinin nasıl anlaşılacağı ve senin kayıtların.</p>
-   <input class="wk-q" id="wkq" type="search" placeholder="Parça ara…" autocomplete="off">
-   <div class="wk-f">${[['all','Hepsi'],['got','Açık sayfalar'],['miss','Kilitli']].map(([id,t])=>`<button class="${WKF===id?'on':''}" data-act="wkf:${id}">${t}</button>`).join('')}</div>
-   ${groups.map(([gn,gc,cs])=>{const v=cs.filter(show);if(!v.length)return '';return `<div class="wk-g" style="--sc:${gc}"><h4>${gn}<em>${cs.filter(c=>wkOpen(c.k)).length}/${cs.length}</em></h4><div class="wk-grid">${v.map(c=>{const o=wkOpen(c.k),r=S.col&&S.col[c.k]!=null?S.col[c.k]:0;return `<button class="wk-it${o?'':' lock'}" data-act="wiki:${c.k}" data-n="${c.n.toLocaleLowerCase('tr-TR')}" style="--rc:${RC[r]}"><div class="wk-ic">${icon({k:c.k,i:c.i,cond:4,id:'wl'+c.k,known:{}})}</div><div class="wk-nm">${c.n}</div>${o?'':'<i>🔒</i>'}</button>`}).join('')}</div></div>`}).join('')}`}
-function wikiOpen(k){if(!WIKI[k])return;let el=$('#wiki');if(!el){el=document.createElement('div');el.id='wiki';el.className='wiki';el.setAttribute('role','dialog');$('#app').appendChild(el)}
-  el.innerHTML=wikiHtml(k);el.scrollTop=0;sfx.tap();T('wiki_open',{item:k});
+  const serL=s?`<a class="wkl" data-act="wkser:${s.id}">${s.n}</a>`:(c.ev?EVTS[c.ev].n:'—');
+  const ib=`<table class="wp-ib"><tr><th colspan="2" class="wp-ibt" style="--sc:${s?s.c:'#a2a9b1'}">${c.n}</th></tr><tr><td colspan="2" class="wp-ibi"><div class="wp-img${open?'':' dark'}">${ico}</div><div class="wp-cap">${open?`${d[2]}, ${d[0]}`:'Görsel henüz yok'}</div></td></tr>
+    <tr><th>Koleksiyon</th><td>${serL}</td></tr><tr><th>Dönem</th><td>${d[0]}</td></tr><tr><th>Köken</th><td>${d[1]}</td></tr><tr><th>Malzeme</th><td>${d[2]}</td></tr>
+    <tr><th>Taban değer</th><td>≈ ${fmt(c.v)}</td></tr><tr><th>Sahtesi</th><td>${c.f?'Var<sup>[a]</sup>':'Bilinmiyor'}</td></tr><tr><th>En iyi buluşun</th><td>${best>=0?`<span class="wp-rd" style="--rc:${RC[best]}"></span>${RN[best]}`:'—'}</td></tr></table>`;
+  if(!open)return wkTop()+`<div class="wp-page"><h1 class="wp-h1">${c.n}</h1><div class="wp-sub">Bit Pazarı Ansiklopedisi'nden</div>
+    <div class="wp-miss"><b>Bit Pazarı Ansiklopedisi'nde henüz bu adda bir madde yok.</b><p>Bu madde, parçayı ilk kez satın aldığında ya da kazıda bulduğunda kendiliğinden yazılır. O zamana kadar bildiklerimiz şunlar:</p></div>
+    ${ib}<h2 class="wp-h2">Nerede bulunur?</h2><ul class="wp-ul">${wkFound(c).map(x=>`<li>${x}</li>`).join('')}</ul>
+    ${s?`<h2 class="wp-h2">Ayrıca bakınız</h2><ul class="wp-ul">${s.ks.filter(x=>x!==k).map(x=>`<li>${wkLink(x)}</li>`).join('')}</ul>`:''}${wkFooter()}</div>`;
+  const toc=[['wh1','Hakkında'],['wh2','Nadirlik ve değer'],['wh3','Sahtesini anlamak'],['wh4','Nerede bulunur?'],['wh5','Senin kayıtların']].concat(s?[['wh6','Ayrıca bakınız']]:[]).concat([['wh7','Notlar']]);
+  const lead=`<p class="wp-p"><b>${c.n}</b>, ${d[0]} dönemine ait, ${d[1]} kökenli bir ${s?`<a class="wkl" data-act="wkser:${s.id}">${s.n}</a> serisi parçasıdır`:'koleksiyon parçasıdır'}. ${d[3]}</p>`;
+  const rar=`<table class="wp-tbl"><tr><th>Nadirlik</th><th>Çıkma şansı<sup>[b]</sup></th><th>Değer</th></tr>${RN.map((n,i)=>`<tr${best===i?' class="me"':''}><td><span class="wp-rd" style="--rc:${RC[i]}"></span>${n}</td><td>~${pct(RCH[i])}</td><td>×${RMUL[i]} (≈ ${fmt(r10(c.v*RMUL[i]))})</td></tr>`).join('')}</table>`;
+  const rec=`<table class="wp-tbl"><tr><th>Satın aldığın</th><td>${w.b} kez</td></tr><tr><th>Sattığın</th><td>${w.s} kez</td></tr><tr><th>En iyi satışın</th><td>${w.best?fmt(w.best):'—'}</td></tr><tr><th>İlk buluşun</th><td>${w.d?`${w.d}. gün`:'—'}</td></tr></table>`;
+  const cats=[s?s.n:null,`${d[0]} eşyaları`,`${d[1]} kökenli eşyalar`,c.f?'Sahtesi dolaşan eşyalar':null].filter(Boolean);
+  return wkTop()+`<div class="wp-page"><h1 class="wp-h1">${c.n}</h1>
+   <div class="wp-tabs"><span class="on">Madde</span><a data-act="wkgo:wh5">Kayıtlarım</a><em>Oku</em></div>
+   <div class="wp-sub">Bit Pazarı Ansiklopedisi'nden</div>
+   ${ib}${lead}
+   <div class="wp-toc"><b>İçindekiler</b><ol>${toc.map(([id,t])=>`<li><a class="wkl" data-act="wkgo:${id}">${t}</a></li>`).join('')}</ol></div>
+   <h2 class="wp-h2" id="wh1">Hakkında</h2><p class="wp-p">${d[3]}</p><div class="wp-dyk"><b>Biliyor musunuz?</b><p>…${d[4].charAt(0).toLocaleLowerCase('tr-TR')+d[4].slice(1)}</p></div>
+   <h2 class="wp-h2" id="wh2">Nadirlik ve değer</h2>${rar}
+   <h2 class="wp-h2" id="wh3">Sahtesini anlamak</h2>${wkFake(c)}
+   <h2 class="wp-h2" id="wh4">Nerede bulunur?</h2><ul class="wp-ul">${wkFound(c).map(x=>`<li>${x}</li>`).join('')}</ul>
+   <h2 class="wp-h2" id="wh5">Senin kayıtların</h2>${rec}
+   ${s?`<h2 class="wp-h2" id="wh6">Ayrıca bakınız</h2><ul class="wp-ul wp-cols">${s.ks.filter(x=>x!==k).map(x=>`<li>${wkLink(x)}</li>`).join('')}</ul>`:''}
+   <h2 class="wp-h2" id="wh7">Notlar</h2><ol class="wp-notes" type="a"><li>${c.f?'Sahte kopyaları ekspertiz çantasıyla ya da uzman raporuyla ayırt edilebilir.':'Bilinen bir sahtesi yoktur.'}</li><li>Şanslar temel değerlerdir. Lüks semtler ve dükkân yetenekleri nadir parça şansını artırır.</li></ol>
+   <div class="wp-cats"><b>Kategoriler:</b> ${cats.map(x=>`<span>${x}</span>`).join(' | ')}</div>${wkFooter()}</div>`}
+function wikiHomeHtml(){const all=CAT.filter(c=>WIKI[c.k]&&(!c.ev||evtOn(c.ev)||wkOpen(c.k))),open=all.filter(c=>wkOpen(c.k));
+  const fe=open.length?open[(S.day*7+open.length)%open.length]:all[S.day%all.length],fd=WIKI[fe.k];
+  const facts=open.slice().sort((a,b)=>hashStr(a.k+S.day)%97-hashStr(b.k+S.day)%97).slice(0,3);
+  const inSer=new Set(SERIES.flatMap(s=>s.ks));const groups=SERIES.map(s=>[s.id,s.n,s.ks.filter(k=>all.some(c=>c.k===k))]);
+  const rest=all.filter(c=>!inSer.has(c.k)).map(c=>c.k);if(rest.length)groups.push(['diger','Diğer parçalar',rest]);
+  return wkTop()+`<div class="wp-page wp-home"><div class="wp-wel"><h1>Bit Pazarı Ansiklopedisi'ne hoş geldiniz</h1><p>dükkân sahiplerinin yazdığı özgür ansiklopedi</p><p class="wp-cnt"><b>${all.length}</b> maddeden <b>${open.length}</b> tanesi açık</p></div>
+   <div class="wp-search"><span>🔍</span><input id="wkq" type="search" placeholder="Bit Pazarı Ansiklopedisi'nde ara" autocomplete="off"></div>
+   <div class="wp-box wp-gr"><h2>Seçkin madde</h2><div class="wp-fe"><div class="wp-fei${wkOpen(fe.k)?'':' dark'}">${icon({k:fe.k,i:fe.i,cond:4,id:'wf'+fe.k,known:{}})}</div><p><b>${wkLink(fe.k)}</b>${wkOpen(fe.k)?`, ${fd[0]} dönemine ait ${fd[1]} kökenli bir parçadır. ${fd[3]}`:': bu madde henüz yazılmadı. Parçayı bulan ilk sen ol!'} <a class="wkl" data-act="wiki:${fe.k}">(Devamı…)</a></p></div></div>
+   ${facts.length?`<div class="wp-box wp-bl"><h2>Biliyor musunuz…</h2><ul>${facts.map(c=>`<li>…${WIKI[c.k][4].charAt(0).toLocaleLowerCase('tr-TR')+WIKI[c.k][4].slice(1).replace(/\.$/,'')}? <small>(${wkLink(c.k)})</small></li>`).join('')}</ul></div>`:''}
+   <div class="wp-box"><h2>Madde dizini</h2><p class="wp-leg"><a class="wkl">Mavi</a> bağlantılar açık maddelerdir, <a class="wkl red">kırmızı</a> olanlar henüz yazılmadı.</p>
+    ${groups.filter(g=>g[2].length).map(([id,n,ks])=>`<div class="wp-grp" id="wks-${id}"><h3>${n} <small>(${ks.filter(wkOpen).length}/${ks.length})</small></h3><p>${ks.map(k=>`<span class="wp-li" data-n="${catOf(k).n.toLocaleLowerCase('tr-TR')}">${wkLink(k)}</span>`).join(' · ')}</p></div>`).join('')}</div>
+   ${wkFooter()}</div>`}
+function wkEl(){let el=$('#wiki');if(!el){el=document.createElement('div');el.id='wiki';el.className='wiki';el.setAttribute('role','dialog');$('#app').appendChild(el)}return el}
+function wikiOpen(k){if(!WIKI[k])return;const el=wkEl();el.innerHTML=wikiHtml(k);el.scrollTop=0;sfx.tap();T('wiki_open',{item:k});
   if(wkOpen(k)){S.wkRead=S.wkRead||{};if(!S.wkRead[k]){S.wkRead[k]=1;gainXP(10);setTimeout(()=>toast('📖 Yeni sayfa okundu · +10 TP'),300);save()}}}
+function wikiHome(ser){const el=wkEl();el.innerHTML=wikiHomeHtml();el.scrollTop=0;sfx.tap();if(ser){const g=document.getElementById('wks-'+ser);if(g)setTimeout(()=>{el.scrollTop=g.offsetTop-60},30)}}
 function wikiClose(){const el=$('#wiki');if(el)el.remove()}
-document.addEventListener('input',e=>{if(e.target&&e.target.id==='wkq'){const q=e.target.value.trim().toLocaleLowerCase('tr-TR');document.querySelectorAll('.wk-it').forEach(b=>{b.style.display=!q||b.dataset.n.includes(q)?'':'none'});document.querySelectorAll('.wk-g').forEach(g=>{g.style.display=[...g.querySelectorAll('.wk-it')].some(b=>b.style.display!=='none')?'':'none'})}});
-function wikiBanner(){const all=CAT.filter(c=>WIKI[c.k]&&!c.ev),n=all.filter(c=>wkOpen(c.k)).length;return `<button class="wk-ban" data-act="ust:wiki"><span>📖</span><div><b>Bit Pazarı Ansiklopedisi</b><small>${n} / ${all.length} sayfa açık · her parçanın hikâyesi</small></div><i>›</i></button>`}
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='wkq'){const q=e.target.value.trim().toLocaleLowerCase('tr-TR');document.querySelectorAll('.wp-li').forEach(b=>{b.style.display=!q||b.dataset.n.includes(q)?'':'none'});document.querySelectorAll('.wp-grp').forEach(g=>{g.style.display=[...g.querySelectorAll('.wp-li')].some(b=>b.style.display!=='none')?'':'none'})}});
+function wikiBanner(){const all=CAT.filter(c=>WIKI[c.k]&&!c.ev),n=all.filter(c=>wkOpen(c.k)).length;return `<button class="wk-ban" data-act="wkHome"><span>📖</span><div><b>Bit Pazarı Ansiklopedisi</b><small>${n} / ${all.length} madde açık · her parçanın hikâyesi</small></div><i>›</i></button>`}
+function wikiListHtml(){return renderCol()}
+/* ===================== 1.6.0: yeni pazarlık paneli (cetvel) ===================== */
+const RLPX=12;let RLB=null;
+function rlConf(){const c=S.cust;if(!c)return null;let ref,max,marks;
+  if(c.kind==='seller'){ref=c.ask;max=r10(ref*1.25);marks=[[r10(ref*.5),'%50'],[r10(ref*.7),'%70'],[r10(ref*.85),'%85'],[ref,'İstediği']]}
+  else{const it=itemById(c.itemId);if(!it)return null;ref=Math.max(it.appear,it.paid);max=r10(ref*2.6);marks=[[it.paid||r10(ref*.5),'Maliyet'],[r10(ref*1.3),'×1.3'],[r10(ref*1.6),'×1.6'],[r10(ref*2),'×2']]}
+  let step=stepOf(ref*.3);while(max/step>260)step*=2;return{ref,max,step,marks,n:Math.ceil(max/step)}}
+function rlPct(){const c=S.cust;if(!c||!(S.offer>0))return '';const f=rlConf();if(!f)return '';
+  if(c.kind==='seller'){const p=Math.round(S.offer/f.ref*100);return `<span class="ofx ${p>=100?'g':p>=80?'y':'r'}">İstenene göre ${pct(p)}</span>`}
+  const it=itemById(c.itemId),p=it&&it.paid?Math.round((S.offer-it.paid)/it.paid*100):0;return it&&it.paid?`<span class="ofx ${p>=0?'g':'r'}">${p>=0?'+':''}${pct(p)} kâr</span>`:''}
+function dzInfo(l1,v1,it,extra){return `<div class="of-info"><div class="of-pill"><small>${l1}</small><b>${v1}</b></div><div class="of-pill of-val"><small>Tahmini değer</small><div class="dz-vv">${dzVal(it)}</div></div>${extra||''}</div>`}
+function dzOffer(lbl){const f=rlConf();if(!f)return '';let t='';
+  for(let i=0;i<=f.n;i++){const v=i*f.step,maj=i%5===0;t+=`<i class="${maj?'mj':''}" style="left:${i*RLPX}px">${maj&&v?`<em>${fmt(v).replace(/\s?₺/,'')}</em>`:''}</i>`}
+  const mk=f.marks.map(([v,l])=>`<button class="rl-mk" data-act="q:${v}" style="left:${v/f.step*RLPX}px">${l}</button>`).join('');
+  return `<div class="of-card"><div class="of-hd"><small>${lbl}</small><span id="ofPct">${rlPct()}</span></div>
+   <div class="of-num"><button class="of-sb" data-act="dec" aria-label="Azalt">−</button><button class="of-v" data-act="typeOffer" id="offerBox" aria-label="Tutarı elle yaz"><b id="offerV">${S.offer>0?fmt(S.offer):'<span class="ph">Kaydır ya da dokun</span>'}</b><span class="pen">✎</span></button><button class="of-sb" data-act="inc" aria-label="Artır">+</button></div>
+   <div class="rl" id="rl" data-step="${f.step}" data-max="${f.max}"><div class="rl-sp"></div><div class="rl-tr" style="width:${f.n*RLPX}px">${t}${mk}</div><div class="rl-sp"></div></div><div class="rl-nd"></div></div>`}
+function dzChips(){return ''}
+function dzTool(act,ic,t,dis,cls){return `<button class="of-t ${cls||''}" data-act="${act}" ${dis?'disabled':''}><span>${ic}</span><small>${t}</small></button>`}
+function rlPaint(){const v=$('#offerV');if(v)v.innerHTML=S.offer>0?fmt(S.offer):'<span class="ph">Kaydır ya da dokun</span>';const p=$('#ofPct');if(p)p.innerHTML=rlPct();
+  const go=$('#offerGo');if(go){go.disabled=busy||!(S.offer>0||(S.cust&&S.cust.trade));let s=go.querySelector('small.ov');if(!s){s=document.createElement('small');s.className='ov';go.appendChild(s)}s.textContent=S.offer>0?fmt(S.offer):''}
+  document.querySelectorAll('.rl-mk').forEach(q=>q.classList.toggle('on',+q.dataset.act.slice(2)===S.offer))}
+function rlSync(smooth){const r=$('#rl');if(!r)return;const st=+r.dataset.step;const x=Math.max(0,(S.offer||0)/st*RLPX);RLB=Date.now()+(smooth?600:120);
+  try{r.scrollTo({left:x,behavior:smooth?'smooth':'auto'})}catch(e){r.scrollLeft=x}rlPaint()}
+let RLT=0,RLS=0;
+document.addEventListener('scroll',e=>{const r=e.target;if(!r||r.id!=='rl')return;if(RLB&&Date.now()<RLB)return;
+  const st=+r.dataset.step,mx=+r.dataset.max;let v=Math.round(r.scrollLeft/RLPX)*st;v=Math.max(0,Math.min(mx,v));if(v===S.offer)return;
+  S.offer=v;rlPaint();const now=Date.now();if(now-RLT>45){RLT=now;try{tone(1500,.012,'square',.012)}catch(_){}buzz(4)}
+  clearTimeout(RLS);RLS=setTimeout(()=>{reactPreview();save()},90)},true);
+function updOffer(){rlSync(true);const r=$('#offerR');if(r){if(S.offer>+r.max)r.max=S.offer;r.value=S.offer}reactPreview();save()}
 
 /* rastgele seçimlerde sahip olunmayan paket eşyaları çıkmasın */
 function catPool(){return CAT.filter(c=>(!c.pack||c.free||packOwned(c.pack))&&(!c.ev||evtOn(c.ev)))}

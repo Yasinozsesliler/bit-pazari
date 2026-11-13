@@ -22,41 +22,54 @@ function wkFake(c){if(!c.f)return `<p class="wk-p">Bu parçanın piyasada biline
   else if(typeof METAL!=='undefined'&&METAL.has(k))t=`🔍 <b>Büyüteç:</b> döküm izi ve yeni kaynak yerleri sahteyi ele verir. ⚖️ <b>Terazi:</b> içi boş ya da ucuz alaşım taklitler hafif kalır.`;
   else t=`🔦 <b>UV lamba:</b> taze boya, rötuş ve yapıştırıcı UV altında parlar. 🔍 <b>Büyüteç:</b> usta damgası ya da imza sığ ve bozuksa dikkat.`;
   return `<p class="wk-p">Bu parçanın sahtesi piyasada dolaşıyor. Ekspertiz çantasıyla incele:</p><p class="wk-p wk-tip">${t}</p><p class="wk-p wk-dim">Emin olamıyorsan <b>Uzman</b> çağır: kesin raporu o verir.</p>`}
-function wkInfoRow(l,v){return `<tr><th>${l}</th><td>${v}</td></tr>`}
+function wkLink(k,cls){const c=catOf(k),o=wkOpen(k);return `<a class="wkl${o?'':' red'}${cls?' '+cls:''}" data-act="wiki:${k}">${c.n}</a>`}
+function wkTop(){return `<div class="wp-bar"><button class="wp-ic" data-act="wkHome" aria-label="Ana sayfa">☰</button><button class="wp-logo" data-act="wkHome"><b>Bit Pazarı</b><small>Ansiklopedisi</small></button><button class="wp-ic" data-act="wkHome" aria-label="Ara">🔍</button><button class="wp-ic" data-act="wikiX" aria-label="Kapat">✕</button></div>`}
+function wkFooter(){return `<div class="wp-foot"><p>Bu sayfa en son ${S.day}. günde değiştirildi.</p><p>Metin, Bit Pazarı dükkân sahipleri tarafından yazılmıştır. <a class="wkl" data-act="wkHome">Ana Sayfa</a> · <a class="wkl" data-act="wikiX">Dükkâna dön</a></p></div>`}
 function wikiHtml(k){const c=catOf(k),d=WIKI[k]||['?','?','?','',''],open=wkOpen(k),s=wkSer(k),w=(S.wk&&S.wk[k])||{b:0,s:0,best:0,d:0},best=S.col&&S.col[k]!=null?S.col[k]:-1;
   const ico=icon({k,i:c.i,cond:4,id:'wk'+k,known:{}});
-  const serChip=s?`<button class="wk-ser" style="--sc:${s.c}" data-act="wkser:${s.id}">${s.n}</button>`:(c.ev?`<span class="wk-ser" style="--sc:#4fd18a">${EVTS[c.ev].n}</span>`:`<span class="wk-dim">Seri dışı parça</span>`);
-  const rows=wkInfoRow('Koleksiyon',serChip)+wkInfoRow('Dönem',d[0])+wkInfoRow('Köken',d[1])+wkInfoRow('Malzeme',d[2])+wkInfoRow('Taban değer',`≈ ${fmt(c.v)}`)+wkInfoRow('Sahtesi',c.f?'<span class="wk-bad">Var</span>':'<span class="wk-good">Bilinmiyor</span>')+wkInfoRow('En iyi bulduğun',best>=0?`<span style="color:${RC[best]}">${RN[best]}</span>`:'—');
-  const rar=`<table class="wk-rar"><thead><tr><th>Nadirlik</th><th>Şans</th><th>Değer</th></tr></thead><tbody>${RN.map((n,i)=>`<tr class="${best>=i?'got':''}"><td><i style="background:${RC[i]}"></i>${n}${best===i?' <em>✓</em>':''}</td><td>~${pct(RCH[i])}</td><td>×${RMUL[i]} · ${fmt(r10(c.v*RMUL[i]))}</td></tr>`).join('')}</tbody></table><p class="wk-p wk-dim">Şanslar temel değerlerdir. Lüks semtler ve dükkân yetenekleri nadir parça şansını artırır.</p>`;
-  const sib=s?`<div class="wk-sib">${s.ks.filter(x=>x!==k).map(x=>{const cc=catOf(x),o=wkOpen(x);return `<button class="wk-sc${o?'':' lock'}" data-act="wiki:${x}"><div class="wk-ic">${icon({k:x,i:cc.i,cond:4,id:'wks'+x,known:{}})}</div><div class="wk-nm">${cc.n}</div></button>`}).join('')}</div>`:'';
-  const rec=open?`<div class="wk-rec"><div><b>${w.b}</b><small>kez aldın</small></div><div><b>${w.s}</b><small>kez sattın</small></div><div><b>${w.best?fmt(w.best):'—'}</b><small>en iyi satış</small></div><div><b>${w.d?`${w.d}. gün`:'—'}</b><small>ilk buluş</small></div></div>`:'';
-  const body=open?`<h3 class="wk-h">Hakkında</h3><p class="wk-p wk-lead"><b>${c.n}</b>: ${d[3]}</p>
-    <div class="wk-fact"><span>💡</span><div><small>Biliyor muydun?</small><p>${d[4]}</p></div></div>`
-   :`<div class="wk-locked"><span>🔒</span><p><b>Bu sayfa henüz kilitli.</b> Parçayı bir kez satın aldığında ya da kazıda bulduğunda ansiklopedideki bütün bilgileri açılır.</p><div class="wk-blur"><i></i><i></i><i></i></div></div>`;
-  return `<div class="wk-top"><button class="wk-back" data-act="wkList">‹ Ansiklopedi</button><button class="vclose" data-act="wikiX" aria-label="Kapat">✕</button></div>
-   <div class="wk-page"><div class="wk-brand">Bit Pazarı Ansiklopedisi</div><h1 class="wk-title">${c.n}</h1><div class="wk-rule"></div>
-    <div class="wk-box"><div class="wk-img${open?'':' dark'}" style="--rc:${RC[Math.max(0,best)]}">${ico}</div><table class="wk-tbl">${rows}</table></div>
-    ${body}
-    <h3 class="wk-h">Nadirlik ve değer</h3>${rar}
-    <h3 class="wk-h">Sahtesini nasıl anlarsın?</h3>${wkFake(c)}
-    <h3 class="wk-h">Nerede bulunur?</h3><ul class="wk-ul">${wkFound(c).map(x=>`<li>${x}</li>`).join('')}</ul>
-    ${open?`<h3 class="wk-h">Senin kayıtların</h3>${rec}`:''}
-    ${s?`<h3 class="wk-h">${s.n} serisinin diğer parçaları</h3>${sib}`:''}
-    <p class="wk-foot">Bu sayfa en son ${S.day}. günde güncellendi.</p></div>`}
-let WKF='all';
-function wikiListHtml(){const all=CAT.filter(c=>WIKI[c.k]&&(!c.ev||S.evCol&&S.evCol[c.k]||evtOn(c.ev)||wkOpen(c.k)));const n=all.filter(c=>wkOpen(c.k)).length;
-  const groups=[];SERIES.forEach(s=>groups.push([s.n,s.c,s.ks.map(k=>catOf(k)).filter(c=>all.includes(c))]));
-  const inSer=new Set(SERIES.flatMap(s=>s.ks));const rest=all.filter(c=>!inSer.has(c.k)&&!c.ev),ev=all.filter(c=>c.ev);
-  if(rest.length)groups.push(['Diğer parçalar','#9aa1a8',rest]);if(ev.length)groups.push(['Yılbaşı koleksiyonu','#4fd18a',ev]);
-  const show=c=>WKF==='all'||(WKF==='got'?wkOpen(c.k):!wkOpen(c.k));
-  return `<div class="colhead"><div><span class="lbl">Bit Pazarı Ansiklopedisi</span><h2 class="h">${n} / ${all.length} sayfa</h2><div class="capbar"><i style="width:${n/Math.max(1,all.length)*100}%"></i></div></div><span class="bigtrophy sm">📖</span></div>
-   <p class="sub" style="margin:0">Her parçanın bir sayfası var. Bulduğun parçaların sayfası açılır: hikâyesi, nadirliği, sahtesinin nasıl anlaşılacağı ve senin kayıtların.</p>
-   <input class="wk-q" id="wkq" type="search" placeholder="Parça ara…" autocomplete="off">
-   <div class="wk-f">${[['all','Hepsi'],['got','Açık sayfalar'],['miss','Kilitli']].map(([id,t])=>`<button class="${WKF===id?'on':''}" data-act="wkf:${id}">${t}</button>`).join('')}</div>
-   ${groups.map(([gn,gc,cs])=>{const v=cs.filter(show);if(!v.length)return '';return `<div class="wk-g" style="--sc:${gc}"><h4>${gn}<em>${cs.filter(c=>wkOpen(c.k)).length}/${cs.length}</em></h4><div class="wk-grid">${v.map(c=>{const o=wkOpen(c.k),r=S.col&&S.col[c.k]!=null?S.col[c.k]:0;return `<button class="wk-it${o?'':' lock'}" data-act="wiki:${c.k}" data-n="${c.n.toLocaleLowerCase('tr-TR')}" style="--rc:${RC[r]}"><div class="wk-ic">${icon({k:c.k,i:c.i,cond:4,id:'wl'+c.k,known:{}})}</div><div class="wk-nm">${c.n}</div>${o?'':'<i>🔒</i>'}</button>`}).join('')}</div></div>`}).join('')}`}
-function wikiOpen(k){if(!WIKI[k])return;let el=$('#wiki');if(!el){el=document.createElement('div');el.id='wiki';el.className='wiki';el.setAttribute('role','dialog');$('#app').appendChild(el)}
-  el.innerHTML=wikiHtml(k);el.scrollTop=0;sfx.tap();T('wiki_open',{item:k});
+  const serL=s?`<a class="wkl" data-act="wkser:${s.id}">${s.n}</a>`:(c.ev?EVTS[c.ev].n:'—');
+  const ib=`<table class="wp-ib"><tr><th colspan="2" class="wp-ibt" style="--sc:${s?s.c:'#a2a9b1'}">${c.n}</th></tr><tr><td colspan="2" class="wp-ibi"><div class="wp-img${open?'':' dark'}">${ico}</div><div class="wp-cap">${open?`${d[2]}, ${d[0]}`:'Görsel henüz yok'}</div></td></tr>
+    <tr><th>Koleksiyon</th><td>${serL}</td></tr><tr><th>Dönem</th><td>${d[0]}</td></tr><tr><th>Köken</th><td>${d[1]}</td></tr><tr><th>Malzeme</th><td>${d[2]}</td></tr>
+    <tr><th>Taban değer</th><td>≈ ${fmt(c.v)}</td></tr><tr><th>Sahtesi</th><td>${c.f?'Var<sup>[a]</sup>':'Bilinmiyor'}</td></tr><tr><th>En iyi buluşun</th><td>${best>=0?`<span class="wp-rd" style="--rc:${RC[best]}"></span>${RN[best]}`:'—'}</td></tr></table>`;
+  if(!open)return wkTop()+`<div class="wp-page"><h1 class="wp-h1">${c.n}</h1><div class="wp-sub">Bit Pazarı Ansiklopedisi'nden</div>
+    <div class="wp-miss"><b>Bit Pazarı Ansiklopedisi'nde henüz bu adda bir madde yok.</b><p>Bu madde, parçayı ilk kez satın aldığında ya da kazıda bulduğunda kendiliğinden yazılır. O zamana kadar bildiklerimiz şunlar:</p></div>
+    ${ib}<h2 class="wp-h2">Nerede bulunur?</h2><ul class="wp-ul">${wkFound(c).map(x=>`<li>${x}</li>`).join('')}</ul>
+    ${s?`<h2 class="wp-h2">Ayrıca bakınız</h2><ul class="wp-ul">${s.ks.filter(x=>x!==k).map(x=>`<li>${wkLink(x)}</li>`).join('')}</ul>`:''}${wkFooter()}</div>`;
+  const toc=[['wh1','Hakkında'],['wh2','Nadirlik ve değer'],['wh3','Sahtesini anlamak'],['wh4','Nerede bulunur?'],['wh5','Senin kayıtların']].concat(s?[['wh6','Ayrıca bakınız']]:[]).concat([['wh7','Notlar']]);
+  const lead=`<p class="wp-p"><b>${c.n}</b>, ${d[0]} dönemine ait, ${d[1]} kökenli bir ${s?`<a class="wkl" data-act="wkser:${s.id}">${s.n}</a> serisi parçasıdır`:'koleksiyon parçasıdır'}. ${d[3]}</p>`;
+  const rar=`<table class="wp-tbl"><tr><th>Nadirlik</th><th>Çıkma şansı<sup>[b]</sup></th><th>Değer</th></tr>${RN.map((n,i)=>`<tr${best===i?' class="me"':''}><td><span class="wp-rd" style="--rc:${RC[i]}"></span>${n}</td><td>~${pct(RCH[i])}</td><td>×${RMUL[i]} (≈ ${fmt(r10(c.v*RMUL[i]))})</td></tr>`).join('')}</table>`;
+  const rec=`<table class="wp-tbl"><tr><th>Satın aldığın</th><td>${w.b} kez</td></tr><tr><th>Sattığın</th><td>${w.s} kez</td></tr><tr><th>En iyi satışın</th><td>${w.best?fmt(w.best):'—'}</td></tr><tr><th>İlk buluşun</th><td>${w.d?`${w.d}. gün`:'—'}</td></tr></table>`;
+  const cats=[s?s.n:null,`${d[0]} eşyaları`,`${d[1]} kökenli eşyalar`,c.f?'Sahtesi dolaşan eşyalar':null].filter(Boolean);
+  return wkTop()+`<div class="wp-page"><h1 class="wp-h1">${c.n}</h1>
+   <div class="wp-tabs"><span class="on">Madde</span><a data-act="wkgo:wh5">Kayıtlarım</a><em>Oku</em></div>
+   <div class="wp-sub">Bit Pazarı Ansiklopedisi'nden</div>
+   ${ib}${lead}
+   <div class="wp-toc"><b>İçindekiler</b><ol>${toc.map(([id,t])=>`<li><a class="wkl" data-act="wkgo:${id}">${t}</a></li>`).join('')}</ol></div>
+   <h2 class="wp-h2" id="wh1">Hakkında</h2><p class="wp-p">${d[3]}</p><div class="wp-dyk"><b>Biliyor musunuz?</b><p>…${d[4].charAt(0).toLocaleLowerCase('tr-TR')+d[4].slice(1)}</p></div>
+   <h2 class="wp-h2" id="wh2">Nadirlik ve değer</h2>${rar}
+   <h2 class="wp-h2" id="wh3">Sahtesini anlamak</h2>${wkFake(c)}
+   <h2 class="wp-h2" id="wh4">Nerede bulunur?</h2><ul class="wp-ul">${wkFound(c).map(x=>`<li>${x}</li>`).join('')}</ul>
+   <h2 class="wp-h2" id="wh5">Senin kayıtların</h2>${rec}
+   ${s?`<h2 class="wp-h2" id="wh6">Ayrıca bakınız</h2><ul class="wp-ul wp-cols">${s.ks.filter(x=>x!==k).map(x=>`<li>${wkLink(x)}</li>`).join('')}</ul>`:''}
+   <h2 class="wp-h2" id="wh7">Notlar</h2><ol class="wp-notes" type="a"><li>${c.f?'Sahte kopyaları ekspertiz çantasıyla ya da uzman raporuyla ayırt edilebilir.':'Bilinen bir sahtesi yoktur.'}</li><li>Şanslar temel değerlerdir. Lüks semtler ve dükkân yetenekleri nadir parça şansını artırır.</li></ol>
+   <div class="wp-cats"><b>Kategoriler:</b> ${cats.map(x=>`<span>${x}</span>`).join(' | ')}</div>${wkFooter()}</div>`}
+function wikiHomeHtml(){const all=CAT.filter(c=>WIKI[c.k]&&(!c.ev||evtOn(c.ev)||wkOpen(c.k))),open=all.filter(c=>wkOpen(c.k));
+  const fe=open.length?open[(S.day*7+open.length)%open.length]:all[S.day%all.length],fd=WIKI[fe.k];
+  const facts=open.slice().sort((a,b)=>hashStr(a.k+S.day)%97-hashStr(b.k+S.day)%97).slice(0,3);
+  const inSer=new Set(SERIES.flatMap(s=>s.ks));const groups=SERIES.map(s=>[s.id,s.n,s.ks.filter(k=>all.some(c=>c.k===k))]);
+  const rest=all.filter(c=>!inSer.has(c.k)).map(c=>c.k);if(rest.length)groups.push(['diger','Diğer parçalar',rest]);
+  return wkTop()+`<div class="wp-page wp-home"><div class="wp-wel"><h1>Bit Pazarı Ansiklopedisi'ne hoş geldiniz</h1><p>dükkân sahiplerinin yazdığı özgür ansiklopedi</p><p class="wp-cnt"><b>${all.length}</b> maddeden <b>${open.length}</b> tanesi açık</p></div>
+   <div class="wp-search"><span>🔍</span><input id="wkq" type="search" placeholder="Bit Pazarı Ansiklopedisi'nde ara" autocomplete="off"></div>
+   <div class="wp-box wp-gr"><h2>Seçkin madde</h2><div class="wp-fe"><div class="wp-fei${wkOpen(fe.k)?'':' dark'}">${icon({k:fe.k,i:fe.i,cond:4,id:'wf'+fe.k,known:{}})}</div><p><b>${wkLink(fe.k)}</b>${wkOpen(fe.k)?`, ${fd[0]} dönemine ait ${fd[1]} kökenli bir parçadır. ${fd[3]}`:': bu madde henüz yazılmadı. Parçayı bulan ilk sen ol!'} <a class="wkl" data-act="wiki:${fe.k}">(Devamı…)</a></p></div></div>
+   ${facts.length?`<div class="wp-box wp-bl"><h2>Biliyor musunuz…</h2><ul>${facts.map(c=>`<li>…${WIKI[c.k][4].charAt(0).toLocaleLowerCase('tr-TR')+WIKI[c.k][4].slice(1).replace(/\.$/,'')}? <small>(${wkLink(c.k)})</small></li>`).join('')}</ul></div>`:''}
+   <div class="wp-box"><h2>Madde dizini</h2><p class="wp-leg"><a class="wkl">Mavi</a> bağlantılar açık maddelerdir, <a class="wkl red">kırmızı</a> olanlar henüz yazılmadı.</p>
+    ${groups.filter(g=>g[2].length).map(([id,n,ks])=>`<div class="wp-grp" id="wks-${id}"><h3>${n} <small>(${ks.filter(wkOpen).length}/${ks.length})</small></h3><p>${ks.map(k=>`<span class="wp-li" data-n="${catOf(k).n.toLocaleLowerCase('tr-TR')}">${wkLink(k)}</span>`).join(' · ')}</p></div>`).join('')}</div>
+   ${wkFooter()}</div>`}
+function wkEl(){let el=$('#wiki');if(!el){el=document.createElement('div');el.id='wiki';el.className='wiki';el.setAttribute('role','dialog');$('#app').appendChild(el)}return el}
+function wikiOpen(k){if(!WIKI[k])return;const el=wkEl();el.innerHTML=wikiHtml(k);el.scrollTop=0;sfx.tap();T('wiki_open',{item:k});
   if(wkOpen(k)){S.wkRead=S.wkRead||{};if(!S.wkRead[k]){S.wkRead[k]=1;gainXP(10);setTimeout(()=>toast('📖 Yeni sayfa okundu · +10 TP'),300);save()}}}
+function wikiHome(ser){const el=wkEl();el.innerHTML=wikiHomeHtml();el.scrollTop=0;sfx.tap();if(ser){const g=document.getElementById('wks-'+ser);if(g)setTimeout(()=>{el.scrollTop=g.offsetTop-60},30)}}
 function wikiClose(){const el=$('#wiki');if(el)el.remove()}
-document.addEventListener('input',e=>{if(e.target&&e.target.id==='wkq'){const q=e.target.value.trim().toLocaleLowerCase('tr-TR');document.querySelectorAll('.wk-it').forEach(b=>{b.style.display=!q||b.dataset.n.includes(q)?'':'none'});document.querySelectorAll('.wk-g').forEach(g=>{g.style.display=[...g.querySelectorAll('.wk-it')].some(b=>b.style.display!=='none')?'':'none'})}});
-function wikiBanner(){const all=CAT.filter(c=>WIKI[c.k]&&!c.ev),n=all.filter(c=>wkOpen(c.k)).length;return `<button class="wk-ban" data-act="ust:wiki"><span>📖</span><div><b>Bit Pazarı Ansiklopedisi</b><small>${n} / ${all.length} sayfa açık · her parçanın hikâyesi</small></div><i>›</i></button>`}
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='wkq'){const q=e.target.value.trim().toLocaleLowerCase('tr-TR');document.querySelectorAll('.wp-li').forEach(b=>{b.style.display=!q||b.dataset.n.includes(q)?'':'none'});document.querySelectorAll('.wp-grp').forEach(g=>{g.style.display=[...g.querySelectorAll('.wp-li')].some(b=>b.style.display!=='none')?'':'none'})}});
+function wikiBanner(){const all=CAT.filter(c=>WIKI[c.k]&&!c.ev),n=all.filter(c=>wkOpen(c.k)).length;return `<button class="wk-ban" data-act="wkHome"><span>📖</span><div><b>Bit Pazarı Ansiklopedisi</b><small>${n} / ${all.length} madde açık · her parçanın hikâyesi</small></div><i>›</i></button>`}
+function wikiListHtml(){return renderCol()}
