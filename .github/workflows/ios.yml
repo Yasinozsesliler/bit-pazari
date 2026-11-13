@@ -87,6 +87,11 @@ jobs:
             codesign --remove-signature "$fw/$(basename "$fw" .framework)" || true
             rm -rf "$fw/_CodeSignature"
           done
+          # İmzasız arşive yetkileri (Game Center) göm; dışa aktarım bunları koruyarak yeniden imzalar
+          APP=$RUNNER_TEMP/App.xcarchive/Products/Applications/App.app
+          for fw in "$APP"/Frameworks/*.framework "$APP"/Frameworks/*.dylib; do [ -e "$fw" ] && codesign --force --sign - "$fw" || true; done
+          codesign --force --sign - --entitlements ios/App/App/App.entitlements --generate-entitlement-der "$APP"
+          codesign -d --entitlements :- "$APP" 2>/dev/null | tee $RUNNER_TEMP/log/entitlements.log || true
           cat > $RUNNER_TEMP/ExportOptions.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
