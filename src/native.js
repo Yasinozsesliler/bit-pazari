@@ -264,9 +264,15 @@ async function scheduleAll() {
   const EN = N.lang === "en";
   const name = S.shop || (EN ? "Your shop" : "Dükkânın");
   const add = (id, at, body) => { if (at > now + 5000) list.push({ id, title: "Bit Pazarı", body, schedule: { at: new Date(at) } }); };
+  /* oyunun hazırladığı kişisel plan (raftaki eşya, fırsat süresi, hikâye) */
+  let plan = null;
+  try { plan = window.BP_NOTIF_PLAN ? window.BP_NOTIF_PLAN() : null; } catch (e) {}
+  if (plan && plan.length) plan.forEach((x) => add(x.id, x.at, x.body));
+  else {
   const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(10, 0, 0, 0);
   add(1, t.getTime(), EN ? `${name} is waiting for you to raise the shutters. Your daily login reward is ready!` : `${name} kepenkleri açmanı bekliyor. Günlük giriş ödülün hazır!`);
   add(2, now + 3 * 86400e3, EN ? "Sly Cemil is already snapping up the hottest deals… Time to get back to the bazaar!" : "Kurnaz Cemil kapışılacak mallarını kaptı bile… Pazara dönme vakti!");
+  }
   try { const p = await LocalNotifications.getPending(); if (p.notifications.length) await LocalNotifications.cancel(p); } catch (e) {}
   if (list.length) try { await LocalNotifications.schedule({ notifications: list }); } catch (e) {}
 }
@@ -289,8 +295,7 @@ if (isNative) {
   });
   LocalNotifications.checkPermissions().then((r) => {
     N.notifPerm = r.display === "granted" ? "granted" : r.display === "denied" ? "denied" : "default";
-    /* ilk günü oynadıktan sonra bir kez izin iste */
-    if (N.notifPerm === "default") setTimeout(() => { try { const S = JSON.parse(localStorage.getItem(KEY) || "{}"); if ((S.day || 1) >= 2) N.askNotif(); } catch (e) {} }, 60000);
+    /* izin artık oyunun içinden, gün sonunda nazikçe soruluyor (notifAsk) */
   }).catch(() => {});
   StatusBar.setStyle({ style: Style.Dark }).catch(() => {});
   if (!isIOS) StatusBar.setBackgroundColor({ color: "#0d1f1c" }).catch(() => {});

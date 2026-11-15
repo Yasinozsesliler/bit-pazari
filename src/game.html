@@ -1602,6 +1602,10 @@ input.kpIn{caret-color:transparent}
 .of-t small{font:800 10.5px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .of-t.red svg{color:#ff8c80}.of-t:disabled{opacity:.35}
 @media (max-height:740px){.dz{gap:7px;padding:9px 12px 7px}.hg-c b{font-size:20px}.hg-c{padding:7px 4px 6px}.dz-main .b{height:46px;font-size:16px}.of-t span{width:32px;height:32px}.of-pill{padding:5px 11px}.of-pill>b{font-size:18px}}
+.ftz-c{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#3a2a12,#20170b);border:1px solid #c9a35a66;margin-bottom:8px}
+.ftz-i{font-size:30px}.ftz-c b{display:block;color:#f3d9a0;font-size:16px}.ftz-c small{color:#c9a35a;font-size:12px}.ftz-l{margin-left:auto;font-size:20px}
+.ftz-u{list-style:none;margin:0 0 10px;padding:0;font-size:13px;line-height:1.55;color:var(--ink2,#d9cfb8)}.ftz-u li{padding:2px 0}
+.dz-peek{margin:6px 0;padding:8px 12px;border-radius:12px;background:rgba(127,214,170,.12);border:1px dashed rgba(127,214,170,.5);font-size:13px;color:#cfeedd}.dz-peek b{color:#7fd6aa}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1770,15 +1774,21 @@ function rizaReturn(){
   if(it)return{id:uid(),kind:'story',name:'Rıza Amca',tag:'Mahalleli',seed:4242,itemId:it.id,line:'Evladım, emekli maaşım yattı. Babamın saati hâlâ sende mi? Geri alabilir miyim?',patience:3,maxPat:3,done:false};
   return{id:uid(),kind:'story',name:'Rıza Amca',tag:'Mahalleli',seed:4242,itemId:null,line:'Babamın saatini geri almaya gelmiştim… Satmışsın demek. Neyse evladım, kısmet.',patience:3,maxPat:3,done:false,sold:true}}
 /* ---- Tarih Paketi hikâyesi: Kayıp Ferman ---- */
-function fermanNext(){const f=S.story.ferman||'none';if(!packOwned('tarih'))return null;
-  if(f==='none'&&S.day>=4&&S.ci===1)return{id:uid(),kind:'story',fst:'intro',name:'Dr. Selin Aksoy',tag:'Müze Küratörü',seed:5150,line:'Merhaba, Topkapı arşivinden çalınan bir padişah fermanının izini sürüyorum. Çarşıda biri satmaya kalkarsa onu kaçırma, bana getir. Karşılığını fazlasıyla öderim.',patience:3,maxPat:3,done:false};
+function fermanNext(){const f=S.story.ferman||'none';
+  if(!packOwned('tarih')){/* Tarih Paketi olmayanlara tadımlık: küratör gelir, devamı paketle açılır (en fazla 2 kez) */
+    if(f==='none'&&iapLive()&&S.day>=4&&S.ci===1&&(S.story.ftz||0)<2&&S.day>=(S.story.ftzDay||0)){S.story.ftz=(S.story.ftz||0)+1;S.story.ftzDay=S.day+4;T('ferman_tease',{n:S.story.ftz});
+      return{id:uid(),kind:'story',fst:'tease',name:'Dr. Selin Aksoy',tag:'Müze Küratörü',seed:5150,line:'Merhaba, Topkapı arşivinden çalınan bir padişah fermanının izini sürüyorum. Kaçakçılar onu çarşıya sürmüş. Bulmama yardım eder misin?',patience:3,maxPat:3,done:false}}
+    return null}
+  if(f==='none'&&(S.story.fNow||S.day>=4&&S.ci===1))return{id:uid(),kind:'story',fst:'intro',name:'Dr. Selin Aksoy',tag:'Müze Küratörü',seed:5150,line:'Merhaba, Topkapı arşivinden çalınan bir padişah fermanının izini sürüyorum. Çarşıda biri satmaya kalkarsa onu kaçırma, bana getir. Karşılığını fazlasıyla öderim.',patience:3,maxPat:3,done:false};
   if(f==='asked'&&S.day>S.story.fday&&S.ci===2){const it=newItem(catOf('ferman'),{cond:3,fake:false,story:'ferman'});it.n='Mühürlü Padişah Fermanı';it.rar=2;
     return mkSeller(it,'kacakci',{name:'Sakallı Necmi',seed:9191,ask:1800,minAccept:1250,line:'Psst… Bu ferman dedemden kaldı, mühürü sağlam. 1.800 ₺, soru sorma.',fst:'sell'})}
   if((f==='have'||f==='missed')&&S.day>S.story.fday&&S.ci===0){const it=S.inv.find(x=>x.story==='ferman');
     return{id:uid(),kind:'story',fst:'ret',name:'Dr. Selin Aksoy',tag:'Müze Küratörü',seed:5150,itemId:it?it.id:null,sold:!it,line:it?'Duydum ki fermanı bulmuşsun! Müzeye teslim edersen hem ödül veririm hem de adını sergiye yazarız.':'Ferman çarşıda görülmüş ama kaçmış… Yazık. Belki bir gün yine izine rastlarız.',patience:3,maxPat:3,done:false}}
   return null}
 function fermanAct(a){const c=S.cust,it=c.itemId&&itemById(c.itemId);
-  if(c.fst==='intro'){S.story.ferman='asked';S.story.fday=S.day;gainXP(10);finish('deal','Teşekkürler usta. Gözün kulağın çarşıda olsun.');setTimeout(()=>toast('📜 Yeni görev: Kayıp Ferman'),400);return}
+  if(c.fst==='tease'){if(a==='ftbuy'){T('ferman_tease_buy',{});S.story.fNow=1;finish('pass','Harika! Tarih Paketi\'ni açınca hemen geliyorum.');setTimeout(storeOpen,700);return}
+    finish('pass','Peki… Ferman çarşıda dolaşırken kaybolmasın da.');return}
+  if(c.fst==='intro'){S.story.fNow=0;S.story.ferman='asked';S.story.fday=S.day;gainXP(10);finish('deal','Teşekkürler usta. Gözün kulağın çarşıda olsun.');setTimeout(()=>toast('📜 Yeni görev: Kayıp Ferman'),400);return}
   if(c.sold||!it){S.story.ferman='done';finish('pass',c.line);return}
   if(a==='fgive'){const rw=Math.max(4000,r10(it.paid*3));S.money+=rw;logT('sell',it,rw);S.inv=S.inv.filter(x=>x.id!==it.id);addRep(20);gainXP(60);S.story.ferman='done';S.story.kurator=1;sfx.cash();burst(24);flt('+'+fmt(rw),'var(--mint)');
     finish('deal','Tarih sana minnettar! Ödülün burada. Bundan sonra tarih eserlerini önce bana göster.');setTimeout(()=>toast('🏛️ Ferman müzeye teslim edildi: itibar +20'),300);return}
@@ -1787,7 +1797,7 @@ function chestSeller(){return mkSeller(chestItem(),'kurnaz',{name:'Paltolu Adam'
 
 function nextCustomer(){
   if(S.cust)rivAfter(S.cust);
-  if(S.ci>=dayLen()){T('day_end',{cash:Math.round(S.money),rep:Math.round(S.rep||0),inv:S.inv.length});if([3,7,14,30,60].includes(S.day))T('day_reached_'+S.day,{});S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();sfx.door();save();render();setTimeout(()=>showTip('evening'),700);return}
+  if(S.ci>=dayLen()){T('day_end',{cash:Math.round(S.money),rep:Math.round(S.rep||0),inv:S.inv.length});if([3,7,14,30,60].includes(S.day))T('day_reached_'+S.day,{});S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();sfx.door();save();render();setTimeout(()=>showTip('evening'),700);setTimeout(()=>notifAsk('dayend'),2600);return}
   let c;
   if(S.day===1&&S.ci===1&&S.story.riza==='none')c=rizaSeller();
   else if(S.day===3&&S.ci===0&&(S.story.riza==='bought'||S.story.riza==='sold'))c=rizaReturn();
@@ -2006,9 +2016,13 @@ function sellerOffer(){
   if(S.offer>c.ask)S.offer=c.ask;save();render();
 }
 function inspect(){const c=S.cust;if(c&&c.item)openViewer(c.item)}
-function expert(){const c=S.cust,it=c.item;if(it.known.expert||it.chest)return;
-  const ef=expertFee();if(S.money<ef){toast('Uzman için '+fmt(ef)+' lazım');return}
-  S.money-=ef;logT('fee',{n:'Uzman: '+it.n,i:'🎓'},-ef);sfx.tap();it.known.expert=true;it.known.insp=true;it.known.lo=it.known.hi=it.appear;it.known.suspect=it.fake;
+function peekOk(){const c=S.cust;return !!c&&!c.story&&!(c.item&&c.item.chest)&&adOk()&&(S.peekD===S.day?(S.peekN||0):0)<4}
+function expAdOk(){return adOk()&&(S.expAdD===S.day?(S.expAdN||0):0)<4}
+function expert(mode){const c=S.cust,it=c.item;if(it.known.expert||it.chest)return;
+  const ef=expertFee();
+  if(!mode&&expAdOk()){modal({icon:'🎓',title:'Uzman raporu',body:'Uzman parçanın orijinal mi replika mı olduğunu ve gerçek değerini kesin olarak söyler.',btns:[{t:'Öde · '+fmt(ef),cls:'ghost',a:'expertPay'},{t:'📺 Bedava al',cls:'brass',a:'expertAd'}]});return}
+  if(mode!=='ad'){if(S.money<ef){toast('Uzman için '+fmt(ef)+' lazım');return}
+  S.money-=ef;logT('fee',{n:'Uzman: '+it.n,i:'🎓'},-ef);}else{if(S.expAdD!==S.day){S.expAdD=S.day;S.expAdN=0}S.expAdN++}sfx.tap();it.known.expert=true;it.known.insp=true;it.known.lo=it.known.hi=it.appear;it.known.suspect=it.fake;
   if(it.fake)it.known.lo=it.known.hi=it.worth;
   if(it.fake)stat('fakeSpot');toast(it.fake?'Uzman: Bu bir replika!':'Uzman: Orijinal parça.'+(it.rar?' Üstelik '+RN[it.rar].toLocaleLowerCase('tr-TR')+'!':''));save();render()}
 function passSeller(){sfx.tap();const c=S.cust;if(c.story)S.story.riza='gone';finish('pass',pick(L.pass));if(!c.story&&S.day>=3&&(c.item.rar||c.item.appear>900)&&!c.cemil&&R()<.5)setTimeout(()=>toast('😼 Kurnaz Cemil kapıda bekliyordu, malı hemen kaptı!'),1300)}
@@ -4023,6 +4037,7 @@ function renderPanel(){
   if(c.kind==='seller'){const it=c.item;
     return `<div class="panel deal2 dz">${talkPop(c)}${c.cemil?`<div class="cemban">😼 <b>Kurnaz Cemil</b> ${fmt(c.cemil)} verdi. Üstüne çıkmazsan mal onun!</div>`:''}${dzInfo('İstediği',fmt(c.ask),it)}
       ${dzOffer('Teklifin')}${dzChips()}
+      ${c.peek?`<div class="dz-peek">💡 Satıcının sınırı: <b>≈ ${fmt(Math.ceil(c.minAccept/50)*50)}</b> altına inmez</div>`:!c.nego&&peekOk()?`<button class="dz-adp" data-act="peekAd" ${dis}>📺 Satıcının <b>son fiyatını</b> gör</button>`:''}
       ${c.nego&&!c.lastAd&&adOk()?`<button class="dz-adp" data-act="lastAd" ${dis}>📺 Son pazarlık: <b>%10 daha ucuza</b> al</button>`:''}
       <div class="dz-main"><button class="b brass" id="offerGo" data-act="offer" ${busy||!(S.offer>0||c.trade)?'disabled':''}>Teklif Ver</button>
        <button class="b mint" data-act="acceptAsk" ${dis}>Kabul Et<small>${fmt(c.ask)}</small></button></div>
@@ -4031,11 +4046,15 @@ function renderPanel(){
     return `<div class="panel deal2 dz">${talkPop(c)}${dzInfo('Maliyetin',fmt(it.paid),it)}
       ${knowsFake?`<button class="toggle sm ${c.honest?'on':''}" data-act="honest"><span class="sw"></span><span><b>Dürüst ol:</b> replika olduğunu söyle</span></button>`:''}
       ${dzOffer('Fiyatın')}${dzChips()}
+      ${c.peek?`<div class="dz-peek">💡 Alıcının bütçesi: <b>≈ ${fmt(Math.floor(c.maxPay/50)*50)}</b> üstüne çıkmaz</div>`:!c.counter&&peekOk()?`<button class="dz-adp" data-act="peekAd" ${dis}>📺 Alıcının <b>bütçesini</b> gör</button>`:''}
       ${c.counter&&!c.lastAd&&adOk()?`<button class="dz-adp" data-act="lastAd" ${dis}>📺 Son pazarlık: <b>%10 daha fazla</b> al</button>`:''}
       <div class="dz-main"><button class="b brass" id="offerGo" data-act="propose" ${busy||!(S.offer>0)?'disabled':''}>Fiyatı Söyle</button>
        ${c.counter?`<button class="b mint" data-act="takeCounter" ${dis}>Kabul Et<small>${fmt(c.counter)}</small></button>`:`<div class="dz-wait">Müşteri henüz teklif vermedi</div>`}</div>
       <div class="dz-tools">${dzTool('talkMenu',IC.talk,'Konuş',busy)}${dzTool('decline',IC.x,'Satmaktan vazgeç',busy,'red')}</div></div>`}
   if(c.kind==='story'&&c.fst){
+    if(c.fst==='tease')return `<div class="panel ftz"><div class="ftz-c"><div class="ftz-i">📜</div><div><b>Kayıp Ferman</b><small>Tarih Paketi hikâyesi</small></div><span class="ftz-l">🔒</span></div>
+      <ul class="ftz-u"><li>🕵️ Kaçakçı Sakallı Necmi ile pazarlık</li><li>🏛️ Müzeye teslim et: <b>4.000 ₺+ ödül</b>, itibar +20</li><li>⚔️ 42 tarihi eşya: kılıç, kalkan, miğfer…</li></ul>
+      <button class="b brass" data-act="story:ftbuy">⚔️ Tarih Paketi ile devam et</button><button class="b ghost" data-act="story:ftno">Şimdilik değil</button></div>`;
     if(c.fst==='intro')return `<div class="panel"><p class="sub">📜 <b>Yeni görev: Kayıp Ferman.</b> Küratör, çalınan fermanı bulmanı istiyor.</p><button class="b brass" data-act="story:fok">Gözümü dört açarım</button></div>`;
     if(c.sold)return `<div class="panel"><p class="sub">Fermanı kaçırdın.</p><button class="b ghost" data-act="story:ok">Başını Eğ</button></div>`;
     const it=itemById(c.itemId),rw=Math.max(4000,r10(it.paid*3));
@@ -4093,6 +4112,29 @@ window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click
   if(screen==='game'){if(S.tab!=='shop'){S.tab='shop';save();render();return true}
     if(S.phase==='dayEnd'&&eve!=='hub'&&eve!=='live'){eve='hub';render();return true}}
   save();return false};
+/* ---------- Bildirim planı: native.js uygulama arka plana geçince bunu okur ---------- */
+function ntAt(base,addMs,minH,maxH){const d=new Date(base+addMs);const h=d.getHours()+d.getMinutes()/60;if(h<minH){d.setHours(minH,0,0,0)}else if(h>maxH){d.setDate(d.getDate()+1);d.setHours(minH,0,0,0)}return d.getTime()}
+window.BP_NOTIF_PLAN=function(){const out=[],now=Date.now();if(!S||!S.shop)return out;
+  const add=(id,at,body)=>{if(at>now+60e3)out.push({id,at,body})};
+  /* 1) yarın sabah: günlük ödül + seri */
+  const t=new Date();t.setDate(t.getDate()+1);t.setHours(10,0,0,0);
+  add(1,t.getTime(),('Günlük ödülün hazır! {0}. gün serini bozma 🔥').replace('{0}',(S.streak||0)+1));
+  /* 2) birkaç saat sonra: raftaki en değerli parça için alıcı */
+  const best=(S.inv||[]).filter(x=>!x.chest&&!x.lab).sort((a,b)=>val(b)-val(a))[0];
+  if(best&&val(best)>=1500)add(2,ntAt(now,4*3600e3,11,21.5),('Bir koleksiyoncu rafındaki {0} için dükkânına uğradı 👀').replace('{0}',best.n));
+  /* 3) fırsat bitmeden 3 saat önce */
+  try{const dl=dealNow();if(dl&&dl.k==='hos'&&dl.ends-3*3600e3>now+3600e3)add(3,ntAt(dl.ends-3*3600e3,0,10,22),'⏳ Hoş Geldin Fırsatı bitiyor: Premium %30 indirimli, son 3 saat!')}catch(e){}
+  /* 4) iki gün sonra akşam: hikâye kancası */
+  const st=S.story||{};const f=st.ferman||'none';
+  const hook=f==='asked'?'Sakallı Necmi çarşıda bir fermanla görüldü… Kaçırma! 📜':(f==='have'?'Küratör Selin Hanım dükkânına geliyor. Fermanı teslim edecek misin? 🏛️':'Kurnaz Cemil kapışılacak malları kaptı bile… Pazara dönme vakti!');
+  const d2=new Date();d2.setDate(d2.getDate()+2);d2.setHours(19,30,0,0);add(4,d2.getTime(),hook);
+  /* 5) beş gün sonra: gizemli sandık */
+  const d5=new Date();d5.setDate(d5.getDate()+5);d5.setHours(18,0,0,0);add(5,d5.getTime(),'Paltolu Adam kilitli bir sandıkla kapında. İçinde ne olduğunu kimse bilmiyor… 🗝️');
+  return out};
+/* ilk kez bildirim izni: önce oyunun içinden sor, sistem penceresini sonra aç */
+function notifAsk(why){const N=window.NATIVE;if(!N||!N.isNative||N.notifPerm!=='default'||modalEl)return;
+  const a=S.ntAsk||{};if((a.n||0)>=3||S.day<(a.next||2))return;
+  setTimeout(()=>{if(modalEl||N.notifPerm!=='default')return;S.ntAsk={n:(a.n||0)+1,next:S.day+3};save();T('notif_soft',{n:S.ntAsk.n,why});modal({icon:'🔔',title:'Dükkânına müşteri gelince haber verelim mi?',body:'Zengin koleksiyoncular, gizemli sandıklar ve günlük ödülün hazır olduğunda sana kısa bir bildirim gönderelim. Günde en fazla bir kez.',btns:[{t:'Şimdi değil',cls:'ghost',a:'closeModal'},{t:'🔔 Haber ver',cls:'brass',a:'notifYes'}]})},1200)}
 window.BP_PAUSE=function(p){try{if(AC){p?AC.suspend():AC.resume()}}catch(e){}if(p)save()};
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
@@ -4128,6 +4170,10 @@ document.addEventListener('click',e=>{
   if(a==='giftAd'){const g=S.gift=S.gift||{};if(g.ad===S.day)return;adShow(()=>{adUse();g.ad=S.day;openGift()},'Bir hediye kutusu daha');return}
   if(a==='vipAd'){if(S.vipAsk===S.day)return;adShow(()=>{adUse();S.vipAsk=S.day;S.vipDay=S.day+1;save();render();toast('💼 Yarın sabah ilk müşterin cebi dolu bir koleksiyoncu olacak!')},'Zengin koleksiyoncu çağır');return}
   if(a==='shortAd'){const o=SHORT;SHORT=null;if(!o||S.cust!==o.c)return closeModal();adShow(()=>{adUse();o.c.shortAd=1;S.money+=o.short;logT('gift',{n:'Reklam desteği',i:'📺'},o.short);doBuy(o.price)},'Eksik parayı tamamla');return}
+  if(a==='notifYes'){closeModal();T('notif_soft_yes',{});try{window.NATIVE&&NATIVE.askNotif&&NATIVE.askNotif().then(p=>T('notif_perm',{p:String(p)}))}catch(e){}return}
+  if(a==='expertPay'){closeModal();expert('pay');return}
+  if(a==='expertAd'){const c=S.cust;closeModal();adShow(()=>{adUse();if(S.cust!==c||!c||c.done)return;expert('ad')},'Bedava uzman raporu');return}
+  if(a==='peekAd'){const c=S.cust;if(!c||c.done||c.peek)return;adShow(()=>{adUse();if(S.cust!==c||c.done)return;if(S.peekD!==S.day){S.peekD=S.day;S.peekN=0}S.peekN++;c.peek=1;sfx.tap();save();render()},'Pazarlık sınırını gör');return}
   if(a==='lastAd'){const c=S.cust;if(!c||c.done||c.lastAd)return;adShow(()=>{adUse();if(S.cust!==c||c.done)return;c.lastAd=1;
       if(c.kind==='seller'){c.ask=r10(c.ask*.9);c.minAccept=Math.min(c.minAccept,c.ask);say(tpl('Peki, senin hatırın için son fiyat {p}.',{p:fmt(c.ask)}))}
       else{c.counter=r10(c.counter*1.1);c.maxPay=Math.max(c.maxPay,c.counter);say(tpl('Tamam, bir kerelik {p} veriyorum.',{p:fmt(c.counter)}))}
@@ -4779,6 +4825,7 @@ ACH.push(['hurda','💎','Hurdadan Hazine','Hurda Kasası\'ndan efsanevi parça 
 const colAdd1=colAdd;colAdd=function(it){colAdd1(it);try{evtCol(it)}catch(e){}};
 /* test kancası: yalnızca ?bptest ile */
 if(/[?&]bptest/.test(location.search))window.BP_TEST={sz:()=>szSync(),kb:v=>{MON.kb=v;monSave()},staff:()=>staffMorning(),share:()=>shareCanvas({it:S.inv[0]||giveItem(2),title:'Bugünkü vurgunum!',l1:'500 ₺ aldım · 9.000 ₺ sattım',big:'+8.500 ₺ kâr'}),tease:()=>{closeModal();MON_S.shown=false;MON.tz=0;tarihTease()},why:()=>[packOwned("tarih"),iapLive(),screen,MON_S.shown,!!modalEl,S.day],happy:t=>happyMoment(t),MON:()=>MON,monRewarded:()=>monRewarded(),offer:r=>offerOpen(r,true),dealHos:()=>{MON.hos=Date.now();monSave()},inter:()=>monInter(),S:()=>S,ENT:()=>ENT,AU:()=>AU,colAddK:k=>colAdd(newItem(CAT.find(c=>c.k===k),{cond:3})),addItem:(k,o)=>{const it=newItem(CAT.find(c=>c.k===k),o||{cond:4});S.inv.push(it);return it.id},stat:(k,n)=>stat(k,n),save:()=>save(),render:()=>render(),startDay:()=>startDay(),storeOpen:()=>storeOpen(),setMoney:v=>{S.money=v},evSim:()=>{EVTS.yb26.from='2026-01-01'},game:()=>{screen='game';render()},HA:()=>HA,DG:()=>DG};
+if(window.BP_TEST)Object.assign(window.BP_TEST,{fermanNext:()=>fermanNext(),shareURL:()=>shareURL()});
 
 
 /* ===================== 1.4.0: Ev Boşaltma Mezatı · Rehin Masası · Garaj · Güvenlik · Anadolu Kazısı ===================== */
@@ -5074,6 +5121,8 @@ function giveItem(rar,why){const pool=catPool().filter(c=>!c.ev);const it=newIte
 
 /* ---------- 1) Paylaşım kartı ---------- */
 const SITE_URL='https://bitpazari.vercel.app';
+/* paylaşımlarda iPhone'dan doğrudan App Store sayfası, diğerlerinde site (Android yayına çıkınca Play linki eklenecek) */
+function shareURL(){try{const N=window.NATIVE;if(N&&N.isNative&&N.platform==='ios')return 'https://apps.apple.com/tr/app/id6829169123'}catch(e){}return SITE_URL}
 function shareCanvas(o){const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');
   const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#1d4a42');bg.addColorStop(1,'#0d1f1c');g.fillStyle=bg;g.fillRect(0,0,W,H);
   const rg=g.createRadialGradient(W/2,560,40,W/2,560,520);rg.addColorStop(0,'rgba(232,171,60,.38)');rg.addColorStop(1,'rgba(232,171,60,0)');g.fillStyle=rg;g.fillRect(0,0,W,H);
@@ -5092,9 +5141,9 @@ function shareOffer(o){SHARE_O=o;document.querySelectorAll('.sharechip').forEach
   const el=document.createElement('button');el.className='sharechip';el.innerHTML='📸 <b>Bunu paylaş</b><small>'+esc(o.big)+'</small>';el.onclick=()=>{el.remove();shareGo()};$('#app').appendChild(el);setTimeout(()=>el.remove(),8000)}
 async function shareGo(){const o=SHARE_O;if(!o)return;sfx.tap();toast('Kart hazırlanıyor…');
   const png=await shareCanvas(o);const N=window.NATIVE,txt=o.text+' #BitPazarı';
-  const ok=N&&N.shareImage?await N.shareImage(png,txt,SITE_URL):false;T('share_done',{k:o.kind,ok:ok?1:0});
+  const ok=N&&N.shareImage?await N.shareImage(png,txt,shareURL()):false;T('share_done',{k:o.kind,ok:ok?1:0});
   if(ok){MON.shN=(MON.shN||0)+1;if(!MON.shB){MON.shB=1;S.money+=500;toast('İlk paylaşımın için kasana 500 ₺ eklendi!');save()}monSave()}}
-function shareSale(it,paid,price){const pr=price-paid;if(pr<2500||price<paid*2)return;
+function shareSale(it,paid,price){const pr=price-paid;if(pr<1500||price<paid*1.8)return;
   setTimeout(()=>shareOffer({kind:'sale',it,title:'Bugünkü vurgunum!',l1:`${fmt(paid)} aldım · ${fmt(price)} sattım`,big:'+'+fmt(pr)+' kâr',text:`Bit Pazarı'nda ${fmt(paid)}'ye aldığım ${it.n} için ${fmt(price)} aldım!`}),900)}
 function shareFind(it,title){setTimeout(()=>shareOffer({kind:'find',it,title,l1:'Değeri',big:fmt(val(it)),text:`Bit Pazarı'nda ${it.n} buldum! Değeri ${fmt(val(it))}.`}),900)}
 
