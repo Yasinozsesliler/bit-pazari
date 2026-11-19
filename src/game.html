@@ -1720,6 +1720,7 @@ nav button{letter-spacing:.03em;text-transform:none}
 .gopt:active{transform:translateY(2px);box-shadow:inset 0 0 0 1px rgba(232,171,60,.55)}
 .bubble.quiet{width:auto;min-width:120px;max-width:58%;padding:7px 14px}
 .bubble.quiet p{font-size:18px;letter-spacing:.15em;text-align:center;color:#8b6a49}
+.greetp .gsub{margin:0;text-align:center;font-size:12px;font-weight:800;color:var(--muted)}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -3649,18 +3650,29 @@ const TALK={
  buyer:[['hikaye','📜','Hikâyesini anlat','Ürünün geçmişini anlat'],['blof','🃏','Blöf yap','"Başka alıcı da soruyor"'],['gonul','🍵','Gönlünü al','Çay söyle, sohbet et']]};
 const BLOFCH={aceleci:.8,acemi:.6,kurnaz:.3,bilir:.2,zengin:.6,koleksiyoncu:.5,pazarlikci:.25,ogrenci:.2};
 const HIKCH={koleksiyoncu:.85,zengin:.75,pazarlikci:.4,ogrenci:.3};
-/* 1.9.0 · Açılış: müşteri içeri girer, önce sen konuşursun ("Ne söyleyeceksin?"), sonra o derdini anlatır */
-function greetOn(c){return !!c&&!c.done&&!c.greeted&&(c.kind==='seller'||c.kind==='buyer')&&!c.story&&!c.fst&&!c.recalled}
-const GREET={
- seller:[['warm','Hoş geldin, buyur otur.','Sabrı artar','Eksik olma evladım. '],['plain','Ne getirdin, bakalım?','','',],['hard','Çabuk ol, işim başımdan aşkın.','Sabrı azalır, fiyat iner','Peki peki, uzatmayayım. ']],
- buyer:[['warm','Hoş geldin, çayımı içer misin?','Sabrı artar','Sağ ol, hiç hayır demem. '],['plain','Ne arıyordun?','',''],['praise','Göz zevkin belli, iyi parçalar var.','Bütçesi biraz artar, sabrı azalır','Eh, anlarım biraz. ']]};
-function greetPanel(c){const L=GREET[c.kind]||GREET.seller;
-  return `<div class="panel greetp"><p class="gq">Ne söyleyeceksin?</p>${L.map(([k,t,h])=>`<button class="gopt" data-act="greet:${k}"><b>“${t}”</b>${h?`<small>${h}</small>`:''}</button>`).join('')}</div>`}
-function greetDo(k){const c=S.cust;if(!greetOn(c)||busy)return;const L=GREET[c.kind]||GREET.seller,o=L.find(x=>x[0]===k)||L[1];c.greeted=k;
-  if(k==='warm'){c.patience=Math.min(c.maxPat+1,c.patience+1);if(c.patience>c.maxPat)c.maxPat=c.patience}
-  if(k==='hard'){c.patience=Math.max(1,c.patience-1);if(c.kind==='seller'){c.ask=r10(c.ask*.95);if(c.minAccept)c.minAccept=r10(c.minAccept*.97)}}
-  if(k==='praise'){c.patience=Math.max(1,c.patience-1);if(c.maxPay)c.maxPay=r10(c.maxPay*1.04)}
-  T('greet',{k,kind:c.kind});c.line=o[3]+c.line;c.tw=1;pulse=true;sfx.tap();save();render()}
+/* 1.9.0 · Tanıdık müşteri gelince önce sen konuşursun ("Ne söyleyeceksin?"). Seçenekler aradaki geçmişe göre değişir. */
+function greetOn(c){return !!c&&!c.done&&!c.greeted&&(c.kind==='seller'||c.kind==='buyer')&&!c.story&&!c.fst&&!c.recalled&&!!c.reg&&c.reg.n>=1}
+/* [anahtar, senin sözün, etkisi, müşterinin karşılığı] */
+function greetOpts(c){const m=c.reg.m,sell=c.kind==='seller';
+  if(m<=-1)return [['sorry','Geçen seferki için kusura bakma, hakkını helal et.','Aranız düzelir, sabrı artar','Neyse, geçti gitti. '],
+    ['plain',sell?'Buyur, ne getirdin?':'Buyur, ne lazım?','','Hıh. '],
+    ['cold','Yine mi sen? Uzatmayalım.',sell?'Sabrı çok azalır, fiyat iner':'Sabrı çok azalır, bütçesi düşer','Sen bilirsin. ']];
+  if(m>=1)return [['warm','Gözümüz yollarda kaldı, hoş geldin!','Sabrı artar','Senin dükkânın başka, bilirsin. '],
+    ['plain',sell?'Yine ne buldun bakalım?':'Bugün ne arıyorsun?','','Bak şimdi. '],
+    sell?['tease','Bu sefer beni kazıklamak yok ha!','Fiyat iner, sabrı azalır','Ahaha, olur mu öyle şey! ']:['praise','Senin için en iyisini ayırdım.','Bütçesi artar, sabrı azalır','Sen ayırdıysan vardır bir bildiğin. ']];
+  return [['warm','Tekrar hoş geldin, çay söyleyeyim mi?','Sabrı artar','Hiç hayır demem. '],
+    ['plain',sell?'Ne getirdin bu sefer?':'Ne arıyordun?',''],
+    sell?['hard','Çabuk ol, işim başımdan aşkın.','Sabrı azalır, fiyat iner','Peki peki, uzatmayayım. ']:['praise','Göz zevkin belli, iyi parçalar var.','Bütçesi artar, sabrı azalır','Eh, anlarım biraz. ']]}
+function greetPanel(c){const L=greetOpts(c),n=c.reg.n+1,rel=c.reg.m>=1?'Müdavimin':c.reg.m<=-1?'Küs olduğun':'Tanıdık';
+  return `<div class="panel greetp"><p class="gsub">${rel} ${esc(c.name)} yine geldi · ${n}. gelişi</p><p class="gq">Ne söyleyeceksin?</p>${L.map(([k,t,h])=>`<button class="gopt" data-act="greet:${k}"><b>“${t}”</b>${h?`<small>${h}</small>`:''}</button>`).join('')}</div>`}
+function greetDo(k){const c=S.cust;if(!greetOn(c)||busy)return;const L=greetOpts(c),o=L.find(x=>x[0]===k)||L[1];c.greeted=k;const sell=c.kind==='seller';
+  const pat=d=>{c.patience=clamp(c.patience+d,1,c.maxPat+1);if(c.patience>c.maxPat)c.maxPat=c.patience};
+  if(k==='warm')pat(1);
+  if(k==='sorry'){pat(1);if(c.name)regUpd(c.name,1);if(c.reg)c.reg.n--}
+  if(k==='hard'||k==='tease'){pat(-1);if(sell){c.ask=r10(c.ask*.95);if(c.minAccept)c.minAccept=r10(c.minAccept*.97)}}
+  if(k==='cold'){pat(-2);if(sell){c.ask=r10(c.ask*.92);if(c.minAccept)c.minAccept=r10(c.minAccept*.95)}else if(c.maxPay)c.maxPay=r10(c.maxPay*.95)}
+  if(k==='praise'){pat(-1);if(c.maxPay)c.maxPay=r10(c.maxPay*1.04)}
+  T('greet',{k,kind:c.kind,m:c.reg?c.reg.m:0});if(k!=='plain'&&k!=='cold')['Yine ben geldim usta! ','Selamünaleyküm komşu! ','Senden başkasına gitmem! ','Geçen sefer beni kazıkladın ama… ','Bu sefer dikkatliyim, haberin olsun. ','Merhaba yine! '].forEach(x=>{if(c.line.startsWith(x))c.line=c.line.slice(x.length)});c.line=(o[3]||'')+c.line;c.tw=1;pulse=true;sfx.tap();save();render()}
 function twRun(){const c=S.cust;if(!c||!c.tw)return;c.tw=0;const p=document.querySelector('.bubble p');if(!p||reduceMotion)return;const full=p.textContent;if(!full)return;
   p.style.minHeight=p.offsetHeight+'px';p.textContent='';let i=0;const step=()=>{if(!p.isConnected){return}i=Math.min(full.length,i+2);p.textContent=full.slice(0,i);if(i<full.length)setTimeout(step,22);else p.style.minHeight=''};setTimeout(step,120)}
 function talkPop(c){if(!c||c.done)return'';const tv=c.trade?tradeValOf(c):0,ti=c.trade&&itemById(c.trade);let h='';
