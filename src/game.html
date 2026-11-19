@@ -1706,6 +1706,12 @@ nav button{letter-spacing:.03em;text-transform:none}
 .scene.s3 .vig{background:radial-gradient(ellipse 90% 80% at 50% 45%,transparent 60%,rgba(0,0,0,.45) 100%)}
 .s3empty{position:absolute;z-index:1;left:0;right:0;top:46%;text-align:center;font-size:11px;font-weight:800;color:rgba(255,230,190,.28);pointer-events:none}
 .scene.s3 .cust svg{filter:drop-shadow(0 10px 12px rgba(0,0,0,.55))}
+.scene.s3 .s3f{position:absolute;inset:0;z-index:4;pointer-events:none}
+.s3fg{display:block;width:100%;height:100%}
+.scene.s3 .onCounter:not(.flat) .big{visibility:hidden}
+.scene.s3 .onCounter::before{display:none}
+.scene.s3 .dayfx{display:none}
+.scene.s3 .onCounter:not(.flat){bottom:12px}.scene.s3 .onCounter:not(.flat) .big{height:84px}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -4083,10 +4089,10 @@ function renderScene(){
     h+=`<div class="bubble${pulse||enter?' pulse':''}"><div class="who">${c.name}<span class="tag">${c.tag}</span>${regChip(c)}</div><p>${c.line}</p>
       ${c.kind!=='story'&&!c.done?`<div class="pat"><span>Sabır</span>${Array.from({length:c.maxPat},(_,k)=>`<i class="${k<c.patience?'':'off'}"></i>`).join('')}</div>`:''}</div>`;
     const it=c.kind==='seller'?c.item:itemById(c.itemId);
-    if(it&&!(c.done&&c.result==='deal'&&c.kind!=='seller'))h+=`<button class="onCounter${it.rar&&rarKnown(it)?' rare':''}" style="--rcol:${RC[it.rar||0]}" data-act="view" aria-label="${it.n} ürününü yakından incele"><span class="big">${icon(it)}${SPARK}</span><span class="nm">${it.n}${rarTag(it)}${orderTag(it)}<span class="stars">${stars(it.cond)}</span></span>${has('z3')&&c.kind==='seller'&&it.fake&&!it.known.insp&&hashStr(it.id)%10<7?'<span class="susp">Bir şey tuhaf…</span>':''}</button>`}
+    if(it&&!(c.done&&c.result==='deal'&&c.kind!=='seller'))h+=`<button class="onCounter${it.rar&&rarKnown(it)?' rare':''}${it.chest||(it.k==='kart'&&it.pl)?' flat':''}" style="--rcol:${RC[it.rar||0]}" data-act="view" aria-label="${it.n} ürününü yakından incele"><span class="big">${icon(it)}${SPARK}</span><span class="nm">${it.n}${rarTag(it)}${orderTag(it)}<span class="stars">${stars(it.cond)}</span></span>${has('z3')&&c.kind==='seller'&&it.fake&&!it.known.insp&&hashStr(it.id)%10<7?'<span class="susp">Bir şey tuhaf…</span>':''}</button>`}
   pulse=false;
   if(S.up&&S.up.vitrin){const best=S.inv.filter(x=>!x.lab&&!x.chest).sort((a,b)=>val(b)-val(a)).slice(0,S.up.vitrin+1);h+=`<div class="vitrinCase" aria-label="Vitrin">${best.map(x=>icon(x)).join('')}</div>`}
-  h+=dayFx()+plaque()+evBadge();h+=`<div class="counter"><div class="kilim"></div><i></i></div>${petHtml()}<div class="vig"></div>`;
+  h+=dayFx()+plaque()+evBadge();h+=(s3Ok()?`<div class="s3f" id="s3f"></div>`:`<div class="counter"><div class="kilim"></div><i></i></div>`)+`${petHtml()}<div class="vig"></div>`;
   floats.forEach(f=>{h+=`<div class="float" style="color:${f.color}">${f.text}</div>`});floats=[];
   return h+'</div>'}
 function quickChips(){const c=S.cust;if(!c)return'';let ch=[];
@@ -6069,7 +6075,7 @@ function s3WoodTex(base,line,w,h,n){return ctex(w,h,(q,W,H)=>{q.fillStyle=base;q
   for(let i=0;i<n;i++){const y=r()*H;q.strokeStyle=`rgba(0,0,0,${.06+r()*.1})`;q.lineWidth=1+r()*2;q.beginPath();q.moveTo(0,y);for(let x=0;x<=W;x+=W/8)q.lineTo(x,y+Math.sin(x*.02+i)*3);q.stroke()}
   q.fillStyle=line;for(let x=0;x<W;x+=W/6)q.fillRect(x,0,2,H)})}
 function s3Init(){const T=THREE,cv=document.createElement('canvas');cv.className='s3cv';
-  const r=new T.WebGLRenderer({canvas:cv,antialias:true,powerPreference:'low-power'});
+  const r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'low-power'});
   r.setPixelRatio(Math.min(2,window.devicePixelRatio||1));r.outputEncoding=T.sRGBEncoding;r.toneMapping=T.ACESFilmicToneMapping;r.toneMappingExposure=1.1;
   r.shadowMap.enabled=true;r.shadowMap.type=T.PCFSoftShadowMap;
   const sc=new T.Scene();sc.background=new T.Color('#0e0805');try{sc.environment=makeEnv(r)}catch(e){}
@@ -6078,7 +6084,14 @@ function s3Init(){const T=THREE,cv=document.createElement('canvas');cv.className
   const key=new T.SpotLight('#ffe3b8',1.35,16,.62,.65,1.4);key.position.set(.4,5.6,3.4);key.target.position.set(0,1.6,-3);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.bias=-.0015;sc.add(key);sc.add(key.target);
   const L=[-1,1].map(s=>{const p=new T.PointLight('#ffb35a',1.25,7.5,2);p.position.set(s*2.1,3.75,-1.05);sc.add(p);return p});
   const room=new T.Group(),items=new T.Group();sc.add(room);sc.add(items);
-  S3={r,cv,sc,cam,room,items,L,cache:new Map(),rsig:'',isig:'',w:0,h:0};
+  /* ön plan: tezgâh ve tezgâhtaki mal. Aynı WebGL ile çizilip müşterinin önündeki 2B tuvale kopyalanır. */
+  const fs=new T.Scene();try{fs.environment=sc.environment}catch(e){}
+  fs.add(new T.HemisphereLight('#ffe2b8','#1a0f08',.5));
+  const fk=new T.SpotLight('#ffe3b8',1.5,14,.55,.7,1.2);fk.position.set(.6,5.2,5.4);fk.target.position.set(0,.6,2.2);fk.castShadow=true;fk.shadow.mapSize.set(1024,1024);fk.shadow.bias=-.0015;fs.add(fk);fs.add(fk.target);
+  const fill=new T.DirectionalLight('#ffcf9a',.35);fill.position.set(-3,2,4);fs.add(fill);
+  const desk=new T.Group(),onc=new T.Group();fs.add(desk);fs.add(onc);
+  const fg=document.createElement('canvas');fg.className='s3fg';
+  S3={r,cv,sc,cam,room,items,L,key,fs,fk,desk,onc,fg,fx:fg.getContext('2d'),cache:new Map(),rsig:'',isig:'',dsig:'',osig:'',w:0,h:0,top:.9};
   cv.addEventListener('webglcontextlost',e=>{e.preventDefault();S3=false;try{render()}catch(_){}})}
 function s3Clear(g){while(g.children.length){const c=g.children.pop();c.traverse&&c.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose()})}})}}
 function s3Room(){const T=THREE,w=cosOf('wall'),l=cosOf('lantern'),sig=w[0]+'|'+l[0];if(S3.rsig===sig)return;S3.rsig=sig;
@@ -6127,12 +6140,44 @@ function s3Items(inv){const T=THREE,sig=inv.map(x=>x.id+':'+x.cond).join(',');if
       w.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});S3.cache.set(key,w)}catch(e){return}}
     w.position.set(x,y+.03+w.userData.h/2,-2.5+(idx%2?.04:-.04));w.rotation.y=-side*.28+((hashStr(it.id)%20)-10)*.02;g.add(w)});
   if(S3.cache.size>48)[...S3.cache.keys()].forEach(k=>{if(!keep.has(k)){s3Clear(S3.cache.get(k));S3.cache.delete(k)}})}
+function s3KilimTex(k1,k2,wa,wb,wc){return ctex(1024,256,(q,W,H)=>{q.fillStyle=wa;q.fillRect(0,0,W,H);const r=seeded(11);
+  for(let i=0;i<70;i++){const y=r()*H;q.strokeStyle=`rgba(0,0,0,${.05+r()*.1})`;q.lineWidth=1+r()*2;q.beginPath();q.moveTo(0,y);for(let x=0;x<=W;x+=64)q.lineTo(x,y+Math.sin(x*.01+i)*4);q.stroke()}
+  for(let x=0;x<W;x+=170){q.fillStyle='rgba(0,0,0,.35)';q.fillRect(x,0,3,H)}
+  const y0=H*.14,bh=H*.3;q.fillStyle=k2;q.fillRect(0,y0,W,bh);q.fillStyle=k1;
+  for(let x=-bh;x<W+bh;x+=bh){q.beginPath();q.moveTo(x,y0+bh/2);q.lineTo(x+bh/2,y0);q.lineTo(x+bh,y0+bh/2);q.lineTo(x+bh/2,y0+bh);q.closePath();q.fill()}
+  q.fillStyle='#f3c76a';for(let x=bh/2;x<W;x+=bh){q.beginPath();q.arc(x,y0+bh/2,bh*.09,0,7);q.fill()}
+  q.fillStyle=wc;q.fillRect(0,y0-4,W,4);q.fillRect(0,y0+bh,W,4);
+  const gr=q.createLinearGradient(0,0,0,H);gr.addColorStop(.6,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.45)');q.fillStyle=gr;q.fillRect(0,0,W,H)})}
+function s3Desk(){const T=THREE,dk=cosOf('desk'),k=cosOf('kilim'),sig=dk[0]+'|'+k[0];if(S3.dsig===sig)return;S3.dsig=sig;const g=S3.desk;s3Clear(g);const cc=curCond;curCond=5;
+  const front=s3KilimTex(k[2][0],k[2][1],dk[2][0],dk[2][2]);front.wrapS=T.RepeatWrapping;front.repeat.set(2.2,1);
+  const topT=s3WoodTex(dk[2][3],'rgba(0,0,0,.25)',1024,256,50);topT.wrapS=T.RepeatWrapping;topT.repeat.set(2,1);
+  const side=wood(dk[2][1]),topM=new T.MeshStandardMaterial({map:topT,roughness:.45,metalness:.05}),frM=new T.MeshStandardMaterial({map:front,roughness:.7});
+  g.add(mesh(box(12,2.4,.9),[side,side,topM,side,frM,side],[0,-1.2,0]));
+  g.add(mesh(box(12,.06,.96),brass(),[0,-.01,0]));
+  curCond=cc}
+function s3Onc(it){const T=THREE,sig=it?it.id+':'+it.cond+':'+(it.cert&&it.cert.auth?1:0):'';if(S3.osig===sig)return;S3.osig=sig;const g=S3.onc;s3Clear(g);if(!it)return;
+  try{const inner=buildModel(Object.assign({},it,{known:it.known||{}}));const bb=new T.Box3().setFromObject(inner),sz=new T.Vector3(),ct=new T.Vector3();bb.getSize(sz);bb.getCenter(ct);
+    inner.position.set(-ct.x,-ct.y,-ct.z);const w=new T.Group();w.add(inner);const sc=.62/Math.max(sz.x,sz.y,sz.z*.9,.001);w.scale.setScalar(sc);w.userData.h=sz.y*sc;w.rotation.set(.08,-.45,0);
+    w.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+    const cush=mesh(cyl(.42,.46,.07,40),new T.MeshStandardMaterial({color:'#6e1c1a',roughness:.85}),[0,.035,0]);
+    const grp=new T.Group();grp.add(cush);w.position.y=.07+w.userData.h/2;grp.add(w);g.add(grp)}catch(e){}}
 function s3Draw(){const host=$('#s3d');if(!host||!S3)return;const w=host.clientWidth||360,h=host.clientHeight||360;
   if(w!==S3.w||h!==S3.h){S3.w=w;S3.h=h;S3.r.setSize(w,h,false);const a=w/h;S3.cam.aspect=a;
     const needW=6.9,dist=9;S3.cam.fov=Math.max(40,2*Math.atan(needW/2/dist/a)*180/Math.PI);S3.cam.updateProjectionMatrix();S3.cam.lookAt(0,1.78,-3)}
+  const T=THREE,t=Math.tan(S3.cam.fov*Math.PI/360),a=S3.cam.aspect,h2=S3.h||360;
+  const topY=1.75+(-1+2*(84/h2))*t*(6-1.55);S3.desk.position.set(0,topY,2.0);
+  const zi=2.15,xi=.36*t*a*(6-zi);S3.onc.position.set(xi,topY,zi);
+  /* günün saati: sabah serin beyaz, akşamüstü turuncu */
+  const p=dayPhase(),warm=clamp((p-.45)/.55,0,1),col=new T.Color('#fff4e2').lerp(new T.Color('#ffa75a'),warm);
+  S3.key.color.copy(col);S3.key.intensity=1.35-warm*.25;S3.fk.color.copy(col);
+  const fgOn=!!(S3.onc.children.length||1);
+  if(fgOn){S3.r.setClearColor(0,0);S3.r.render(S3.fs,S3.cam);const fg=S3.fg,dpr=S3.r.getPixelRatio();const W=Math.round(S3.w*dpr),H=Math.round(S3.h*dpr);
+    if(fg.width!==W||fg.height!==H){fg.width=W;fg.height=H}S3.fx.clearRect(0,0,W,H);try{S3.fx.drawImage(S3.cv,0,0,W,H)}catch(e){}}
   S3.r.render(S3.sc,S3.cam)}
 function s3Mount(){const host=$('#s3d');if(!host||S3===false)return;
-  try{if(!S3)s3Init();if(S3.cv.parentNode!==host)host.appendChild(S3.cv);s3Room();s3Items(S.inv.filter(x=>!x.lab).slice(0,16));s3Draw()}
+  try{if(!S3)s3Init();if(S3.cv.parentNode!==host)host.appendChild(S3.cv);const fh=$('#s3f');if(fh&&S3.fg.parentNode!==fh)fh.appendChild(S3.fg);
+    s3Room();s3Desk();const c=S.cust;let it=null;if(c&&!(c.done&&c.result==='deal'&&c.kind!=='seller'))it=c.kind==='seller'?c.item:c.itemId?itemById(c.itemId):null;s3Onc(it&&!it.chest&&!(it.k==='kart'&&it.pl)?it:null);
+    s3Items(S.inv.filter(x=>!x.lab).slice(0,16));s3Draw()}
   catch(e){console.warn('3B sahne kapatıldı',e);S3=false;try{render()}catch(_){}}}
 window.addEventListener('resize',()=>{if(S3)setTimeout(()=>{try{S3.w=0;s3Draw()}catch(e){}},150)});
 
