@@ -1721,6 +1721,58 @@ nav button{letter-spacing:.03em;text-transform:none}
 .bubble.quiet{width:auto;min-width:120px;max-width:58%;padding:7px 14px}
 .bubble.quiet p{font-size:18px;letter-spacing:.15em;text-align:center;color:#8b6a49}
 .greetp .gsub{margin:0;text-align:center;font-size:12px;font-weight:800;color:var(--muted)}
+/* 1.9.0 · Pazarlık paneli tezgâhın devamı: ceviz yüzey, pirinç çıta, kâğıt fiş, pirinç düğmeler */
+:root{--grain:repeating-linear-gradient(176deg,rgba(255,220,170,.035) 0 2px,transparent 2px 7px,rgba(0,0,0,.07) 7px 9px,transparent 9px 17px);
+  --brassline:linear-gradient(180deg,#f3d28a,#c9973f 45%,#7a5418)}
+.dz,.panel.greetp{position:relative;background:var(--grain),linear-gradient(180deg,#4a2a17 0%,#3a2012 55%,#2c180c 100%)!important;box-shadow:inset 0 10px 18px -10px rgba(0,0,0,.7)!important}
+.dz::before,.panel.greetp::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--brassline);box-shadow:0 2px 3px rgba(0,0,0,.5)}
+/* fiş: istenen fiyat ve tahmini değer */
+.of-info{gap:8px}
+.of-pill{position:relative;background:linear-gradient(180deg,#f6ead0,#e9d7b0)!important;color:#2b1a0f;border-radius:4px!important;box-shadow:0 2px 0 rgba(0,0,0,.35),0 6px 10px rgba(0,0,0,.25)!important;
+  -webkit-mask:radial-gradient(circle 4px at 50% 0,transparent 98%,#000) 0 0/12px 100% repeat-x;mask:radial-gradient(circle 4px at 50% 0,transparent 98%,#000) 0 0/12px 100% repeat-x}
+.of-pill small{color:#7a5a3a!important}
+.of-pill>b{color:#2b1a0f!important}
+.of-val .dz-vv b{color:#2b1a0f!important}.of-val .dz-vv em{color:#6b5040!important}
+.of-val .dz-ask,.of-val button{color:#2b1a0f!important}.of-val u{color:#9a4a10!important}
+/* teklif kartları: tezgâha oyulmuş yuvalar, pirinç kenar */
+.hg-c{background:linear-gradient(180deg,#2a170b,#1e1008)!important;border-radius:10px!important;box-shadow:inset 0 3px 6px rgba(0,0,0,.7),inset 0 0 0 1.5px rgba(201,151,63,.5),0 1px 0 rgba(255,220,170,.12)!important}
+.hg-c.good{box-shadow:inset 0 3px 6px rgba(0,0,0,.7),inset 0 0 0 2px rgba(120,209,162,.6),0 1px 0 rgba(255,220,170,.12)!important}
+.hg-c.warn{box-shadow:inset 0 3px 6px rgba(0,0,0,.7),inset 0 0 0 2px rgba(232,171,60,.65),0 1px 0 rgba(255,220,170,.12)!important}
+.hg-c.bad{box-shadow:inset 0 3px 6px rgba(0,0,0,.7),inset 0 0 0 2px rgba(255,140,128,.55),0 1px 0 rgba(255,220,170,.12)!important}
+.hg-c b{color:#f6e4bd!important}
+/* kendi teklifin: ahşap düğme */
+.dz-main .b.hg-own{color:#f3d48c!important;background:var(--grain),linear-gradient(180deg,#6a4026,#4a2a17)!important;box-shadow:inset 0 1px 0 rgba(255,220,170,.25),inset 0 0 0 1.5px rgba(201,151,63,.55),0 4px 0 #1a0d05!important}
+/* araçlar: pirinç topuzlar */
+.of-t span{background:radial-gradient(circle at 38% 30%,#f6dc9c,#c9973f 55%,#7a5418)!important;box-shadow:0 2px 0 #1a0d05,0 4px 6px rgba(0,0,0,.35)!important}
+.of-t svg{color:#2b1a0f!important}.of-t.red svg{color:#8e2018!important}
+.of-t small{color:#e8d2ad}
+/* reklam teklifi: emaye levha */
+.dz-adp{background:linear-gradient(180deg,#245c50,#173f37)!important;border-radius:8px!important;box-shadow:inset 0 0 0 2px #c9973f,inset 0 0 0 4px #173f37,inset 0 0 0 5px rgba(201,151,63,.5),0 3px 0 #0b0704!important;color:#f6ead0!important}
+.dz-adp b{color:#f3d28a!important}
+/* karşılama cevapları: kâğıt not */
+.gopt{background:linear-gradient(180deg,#f6ead0,#e9d7b0)!important;color:#2b1a0f!important;border-radius:6px!important;box-shadow:0 2px 0 rgba(0,0,0,.35),0 6px 10px rgba(0,0,0,.25)!important}
+.gopt small{color:#7a5a3a!important}
+.gopt:nth-child(odd){transform:rotate(-.4deg)}.gopt:nth-child(even){transform:rotate(.4deg)}
+.gopt:active{transform:translateY(2px)}
+.greetp .gsub{color:#d9bf97}
+/* panel altındaki gezinme çubuğu ile birleşsin */
+#nav{box-shadow:0 -1px 0 rgba(201,151,63,.45),0 -10px 24px rgba(0,0,0,.5)}
+/* 3B fotoğraf arka planları ve kepenk */
+.m3-bg.s3bg{background:linear-gradient(180deg,rgba(10,6,3,.55),rgba(10,6,3,.35) 40%,rgba(10,6,3,.85)),var(--s3) center 30%/cover no-repeat!important;filter:none}
+.m3-bg.s3bg::before{display:none}
+.eve.eve2.s3bg{background:linear-gradient(180deg,rgba(12,7,4,.78),rgba(12,7,4,.9) 35%,rgba(12,7,4,.96)),var(--s3) center top/cover no-repeat!important}
+.eve.eve2{position:relative}
+.eve.eve2::before{content:"";position:absolute;left:0;right:0;top:0;height:46px;pointer-events:none;
+  background:linear-gradient(180deg,transparent 80%,rgba(0,0,0,.45)),repeating-linear-gradient(180deg,#80868a 0 5px,#5d6266 5px 7px,#9ba1a5 7px 10px);
+  box-shadow:inset 0 -4px 0 #3b3f42,0 6px 10px rgba(0,0,0,.45);opacity:.9}
+.eve.eve2>*:first-child{margin-top:40px}
+.kepenk{position:absolute;inset:0;z-index:50;pointer-events:none;
+  background:linear-gradient(180deg,transparent 0 96%,#2b2e30 96%),repeating-linear-gradient(180deg,#8d9397 0 7px,#686d71 7px 10px,#a6acb0 10px 14px);
+  box-shadow:inset 0 -10px 0 #3b3f42}
+.kepenk::after{content:"";position:absolute;left:50%;bottom:22px;width:70px;height:10px;margin-left:-35px;border-radius:5px;background:#3b3f42;box-shadow:inset 0 2px 0 rgba(255,255,255,.2)}
+.kepenk.up{animation:kepenk 1.6s cubic-bezier(.55,0,.25,1) .45s forwards}
+@keyframes kepenk{0%{transform:translateY(0)}12%{transform:translateY(2%)}100%{transform:translateY(-102%)}}
+@media (prefers-reduced-motion:reduce){.kepenk{display:none}}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -4266,7 +4318,7 @@ function renderNav_old(){const t=mysState();const dot=!S.mys.done?'<span class="
   $('#nav').innerHTML=[['shop','🏪','Dükkân'],['inv','🧺','Raflar'],['skills','🌳','Ustalık'],['mystery','🔮','Günün Eşyası']].map(([k,i,n])=>`<button class="${S.tab===k?'on':''}" data-act="tab:${k}"><span class="ni">${i}</span>${n}${k==='mystery'?dot:k==='skills'&&S.sp?'<span class="badge"></span>':''}</button>`).join('')}
 function render(){
   const inGame=screen==='game';let stNav=false;try{stNav=screen==='store'&&storeFrom==='game'}catch(e){}$('#top').hidden=!inGame;$('#nav').hidden=!(inGame||stNav);
-  if(!inGame){if(stNav)renderNav();$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();return}
+  if(!inGame){if(stNav)renderNav();$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();try{if(screen==='menu')s3Backdrops()}catch(e){}return}
   if(MH)MH.run=false;
   renderTop();renderNav();
   const main=$('#main');
@@ -4274,7 +4326,7 @@ function render(){
   else if(S.tab==='inv')main.innerHTML=renderInv();
   else if(S.tab==='skills')main.innerHTML=renderUst();
   else main.innerHTML=renderMys();
-  shake=false;fitScene();try{s3Mount()}catch(e){}try{twRun()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
+  shake=false;fitScene();try{s3Mount()}catch(e){}try{twRun()}catch(e){}try{s3Backdrops()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
 
 /* ---------- native hooks (Android geri tuşu / arka plan) ---------- */
 window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click();return true};
@@ -6192,7 +6244,14 @@ function s3Desk(){const T=THREE,dk=cosOf('desk'),k=cosOf('kilim'),sig=dk[0]+'|'+
   g.add(mesh(box(12,2.4,.9),[side,side,topM,side,frM,side],[0,-1.2,0]));
   g.add(mesh(box(12,.06,.96),brass(),[0,-.01,0]));
   curCond=cc}
-function s3Onc(it){const T=THREE,sig=it?it.id+':'+it.cond+':'+(it.cert&&it.cert.auth?1:0):'';if(S3.osig===sig)return;S3.osig=sig;const g=S3.onc;s3Clear(g);if(!it)return;
+function s3Hand(g){/* satılan mal müşteriye uzanır: kalkar, geriye kayar, küçülür */const kids=g.children.slice();if(!kids.length||reduceMotion){s3Clear(g);return}
+  const grp=kids[0],t0=performance.now(),D=750,p0=grp.position.clone(),s0=grp.scale.x;
+  const step=now=>{if(!S3)return;const k=Math.min(1,(now-t0)/D),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    grp.position.set(p0.x-e*.9,p0.y+Math.sin(k*Math.PI)*.45,p0.z-e*2.2);grp.scale.setScalar(s0*(1-e*.45));grp.rotation.y=e*1.2;
+    try{s3Draw()}catch(_){}if(k<1)requestAnimationFrame(step);else{if(grp.parent===g)s3Clear(g);try{s3Draw()}catch(_){}}};requestAnimationFrame(step)}
+function s3Onc(it){const T=THREE,sig=it?it.id+':'+it.cond+':'+(it.cert&&it.cert.auth?1:0):'';if(S3.osig===sig)return;const prev=S3.osig;S3.osig=sig;const g=S3.onc;
+  const c=S.cust;if(!it&&prev&&c&&c.done&&c.result==='deal'&&c.kind==='buyer'){s3Hand(g);return}
+  s3Clear(g);if(!it)return;
   try{const inner=buildModel(Object.assign({},it,{known:it.known||{}}));const bb=new T.Box3().setFromObject(inner),sz=new T.Vector3(),ct=new T.Vector3();bb.getSize(sz);bb.getCenter(ct);
     inner.position.set(-ct.x,-ct.y,-ct.z);const w=new T.Group();w.add(inner);const sc=.62/Math.max(sz.x,sz.y,sz.z*.9,.001);w.scale.setScalar(sc);w.userData.h=sz.y*sc;w.rotation.set(.08,-.45,0);
     w.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
@@ -6217,6 +6276,23 @@ function s3Mount(){const host=$('#s3d');if(!host||S3===false)return;
     s3Items(S.inv.filter(x=>!x.lab).slice(0,16));s3Draw()}
   catch(e){console.warn('3B sahne kapatıldı',e);S3=false;try{render()}catch(_){}}}
 window.addEventListener('resize',()=>{if(S3)setTimeout(()=>{try{S3.w=0;s3Draw()}catch(e){}},150)});
+
+
+/* 1.9.0 · 3B dükkânın fotoğrafı: menü ve akşam ekranının arka planı */
+let S3SNAP={k:'',u:''};
+function s3Snap(w,h){if(!s3Ok())return null;try{ensureEcon();if(!S3)s3Init();s3Room();s3Desk();s3Onc(null);s3Items((S.inv||[]).filter(x=>!x.lab).slice(0,16));
+  const k=[S3.rsig,S3.dsig,S3.isig,w,h].join('#');if(S3SNAP.k===k)return S3SNAP.u;
+  const T=THREE,r=S3.r;r.setSize(w,h,false);S3.cam.aspect=w/h;S3.cam.fov=Math.max(40,2*Math.atan(6.9/2/9/(w/h))*180/Math.PI);S3.cam.updateProjectionMatrix();S3.cam.lookAt(0,1.78,-3);
+  const t=Math.tan(S3.cam.fov*Math.PI/360);S3.desk.position.set(0,1.75+(-1+2*(84/h))*t*(6-1.55),2.0);
+  const dpr=r.getPixelRatio(),W=Math.round(w*dpr),H=Math.round(h*dpr),c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  r.setClearColor(0,0);r.render(S3.fs,S3.cam);const fg=document.createElement('canvas');fg.width=W;fg.height=H;fg.getContext('2d').drawImage(S3.cv,0,0,W,H);
+  r.render(S3.sc,S3.cam);x.drawImage(S3.cv,0,0,W,H);x.drawImage(fg,0,0);
+  const u=c.toDataURL('image/jpeg',.86);S3SNAP={k,u};S3.w=0;return u}catch(e){console.warn('3B fotoğraf alınamadı',e);return null}}
+let KEPENK_SHOWN=false;
+function s3Backdrops(){const mb=document.querySelector('.m3-bg'),ev=document.querySelector('.eve.eve2');
+  if(mb&&!mb.dataset.s3){const u=s3Snap(390,560);if(u){mb.dataset.s3=1;mb.classList.add('s3bg');mb.style.setProperty('--s3',`url(${u})`)}
+    if(!KEPENK_SHOWN&&screen==='menu'){KEPENK_SHOWN=true;const k=document.createElement('div');k.className='kepenk up';mb.parentNode.insertBefore(k,mb.nextSibling);setTimeout(()=>{try{sfx.tap()}catch(e){}},500);setTimeout(()=>k.remove(),2400)}}
+  if(ev&&!ev.dataset.s3){const u=s3Snap(390,560);if(u){ev.dataset.s3=1;ev.classList.add('s3bg');ev.style.setProperty('--s3',`url(${u})`)}}}
 
 /* ---------- 3D thumbnails for icons ---------- */
 const THUMBS=new Map();let TR=null;
