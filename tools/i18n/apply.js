@@ -32,8 +32,10 @@ function render(n) {
 }
 let res = emit(0, src.length);
 // sayı/büyük harf biçimleri
-res = res.replace("const pct=n=>'%'+n;", "const pct=n=>n+'%';");
-res = res.replace('content:"Dokun, incele"', 'content:"Tap to inspect"');
-res = res.replace(/'tr-TR'/g, "'en-US'").replace(/"tr-TR"/g, '"en-US"').replace('<html lang="tr">', '<html lang="en">');
+const LANG = process.argv[5] || 'en';
+const LOC = { en: ['en-US', "n+'%'", 'Tap to inspect'], de: ['de-DE', "n+'\u202f%'", 'Tippen, ansehen'] }[LANG];
+res = res.replace("const pct=n=>'%'+n;", "const pct=n=>" + LOC[1] + ";");
+res = res.replace('content:"Dokun, incele"', 'content:"' + LOC[2] + '"');
+res = res.replace(/'tr-TR'/g, "'" + LOC[0] + "'").replace(/"tr-TR"/g, '"' + LOC[0] + '"').replace('<html lang="tr">', '<html lang="' + LANG + '">');
 fs.writeFileSync(OUT, res);
 console.log('i18n: nodes', nodes.length, 'applied', used);

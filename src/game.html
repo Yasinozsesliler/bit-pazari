@@ -1823,6 +1823,7 @@ nav button{letter-spacing:.03em;text-transform:none}
 .mzres.sold b{color:#78d1a2}.mzres.fake b,.mzres.unsold b{color:#ff8c80}
 .mzsum{display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px;border-radius:16px;background:rgba(0,0,0,.25)}.mzsum b{font-family:var(--display);font-weight:400;font-size:38px;color:#78d1a2}.mzsum small{font-weight:900;color:var(--muted)}
 .mzctl .b,.mzres .b,.mzgo{width:100%}.mzctl{width:100%}.mzw.live{align-items:stretch}
+.st-card:has(> .st-buy[data-act="buy:kese"]){display:none}.st-card.gone,.m3-row .gone{display:none}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -2205,10 +2206,10 @@ const persuadeBtn=c=>has('p3')?`<button class="b pom" data-act="persuade" ${c.pe
 /* ---------- avatar ---------- */
 /* 1.9.0 · cinsiyet ve yaş isimden gelir: Hanım/Teyze/Ayşe kadın, Amca/Teyze yaşlı */
 const FEM_N=new Set(['ayşe','selin','zeynep','gülten','elif','sevim','nermin','leyla','deniz','fatma','emine','hatice','meryem','gül','sibel','derya','ebru','esra','merve','büşra','aslı','nur','nazlı','pınar','melek','şükran','hülya','filiz','canan','sevgi','yasemin','dilek','songül','nesrin','perihan','saadet','hayriye','naciye','müzeyyen','feride','füsun','ayten','türkan','nevin','gönül','sema','tülin','oya','lale','ipek']);
-const F_SUF=/\b(hanım|teyze|abla|nine|hala|anne|bacı|hanımefendi)$/i, M_SUF=/\b(bey|amca|dayı|usta|abi|efendi|paşazade|dede|adam|ağa|hoca|baba|reis)$/i;
-const OLD_SUF=/\b(teyze|amca|dayı|nine|dede|hala|paşazade|efendi|ağa|hoca|baba)$/i, MID_SUF=/\b(bey|hanım|usta|abi|abla|reis)$/i;
+const F_SUF=/(^|\s)(hanım|teyze|abla|nine|hala|anne|bacı|hanımefendi|mrs\.?|ms\.?|miss|auntie|aunt|grandma|frau|tante|oma)(\s|$)/i, M_SUF=/(^|\s)(bey|amca|dayı|usta|abi|efendi|paşazade|dede|adam|ağa|hoca|baba|reis|mr\.?|uncle|brother|master|grandpa|man|herr|onkel|bruder|meister|opa|mann)(\s|$)/i;
+const OLD_SUF=/(^|\s)(teyze|amca|dayı|nine|dede|hala|paşazade|efendi|ağa|hoca|baba|auntie|aunt|uncle|grandma|grandpa|tante|onkel|oma|opa)(\s|$)/i, MID_SUF=/(^|\s)(bey|hanım|usta|abi|abla|reis|mr\.?|mrs\.?|master|brother|herr|frau|meister|bruder)(\s|$)/i;
 function genderOf(name,r){const n=String(name||'').trim().toLocaleLowerCase('tr-TR');if(!n)return r()<.5?'f':'m';if(F_SUF.test(n))return 'f';if(M_SUF.test(n))return 'm';
-  const w=n.replace(/^dr\.\s*/,'').split(/\s+/);if(FEM_N.has(w[0]))return 'f';return 'm'}
+  const w=n.replace(/^dr\.\s*/,'').split(/\s+/);if(w.some(x=>FEM_N.has(x)))return 'f';return 'm'}
 function ageOf(name,r){const n=String(name||'').toLocaleLowerCase('tr-TR');if(OLD_SUF.test(n))return 2;if(MID_SUF.test(n)||/^dr\./.test(n))return 1;if(n)return r()<.25?1:0;return Math.floor(r()*3)}
 function avatar(seed,mood,o){o=o||{};
   const r=seeded(seed);const p=a=>a[Math.floor(r()*a.length)];
@@ -2218,7 +2219,7 @@ function avatar(seed,mood,o){o=o||{};
   if(A===2)hair=['#c9c3b8','#e6e1d6','#b3ada3'][seed%3];else if(A===0&&(hair==='#c9c3b8'||hair==='#e6e1d6'))hair='#4a2c17';
   const shirt=o.shirt||p(['#3a6ea5','#9b3d36','#4f7a4a','#7a5c99','#c48a2a','#2f5f5a','#5b4636']);
   let style=Math.floor(r()*4);const hat0=r()<.22,gl=r()<(A===2?.5:.3)&&!o.noGl,m0=r(),b0=r();
-  style=F?(style<2?style+2:style):style%2;const hat=hat0&&!o.noHat&&!F,sak=/sakallı/i.test(o.name||''),must=!F&&(sak||m0<.55),beard=!F&&(sak||b0<.2);
+  style=F?(style<2?style+2:style):style%2;const hat=hat0&&!o.noHat&&!F,sak=/sakallı|bearded|bärtig/i.test(o.name||''),must=!F&&(sak||m0<.55),beard=!F&&(sak||b0<.2);
   const m=clamp(mood,-1,1),cv=m*7,br=-m*3.2;
   const dk='rgba(60,25,10,.55)';
   let s='<svg viewBox="0 0 120 150" aria-hidden="true">';
@@ -2386,6 +2387,7 @@ const MZ_MIN=300;
 function mzFee(){return r10(150+S.day*20)}
 function mzToday(){return S.mzDay===S.day}
 function mzCands(){return S.inv.filter(x=>!x.lab&&!x.chest&&!x.web&&!x.isPend&&val(x)>=MZ_MIN).sort((a,b)=>val(b)-val(a))}
+function shortName(n){const w=String(n).split(' ').filter(x=>!/^(mr|mrs|ms|miss|auntie|aunt|uncle|master|brother|sister|grandpa|granny|herr|frau|tante|onkel|meister|bruder|schwester|opa|oma|der|die|the|dr|prof)\.?$/i.test(x));return w[0]||String(n).split(' ')[0]}
 function mzRow(){const sold=mzToday();return `<button class="erow2" style="--tc:#b5813a" data-act="eve:mezat"><span class="ri">${ART.mezat}</span><span class="rt"><b>Mezat Gecesi</b><small>Dükkânında kendi açık artırmanı yap</small></span><span class="rs ${sold?'':'info'}">${sold?'Bu akşam yapıldı':'Salon hazır'}</span><span class="chev">›</span></button>`}
 function renderMezat(){if(MZ)return mzLive();const c=mzCands();
   if(mzToday())return `<div class="eve mzw"><div class="mzhead"><button class="tb back" data-act="eve:hub">‹</button><h2>Mezat Gecesi</h2></div><p class="sub">Bu akşamki mezat bitti. Yarın akşam yeniden salon açabilirsin.</p></div>`;
@@ -2395,13 +2397,13 @@ function renderMezat(){if(MZ)return mzLive();const c=mzCands();
    <p class="sub">En fazla 3 parça seç. Mezatçı sensin: “Bir! İki! Satıldı!” diye sayarak teklifleri sen toplayacaksın.</p>
    ${c.length?`<div class="mzlist">${c.slice(0,24).map(x=>{const on=pick.includes(x.id);return `<button class="mzit${on?' on':''}" data-act="mzSel:${x.id}">${icon(x)}<span><b>${esc(x.n)}</b><small>Tahmini ${fmt(val(x))}</small></span><i>${on?'✓':''}</i></button>`}).join('')}</div>`
      :`<p class="sub">Mezata çıkacak değerde (${fmt(MZ_MIN)} ve üstü) bir parçan yok.</p>`}
-   <div class="mzopen"><small>Açılış fiyatı</small><span>${opts.map(([v,t,d])=>`<button class="${MZOPEN===v?'on':''}" data-act="mzOpen:${v}"><b>${t}</b><small>%${Math.round(v*100)} · ${d}</small></button>`).join('')}</span></div>
+   <div class="mzopen"><small>Açılış fiyatı</small><span>${opts.map(([v,t,d])=>`<button class="${MZOPEN===v?'on':''}" data-act="mzOpen:${v}"><b>${t}</b><small>${pct(Math.round(v*100))} · ${d}</small></button>`).join('')}</span></div>
    <button class="b brass mzgo" data-act="mzStart" ${pick.length&&S.money>=mzFee()?'':'disabled'}>Salonu Aç<small>Davet ve çay masrafı ${fmt(mzFee())}</small></button></div>`}
 function mzBidders(it){const n=clamp(3+(MZOPEN<=.5?1:0)-(MZOPEN>=.9?1:0)+((S.up&&S.up.vitrin)?1:0),2,5);ensureLive();
   const regs=Object.entries(S.regs||{}).filter(([k,r])=>r.n>=1&&r.m>=0).map(([k])=>k).sort(()=>Math.random()-.5).slice(0,2);
   const names=[...regs];while(names.length<n){const nm=pick(NAMES);if(!names.includes(nm))names.push(nm)}
   const base=val(it)*(trendMul(it)||1)*(evBuyMul()||1);
-  return names.slice(0,n).map((nm,i)=>{const r=S.regs&&S.regs[nm],warm=r&&r.m>=1?1.1:1;return {n:nm,seed:hashStr(nm)*7+3,max:r10(base*(.72+Math.random()*.62)*warm),reg:!!r,exp:/Bey|Hanım|Dr\./.test(nm)&&Math.random()<.4,up:0,out:false}})}
+  return names.slice(0,n).map((nm,i)=>{const r=S.regs&&S.regs[nm],warm=r&&r.m>=1?1.1:1;return {n:nm,seed:hashStr(nm)*7+3,max:r10(base*(.72+Math.random()*.62)*warm),reg:!!r,exp:/Bey|Hanım|Dr\.|Mr\.|Mrs\.|Herr|Frau/.test(nm)&&Math.random()<.4,up:0,out:false}})}
 function mzStart(){const c=mzCands(),lots=MZSEL.map(id=>c.find(x=>x.id===id)).filter(Boolean).slice(0,3);if(!lots.length||S.money<mzFee())return;
   S.money-=mzFee();logT('fee',{n:'Mezat gecesi masrafı',i:'🔨'},-mzFee());S.mzDay=S.day;save();T('mezat_start',{lots:lots.length,open:MZOPEN});
   MZ={lots:lots.map(it=>({id:it.id,res:null})),i:-1,sum:0};mzNext()}
@@ -2438,7 +2440,7 @@ function mzLive(){const z=MZ;if(z.done){clearInterval(z.idT);const sold=z.lots.f
   return `<div class="eve mzw live"><div class="mzhead"><span class="mzlot">Lot ${z.i+1}/${z.lots.length}</span><h2>Mezat Gecesi</h2></div>
    <div class="mzstage"><div class="mzitem">${icon(it)}</div><b class="mzname">${esc(it.n)}</b><small class="mzest">Tahmini ${fmt(val(it))}</small></div>
    <div class="mzbid"><small>${z.bids?'En yüksek teklif':'Açılış'}</small><b>${fmt(z.cur)}</b><span>${ld?esc(ld):'Henüz el kalkmadı'}</span></div>
-   <div class="mzcrowd">${z.bd.map(b=>`<div class="mzb${b.n===ld?' lead':''}${now-b.up<900?' up':''}${b.out?' out':''}">${avatar(b.seed,b.n===ld?.7:b.out?-.4:.1,{name:b.n})}<small>${esc(b.n.split(' ')[0])}${b.reg?' ♥':''}</small><i class="pad">${b.n===ld?'✋':''}</i></div>`).join('')}</div>
+   <div class="mzcrowd">${z.bd.map(b=>`<div class="mzb${b.n===ld?' lead':''}${now-b.up<900?' up':''}${b.out?' out':''}">${avatar(b.seed,b.n===ld?.7:b.out?-.4:.1,{name:b.n})}<small>${esc(shortName(b.n))}${b.reg?' ♥':''}</small><i class="pad">${b.n===ld?'✋':''}</i></div>`).join('')}</div>
    <div class="mzfeed">${z.feed.slice(-4).map(f=>`<p>${esc(f)}</p>`).join('')}</div>
    ${z.fin?`<div class="mzres ${z.fin}"><b>${{sold:'Satıldı!',unsold:'Alıcı çıkmadı',pulled:'Geri çekildi',fake:'Lot iptal'}[z.fin]}</b><button class="b brass" data-act="mzNext">${z.i+1<z.lots.length?'Sıradaki lot':'Mezatı kapat'}</button></div>`
      :`<div class="mzctl"><div class="mzdots">${[0,1,2].map(k=>`<i class="${k<z.calls?'on':''}"></i>`).join('')}</div>
@@ -2464,8 +2466,7 @@ function renderEveHub(){ensureShip();genLots();
    ${alerts.length?`<div class="alerts">${alerts.map(a=>`<button class="al ${a[0]}" data-act="eve:${a[2]}"><i></i>${a[1]}<span>›</span></button>`).join('')}</div>`:''}
    ${marketLine()}${ordersSec()}
    <section class="grp"><h3>Satış</h3>
-    ${unlocked('gece')?mzRow():lockRow('mezat','Mezat Gecesi','gece')}
-    ${R('auction','mezat','#c23a2f','Online Mezat','Teklif ver, mal sat',open?`${open} açık`:'Bitti')}
+    ${(unlocked('gece')?mzRow():lockRow('mezat','Mezat Gecesi','gece'))+R('auction','mezat','#c23a2f','Online Mezat','Teklif ver, mal sat',open?`${open} açık`:'Bitti')}
     ${R('web','web','#5fd1b8','Web Mağazam','Sabit fiyatla sat',unread?`${unread} yeni yorum`:web?`${web} ilan`:'İlan ver',unread?'info':'')}
     ${R('kargo','kargo','#e8925a','Kargo Masası','Paketle ve gönder',us?`${us} paket`:'Boş',us?'warn':'')}</section>
    <section class="grp"><h3>Atölye</h3>
@@ -2939,7 +2940,8 @@ function renderMenu3(){const hs=hasSave(),L=hs?curLoc():null;
      ${hs?`<button data-act="menuNew">${icon('<path d="M12 5v14M5 12h14"/>')}<span>Yeni Oyun</span></button>`:''}
      <button data-act="howto">${icon('<path d="M4 5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v14h-6a2 2 0 0 0-2 1 2 2 0 0 0-2-1H4z"/><path d="M12 6v14"/>')}<span>Rehber</span></button>
      ${iapLive()?`<button data-act="store" class="m3-store">${icon('<path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>')}<span>Mağaza</span>${ENT.premium?'':'<i class="m3-dot"></i>'}</button>`:''}
-     <button data-act="settings">${icon('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>')}<span>Ayarlar</span></button>
+     <button data-act="mute" class="${'m3set'}">${icon('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>')}<span>${'Ayarlar'}</span></button>
+     <button data-act="musicT" class="${'gone'}">${''}<span>${''}</span></button>
     </div>
     <p class="m3-foot">Bir OZS Studio oyunu<button class="mpriv" data-act="privacy">Gizlilik ayarları</button></p>
    </div></div>`}
@@ -4283,7 +4285,7 @@ function renderTop(){
    <div class="dayStrip"><span class="dlabel">GÜN ${S.day}</span><div class="segs" aria-label="Bugün ${Math.min(S.ci,dayLen())} / ${dayLen()} müşteri">${segs}</div><span class="dcount">${Math.min(S.ci,dayLen())}/${dayLen()}</span>
    <button class="mutebtn" data-act="mapOpen" aria-label="Şehir haritası"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2 5l5-2 6 2 5-2v12l-5 2-6-2-5 2z"/><path d="M7 3v12M13 5v12"/></svg></button>
    <button class="mutebtn" data-act="toMenu" aria-label="Ana menü"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h12M4 10h12M4 14h12"/></svg></button>
-   <button class="mutebtn" data-act="settings" aria-label="Ayarlar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>`;
+   <button class="mutebtn" data-act="mute" aria-label="${S.mute?'Sesi aç':'Sesi kapat'}">${speakerSvg()}</button></div>`;
   animMoney()}
 let moneyAnim=0;
 function animMoney(){const from=shownMoney==null?S.money:shownMoney,to=S.money;if(Math.round(from)===to){shownMoney=to;return}
@@ -4588,7 +4590,7 @@ document.addEventListener('click',e=>{
   if(a==='mzPull'){mzPull();return}
   if(a==='mzNext'){mzNext();return}
   if(a==='mzEnd'){MZ=null;MZSEL=[];eve='hub';render();return}
-  if(a==='settings'){sfx.tap();settingsOpen();return}
+  if(a==='settings'||(a==='mute'&&screen==='menu')){sfx.tap();settingsOpen();return}
   if(a.startsWith('set:')){settingsSet(a.slice(4));return}
   if(a.startsWith('langSet:')){langSet(a.slice(8));return}
   if(a==='musicT'){S.music=S.music===false;if(S.music===false)musicStop();save();render();return}
@@ -4679,8 +4681,8 @@ document.addEventListener('click',e=>{
   if(a==='menuBack'){screen='menu';sfx.tap();render();return}
   if(a==='nameGo'){startNamed();return}
   if(a==='toMenu'){screen='menu';sfx.tap();closeModal();render();return}
-  if(a==='lang'){const to=document.documentElement.lang==='en'?'tr':'en';try{localStorage.setItem('bitpazari.lang',to)}catch(e){}const N=window.NATIVE;if(N&&N.setLang){N.setLang(to)}else{location.href=(to==='en'?'en.html':'index.html')+location.search}return}
-  if(a==='howto'){sfx.tap();modal({icon:'🧭',title:'Nasıl Oynanır',body:'Müşteri mal getirir: incele, arkasını çevirip damgaya bak, pazarlık yap, ucuza al.<br><br>Müşteri mal ister: fiyatını söyle, karşı teklifi kabul et ya da diren.<br><br>Teklifi değiştirdikçe müşterinin yüzünü izle, ne düşündüğü belli olur. Sahte mal satarsan zabıta gelebilir. Her gün Günün Eşyası\'nı tahmin et, ödül kazan.',btns:[{t:document.documentElement.lang==='en'?'🌐 Türkçe':'🌐 English',cls:'ghost',a:'lang'},{t:'Anladım',cls:'brass',a:'closeModal'}]});return}
+  if(a==='lang'){const to=document.documentElement.lang!=='tr'?'tr':'en';try{localStorage.setItem('bitpazari.lang',to)}catch(e){}const N=window.NATIVE;if(N&&N.setLang){N.setLang(to)}else{location.href=(to==='en'?'en.html':to==='de'?'de.html':'index.html')+location.search}return}
+  if(a==='howto'){sfx.tap();modal({icon:'🧭',title:'Nasıl Oynanır',body:'Müşteri mal getirir: incele, arkasını çevirip damgaya bak, pazarlık yap, ucuza al.<br><br>Müşteri mal ister: fiyatını söyle, karşı teklifi kabul et ya da diren.<br><br>Teklifi değiştirdikçe müşterinin yüzünü izle, ne düşündüğü belli olur. Sahte mal satarsan zabıta gelebilir. Her gün Günün Eşyası\'nı tahmin et, ödül kazan.',btns:[{t:document.documentElement.lang!=='tr'?'🌐 Türkçe':'🌐 English',cls:'ghost',a:'lang'},{t:'Anladım',cls:'brass',a:'closeModal'}]});return}
   if(a.startsWith('viewInv:')){openViewer(itemById(a.slice(8)));return}
   if(a==='view'&&c){openViewer(c.kind==='seller'?c.item:itemById(c.itemId));return}
   if(a==='vclose'){sfx.tap();closeViewer();return}
@@ -4808,16 +4810,14 @@ function renderStore(){
    <header class="st-head"><button class="st-back" data-act="storeBack" aria-label="Geri"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div><small>BİT PAZARI</small><h1>Mağaza</h1></div></header>
    <div class="st-list">
-    ${storeStarterCard()}
-    ${storeDealCard()}
+    ${storeStarterCard()+storeDealCard()}
     <section class="st-card prem">
      <span class="st-flag">En iyi fırsat</span>
      <div class="st-ic">👑</div>
      <h2>Premium</h2>
      <p class="st-lead">Hepsi bir arada, tek seferlik.</p>
      <ul><li>📜 <b>Tarih</b>, 🧢 <b>Çırak</b> ve 🎨 <b>Dekor</b> paketleri dahil</li><li>✨ Gelecek <b>tüm yeni paketler</b> dahil</li><li>🚫 <b>Reklamsız oyun:</b> geçiş reklamı yok</li><li>🎁 Ödüllü reklam bonusları <b>videosuz</b></li></ul>
-     ${storeTable()}
-     ${premAnchor()}
+     ${storeTable()+premAnchor()}
      ${btn('premium')}
     </section>
     <section class="st-card">
@@ -4833,9 +4833,15 @@ function renderStore(){
      <h2>Çırak Paketi</h2>
      <p class="st-lead">Hızlı başlangıç için küçük destek</p>
      <ul><li>💰 <b>5.000 ₺</b> sermaye hemen kasana</li><li>🧢 <b>Çırak Necati</b> yanında başlar: her akşam 1 malını senin yerine satar</li><li>👑 Premium alanlara zaten dahildir</li></ul>
-     ${btn('cirak')}
+     ${btn('cirak')+'</section>'+storeKese()+'<section class="st-card gone" hidden>'}
     </section>
-    ${storeKese()}
+    <section class="st-card">
+     <div class="st-ic">💰</div>
+     <h2>Esnaf Kesesi</h2>
+     <p class="st-lead">Sermaye sıkıştıysa anında nakit</p>
+     <ul><li>💵 <b>${fmt(keseAmt())}</b> hemen kasana</li><li>📈 Miktar, dükkânın büyüdükçe artar</li><li>🔁 İstediğin zaman tekrar alınabilir</li></ul>
+     <button class="st-buy" data-act="buy:kese" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':priceOf('kese')?esc(priceOf('kese'))+' · Satın Al':'Satın Al'}</button>
+    </section>
     <section class="st-card">
      <div class="st-ic">🎨</div>
      <h2>Dekor Paketi</h2>
@@ -4851,7 +4857,7 @@ function renderStore(){
      ${szEnsure().gold?`<div class="st-own">✓ Bu sezon açık</div>`:`<button class="st-buy" data-act="buy:sezon" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':priceOf('sezon')?esc(priceOf('sezon'))+' · Satın Al':'Satın Al'}</button>`}
     </section>
     <button class="st-restore" data-act="iapRestore" ${storeBusy?'disabled':''}>Satın Alımları Geri Yükle</button>
-    <p class="st-legal">Abonelik yoktur. Premium, Tarih, Çırak ve Dekor Paketi tek seferlik satın almadır; Başlangıç Paketi hesap başına bir kez alınır. Kumbara, Esnaf Kesesi (üç boy) ve Sezon Kartı her seferinde ayrı satın alınır. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
+    <p class="st-legal">Abonelik yoktur. Premium, Tarih, Çırak ve Dekor Paketi tek seferlik satın almadır; Kumbara, Esnaf Kesesi ve Sezon Kartı her seferinde ayrı satın alınır. Ödeme Apple Kimliğin üzerinden alınır. Satın alımlar aynı Apple Kimliği ile giriş yapılan cihazlarında da geçerlidir.</p>
    </div></div>`}
 function storeOpen(){T('store_open',{from:String(screen)});storeFrom=screen==='store'?storeFrom:screen;screen='store';iapLoad();sfx.tap();closeModal();render();const m=$('#main');if(m)m.scrollTop=0}
 function packTeaser(){if(packOwned('tarih')||!iapLive())return '';

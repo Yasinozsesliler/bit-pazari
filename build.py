@@ -55,4 +55,6 @@ if '</html>' not in s: s=s.rstrip()+'\n</body></html>\n'
 open(f"{W}/index.html","w",encoding="utf-8").write(s)
 # ---- İngilizce sürüm (tools/i18n/en.json) ----
 subprocess.check_call(["node","tools/i18n/apply.js",f"{W}/index.html",f"{W}/en.html","tools/i18n/en.json"])
+# ---- Almanca sürüm (tools/i18n/de.json) ----
+subprocess.check_call(["node","tools/i18n/apply.js",f"{W}/index.html",f"{W}/de.html","tools/i18n/de.json","de"])
 print("www hazır:",round(sum(os.path.getsize(os.path.join(d,f)) for d,_,fs in os.walk(W) for f in fs)/1e6,2),"MB")
