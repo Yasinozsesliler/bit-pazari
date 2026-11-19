@@ -1712,6 +1712,14 @@ nav button{letter-spacing:.03em;text-transform:none}
 .scene.s3 .onCounter::before{display:none}
 .scene.s3 .dayfx{display:none}
 .scene.s3 .onCounter:not(.flat){bottom:12px}.scene.s3 .onCounter:not(.flat) .big{height:84px}
+.greetp{gap:8px;justify-content:center}
+.greetp .gq{margin:0 0 2px;text-align:center;font-family:var(--display);font-size:18px;color:var(--brass)}
+.gopt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;border:none;border-radius:14px;padding:11px 14px;text-align:left;color:var(--fg);background:linear-gradient(180deg,#2e2117,#22170f);box-shadow:inset 0 0 0 1px rgba(232,171,60,.35),0 3px 0 #0b0704}
+.gopt b{font-size:15px;font-weight:800;line-height:1.3}
+.gopt small{font-size:11.5px;font-weight:800;color:var(--muted)}
+.gopt:active{transform:translateY(2px);box-shadow:inset 0 0 0 1px rgba(232,171,60,.55)}
+.bubble.quiet{width:auto;min-width:120px;max-width:58%;padding:7px 14px}
+.bubble.quiet p{font-size:18px;letter-spacing:.15em;text-align:center;color:#8b6a49}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -3641,6 +3649,20 @@ const TALK={
  buyer:[['hikaye','📜','Hikâyesini anlat','Ürünün geçmişini anlat'],['blof','🃏','Blöf yap','"Başka alıcı da soruyor"'],['gonul','🍵','Gönlünü al','Çay söyle, sohbet et']]};
 const BLOFCH={aceleci:.8,acemi:.6,kurnaz:.3,bilir:.2,zengin:.6,koleksiyoncu:.5,pazarlikci:.25,ogrenci:.2};
 const HIKCH={koleksiyoncu:.85,zengin:.75,pazarlikci:.4,ogrenci:.3};
+/* 1.9.0 · Açılış: müşteri içeri girer, önce sen konuşursun ("Ne söyleyeceksin?"), sonra o derdini anlatır */
+function greetOn(c){return !!c&&!c.done&&!c.greeted&&(c.kind==='seller'||c.kind==='buyer')&&!c.story&&!c.fst&&!c.recalled}
+const GREET={
+ seller:[['warm','Hoş geldin, buyur otur.','Sabrı artar','Eksik olma evladım. '],['plain','Ne getirdin, bakalım?','','',],['hard','Çabuk ol, işim başımdan aşkın.','Sabrı azalır, fiyat iner','Peki peki, uzatmayayım. ']],
+ buyer:[['warm','Hoş geldin, çayımı içer misin?','Sabrı artar','Sağ ol, hiç hayır demem. '],['plain','Ne arıyordun?','',''],['praise','Göz zevkin belli, iyi parçalar var.','Bütçesi biraz artar, sabrı azalır','Eh, anlarım biraz. ']]};
+function greetPanel(c){const L=GREET[c.kind]||GREET.seller;
+  return `<div class="panel greetp"><p class="gq">Ne söyleyeceksin?</p>${L.map(([k,t,h])=>`<button class="gopt" data-act="greet:${k}"><b>“${t}”</b>${h?`<small>${h}</small>`:''}</button>`).join('')}</div>`}
+function greetDo(k){const c=S.cust;if(!greetOn(c)||busy)return;const L=GREET[c.kind]||GREET.seller,o=L.find(x=>x[0]===k)||L[1];c.greeted=k;
+  if(k==='warm'){c.patience=Math.min(c.maxPat+1,c.patience+1);if(c.patience>c.maxPat)c.maxPat=c.patience}
+  if(k==='hard'){c.patience=Math.max(1,c.patience-1);if(c.kind==='seller'){c.ask=r10(c.ask*.95);if(c.minAccept)c.minAccept=r10(c.minAccept*.97)}}
+  if(k==='praise'){c.patience=Math.max(1,c.patience-1);if(c.maxPay)c.maxPay=r10(c.maxPay*1.04)}
+  T('greet',{k,kind:c.kind});c.line=o[3]+c.line;c.tw=1;pulse=true;sfx.tap();save();render()}
+function twRun(){const c=S.cust;if(!c||!c.tw)return;c.tw=0;const p=document.querySelector('.bubble p');if(!p||reduceMotion)return;const full=p.textContent;if(!full)return;
+  p.style.minHeight=p.offsetHeight+'px';p.textContent='';let i=0;const step=()=>{if(!p.isConnected){return}i=Math.min(full.length,i+2);p.textContent=full.slice(0,i);if(i<full.length)setTimeout(step,22);else p.style.minHeight=''};setTimeout(step,120)}
 function talkPop(c){if(!c||c.done)return'';const tv=c.trade?tradeValOf(c):0,ti=c.trade&&itemById(c.trade);let h='';
   if(ti)h+=`<div class="tradechip"><span>${icon(ti)}</span><b>Takas: ${ti.n}</b><em>≈ ${fmt(tv)}</em><button data-act="untrade" aria-label="Takası kaldır">✕</button></div>`;
   if(c.tradeOpen){const its=S.inv.filter(x=>!x.lab&&!x.web&&!x.chest);
@@ -4086,6 +4108,7 @@ function renderScene(){
   if(c){const enter=c.id!==lastCustId;lastCustId=c.id;
     h+=`<div class="cust ${enter?'enter':''} ${c.done?'':'bob'}">${avatar(c.seed,moodOf(c),{name:c.name})}</div>`;
     if(!c.done&&(c.kind==='seller'||c.kind==='buyer'))h+=`<div class="react" id="react"></div>`;
+    if(greetOn(c))h+=`<div class="bubble quiet${enter?' pulse':''}"><div class="who">${c.name}<span class="tag">${c.tag}</span>${regChip(c)}</div><p>…</p></div>`;else
     h+=`<div class="bubble${pulse||enter?' pulse':''}"><div class="who">${c.name}<span class="tag">${c.tag}</span>${regChip(c)}</div><p>${c.line}</p>
       ${c.kind!=='story'&&!c.done?`<div class="pat"><span>Sabır</span>${Array.from({length:c.maxPat},(_,k)=>`<i class="${k<c.patience?'':'off'}"></i>`).join('')}</div>`:''}</div>`;
     const it=c.kind==='seller'?c.item:itemById(c.itemId);
@@ -4175,6 +4198,7 @@ function renderPanel(){
   if(!c)return `<div class="panel"><button class="b brass" data-act="open">Dükkânı Aç</button></div>`;
   if(c.done)return `<div class="panel"><div class="wait">${c.result==='deal'?'Anlaşma tamam. Sıradaki müşteri geliyor…':'Müşteri gidiyor…'}</div></div>`;
   const dis=busy?'disabled':'';
+  if(greetOn(c))return greetPanel(c);
   if(c.kind==='seller'){const it=c.item;
     return `<div class="panel deal2 dz">${talkPop(c)}${c.cemil?`<div class="cemban">😼 <b>Kurnaz Cemil</b> ${fmt(c.cemil)} verdi. Üstüne çıkmazsan mal onun!</div>`:''}${dzInfo('İstediği',fmt(c.ask),it)}
       ${dzOffer('Teklifin')}${dzChips()}
@@ -4238,7 +4262,7 @@ function render(){
   else if(S.tab==='inv')main.innerHTML=renderInv();
   else if(S.tab==='skills')main.innerHTML=renderUst();
   else main.innerHTML=renderMys();
-  shake=false;fitScene();try{s3Mount()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
+  shake=false;fitScene();try{s3Mount()}catch(e){}try{twRun()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
 
 /* ---------- native hooks (Android geri tuşu / arka plan) ---------- */
 window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click();return true};
@@ -4405,6 +4429,7 @@ document.addEventListener('click',e=>{
   if(a==='store'){storeOpen();return}
   if(a==='storeBack'){screen=storeFrom==='store'?'menu':storeFrom;sfx.tap();render();return}
   if(a.startsWith('buy:')){iapBuy(a.slice(4));return}
+  if(a.startsWith('greet:')){greetDo(a.slice(6));return}
   if(a.startsWith('offerGo:')){T('offer_click',{r:a.slice(8)});storeOpen();return}
   if(a==='kbOpen'){kbOpen();return}
   if(a==='gcShow'){gcShow();return}
