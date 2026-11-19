@@ -13,32 +13,21 @@ Yeni: 30 saatlik Saat Ustası serisi, elle restorasyon ve ekspertiz çantası! B
 dükkan,esnaf,tüccar,ticaret,tycoon,işletme,saat,koleksiyon,müzayede,mezat,sahte,istanbul,eşya,mağaza
 
 ## Açıklama
-Dededen kalma küçük bir dükkân, bir avuç para ve İstanbul'un en renkli pazarı… Ucuza al, pahalıya sat. Ama dikkat: her parlayan altın değil!
+Dedenden kalan küçük dükkânı devraldın, kasada bir avuç para var. Bit Pazarı, bu dükkânı ayakta tutmaya çalıştığın, İstanbul'da geçen bir antika al-sat oyunu.
 
-GERÇEK BİR PAZARLIK
-Her müşterinin bir huyu var. Kurnaz Cevdet Dayı fiyatı şişirir, koleksiyoncu sahteyi bir bakışta anlar. Teklifini yaz, çay ikram et, tatlı dille ikna et ya da elindeki eşyayla takas öner. Fazla sıkıştırırsan müşteri kapıyı çarpıp gider.
+Kapıdan her gün başka biri giriyor. Cevdet Dayı fiyatı şişirir, emekli öğretmen pazarlıktan hoşlanmaz, koleksiyoncu sahteyi bir bakışta anlar. Teklifini verirsin, çay ikram edersin, kusuru gösterirsin ya da elindeki bir eşyayla takas önerirsin. Fazla sıkıştırırsan müşteri kalkıp gider.
 
-SAHTEYİ YAKALA
-Eşyaları 3 boyutlu olarak elinde çevir. Ekspertiz çantanı aç: büyüteçle gizli damgayı bul, UV lambayla taze boyayı yakala, hassas terazide tart. Sahte malı gerçek diye satarsan zabıta kapıya dayanır.
+Her eşya sahici değil. Parçayı elinde çevirip arkasındaki damgaya bakabilir, büyüteç, UV lamba ve terazi kullanabilir ya da uzmana sorabilirsin. Sahteyi gerçek diye satarsan zabıta da gelir, itibarın da gider.
 
-ELLE RESTORASYON
-Tozlu cep saatini fırçala, çatlak vazoyu yapıştır, gramofonu cilala. Ne kadar özenli çalışırsan eşyanın değeri o kadar artar.
+Tozlu cep saatini fırçalayıp çatlak vazoyu yapıştırırsın, iyi onarılan parça daha çok eder. İmzalı formaları ve futbolcu kartlarını not almaya gönderebilirsin. Akşamları e-Mezat'ta açık artırmalara girer, sattığın ürünü kendi elinle paketleyip kargoya verirsin.
 
-E-MEZAT VE KARGO
-Akşamları e-Mezat'ta canlı açık artırmalara katıl, kendi ürünlerini sat. Satılan ürünü kutusuna kendin yerleştir, sar, bantla, kargoya ver.
+Bit Pazarı'ndan başlayıp Kadıköy, Kapalıçarşı, Galata ve Nişantaşı'nda dükkân açabilirsin. Her semtin müşterisi, malı ve kirası farklı. Oyunda 120'den fazla eşya var: çini vazolar, 40 çeşit saat, gramofonlar, oyuncaklar, Osmanlı sikkeleri. Her birinin kendi 3B modeli ve kısa bir hikâyesi var.
 
-İSTANBUL'DA BÜYÜ
-Bit Pazarı'ndan başla; Kadıköy, Kapalıçarşı, Galata ve Nişantaşı'nda yeni dükkânlar aç. Her semtin müşterisi ve malı farklı.
+İnternet olmadan oynanır. İnternet sadece isteğe bağlı reklamlar için gerekir.
 
-120'DEN FAZLA EŞYA
-Çini vazolar, 40 farklı saat, pikaplar, oyuncaklar, mücevherler, imzalı formalar… Her biri kendi 3B tasarımıyla. Nadir ve efsanevi parçaları bul, 13 koleksiyon serisini tamamla.
+Oyunda isteğe bağlı satın almalar var. Bunların bir kısmı (Esnaf Kesesi, Başlangıç Paketi, Kumbara) oyun içi para verir. Oyun içi para ve eşyalar gerçek paraya çevrilemez.
 
-DÜKKÂNINI SÜSLE
-Duvar rengi, fenerler, tezgâh kilimi ve ahşabı, uyuyan dükkân kedisi, kanarya, ampul zinciri ve kapı zili sesleri.
-
-İnternetsiz oynanır. Oyundaki para ve eşya değerleri yalnızca oyun içi puandır; gerçek parayla satın alınamaz, gerçek paraya çevrilemez.
-
-Bir OZS Studio oyunu.
+OZS Studio
 
 ## Bu sürümdeki yenilikler (1.1.1)
 • 30 yeni saat ve 5 yeni koleksiyon serisi
@@ -51,7 +40,7 @@ Bir OZS Studio oyunu.
 2026 OZS Studio
 
 ## İnceleme notu (App Review)
-Hesap veya giriş gerekmez; oyun doğrudan açılır. Reklamlar isteğe bağlı ödüllü reklamlardır. Oyun içi para gerçek parayla satın alınamaz.
+Hesap veya giriş gerekmez; oyun doğrudan açılır. Ödüllü reklamlar isteğe bağlıdır; 3. günden sonra günde en fazla 5 geçiş reklamı gösterilir. Oyun içi para bazı satın almalarla (Esnaf Kesesi, Başlangıç Paketi, Kumbara) alınabilir, gerçek paraya çevrilemez.
 
 ## İngilizce (ABD) sayfa
 Bkz. `store/aso/ASO-PLANI.md`. Türkiye'de de aranır.
