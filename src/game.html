@@ -1777,6 +1777,52 @@ nav button{letter-spacing:.03em;text-transform:none}
 .scene.s3 .dec{display:none}
 .scene.s3 .s3d{cursor:pointer}
 .scene.s3 .pet{display:none}
+/* 1.9.0 · Ayarlar */
+.setlist{display:flex;flex-direction:column;gap:8px;margin-top:4px;text-align:left}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:none;border-radius:12px;padding:10px 12px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(232,171,60,.2);color:var(--fg);text-align:left}
+.st-t{display:flex;flex-direction:column;gap:1px}.st-t b{font-size:14.5px;font-weight:900}.st-t small{font-size:11.5px;font-weight:700;color:var(--muted)}
+.tg{position:relative;flex:none;width:46px;height:26px;border-radius:99px;background:#3a2d22;box-shadow:inset 0 2px 4px rgba(0,0,0,.5);transition:background .15s}
+.tg i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#cbb894;transition:left .15s}
+.setrow.on .tg{background:linear-gradient(180deg,#78d1a2,#3f9c6e)}.setrow.on .tg i{left:23px;background:#fff}
+.setlang{display:flex;flex-direction:column;gap:6px;margin-top:14px;text-align:left}.setlang small{font-size:12px;font-weight:900;color:var(--muted)}
+.setlang>span{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.lgb{border:none;border-radius:10px;padding:9px 0;font:800 13px var(--body);color:var(--fg);background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(232,171,60,.2)}
+.lgb.on{color:#2c1a06;background:linear-gradient(180deg,#f6d98a,#d9a441);box-shadow:none}
+/* 1.9.0 · Mezat Gecesi */
+.mzw{display:flex;flex-direction:column;gap:12px;padding-bottom:24px}
+.mzhead{display:flex;align-items:center;gap:10px}.mzhead h2{margin:0;font-family:var(--display);font-weight:400;font-size:24px;color:var(--brass)}
+.mzhead .back{width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.3);color:var(--fg);font-size:22px}
+.mzlot{font-size:12px;font-weight:900;color:var(--muted);padding:3px 9px;border-radius:99px;background:rgba(0,0,0,.3)}
+.mzlist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mzit{position:relative;display:flex;align-items:center;gap:8px;border:none;border-radius:12px;padding:8px;text-align:left;color:var(--fg);background:rgba(0,0,0,.28);box-shadow:inset 0 0 0 1px rgba(232,171,60,.18)}
+.mzit .tico{width:40px;height:40px;flex:none}.mzit span{display:flex;flex-direction:column;min-width:0}.mzit b{font-size:12.5px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mzit small{font-size:11px;color:var(--muted);font-weight:800}
+.mzit i{position:absolute;top:6px;right:8px;font-style:normal;font-weight:900;color:#2c1a06;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px}
+.mzit.on{box-shadow:inset 0 0 0 2px #e8ab3c;background:rgba(232,171,60,.12)}.mzit.on i{background:#e8ab3c}
+.mzopen{display:flex;flex-direction:column;gap:6px}.mzopen>small{font-size:12px;font-weight:900;color:var(--muted)}
+.mzopen>span{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mzopen button{border:none;border-radius:12px;padding:8px 6px;color:var(--fg);background:rgba(0,0,0,.28);box-shadow:inset 0 0 0 1px rgba(232,171,60,.18);display:flex;flex-direction:column;gap:2px;text-align:center}
+.mzopen button b{font-size:12.5px}.mzopen button small{font-size:10.5px;color:var(--muted);font-weight:800}
+.mzopen button.on{box-shadow:inset 0 0 0 2px #e8ab3c;background:rgba(232,171,60,.12)}
+.mzgo{margin-top:4px;display:flex;flex-direction:column}.mzgo small{font-size:11.5px}
+.mzstage{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;background:radial-gradient(ellipse at 50% 30%,rgba(255,200,120,.16),transparent 70%),rgba(0,0,0,.25)}
+.mzitem .tico{width:110px;height:110px}.mzname{font-family:var(--display);font-weight:400;font-size:19px;color:var(--fg)}.mzest{font-size:12px;color:var(--muted);font-weight:800}
+.mzbid{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:14px;background:linear-gradient(180deg,#f6ead0,#e9d7b0);color:#2b1a0f}
+.mzbid small{font-size:12px;font-weight:900;color:#7a5a3a}.mzbid b{font-family:var(--display);font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}.mzbid span{font-size:12.5px;font-weight:900;color:#7a3a10}
+.mzcrowd{display:flex;justify-content:center;gap:6px}
+.mzb{position:relative;width:64px;display:flex;flex-direction:column;align-items:center;transition:transform .2s,opacity .3s}
+.mzb svg{width:60px;height:75px}.mzb small{font-size:10.5px;font-weight:900;color:var(--muted)}
+.mzb.lead small{color:#e8ab3c}.mzb.up{transform:translateY(-8px)}.mzb.out{opacity:.4;filter:grayscale(.7)}
+.mzb .pad{position:absolute;top:-4px;right:2px;font-style:normal;font-size:18px}
+.mzfeed{min-height:84px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px}
+.mzfeed p{margin:0;font-size:13px;font-weight:800;color:var(--fg);opacity:.55}.mzfeed p:last-child{opacity:1}
+.mzctl{display:grid;grid-template-columns:1fr;gap:8px}
+.mzdots{display:flex;justify-content:center;gap:8px}.mzdots i{width:12px;height:12px;border-radius:50%;background:rgba(0,0,0,.35);box-shadow:inset 0 0 0 1.5px rgba(232,171,60,.4)}.mzdots i.on{background:#e8ab3c}
+.mzham{height:64px;font-size:24px;display:flex;flex-direction:column}.mzham small{font-size:12px}
+.mzside{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mzres{display:flex;flex-direction:column;gap:10px;align-items:stretch;text-align:center}.mzres b{font-family:var(--display);font-weight:400;font-size:26px;color:var(--brass)}
+.mzres.sold b{color:#78d1a2}.mzres.fake b,.mzres.unsold b{color:#ff8c80}
+.mzsum{display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px;border-radius:16px;background:rgba(0,0,0,.25)}.mzsum b{font-family:var(--display);font-weight:400;font-size:38px;color:#78d1a2}.mzsum small{font-weight:900;color:var(--muted)}
+.mzctl .b,.mzres .b,.mzgo{width:100%}.mzctl{width:100%}.mzw.live{align-items:stretch}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1822,7 +1868,48 @@ const sfx={
   bad(){tone(196,.28,'sawtooth',.045);buzz([60,40,60])},
   door(){tone(988,.12,'sine',.05);tone(740,.25,'sine',.05,.12)}
 };
-function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+function buzz(p){if(S&&S.vib===false)return;const N=window.NATIVE;if(N&&N.haptic){try{N.haptic(Array.isArray(p)?(p.length>3?'heavy':'warn'):p>=40?'medium':'light')}catch(e){}return}try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+/* 1.9.0 · ortam sesi: uzaktan çarşı uğultusu, ara sıra martı, yağmurlu günde yağmur, fuar ve bayramda kalabalık */
+let AMB=null;
+function noiseBuf(kind){const n=AC.sampleRate*3,b=AC.createBuffer(1,n,AC.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;if(kind==='brown'){l=(l+.02*w)/1.02;d[i]=l*3.5}else d[i]=w}return b}
+function ambWant(){if(!S||S.mute||S.amb===false||screen!=='game'||document.hidden)return null;const e=(evNow()||{}).id||'';return {rain:e==='yagmur',crowd:e==='fuar'||e==='bayram'||e==='turist',night:S.phase==='dayEnd'}}
+function ambSync(){const w=ambWant();if(!w){ambStop();return}try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume()}catch(e){return}
+  if(!AMB){const m=AC.createGain();m.gain.value=0;m.connect(AC.destination);
+    const br=AC.createBufferSource();br.buffer=noiseBuf('brown');br.loop=true;const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=420;const mg=AC.createGain();mg.gain.value=.5;br.connect(lp);lp.connect(mg);mg.connect(m);br.start();
+    const lfo=AC.createOscillator();lfo.frequency.value=.07;const lg=AC.createGain();lg.gain.value=.18;lfo.connect(lg);lg.connect(mg.gain);lfo.start();
+    const wn=AC.createBufferSource();wn.buffer=noiseBuf('white');wn.loop=true;const hp=AC.createBiquadFilter();hp.type='highpass';hp.frequency.value=1400;const rg=AC.createGain();rg.gain.value=0;wn.connect(hp);hp.connect(rg);rg.connect(m);wn.start();
+    AMB={m,mg,rg,nodes:[br,lfo,wn],t:0,w:null};
+    AMB.t=setInterval(()=>{if(!AMB||!AMB.w)return;const r=Math.random();
+      if(r<.09&&!AMB.w.night&&!AMB.w.rain)ambGull();else if(r<(AMB.w.crowd?.6:.3))ambVoice();if(AMB.w.rain&&r>.7)ambDrip()},2200)}
+  const t=AC.currentTime;AMB.w=w;AMB.m.gain.cancelScheduledValues(t);AMB.m.gain.setValueAtTime(AMB.m.gain.value,t);AMB.m.gain.linearRampToValueAtTime(w.night?.035:w.crowd?.09:.06,t+1.5);
+  AMB.rg.gain.setTargetAtTime(w.rain?.22:0,t,.8)}
+function ambStop(){if(!AMB)return;const A=AMB;AMB=null;clearInterval(A.t);try{const t=AC.currentTime;A.m.gain.cancelScheduledValues(t);A.m.gain.setValueAtTime(A.m.gain.value,t);A.m.gain.linearRampToValueAtTime(0,t+.6);setTimeout(()=>{A.nodes.forEach(n=>{try{n.stop()}catch(e){}});try{A.m.disconnect()}catch(e){}},800)}catch(e){}}
+function ambVoice(){/* uzaktan konuşma: kısa, filtrelenmiş mırıltı */const t=AC.currentTime+Math.random()*.5,o=AC.createOscillator(),f=AC.createBiquadFilter(),g=AC.createGain(),b=120+Math.random()*110;
+  o.type='sawtooth';o.frequency.setValueAtTime(b,t);for(let i=1;i<6;i++)o.frequency.linearRampToValueAtTime(b*(.85+Math.random()*.35),t+i*.09);f.type='bandpass';f.frequency.value=650+Math.random()*500;f.Q.value=3;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.05,t+.05);g.gain.linearRampToValueAtTime(0,t+.5);o.connect(f);f.connect(g);g.connect(AMB.m);o.start(t);o.stop(t+.55)}
+function ambGull(){const t=AC.currentTime,pan=AC.createStereoPanner?AC.createStereoPanner():null;for(let k=0;k<2;k++){const o=AC.createOscillator(),g=AC.createGain(),s0=t+k*.32;o.type='sine';
+  o.frequency.setValueAtTime(1500,s0);o.frequency.exponentialRampToValueAtTime(900,s0+.26);g.gain.setValueAtTime(0,s0);g.gain.linearRampToValueAtTime(.06,s0+.03);g.gain.exponentialRampToValueAtTime(.001,s0+.28);
+  o.connect(g);if(pan){pan.pan.value=Math.random()*1.6-.8;g.connect(pan);pan.connect(AMB.m)}else g.connect(AMB.m);o.start(s0);o.stop(s0+.3)}}
+function ambDrip(){const t=AC.currentTime+Math.random(),o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(2200,t);o.frequency.exponentialRampToValueAtTime(700,t+.06);g.gain.setValueAtTime(.04,t);g.gain.exponentialRampToValueAtTime(.001,t+.08);o.connect(g);g.connect(AMB.m);o.start(t);o.stop(t+.1)}
+document.addEventListener('visibilitychange',()=>{try{ambSync()}catch(e){}});
+/* kepenk sesi: metal şeritlerin takırtısı */
+function shutterSfx(up){if(!S||S.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime,D=1.3,src=AC.createBufferSource();src.buffer=noiseBuf('white');
+  const bp=AC.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.4;bp.frequency.setValueAtTime(up?900:1600,t);bp.frequency.linearRampToValueAtTime(up?1700:800,t+D);
+  const g=AC.createGain(),am=AC.createOscillator(),ag=AC.createGain();am.type='square';am.frequency.value=19;ag.gain.value=.04;am.connect(ag);ag.connect(g.gain);
+  g.gain.setValueAtTime(.06,t);g.gain.linearRampToValueAtTime(.05,t+D*.8);g.gain.linearRampToValueAtTime(0,t+D);src.connect(bp);bp.connect(g);g.connect(AC.destination);src.start(t);src.stop(t+D);am.start(t);am.stop(t+D);
+  tone(140,.18,'square',.05,D-.05);buzz(30)}catch(e){}}
+/* 1.9.0 · Ayarlar */
+function langNow(){const l=document.documentElement.lang;return l==='en'||l==='de'?l:'tr'}
+function settingsOpen(){const row=(k,on,t,d)=>`<button class="setrow${on?' on':''}" data-act="set:${k}"><span class="st-t"><b>${t}</b><small>${d}</small></span><i class="tg"><i></i></i></button>`;
+  const L=langNow(),lb=(c,n)=>`<button class="lgb${L===c?' on':''}" data-act="langSet:${c}">${n}</button>`;
+  modal({icon:'⚙️',title:'Ayarlar',body:`<span class="setlist">${row('sfx',!S.mute,'Ses efektleri','Kasa, kapı zili, tıklamalar')}${row('music',!S.mute&&S.music!==false,'Müzik','Dükkândaki saz ezgisi')}${row('amb',!S.mute&&S.amb!==false,'Ortam sesi','Çarşı uğultusu, martılar, yağmur')}${row('vib',S.vib!==false,'Titreşim','Anlaşmada ve kötü sürprizlerde')}</span>
+    <span class="setlang"><small>Dil</small><span>${lb('tr','Türkçe')}${lb('en','English')}${lb('de','Deutsch')}</span></span>`,btns:[{t:'Tamam',cls:'brass',a:'closeModal'}]})}
+function settingsSet(k){if(k==='sfx'){S.mute=!S.mute;if(S.mute){musicStop();ambStop()}else{sfx.tap();if(screen==='game')musicStart()}}
+  if(k==='music'){if(S.mute){S.mute=false;S.music=true}else S.music=S.music===false;if(S.music===false)musicStop();else if(screen==='game')musicStart()}
+  if(k==='amb'){if(S.mute){S.mute=false;S.amb=true}else S.amb=S.amb===false}
+  if(k==='vib'){S.vib=S.vib===false;if(S.vib!==false){const v=S.vib;buzz(30)}}
+  save();try{ambSync()}catch(e){}sfx.tap();settingsOpen();T('setting',{k,v:k==='sfx'?!S.mute:k==='vib'?S.vib!==false:k==='amb'?S.amb!==false:S.music!==false})}
+function langSet(to){if(to===langNow()){return}try{localStorage.setItem('bitpazari.lang',to)}catch(e){}const N=window.NATIVE;if(N&&N.setLang){N.setLang(to)}else{location.href=(to==='en'?'en.html':to==='de'?'de.html':'index.html')+location.search}}
 
 /* ---------- data ---------- */
 const COND=[.4,.6,.8,1,1.25];
@@ -1978,7 +2065,7 @@ function chestSeller(){return mkSeller(chestItem(),'kurnaz',{name:'Paltolu Adam'
 
 function nextCustomer(){
   if(S.cust)rivAfter(S.cust);
-  if(S.ci>=dayLen()){T('day_end',{cash:Math.round(S.money),rep:Math.round(S.rep||0),inv:S.inv.length});if([3,7,14,30,60].includes(S.day))T('day_reached_'+S.day,{});S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();sfx.door();save();render();setTimeout(()=>showTip('evening'),700);setTimeout(()=>notifAsk('dayend'),2600);return}
+  if(S.ci>=dayLen()){T('day_end',{cash:Math.round(S.money),rep:Math.round(S.rep||0),inv:S.inv.length});if([3,7,14,30,60].includes(S.day))T('day_reached_'+S.day,{});S.cust=null;S.phase='dayEnd';eve='hub';AU=null;apprenticeSell();shutterSfx(false);save();render();setTimeout(()=>showTip('evening'),700);setTimeout(()=>notifAsk('dayend'),2600);return}
   let c;
   if(S.day===1&&S.ci===1&&S.story.riza==='none')c=rizaSeller();
   else if(S.day===3&&S.ci===0&&(S.story.riza==='bought'||S.story.riza==='sold'))c=rizaReturn();
@@ -2289,11 +2376,79 @@ const TX={buy:'item_buy',sell:'item_sell',aus:'auction_sell',gift:'gift_cash'};
 function logT(t,it,amt){if(TX[t])T(TX[t],{item:String(it.k||it.n||'').slice(0,40),amount:Math.round(amt||0),pack:it.pack||'base'});(S.log=S.log||[]).push({t,n:it.n,i:it.i,amt,pl:it.pl||null,id:it.id,k:it.k||null,c:it.cond||3})}
 const certTag=it=>it.cert?(it.cert.auth?`<span class="slab">ONAY ${it.cert.grade}</span>`:'<span class="chip bad">Replika</span>'):it.lab?'<span class="chip warn">Lab\'da</span>':'';
 const dayStars=n=>n<=0?1:n<250?2:n<700?3:n<1400?4:5;
-function renderEvening(){ensureEcon();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();if(eve==='house')return renderHouse();if(eve==='houseLive')return renderHouseLive();if(eve==='rehin')return renderRehin();if(eve==='gar')return renderGar();if(eve==='sec')return renderSec();if(eve==='dig')return renderDig();if(eve==='sezon')return renderSezon();if(eve==='staff')return renderStaff();return renderEveHub()}
+function renderEvening(){ensureEcon();if(eve==='mezat')return renderMezat();if(eve==='kargo')return renderKargo();if(eve==='web')return renderWeb();if(eve==='bank')return renderBank();if(eve==='shop')return renderShop();if(eve==='auction')return renderAucList();if(eve==='sell')return renderSellList();if(eve==='live')return renderLive();if(eve==='lab')return renderLab();if(eve==='repair')return renderRepair();if(eve==='eks')return renderEks();if(eve==='riv')return renderRiv();if(eve==='pano')return renderPano();if(eve==='muze')return renderMuze();if(eve==='stall')return renderStall();if(eve==='evt')return renderEvt();if(eve==='house')return renderHouse();if(eve==='houseLive')return renderHouseLive();if(eve==='rehin')return renderRehin();if(eve==='gar')return renderGar();if(eve==='sec')return renderSec();if(eve==='dig')return renderDig();if(eve==='sezon')return renderSezon();if(eve==='staff')return renderStaff();return renderEveHub()}
+/* ===================== 1.9.0 · Mezat Gecesi: kendi dükkânında açık artırma, mezatçı sensin =====================
+   Akşam en fazla 3 parçanı mezata çıkarırsın. Salona 3–5 teklifçi gelir (tanıdıkların daha cömert).
+   "Bir!", "İki!", "Satıldı!" diye sen sayarsın: her sayış teklifçileri kışkırtır, yeni teklif gelirse sayım baştan başlar.
+   Fazla beklersen salonun hevesi kaçar. Akşamda bir kez. */
+let MZ=null,MZSEL=[],MZOPEN=.7;
+const MZ_MIN=300;
+function mzFee(){return r10(150+S.day*20)}
+function mzToday(){return S.mzDay===S.day}
+function mzCands(){return S.inv.filter(x=>!x.lab&&!x.chest&&!x.web&&!x.isPend&&val(x)>=MZ_MIN).sort((a,b)=>val(b)-val(a))}
+function mzRow(){const sold=mzToday();return `<button class="erow2" style="--tc:#b5813a" data-act="eve:mezat"><span class="ri">${ART.mezat}</span><span class="rt"><b>Mezat Gecesi</b><small>Dükkânında kendi açık artırmanı yap</small></span><span class="rs ${sold?'':'info'}">${sold?'Bu akşam yapıldı':'Salon hazır'}</span><span class="chev">›</span></button>`}
+function renderMezat(){if(MZ)return mzLive();const c=mzCands();
+  if(mzToday())return `<div class="eve mzw"><div class="mzhead"><button class="tb back" data-act="eve:hub">‹</button><h2>Mezat Gecesi</h2></div><p class="sub">Bu akşamki mezat bitti. Yarın akşam yeniden salon açabilirsin.</p></div>`;
+  const pick=MZSEL.filter(id=>c.some(x=>x.id===id));MZSEL=pick;
+  const opts=[[.5,'Düşük açılış','Daha çok teklifçi gelir'],[.7,'Orta açılış','Dengeli'],[.9,'Yüksek açılış','Az teklifçi, risk yüksek']];
+  return `<div class="eve mzw"><div class="mzhead"><button class="tb back" data-act="eve:hub">‹</button><h2>Mezat Gecesi</h2></div>
+   <p class="sub">En fazla 3 parça seç. Mezatçı sensin: “Bir! İki! Satıldı!” diye sayarak teklifleri sen toplayacaksın.</p>
+   ${c.length?`<div class="mzlist">${c.slice(0,24).map(x=>{const on=pick.includes(x.id);return `<button class="mzit${on?' on':''}" data-act="mzSel:${x.id}">${icon(x)}<span><b>${esc(x.n)}</b><small>Tahmini ${fmt(val(x))}</small></span><i>${on?'✓':''}</i></button>`}).join('')}</div>`
+     :`<p class="sub">Mezata çıkacak değerde (${fmt(MZ_MIN)} ve üstü) bir parçan yok.</p>`}
+   <div class="mzopen"><small>Açılış fiyatı</small><span>${opts.map(([v,t,d])=>`<button class="${MZOPEN===v?'on':''}" data-act="mzOpen:${v}"><b>${t}</b><small>%${Math.round(v*100)} · ${d}</small></button>`).join('')}</span></div>
+   <button class="b brass mzgo" data-act="mzStart" ${pick.length&&S.money>=mzFee()?'':'disabled'}>Salonu Aç<small>Davet ve çay masrafı ${fmt(mzFee())}</small></button></div>`}
+function mzBidders(it){const n=clamp(3+(MZOPEN<=.5?1:0)-(MZOPEN>=.9?1:0)+((S.up&&S.up.vitrin)?1:0),2,5);ensureLive();
+  const regs=Object.entries(S.regs||{}).filter(([k,r])=>r.n>=1&&r.m>=0).map(([k])=>k).sort(()=>Math.random()-.5).slice(0,2);
+  const names=[...regs];while(names.length<n){const nm=pick(NAMES);if(!names.includes(nm))names.push(nm)}
+  const base=val(it)*(trendMul(it)||1)*(evBuyMul()||1);
+  return names.slice(0,n).map((nm,i)=>{const r=S.regs&&S.regs[nm],warm=r&&r.m>=1?1.1:1;return {n:nm,seed:hashStr(nm)*7+3,max:r10(base*(.72+Math.random()*.62)*warm),reg:!!r,exp:/Bey|Hanım|Dr\./.test(nm)&&Math.random()<.4,up:0,out:false}})}
+function mzStart(){const c=mzCands(),lots=MZSEL.map(id=>c.find(x=>x.id===id)).filter(Boolean).slice(0,3);if(!lots.length||S.money<mzFee())return;
+  S.money-=mzFee();logT('fee',{n:'Mezat gecesi masrafı',i:'🔨'},-mzFee());S.mzDay=S.day;save();T('mezat_start',{lots:lots.length,open:MZOPEN});
+  MZ={lots:lots.map(it=>({id:it.id,res:null})),i:-1,sum:0};mzNext()}
+function mzNext(){MZ.i++;if(MZ.i>=MZ.lots.length){MZ.done=true;render();return}const it=itemById(MZ.lots[MZ.i].id);if(!it){mzNext();return}
+  Object.assign(MZ,{it,cur:r10(val(it)*MZOPEN),lead:null,calls:0,bids:0,hype:false,fin:null,feed:[`Lot ${MZ.i+1}: ${it.n}. Açılış ${fmt(r10(val(it)*MZOPEN))}!`],last:Date.now(),bd:mzBidders(it)});
+  if(it.fake&&!it.known.fake){const ex=MZ.bd.find(b=>b.exp);if(ex&&Math.random()<.45){MZ.fin='fake';MZ.feed.push(`${ex.n}: “Bu parça sahte, herkes görsün!”`);addRep(-2);sfx.bad()}}
+  sfx.door();render();mzIdle()}
+function mzInc(v){return Math.max(stepOf(v),r10(v*.05))}
+function mzCall(){if(!MZ||MZ.fin||busy)return;MZ.last=Date.now();MZ.calls++;
+  const say=['Bir!','İki!','Satıldı!'][MZ.calls-1];hammer(MZ.calls===3);
+  if(MZ.calls>=3){if(MZ.lead){MZ.fin='sold';mzSell()}else{MZ.fin='unsold';MZ.feed.push('Kimse el kaldırmadı. Lot geri çekildi.')}render();return}
+  MZ.feed.push(`Sen: “${fmt(MZ.cur)}, ${say.toLocaleLowerCase('tr-TR').replace('!','')}…”`);render();
+  setTimeout(()=>mzReact(),550+Math.random()*450)}
+function mzReact(){if(!MZ||MZ.fin)return;const inc=mzInc(MZ.cur),next=MZ.bids?MZ.cur+inc:MZ.cur;
+  const can=MZ.bd.filter(b=>!b.out&&b.n!==MZ.lead&&b.max>=next).sort(()=>Math.random()-.5);let who=null;
+  for(const b of can){const p=clamp((b.max-next)/(b.max*.28),.06,.92)*(MZ.calls===2?1.15:1);if(Math.random()<p){who=b;break}}
+  MZ.bd.forEach(b=>{if(b.max<next)b.out=true});
+  if(who){MZ.cur=next;MZ.lead=who.n;MZ.bids++;MZ.calls=0;who.up=Date.now();MZ.feed.push(`${who.n}: “${fmt(next)}!”`);try{AMB&&ambVoice()}catch(e){}buzz(18);
+    const rival=can.find(b=>b!==who&&b.max>=MZ.cur+mzInc(MZ.cur));if(rival&&Math.random()<.35)setTimeout(()=>{if(!MZ||MZ.fin||MZ.lead===rival.n)return;const v=MZ.cur+mzInc(MZ.cur);if(rival.max<v)return;MZ.cur=v;MZ.lead=rival.n;MZ.bids++;MZ.calls=0;rival.up=Date.now();MZ.feed.push(`${rival.n}: “${fmt(v)}!”`);render()},700)}
+  render()}
+function mzHype(){if(!MZ||MZ.fin||MZ.hype)return;MZ.hype=true;MZ.last=Date.now();const it=MZ.it,good=it.rar||(it.cert&&it.cert.auth)||it.story;
+  MZ.bd.forEach(b=>{b.max=r10(b.max*(good?1.07:1.025))});MZ.feed.push(good?`Sen: “Bu parçanın bir eşi daha yok, beyler hanımlar!” Salon kıpırdandı.`:`Sen: “Kaçırmayın, böylesi bir daha gelmez!” Birkaç kişi gülümsedi.`);sfx.tap();render();setTimeout(()=>mzReact(),600)}
+function mzPull(){if(!MZ||MZ.fin)return;MZ.fin='pulled';MZ.feed.push('Lotu geri çektin. Parça rafına döndü.');sfx.tap();render()}
+function mzSell(){const it=MZ.it,p=MZ.cur,ix=S.inv.findIndex(x=>x.id===it.id);if(ix<0)return;S.inv.splice(ix,1);S.money+=p;MZ.sum+=p;MZ.lots[MZ.i].res=p;
+  logT('mz',it,p);stat('sell');stat('mezat');if(MZ.lead&&S.regs&&S.regs[MZ.lead])regUpd(MZ.lead,.5);if(p>=val(it)*1.2)addRep(1);
+  MZ.feed.push(`Satıldı! ${MZ.lead}, ${fmt(p)}.`);sfx.cash();try{burst(22)}catch(e){}flt('+'+fmt(p),'var(--mint)');T('mezat_sold',{v:val(it),p});save()}
+function hammer(final){if(S.mute)return;tone(final?150:220,.08,'square',.06);tone(final?90:120,.12,'triangle',.05,.04);buzz(final?[40,30,60]:22)}
+function mzIdle(){clearInterval(MZ&&MZ.idT);if(!MZ)return;MZ.idT=setInterval(()=>{if(!MZ||MZ.fin||MZ.done){clearInterval(MZ&&MZ.idT);return}
+  if(Date.now()-MZ.last>4500){MZ.bd.forEach(b=>{b.max=r10(b.max*.985)});if(!MZ.yawn){MZ.yawn=1;MZ.feed.push('Salonda uğultu başladı, hevesler kaçıyor…');render()}}else MZ.yawn=0},1000)}
+function mzLive(){const z=MZ;if(z.done){clearInterval(z.idT);const sold=z.lots.filter(l=>l.res).length;
+    return `<div class="eve mzw"><div class="mzhead"><h2>Mezat bitti</h2></div><div class="mzsum"><b>${fmt(z.sum)}</b><small>${sold}/${z.lots.length} lot satıldı</small></div>
+     <button class="b brass mzgo" data-act="mzEnd">Kepenge dön</button></div>`}
+  const it=z.it,ld=z.lead,nx=['Bir!','İki!','Satıldı!'][z.calls]||'Satıldı!',now=Date.now();
+  return `<div class="eve mzw live"><div class="mzhead"><span class="mzlot">Lot ${z.i+1}/${z.lots.length}</span><h2>Mezat Gecesi</h2></div>
+   <div class="mzstage"><div class="mzitem">${icon(it)}</div><b class="mzname">${esc(it.n)}</b><small class="mzest">Tahmini ${fmt(val(it))}</small></div>
+   <div class="mzbid"><small>${z.bids?'En yüksek teklif':'Açılış'}</small><b>${fmt(z.cur)}</b><span>${ld?esc(ld):'Henüz el kalkmadı'}</span></div>
+   <div class="mzcrowd">${z.bd.map(b=>`<div class="mzb${b.n===ld?' lead':''}${now-b.up<900?' up':''}${b.out?' out':''}">${avatar(b.seed,b.n===ld?.7:b.out?-.4:.1,{name:b.n})}<small>${esc(b.n.split(' ')[0])}${b.reg?' ♥':''}</small><i class="pad">${b.n===ld?'✋':''}</i></div>`).join('')}</div>
+   <div class="mzfeed">${z.feed.slice(-4).map(f=>`<p>${esc(f)}</p>`).join('')}</div>
+   ${z.fin?`<div class="mzres ${z.fin}"><b>${{sold:'Satıldı!',unsold:'Alıcı çıkmadı',pulled:'Geri çekildi',fake:'Lot iptal'}[z.fin]}</b><button class="b brass" data-act="mzNext">${z.i+1<z.lots.length?'Sıradaki lot':'Mezatı kapat'}</button></div>`
+     :`<div class="mzctl"><div class="mzdots">${[0,1,2].map(k=>`<i class="${k<z.calls?'on':''}"></i>`).join('')}</div>
+      <button class="b brass mzham" data-act="mzCall">${nx}<small>${z.calls===2?'Çekici vur':'Say ve bekle'}</small></button>
+      <div class="mzside"><button class="b ghost" data-act="mzHype" ${z.hype?'disabled':''}>Gaz ver</button><button class="b ghost" data-act="mzPull">Geri çek</button></div></div>`}</div>`}
+
 function dblBonus(cash){return r10(Math.min(cash,2000+S.day*250))}
 function renderEveHub(){ensureShip();genLots();
   const cash=S.money-S.stats.start,invNow=invValue(),invD=invNow-(S.stats.startInv||0),net=cash+invD,st=dayStars(net);
-  const LBL={web:'Web mağaza',cirak:'Çırak sattı',buy:'Dükkân alış',sell:'Dükkân satış',fee:'Masraf',auc:'Mezat alış',aus:'Mezat satış',gift:'Hediye'};
+  const LBL={mz:'Mezat gecesi',web:'Web mağaza',cirak:'Çırak sattı',buy:'Dükkân alış',sell:'Dükkân satış',fee:'Masraf',auc:'Mezat alış',aus:'Mezat satış',gift:'Hediye'};
   const log=S.log||[];
   const rows=log.length?log.map(l=>`<div class="lrow"><span class="li">${l.k?icon({k:l.k,pl:l.pl,id:l.id||"lg",cond:l.c||3,i:l.i,known:{}}):l.i}</span><span class="ln">${esc(l.n)}<small>${LBL[l.t]||''}</small></span><b class="${l.amt>=0?'pos':'neg'}">${l.amt>=0?'+':'−'}${fmt(Math.abs(l.amt))}</b></div>`).join(''):'<p class="sub" style="margin:0">Bugün hiç alışveriş yapmadın.</p>';
   const open=S.lots.list.filter(l=>l.status==='open').length,lab=S.inv.filter(x=>x.lab).length,rp=S.inv.filter(x=>!x.lab&&!x.cert&&!x.chest&&x.cond<5).length,B=S.bank,us=unsent().length,web=S.inv.filter(x=>x.web).length,unread=Math.max(0,S.reviews.length-(S.seenRev||0));
@@ -2309,6 +2464,7 @@ function renderEveHub(){ensureShip();genLots();
    ${alerts.length?`<div class="alerts">${alerts.map(a=>`<button class="al ${a[0]}" data-act="eve:${a[2]}"><i></i>${a[1]}<span>›</span></button>`).join('')}</div>`:''}
    ${marketLine()}${ordersSec()}
    <section class="grp"><h3>Satış</h3>
+    ${unlocked('gece')?mzRow():lockRow('mezat','Mezat Gecesi','gece')}
     ${R('auction','mezat','#c23a2f','Online Mezat','Teklif ver, mal sat',open?`${open} açık`:'Bitti')}
     ${R('web','web','#5fd1b8','Web Mağazam','Sabit fiyatla sat',unread?`${unread} yeni yorum`:web?`${web} ilan`:'İlan ver',unread?'info':'')}
     ${R('kargo','kargo','#e8925a','Kargo Masası','Paketle ve gönder',us?`${us} paket`:'Boş',us?'warn':'')}</section>
@@ -2510,7 +2666,7 @@ function doRepair(id,free){const x=itemById(id);if(!x)return;const c=free?0:repC
       if(x.known.insp){x.known.lo=r10(x.known.lo*ratio);x.known.hi=r10(x.known.hi*ratio)}}sfx.ok();gainXP(8);stat('repair');if(two)toast('Usta işi! İki kademe birden yükseldi.');else toast(`${x.n} artık "${CONDN[x.cond-1]}"`)}
     else{sfx.bad();toast('Usta beceremedi. Ücret gitti, mal aynı.')}save();render()},1300)}
 
-function startDay(){
+function startDay(){try{shutterSfx(true)}catch(e){}
   const yd=(S.log||[]).reduce((t,l)=>t+(l.t==='gift'?0:(+l.amt||0)),0);S.day++;S.ci=0;S.phase='shop';S.log=[];eve='hub';AU=null;
   PK=null;const msgs=locMorning().concat(liveMorning(),rivMorning(yd),muzeMorning(),stallMorning(),panoMorning(yd),evtMorning(),rehinMorning(),secMorning(),staffMorning(),labResults(),bankMorning(),shipMorning(),webMorning(),colCheck());
   const ex=S.pending.splice(0);let fineTot=0;
@@ -2783,8 +2939,7 @@ function renderMenu3(){const hs=hasSave(),L=hs?curLoc():null;
      ${hs?`<button data-act="menuNew">${icon('<path d="M12 5v14M5 12h14"/>')}<span>Yeni Oyun</span></button>`:''}
      <button data-act="howto">${icon('<path d="M4 5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v14h-6a2 2 0 0 0-2 1 2 2 0 0 0-2-1H4z"/><path d="M12 6v14"/>')}<span>Rehber</span></button>
      ${iapLive()?`<button data-act="store" class="m3-store">${icon('<path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>')}<span>Mağaza</span>${ENT.premium?'':'<i class="m3-dot"></i>'}</button>`:''}
-     <button data-act="mute" class="${S.mute?'off':''}">${speakerSvg()}<span>${S.mute?'Ses Kapalı':'Ses'}</span></button>
-     <button data-act="musicT" class="${S.music===false?'off':''}">${icon('<path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>')}<span>${S.music===false?'Müzik Kapalı':'Müzik'}</span></button>
+     <button data-act="settings">${icon('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>')}<span>Ayarlar</span></button>
     </div>
     <p class="m3-foot">Bir OZS Studio oyunu<button class="mpriv" data-act="privacy">Gizlilik ayarları</button></p>
    </div></div>`}
@@ -3604,7 +3759,7 @@ const dstr=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 const today=()=>dstr(new Date());
 function ensureLive(){if(!S.tips){S.tips={};if(S.day>3)Object.keys(TIPS).forEach(k=>S.tips[k]=1)}S.regs=S.regs||{};S.orders=S.orders||[];S.rival=S.rival||{w:0,l:0};if(S.music==null)S.music=true}
 /* ---- unlocks ---- */
-const UNL={auction:2,sell:2,kargo:2,live:2,lab:3,repair:3,web:4,bank:5,shop:5};
+const UNL={gece:4,auction:2,sell:2,kargo:2,live:2,lab:3,repair:3,web:4,bank:5,shop:5};
 const UNLN={auction:['Online Mezat','Tabletten açık artırmalara katıl, mallarını sat.'],kargo:['Kargo Masası','Mezatta sattığın ürünleri paketleyip gönder.'],lab:['ONAY Lab','Ürünlerine sertifika al, değerlerini katla.'],repair:['Tamir Atölyesi','Yıpranmış malları onar.'],web:['Web Mağazam','Kendi sitende sabit fiyatla satış yap.'],bank:['Çarşı Bankası','Birikim yap, kredi çek.'],shop:['Dükkân ve Görünüm','Rafları büyüt, vitrin kur, dükkânını süsle.']};
 const unlocked=k=>!UNL[k]||S.day>=UNL[k];
 const lockRow=(art,t,act)=>`<div class="erow2 locked"><span class="ri">${ART[art]}</span><span class="rt"><b>${t}</b><small>${UNL[act]}. günde açılır</small></span><span class="lk">🔒</span></div>`;
@@ -4128,7 +4283,7 @@ function renderTop(){
    <div class="dayStrip"><span class="dlabel">GÜN ${S.day}</span><div class="segs" aria-label="Bugün ${Math.min(S.ci,dayLen())} / ${dayLen()} müşteri">${segs}</div><span class="dcount">${Math.min(S.ci,dayLen())}/${dayLen()}</span>
    <button class="mutebtn" data-act="mapOpen" aria-label="Şehir haritası"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2 5l5-2 6 2 5-2v12l-5 2-6-2-5 2z"/><path d="M7 3v12M13 5v12"/></svg></button>
    <button class="mutebtn" data-act="toMenu" aria-label="Ana menü"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h12M4 10h12M4 14h12"/></svg></button>
-   <button class="mutebtn" data-act="mute" aria-label="${S.mute?'Sesi aç':'Sesi kapat'}">${speakerSvg()}</button></div>`;
+   <button class="mutebtn" data-act="settings" aria-label="Ayarlar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>`;
   animMoney()}
 let moneyAnim=0;
 function animMoney(){const from=shownMoney==null?S.money:shownMoney,to=S.money;if(Math.round(from)===to){shownMoney=to;return}
@@ -4322,7 +4477,7 @@ function renderNav_old(){const t=mysState();const dot=!S.mys.done?'<span class="
   $('#nav').innerHTML=[['shop','🏪','Dükkân'],['inv','🧺','Raflar'],['skills','🌳','Ustalık'],['mystery','🔮','Günün Eşyası']].map(([k,i,n])=>`<button class="${S.tab===k?'on':''}" data-act="tab:${k}"><span class="ni">${i}</span>${n}${k==='mystery'?dot:k==='skills'&&S.sp?'<span class="badge"></span>':''}</button>`).join('')}
 function render(){
   const inGame=screen==='game';let stNav=false;try{stNav=screen==='store'&&storeFrom==='game'}catch(e){}$('#top').hidden=!inGame;$('#nav').hidden=!(inGame||stNav);
-  if(!inGame){if(stNav)renderNav();$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();try{if(screen==='menu')s3Backdrops()}catch(e){}return}
+  if(!inGame){if(stNav)renderNav();$('#main').innerHTML=screen==='store'?renderStore():renderMenu();mhMount();try{if(screen==='menu')s3Backdrops()}catch(e){}try{ambSync()}catch(e){}return}
   if(MH)MH.run=false;
   renderTop();renderNav();
   const main=$('#main');
@@ -4330,7 +4485,7 @@ function render(){
   else if(S.tab==='inv')main.innerHTML=renderInv();
   else if(S.tab==='skills')main.innerHTML=renderUst();
   else main.innerHTML=renderMys();
-  shake=false;fitScene();try{s3Mount()}catch(e){}try{twRun()}catch(e){}try{s3Backdrops()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
+  shake=false;fitScene();try{s3Mount()}catch(e){}try{twRun()}catch(e){}try{s3Backdrops()}catch(e){}try{ambSync()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
 
 /* ---------- native hooks (Android geri tuşu / arka plan) ---------- */
 window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click();return true};
@@ -4425,6 +4580,17 @@ document.addEventListener('click',e=>{
   if(a==='loginAd'){adShow(()=>loginTake(2),'Günlük ödülü 2 katına çıkar');return}
   if(a.startsWith('deliver:')){deliver(a.slice(8));return}
   if(a==='closeLegend'){b.remove();return}
+  if(a.startsWith('mzSel:')){const id=a.slice(6);MZSEL=MZSEL.includes(id)?MZSEL.filter(x=>x!==id):MZSEL.length<3?[...MZSEL,id]:MZSEL;if(MZSEL.length===3&&!MZSEL.includes(id))toast('En fazla 3 lot');sfx.tap();render();return}
+  if(a.startsWith('mzOpen:')){MZOPEN=+a.slice(7);sfx.tap();render();return}
+  if(a==='mzStart'){mzStart();return}
+  if(a==='mzCall'){mzCall();return}
+  if(a==='mzHype'){mzHype();return}
+  if(a==='mzPull'){mzPull();return}
+  if(a==='mzNext'){mzNext();return}
+  if(a==='mzEnd'){MZ=null;MZSEL=[];eve='hub';render();return}
+  if(a==='settings'){sfx.tap();settingsOpen();return}
+  if(a.startsWith('set:')){settingsSet(a.slice(4));return}
+  if(a.startsWith('langSet:')){langSet(a.slice(8));return}
   if(a==='musicT'){S.music=S.music===false;if(S.music===false)musicStop();save();render();return}
   if(a==='mapOpen'){mapOpen();return}
   if(a==='goCol'){closeModal();S.phase!=='dayEnd'||(eve='hub');S.tab='skills';ustTab='col';sfx.tap();render();const m=$('#main');if(m)m.scrollTop=0;return}
@@ -4482,7 +4648,7 @@ document.addEventListener('click',e=>{
   if(a==='goSkills'){b.remove&&b.classList.contains('lvlup')&&b.remove();closeModal();S.tab='skills';sfx.tap();render();return}
   if(a==='persuade'){persuade();return}
   if(a.startsWith('eve:')&&!unlocked(a.slice(4))){toast(UNL[a.slice(4)]+'. günde açılacak');sfx.bad();return}
-  if(a.startsWith('eve:')){if((AU&&!AU.done)||(HA&&!HA.done)){toast('Mezat bitene kadar bekle');return}if(AU&&AU.done&&istReady()){AU=null;const ev=a.slice(4);istMaybe(()=>{eve=ev;if(eve!=='kargo')PK=null;render();const m=$('#main');if(m)m.scrollTop=0});return}AU=null;eve=a.slice(4);if(eve!=='kargo')PK=null;sfx.tap();render();$('#main').scrollTop=0;return}
+  if(a.startsWith('eve:')){if((AU&&!AU.done)||(HA&&!HA.done)||(MZ&&!MZ.done&&a!=='eve:mezat')){toast('Mezat bitene kadar bekle');return}if(AU&&AU.done&&istReady()){AU=null;const ev=a.slice(4);istMaybe(()=>{eve=ev;if(eve!=='kargo')PK=null;render();const m=$('#main');if(m)m.scrollTop=0});return}AU=null;eve=a.slice(4);if(eve!=='kargo')PK=null;sfx.tap();render();$('#main').scrollTop=0;return}
   if(a.startsWith('lot:')){startLot(a.slice(4));return}
   if(a.startsWith('sellLot:')){startSell(a.slice(8));return}
   if(a.startsWith('auBid:')){auBid(+a.slice(6));return}
@@ -6352,7 +6518,7 @@ function s3Snap(w,h){if(!s3Ok())return null;try{ensureEcon();if(!S3)s3Init();s3R
 let KEPENK_SHOWN=false;
 function s3Backdrops(){const mb=document.querySelector('.m3-bg'),ev=document.querySelector('.eve.eve2');
   if(mb&&!mb.dataset.s3){const u=s3Snap(390,560);if(u){mb.dataset.s3=1;mb.classList.add('s3bg');mb.style.setProperty('--s3',`url(${u})`)}
-    if(!KEPENK_SHOWN&&screen==='menu'){KEPENK_SHOWN=true;const k=document.createElement('div');k.className='kepenk up';mb.parentNode.insertBefore(k,mb.nextSibling);setTimeout(()=>{try{sfx.tap()}catch(e){}},500);setTimeout(()=>k.remove(),2400)}}
+    if(!KEPENK_SHOWN&&screen==='menu'){KEPENK_SHOWN=true;const k=document.createElement('div');k.className='kepenk up';mb.parentNode.insertBefore(k,mb.nextSibling);setTimeout(()=>{try{shutterSfx(true)}catch(e){}},450);setTimeout(()=>k.remove(),2400)}}
   if(ev&&!ev.dataset.s3){const u=s3Snap(390,560);if(u){ev.dataset.s3=1;ev.classList.add('s3bg');ev.style.setProperty('--s3',`url(${u})`)}}}
 
 /* ---------- 3D thumbnails for icons ---------- */

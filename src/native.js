@@ -1,5 +1,5 @@
 /* Bit Pazarı — Android köprüsü (Capacitor). Web'de her şey sessizce eski davranışa düşer. */
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
 import { App } from "@capacitor/app";
 import { Preferences } from "@capacitor/preferences";
 import { LocalNotifications } from "@capacitor/local-notifications";
@@ -58,6 +58,13 @@ window.__BP_PRE = (async () => {
   try { Preferences.set({ key: LANG_KEY, value: want }); } catch (e) {}
   if (want !== N.lang) { location.replace(want === "en" ? "en.html" : "index.html"); await new Promise(() => {}); }
 })();
+/* 1.9.0 · Titreşim: @capacitor/haptics kuruluysa yerel titreşim (iPhone'da navigator.vibrate çalışmaz), değilse tarayıcı titreşimi */
+const Haptics = registerPlugin("Haptics");
+N.haptic = (kind) => {
+  if (!isNative) { try { navigator.vibrate && navigator.vibrate(kind === "heavy" ? [60, 40, 60] : kind === "warn" ? [40, 30, 40] : kind === "medium" ? 35 : 18); } catch (e) {} return; }
+  const p = kind === "warn" ? Haptics.notification({ type: "WARNING" }) : kind === "heavy" ? Haptics.notification({ type: "ERROR" }) : Haptics.impact({ style: kind === "medium" ? "MEDIUM" : "LIGHT" });
+  Promise.resolve(p).catch(() => { try { navigator.vibrate && navigator.vibrate(kind === "light" ? 18 : 35); } catch (e) {} });
+};
 let saveT = 0;
 N.backup = (now) => {
   if (!isNative) return;
