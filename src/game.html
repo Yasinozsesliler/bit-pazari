@@ -1701,6 +1701,11 @@ nav button{letter-spacing:.03em;text-transform:none}
 .lglow{opacity:.5}
 .m3-halo{opacity:.6}
 .hg-e .mface{width:22px;height:22px;display:block}
+.scene.s3 .s3d{position:absolute;inset:0;z-index:0}
+.s3cv{display:block;width:100%;height:100%}
+.scene.s3 .vig{background:radial-gradient(ellipse 90% 80% at 50% 45%,transparent 60%,rgba(0,0,0,.45) 100%)}
+.s3empty{position:absolute;z-index:1;left:0;right:0;top:46%;text-align:center;font-size:11px;font-weight:800;color:rgba(255,230,190,.28);pointer-events:none}
+.scene.s3 .cust svg{filter:drop-shadow(0 10px 12px rgba(0,0,0,.55))}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -4065,7 +4070,8 @@ function renderScene(){
   const shelfPair=arr=>{const row=a=>a.map(x=>`<span class="sitem${x.isNew?' new':''}" title="${x.n}">${icon(x)}</span>`).join('');
     return `<div class="shelf">${row(arr.slice(0,4))}</div><div class="shelf">${arr.length?row(arr.slice(4,8)):'<span class="dust">BOŞ</span>'}</div>`};
   const _w=cosOf('wall'),_l=cosOf('lantern');
-  let h=`<div class="scene${shake?' shake':''}" id="scene" style="${sceneVars()}"><div class="tiles"></div>${DECOR.replace('#04100d',_w[3][0]).replace('#0d2722',_w[3][1]).replace('#143832',_w[3][2])}
+  let h=s3Ok()?`<div class="scene s3${shake?' shake':''}" id="scene" style="${sceneVars()}"><div class="s3d" id="s3d"></div>${decorHtml()}`
+   :`<div class="scene${shake?' shake':''}" id="scene" style="${sceneVars()}"><div class="tiles"></div>${DECOR.replace('#04100d',_w[3][0]).replace('#0d2722',_w[3][1]).replace('#143832',_w[3][2])}
    <div class="glow g1"></div><div class="glow g2"></div>
    <div class="niche l">${shelfPair(inv.slice(0,8))}</div><div class="niche r">${shelfPair(inv.slice(8,16))}</div>
    <div class="lantern l">${lanternSvg('lgA',_l[2][0])}</div><div class="lantern r">${lanternSvg('lgB',_l[2][1])}</div>${decorHtml()}
@@ -4226,7 +4232,7 @@ function render(){
   else if(S.tab==='inv')main.innerHTML=renderInv();
   else if(S.tab==='skills')main.innerHTML=renderUst();
   else main.innerHTML=renderMys();
-  shake=false;fitScene();if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
+  shake=false;fitScene();try{s3Mount()}catch(e){}if(S.tab==='shop'){if(S.phase==='dayEnd'){if(eve==='hub')countUps();if(TIPS[eve])setTimeout(()=>showTip(eve),300);if(eve==='live')auPaint();if(eve==='kargo'&&PK)pkInit()}else{reactPreview();rlSync()}}}
 
 /* ---------- native hooks (Android geri tuşu / arka plan) ---------- */
 window.BP_BACK=function(){const q=x=>document.querySelector(x),tap=el=>{el.click();return true};
@@ -6048,6 +6054,87 @@ function buildExtra(it,g,sus){const T=THREE;switch(it.k){
       q.fillStyle='#fff';q.font='900 34px "Lilita One"';q.fillText('Boğaziçi SK',W/2,H-150);q.font='700 24px Nunito';q.fillText('karşısında',W/2,H-115);q.font='900 34px "Lilita One"';q.fillText('Anadolu Kartalları',W/2,H-70);q.font='700 22px Nunito';q.fillText('29 Mayıs 1988 · Fiyatı 50 TL',W/2,H-30)});
     const p=mat('#f1ead8',{roughness:.9});g.add(mesh(box(1.15,1.58,.04),[p,p,p,p,new T.MeshStandardMaterial({map:t,roughness:.75}),p]));g.rotation.z=.04;break}
   default:return buildExtra2(it,g,sus)}return true}
+
+/* ===================== 1.9.0 · 3B dükkân sahnesi =====================
+   Arka duvar, raflar, kemerli kapı ve fenerler gerçek 3B; raftaki eşyalar oyunun kendi 3B modelleri.
+   Sahne sadece bir şey değişince çizilir (pil dostu). WebGL yoksa ya da hata olursa eski 2B sahne döner. */
+let S3=null;
+function s3Ok(){return !!window.THREE&&S3!==false}
+function s3TileTex(c1,c2,c3){return ctex(256,256,(q,W)=>{q.fillStyle=c2;q.fillRect(0,0,W,W);
+  const h=W/2;for(let i=0;i<2;i++)for(let j=0;j<2;j++){const x=i*h+h/2,y=j*h+h/2;
+    q.fillStyle=c1;q.beginPath();for(let k=0;k<16;k++){const a=k*Math.PI/8,rr=k%2?h*.2:h*.42;q.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}q.closePath();q.fill();
+    q.fillStyle=c3;q.beginPath();q.arc(x,y,h*.09,0,7);q.fill();
+    q.strokeStyle='rgba(255,236,200,.22)';q.lineWidth=2;q.strokeRect(i*h+1,j*h+1,h-2,h-2)}})}
+function s3WoodTex(base,line,w,h,n){return ctex(w,h,(q,W,H)=>{q.fillStyle=base;q.fillRect(0,0,W,H);const r=seeded(7);
+  for(let i=0;i<n;i++){const y=r()*H;q.strokeStyle=`rgba(0,0,0,${.06+r()*.1})`;q.lineWidth=1+r()*2;q.beginPath();q.moveTo(0,y);for(let x=0;x<=W;x+=W/8)q.lineTo(x,y+Math.sin(x*.02+i)*3);q.stroke()}
+  q.fillStyle=line;for(let x=0;x<W;x+=W/6)q.fillRect(x,0,2,H)})}
+function s3Init(){const T=THREE,cv=document.createElement('canvas');cv.className='s3cv';
+  const r=new T.WebGLRenderer({canvas:cv,antialias:true,powerPreference:'low-power'});
+  r.setPixelRatio(Math.min(2,window.devicePixelRatio||1));r.outputEncoding=T.sRGBEncoding;r.toneMapping=T.ACESFilmicToneMapping;r.toneMappingExposure=1.1;
+  r.shadowMap.enabled=true;r.shadowMap.type=T.PCFSoftShadowMap;
+  const sc=new T.Scene();sc.background=new T.Color('#0e0805');try{sc.environment=makeEnv(r)}catch(e){}
+  const cam=new T.PerspectiveCamera(40,1,.1,40);cam.position.set(0,1.75,6);
+  sc.add(new T.HemisphereLight('#ffe2b8','#1a0f08',.42));
+  const key=new T.SpotLight('#ffe3b8',1.35,16,.62,.65,1.4);key.position.set(.4,5.6,3.4);key.target.position.set(0,1.6,-3);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.bias=-.0015;sc.add(key);sc.add(key.target);
+  const L=[-1,1].map(s=>{const p=new T.PointLight('#ffb35a',1.25,7.5,2);p.position.set(s*2.1,3.75,-1.05);sc.add(p);return p});
+  const room=new T.Group(),items=new T.Group();sc.add(room);sc.add(items);
+  S3={r,cv,sc,cam,room,items,L,cache:new Map(),rsig:'',isig:'',w:0,h:0};
+  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();S3=false;try{render()}catch(_){}})}
+function s3Clear(g){while(g.children.length){const c=g.children.pop();c.traverse&&c.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose()})}})}}
+function s3Room(){const T=THREE,w=cosOf('wall'),l=cosOf('lantern'),sig=w[0]+'|'+l[0];if(S3.rsig===sig)return;S3.rsig=sig;
+  const g=S3.room;s3Clear(g);const cc=curCond;curCond=5;
+  /* arka duvar: çini */
+  const tile=s3TileTex(w[2][1],w[2][0],w[2][2]);tile.wrapS=tile.wrapT=T.RepeatWrapping;tile.repeat.set(9/0.9,6/0.9);
+  g.add(mesh(new T.PlaneGeometry(9,6),new T.MeshStandardMaterial({map:tile,roughness:.55,metalness:.05}),[0,3,-3]));
+  /* lambri ve küpeşte */
+  const wt=s3WoodTex('#4a2a17','rgba(0,0,0,.35)',512,128,30);wt.wrapS=T.RepeatWrapping;wt.repeat.set(3,1);
+  const wm=new T.MeshStandardMaterial({map:wt,roughness:.6});
+  g.add(mesh(box(9,1.15,.08),wm,[0,.575,-2.95]));g.add(mesh(box(9,.1,.16),wood('#7a4a2a'),[0,1.17,-2.92]));
+  /* kemerli kapı */
+  const arch=new T.Shape();arch.moveTo(-1.25,0);arch.lineTo(-1.25,3.05);arch.absarc(0,3.05,1.25,Math.PI,0,true);arch.lineTo(1.25,0);arch.lineTo(-1.25,0);
+  const hole=new T.Path();hole.moveTo(-1.08,0);hole.lineTo(-1.08,3.05);hole.absarc(0,3.05,1.08,Math.PI,0,true);hole.lineTo(1.08,0);hole.lineTo(-1.08,0);arch.holes.push(hole);
+  g.add(mesh(new T.ExtrudeGeometry(arch,{depth:.14,bevelEnabled:true,bevelSize:.02,bevelThickness:.02,bevelSegments:2,curveSegments:32}),brass(),[0,0,-2.98]));
+  const inner=new T.Shape();inner.moveTo(-1.08,0);inner.lineTo(-1.08,3.05);inner.absarc(0,3.05,1.08,Math.PI,0,true);inner.lineTo(1.08,0);
+  const night=ctex(64,256,(q,W,H)=>{const gr=q.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#24453f');gr.addColorStop(.6,'#0f201c');gr.addColorStop(1,'#060c0a');q.fillStyle=gr;q.fillRect(0,0,W,H)});
+  const im=new T.MeshBasicMaterial({map:night});const ig=new T.ShapeGeometry(inner,32);ig.computeBoundingBox();
+  const uv=ig.attributes.uv,pos=ig.attributes.position;for(let i=0;i<uv.count;i++)uv.setXY(i,(pos.getX(i)+1.08)/2.16,pos.getY(i)/4.13);
+  g.add(mesh(ig,im,[0,0,-2.99]));
+  /* zemin */
+  const ft=s3WoodTex('#3a2112','rgba(0,0,0,.4)',512,512,60);ft.wrapS=ft.wrapT=T.RepeatWrapping;ft.repeat.set(3,2);
+  g.add(mesh(new T.PlaneGeometry(9,7),new T.MeshStandardMaterial({map:ft,roughness:.7}),[0,0,.5],[-Math.PI/2,0,0]));
+  /* raf dolapları */
+  const cw=wood('#5a3420'),cd=wood('#3a2112');
+  [-1,1].forEach(s=>{const c=new T.Group();c.position.set(s*2.3,0,-2.55);
+    c.add(mesh(box(1.9,3.45,.06),cd,[0,1.725,-.32]));
+    [-1,1].forEach(t=>c.add(mesh(box(.1,3.45,.7),cw,[t*.95,1.725,0])));
+    c.add(mesh(box(2.05,.14,.78),cw,[0,3.5,0]));c.add(mesh(box(2.05,.08,.82),wood('#7a4a2a'),[0,3.6,0]));
+    c.add(mesh(box(1.9,.62,.7),cw,[0,.31,0]));
+    [1.12,2.22].forEach(y=>c.add(mesh(box(1.82,.06,.62),wood('#7a4a2a'),[0,y,0])));
+    g.add(c)});
+  /* asılı fenerler */
+  [-1,1].forEach((s,i)=>{const f=new T.Group();f.position.set(s*2.1,3.75,-1.05);const col=l[2][i]||l[2][0];
+    f.add(mesh(cyl(.012,.012,2.4,6),mat('#3a2a1a'),[0,1.35,0]));
+    f.add(mesh(new T.ConeGeometry(.17,.16,8),brass(),[0,.3,0]));f.add(mesh(cyl(.17,.17,.05,8),brass(),[0,.2,0]));
+    f.add(mesh(cyl(.15,.13,.36,8),new T.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:1.6,roughness:.3,transparent:true,opacity:.92}),[0,0,0]));
+    f.add(mesh(cyl(.15,.15,.05,8),brass(),[0,-.2,0]));f.traverse(o=>{o.castShadow=false});g.add(f);S3.L[i].color.set(col).lerp(new T.Color('#ffb35a'),.6)});
+  curCond=cc}
+function s3Items(inv){const T=THREE,sig=inv.map(x=>x.id+':'+x.cond).join(',');if(S3.isig===sig)return;S3.isig=sig;
+  const g=S3.items;while(g.children.length)g.remove(g.children[0]);const keep=new Set();
+  inv.forEach((it,i)=>{const side=i<8?-1:1,idx=i%8,row=idx<4?0:1,y=row?1.15:2.25,x=side*2.3+(-.66+.44*(idx%4));const key=it.id+':'+it.cond;keep.add(key);
+    let w=S3.cache.get(key);
+    if(!w){try{const inner=buildModel(Object.assign({},it,{known:it.known||{}}));const bb=new T.Box3().setFromObject(inner),sz=new T.Vector3(),ct=new T.Vector3();bb.getSize(sz);bb.getCenter(ct);
+      inner.position.set(-ct.x,-ct.y,-ct.z);w=new T.Group();w.add(inner);const sc=.38/Math.max(sz.x,sz.y,sz.z,.001);w.scale.setScalar(sc);w.userData.h=sz.y*sc;
+      w.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});S3.cache.set(key,w)}catch(e){return}}
+    w.position.set(x,y+.03+w.userData.h/2,-2.5+(idx%2?.04:-.04));w.rotation.y=-side*.28+((hashStr(it.id)%20)-10)*.02;g.add(w)});
+  if(S3.cache.size>48)[...S3.cache.keys()].forEach(k=>{if(!keep.has(k)){s3Clear(S3.cache.get(k));S3.cache.delete(k)}})}
+function s3Draw(){const host=$('#s3d');if(!host||!S3)return;const w=host.clientWidth||360,h=host.clientHeight||360;
+  if(w!==S3.w||h!==S3.h){S3.w=w;S3.h=h;S3.r.setSize(w,h,false);const a=w/h;S3.cam.aspect=a;
+    const needW=6.9,dist=9;S3.cam.fov=Math.max(40,2*Math.atan(needW/2/dist/a)*180/Math.PI);S3.cam.updateProjectionMatrix();S3.cam.lookAt(0,1.78,-3)}
+  S3.r.render(S3.sc,S3.cam)}
+function s3Mount(){const host=$('#s3d');if(!host||S3===false)return;
+  try{if(!S3)s3Init();if(S3.cv.parentNode!==host)host.appendChild(S3.cv);s3Room();s3Items(S.inv.filter(x=>!x.lab).slice(0,16));s3Draw()}
+  catch(e){console.warn('3B sahne kapatıldı',e);S3=false;try{render()}catch(_){}}}
+window.addEventListener('resize',()=>{if(S3)setTimeout(()=>{try{S3.w=0;s3Draw()}catch(e){}},150)});
 
 /* ---------- 3D thumbnails for icons ---------- */
 const THUMBS=new Map();let TR=null;
