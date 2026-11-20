@@ -32,6 +32,8 @@ jobs:
           xcodebuild -version
 
       - run: npm ci
+      - name: Titreşim eklentisi (@capacitor/haptics)
+        run: npm install --no-audit --no-fund @capacitor/haptics@^8
       - name: Web paketini hazırla ve iOS'a kopyala
         run: |
           python3 build.py
