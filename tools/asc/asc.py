@@ -45,3 +45,74 @@ if MODE=='kesif':
         a=b['attributes'];print('BUILD',b['id'],a['version'],a['processingState'],a.get('usesNonExemptEncryption'),a.get('uploadedDate'))
     r=get(f'/v1/apps/{AID}/reviewSubmissions',**{'filter[platform]':'IOS','limit':5})
     for s in r.get('data',[]): print('REVSUB',s['id'],s['attributes'])
+
+P=json.load(open(os.path.join(os.path.dirname(__file__),'plan.json'),encoding='utf-8'))
+def iap_state(iid): return get(f'/v2/inAppPurchases/{iid}')['data']['attributes']['state']
+if MODE in('olustur','hepsi'):
+    ex={i['attributes']['productId']:i for i in iaps()}
+    kese=ex['com.ozsstudio.bitpazari.kese']['id']
+    av=get(f'/v2/inAppPurchases/{kese}/inAppPurchaseAvailability')['data']
+    terr=[{'type':'territories','id':t['id']} for t in allp(f"/v1/inAppPurchaseAvailabilities/{av['id']}/availableTerritories",limit=200)]
+    print('territories',len(terr))
+    for x in P['iap']:
+        if x['pid'] in ex: iid=ex[x['pid']]['id'];print('var',x['pid'],iid)
+        else:
+            iid=req('POST','/v2/inAppPurchases',{'data':{'type':'inAppPurchases','attributes':{'name':x['ref'],'productId':x['pid'],'inAppPurchaseType':'CONSUMABLE','reviewNote':x['note'],'familySharable':False},'relationships':{'app':{'data':{'type':'apps','id':AID}}}}})['data']['id']
+            print('olusturuldu',x['pid'],iid)
+        have={l['attributes']['locale'] for l in allp(f'/v2/inAppPurchases/{iid}/inAppPurchaseLocalizations')}
+        for loc,(n,d) in x['loc'].items():
+            if loc in have: continue
+            req('POST','/v1/inAppPurchaseLocalizations',{'data':{'type':'inAppPurchaseLocalizations','attributes':{'locale':loc,'name':n,'description':d},'relationships':{'inAppPurchaseV2':{'data':{'type':'inAppPurchases','id':iid}}}}});print('  loc',loc)
+        # fiyat
+        has_price=False
+        try:
+            ps=req('GET',f'/v2/inAppPurchases/{iid}/iapPriceSchedule',params={'include':'manualPrices'},ok=(200,404))
+            has_price=any(i['type']=='inAppPurchasePrices' for i in ps.get('included',[]))
+        except SystemExit: pass
+        if not has_price:
+            pts=allp(f'/v2/inAppPurchases/{iid}/pricePoints',**{'filter[territory]':'TUR','limit':200})
+            pp=[p for p in pts if p['attributes']['customerPrice']==x['price']]
+            if not pp: print('!! fiyat noktasi yok',x['price'],[p['attributes']['customerPrice'] for p in pts][:80]);raise SystemExit(1)
+            req('POST','/v1/inAppPurchasePriceSchedules',{'data':{'type':'inAppPurchasePriceSchedules','relationships':{'inAppPurchase':{'data':{'type':'inAppPurchases','id':iid}},'baseTerritory':{'data':{'type':'territories','id':'TUR'}},'manualPrices':{'data':[{'type':'inAppPurchasePrices','id':'${p0}'}]}}},
+               'included':[{'type':'inAppPurchasePrices','id':'${p0}','attributes':{'startDate':None},'relationships':{'inAppPurchasePricePoint':{'data':{'type':'inAppPurchasePricePoints','id':pp[0]['id']}}}}]})
+            print('  fiyat',x['price'])
+        # bulunabilirlik
+        a=req('GET',f'/v2/inAppPurchases/{iid}/inAppPurchaseAvailability',ok=(200,404))
+        if not a.get('data'):
+            req('POST','/v1/inAppPurchaseAvailabilities',{'data':{'type':'inAppPurchaseAvailabilities','attributes':{'availableInNewTerritories':True},'relationships':{'inAppPurchase':{'data':{'type':'inAppPurchases','id':iid}},'availableTerritories':{'data':terr}}}});print('  ulkeler',len(terr))
+        # inceleme görseli
+        s=req('GET',f'/v2/inAppPurchases/{iid}/appStoreReviewScreenshot',ok=(200,404))
+        if not s.get('data'):
+            fp=os.path.join(os.path.dirname(__file__),x['shot']);data=open(fp,'rb').read()
+            r=req('POST','/v1/inAppPurchaseAppStoreReviewScreenshots',{'data':{'type':'inAppPurchaseAppStoreReviewScreenshots','attributes':{'fileName':x['shot'],'fileSize':len(data)},'relationships':{'inAppPurchaseV2':{'data':{'type':'inAppPurchases','id':iid}}}}})['data']
+            for op in r['attributes']['uploadOperations']:
+                h={k['name']:k['value'] for k in op.get('requestHeaders',[])}
+                rr=requests.request(op['method'],op['url'],headers=h,data=data[op['offset']:op['offset']+op['length']],timeout=120);print('  upload',rr.status_code)
+            req('PATCH',f"/v1/inAppPurchaseAppStoreReviewScreenshots/{r['id']}",{'data':{'type':'inAppPurchaseAppStoreReviewScreenshots','id':r['id'],'attributes':{'uploaded':True,'sourceFileChecksum':hashlib.md5(data).hexdigest()}}});print('  gorsel')
+        print('  durum',iap_state(iid))
+    # ---- 1.9.0 sürümü ----
+    vs={v['attributes']['versionString']:v for v in allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':20})}
+    if P['version'] in vs: VID=vs[P['version']]['id']
+    else:
+        VID=req('POST','/v1/appStoreVersions',{'data':{'type':'appStoreVersions','attributes':{'platform':'IOS','versionString':P['version'],'releaseType':'AFTER_APPROVAL'},'relationships':{'app':{'data':{'type':'apps','id':AID}}}}})['data']['id']
+    print('VERSION',VID)
+    locs={l['attributes']['locale']:l for l in allp(f'/v1/appStoreVersions/{VID}/appStoreVersionLocalizations')}
+    print('version locales',list(locs))
+    tr=locs.get('tr')['attributes']
+    if 'de-DE' not in locs:
+        d=P['de'];r=req('POST','/v1/appStoreVersionLocalizations',{'data':{'type':'appStoreVersionLocalizations','attributes':{'locale':'de-DE','description':d['description'],'keywords':d['keywords'],'promotionalText':d['promo'],'supportUrl':tr.get('supportUrl'),'marketingUrl':tr.get('marketingUrl')},'relationships':{'appStoreVersion':{'data':{'type':'appStoreVersions','id':VID}}}}})
+        locs['de-DE']=r['data'];print('de-DE surum metni eklendi')
+    for loc,txt in P['whatsNew'].items():
+        if loc in locs: req('PATCH',f"/v1/appStoreVersionLocalizations/{locs[loc]['id']}",{'data':{'type':'appStoreVersionLocalizations','id':locs[loc]['id'],'attributes':{'whatsNew':txt}}});print('whatsNew',loc)
+    # app info (ad, alt başlık) de-DE
+    ai=[a for a in allp(f'/v1/apps/{AID}/appInfos') if a['attributes'].get('state')!='READY_FOR_DISTRIBUTION' and a['attributes'].get('appStoreState')!='READY_FOR_SALE']
+    if ai:
+        al={l['attributes']['locale']:l for l in allp(f"/v1/appInfos/{ai[0]['id']}/appInfoLocalizations")}
+        if 'de-DE' not in al:
+            t=al['tr']['attributes'];req('POST','/v1/appInfoLocalizations',{'data':{'type':'appInfoLocalizations','attributes':{'locale':'de-DE','name':P['de']['name'],'subtitle':P['de']['subtitle'],'privacyPolicyUrl':t.get('privacyPolicyUrl')},'relationships':{'appInfo':{'data':{'type':'appInfos','id':ai[0]['id']}}}}});print('de-DE ad/alt baslik eklendi')
+    else: print('!! duzenlenebilir appInfo yok')
+    # derleme
+    b=allp('/v1/builds',**{'filter[app]':AID,'filter[version]':P['build'],'filter[preReleaseVersion.version]':P['version']})
+    if not b: print('!! derleme yok');raise SystemExit(1)
+    req('PATCH',f'/v1/appStoreVersions/{VID}/relationships/build',{'data':{'type':'builds','id':b[0]['id']}});print('build bagli',b[0]['attributes']['version'])
+    print('SURUM DURUMU',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])

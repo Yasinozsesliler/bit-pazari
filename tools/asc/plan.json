@@ -1,0 +1,81 @@
+{
+ "de": {
+  "name": "Bit Pazarı: Antiquitätenladen",
+  "subtitle": "Feilschen, handeln, sammeln",
+  "promo": "Neu: Auktionsabend! Bring deine eigenen Stücke unter den Hammer und ruf „Zum Ersten, zum Zweiten, verkauft!“. Dazu Umgebungsgeräusche, Vibration und Deutsch.",
+  "keywords": "antiquitäten,flohmarkt,händler,laden,feilschen,auktion,sammler,fälschung,istanbul,uhren,tycoon",
+  "description": "Du hast den kleinen Laden deines Großvaters geerbt, in der Kasse liegt nur eine Handvoll Geld. Bit Pazarı ist ein Antiquitäten-Handelsspiel in Istanbul, in dem du diesen Laden am Laufen hältst.\n\nJeden Tag kommt jemand anderes durch die Tür. Onkel Cevdet treibt den Preis hoch, die pensionierte Lehrerin mag kein Feilschen, der Sammler erkennt eine Fälschung auf den ersten Blick. Du machst ein Angebot, bietest einen Tee an, zeigst Mängel auf oder schlägst einen Tausch vor. Drängst du zu sehr, steht der Kunde auf und geht. Stammkunden erinnern sich an dich und erzählen ihre Geschichte weiter.\n\nNicht jedes Stück ist echt. Du drehst es in der Hand, suchst den Stempel auf der Rückseite, nimmst Lupe, UV-Lampe und Waage oder fragst den Experten. Verkaufst du eine Fälschung als echt, kommt die Ordnungspolizei und dein Ruf ist dahin.\n\nAbends veranstaltest du deinen eigenen Auktionsabend: Du wählst bis zu drei Stücke, legst den Startpreis fest und rufst die Gebote selbst aus. Oder du bietest im e-Mezat bei Online-Auktionen mit und verpackst verkaufte Ware mit eigener Hand für den Versand.\n\nDu reparierst Taschenuhren, klebst Risse und polierst, gut restaurierte Stücke sind mehr wert. Vom Flohmarkt aus eröffnest du Läden in Kadıköy, im Großen Basar, in Galata und Nişantaşı. Jedes Viertel hat eigene Kunden, eigene Ware und eigene Miete. Über 120 Stücke: Fliesenvasen, 40 verschiedene Uhren, Grammophone, Spielzeug, osmanische Münzen, jedes mit eigenem 3D-Modell und einer kurzen Geschichte.\n\nTon, Musik, Umgebungsgeräusche und Vibration lassen sich in den Einstellungen einzeln ein- und ausschalten. Das Spiel gibt es auf Deutsch, Englisch und Türkisch.\n\nOffline spielbar. Internet wird nur für optionale Werbung benötigt.\n\nDas Spiel enthält optionale In-App-Käufe. Einige davon (Händlerbeutel, Starterpaket, Sparschwein) geben Spielgeld. Spielgeld und Gegenstände können nicht in echtes Geld umgetauscht werden.\n\nOZS Studio"
+ },
+ "whatsNew": {
+  "tr": "• Mezat Gecesi: Kendi müzayedeni düzenle, \"Bir! İki! Satıldı!\" de\n• Dükkân artık 3B: raflar, vitrin, pencere ve dükkân kedisi\n• Tanıdık müşteriler seni hikâyeleriyle karşılıyor\n• Ortam sesleri ve titreşim, ayarlardan açılıp kapanabiliyor\n• Almanca dil desteği\n• Yeni Başlangıç Paketi ve Kese boyları\n• Hata düzeltmeleri: öğrenci müşterilerin görünümü, uzun sabah haberlerinde Devam düğmesi",
+  "en-US": "• Auction Night: run your own auction and call \"Going once, going twice, sold!\"\n• Your shop is now in 3D: shelves, showcase, window and a shop cat\n• Regular customers greet you with their stories\n• Ambient sounds and vibration, each switchable in Settings\n• German language support\n• New Starter Pack and purse sizes\n• Bug fixes: student customers' looks, Continue button on long morning reports",
+  "de-DE": "• Auktionsabend: Veranstalte deine eigene Auktion: „Zum Ersten, zum Zweiten, verkauft!“\n• Dein Laden ist jetzt in 3D: Regale, Vitrine, Fenster und eine Ladenkatze\n• Stammkunden begrüßen dich mit ihren Geschichten\n• Umgebungsgeräusche und Vibration, einzeln in den Einstellungen abschaltbar\n• Neu: Deutsch\n• Neues Starterpaket und weitere Beutelgrößen\n• Fehlerbehebungen: Aussehen der Studentenkunden, Weiter-Knopf bei langen Morgenberichten"
+ },
+ "iap": [
+  {
+   "pid": "com.ozsstudio.bitpazari.baslangic",
+   "ref": "Baslangic Paketi",
+   "price": "49.99",
+   "shot": "review_baslangic.png",
+   "loc": {
+    "tr": [
+     "Başlangıç Paketi",
+     "Sermaye, nadir bir parça ve 3 gün reklamsız"
+    ],
+    "en-US": [
+     "Starter Pack",
+     "Starting cash, a rare piece, 3 ad-free days"
+    ],
+    "de-DE": [
+     "Starterpaket",
+     "Startgeld, seltenes Stück, 3 Tage werbefrei"
+    ]
+   },
+   "note": "Tüketilebilir (consumable). Mağaza ekranının en üstündeki kartta, 2. oyun gününden itibaren 48 saat görünür. Kasaya oyun parası, rafa nadir bir parça ekler ve 3 gün geçiş reklamını kapatır. Oyun, aynı oyuncuya bir kez sunar. Oyun parası gerçek paraya çevrilemez."
+  },
+  {
+   "pid": "com.ozsstudio.bitpazari.kese_kucuk",
+   "ref": "Kucuk Kese",
+   "price": "29.99",
+   "shot": "review_kese.png",
+   "loc": {
+    "tr": [
+     "Küçük Kese",
+     "Kasana küçük bir nakit takviyesi"
+    ],
+    "en-US": [
+     "Small Purse",
+     "A small cash boost for your till"
+    ],
+    "de-DE": [
+     "Kleiner Händlerbeutel",
+     "Ein kleiner Geldschub für deine Kasse"
+    ]
+   },
+   "note": "Tüketilebilir (consumable). Mağaza › Esnaf Kesesi kartında soldaki \"Küçük Kese\". Kasaya oyun parası ekler; tekrar tekrar alınabilir. Oyun parası gerçek paraya çevrilemez."
+  },
+  {
+   "pid": "com.ozsstudio.bitpazari.kese_buyuk",
+   "ref": "Buyuk Sandik",
+   "price": "199.99",
+   "shot": "review_kese.png",
+   "loc": {
+    "tr": [
+     "Büyük Sandık",
+     "Kasana büyük nakit sermaye eklenir"
+    ],
+    "en-US": [
+     "Big Chest",
+     "A large cash injection for your till"
+    ],
+    "de-DE": [
+     "Große Truhe",
+     "Viel Spielgeld für deine Kasse"
+    ]
+   },
+   "note": "Tüketilebilir (consumable). Mağaza › Esnaf Kesesi kartında sağdaki \"Büyük Sandık\". Kasaya oyun parası ekler; tekrar tekrar alınabilir. Oyun parası gerçek paraya çevrilemez."
+  }
+ ],
+ "version": "1.9.0",
+ "build": "44"
+}
