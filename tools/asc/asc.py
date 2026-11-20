@@ -124,3 +124,24 @@ if MODE in('durum','gonder'):
         print('IAP',x['pid'],a['state'],'| gorsel',(s.get('attributes') or {}).get('assetDeliveryState'))
     for ai in allp(f'/v1/apps/{AID}/appInfos'):
         print('APPINFO',ai['id'],ai['attributes'].get('state'),[l['attributes']['locale'] for l in allp(f"/v1/appInfos/{ai['id']}/appInfoLocalizations")])
+if MODE=='gonder':
+    ai=[a for a in allp(f'/v1/apps/{AID}/appInfos') if a['attributes'].get('state')=='PREPARE_FOR_SUBMISSION'][0]
+    al={l['attributes']['locale']:l for l in allp(f"/v1/appInfos/{ai['id']}/appInfoLocalizations")}
+    t=al['tr']['attributes'];d=al['de-DE']
+    print('de-DE once',d['attributes'].get('name'),'|',d['attributes'].get('subtitle'))
+    req('PATCH',f"/v1/appInfoLocalizations/{d['id']}",{'data':{'type':'appInfoLocalizations','id':d['id'],'attributes':{'name':P['de']['name'],'subtitle':P['de']['subtitle'],'privacyPolicyUrl':t.get('privacyPolicyUrl')}}});print('de-DE ad/alt baslik yazildi')
+    for x in P['iap']:
+        i=ex[x['pid']]
+        if i['attributes']['state']=='READY_TO_SUBMIT':
+            req('POST','/v1/inAppPurchaseSubmissions',{'data':{'type':'inAppPurchaseSubmissions','relationships':{'inAppPurchaseV2':{'data':{'type':'inAppPurchases','id':i['id']}}}}});print('IAP gonderildi',x['pid'])
+    vs={v['attributes']['versionString']:v for v in allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':20})}
+    VID=vs[P['version']]['id']
+    open_=[s for s in get(f'/v1/apps/{AID}/reviewSubmissions',**{'filter[platform]':'IOS','filter[state]':'READY_FOR_REVIEW,UNRESOLVED_ISSUES','limit':5}).get('data',[])]
+    RS=open_[0]['id'] if open_ else req('POST','/v1/reviewSubmissions',{'data':{'type':'reviewSubmissions','attributes':{'platform':'IOS'},'relationships':{'app':{'data':{'type':'apps','id':AID}}}}})['data']['id']
+    items=get(f'/v1/reviewSubmissions/{RS}/items').get('data',[])
+    if not items: req('POST','/v1/reviewSubmissionItems',{'data':{'type':'reviewSubmissionItems','relationships':{'reviewSubmission':{'data':{'type':'reviewSubmissions','id':RS}},'appStoreVersion':{'data':{'type':'appStoreVersions','id':VID}}}}})
+    r=req('PATCH',f'/v1/reviewSubmissions/{RS}',{'data':{'type':'reviewSubmissions','id':RS,'attributes':{'submitted':True}}})
+    print('INCELEMEYE GONDERILDI',r['data']['attributes'])
+    print('SURUM',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
+    for i in iaps():
+        if i['attributes']['productId'] in [x['pid'] for x in P['iap']]: print('IAP',i['attributes']['productId'],i['attributes']['state'])
