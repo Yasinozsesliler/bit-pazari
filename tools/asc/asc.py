@@ -116,3 +116,11 @@ if MODE in('olustur','hepsi'):
     if not b: print('!! derleme yok');raise SystemExit(1)
     req('PATCH',f'/v1/appStoreVersions/{VID}/relationships/build',{'data':{'type':'builds','id':b[0]['id']}});print('build bagli',b[0]['attributes']['version'])
     print('SURUM DURUMU',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
+if MODE in('durum','gonder'):
+    ex={i['attributes']['productId']:i for i in iaps()}
+    for x in P['iap']:
+        iid=ex[x['pid']]['id'];a=ex[x['pid']]['attributes']
+        s=req('GET',f'/v2/inAppPurchases/{iid}/appStoreReviewScreenshot',ok=(200,404)).get('data') or {}
+        print('IAP',x['pid'],a['state'],'| gorsel',(s.get('attributes') or {}).get('assetDeliveryState'))
+    for ai in allp(f'/v1/apps/{AID}/appInfos'):
+        print('APPINFO',ai['id'],ai['attributes'].get('state'),[l['attributes']['locale'] for l in allp(f"/v1/appInfos/{ai['id']}/appInfoLocalizations")])
