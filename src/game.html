@@ -2502,7 +2502,7 @@ function mzHype(){if(!MZ||MZ.fin||MZ.hype)return;MZ.hype=true;MZ.last=Date.now()
   MZ.bd.forEach(b=>{b.max=r10(b.max*(good?1.07:1.025))});MZ.feed.push(good?`Sen: “Bu parçanın bir eşi daha yok, beyler hanımlar!” Salon kıpırdandı.`:`Sen: “Kaçırmayın, böylesi bir daha gelmez!” Birkaç kişi gülümsedi.`);sfx.tap();render();setTimeout(()=>mzReact(),600)}
 function mzPull(){if(!MZ||MZ.fin)return;MZ.fin='pulled';MZ.feed.push('Lotu geri çektin. Parça rafına döndü.');sfx.tap();render()}
 function mzSell(){const it=MZ.it,p=MZ.cur,ix=S.inv.findIndex(x=>x.id===it.id);if(ix<0)return;S.inv.splice(ix,1);S.money+=p;MZ.sum+=p;MZ.lots[MZ.i].res=p;
-  logT('mz',it,p);stat('sell');stat('mezat');if(MZ.lead&&S.regs&&S.regs[MZ.lead])regUpd(MZ.lead,.5);if(p>=val(it)*1.2)addRep(1);
+  logT('mz',it,p);stat('sell');stat('mezat');if(MZ.lead&&S.regs&&S.regs[MZ.lead])regUpd(MZ.lead,.5);if(p>=val(it)*1.2){addRep(1);happyMoment('mezat')}
   MZ.feed.push(`Satıldı! ${MZ.lead}, ${fmt(p)}.`);sfx.cash();try{burst(22)}catch(e){}flt('+'+fmt(p),'var(--mint)');T('mezat_sold',{v:val(it),p});save()}
 function hammer(final){if(S.mute)return;tone(final?150:220,.08,'square',.06);tone(final?90:120,.12,'triangle',.05,.04);buzz(final?[40,30,60]:22)}
 function mzIdle(){clearInterval(MZ&&MZ.idT);if(!MZ)return;MZ.idT=setInterval(()=>{if(!MZ||MZ.fin||MZ.done){clearInterval(MZ&&MZ.idT);return}
@@ -2729,7 +2729,7 @@ function rsLoop(now){if(!RS||!RS.cv||!document.getElementById('rs'))return;const
 function rsFinish(){if(!RS||RS.done)return;RS.done=true;const x=RS.x,p=RS.p;const w=RS.cracks?[.4,.35,.25]:[.6,0,.4];
   const q=Math.min(1,p.dirt*w[0]+(RS.cracks?p.glue*w[1]:0)+p.polish*w[2]);const pc=Math.round(q*100);
   let up=0;if(q>=.9)up=x.cond<4&&has('a3')?2:1;else if(q>=.7)up=1;else if(q>=.5)up=R()<.5?1:0;up=Math.min(up,5-x.cond);
-  const before=x.cond;condUp(x,up);if(up){gainXP(10+pc/10);stat('repair')}stat('diy');const st=q>=.9?3:q>=.7?2:q>=.5?1:0;
+  const before=x.cond;condUp(x,up);if(up){gainXP(10+pc/10);stat('repair')}stat('diy');const st=q>=.9?3:q>=.7?2:q>=.5?1:0;if(st===3)happyMoment('repair');
   const el=$('#rs');if(el)el.remove();RS=null;
   modal({icon:`<div class="rs-res">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div>`,title:up?'Restorasyon başarılı!':'Pek olmadı…',
     body:`${icon(x)} <b>${x.n}</b><br>İşçilik puanı <b>%${pc}</b><br>${up?`Durum: ${CONDN[before-1]} → <b>${CONDN[x.cond-1]}</b>`:'Durum değişmedi. Tozunu iyice al, çatlakları kapat, sonra cilala.'}`,btns:[{t:'Tamam',cls:'brass',a:'closeModal'}]});
@@ -3753,7 +3753,7 @@ function pkAct(a,v){if(!PK)return;const it=PK.o.it,sz=sizeOf(it);
   else if(a==='cancel'){PK=null;PKL++;sfx.tap()}
   else if(a==='ship'){const f=FIRMS.find(x=>x.id===PK.firm);if(!f)return;const cost=pkMatCost()+firmCost(f,PK.box);if(S.money<cost){toast('Kasada kargo parası yok');sfx.bad();return}
     PK.go=true;render();sfx.door();const o=PK.o,q=packQ();
-    setTimeout(()=>{S.money-=cost;logT('fee',{n:'Kargo: '+o.it.n,i:'📦'},-cost);o.sent=true;o.firm=f.id;o.box=PK.box;o.q=q;o.arrive=S.day+f.eta;(S.pkHist=S.pkHist||[]).push(q);stat('ship');if(q>=.9)stat('perfect');gainXP(6+Math.round(q*8));PK=null;PKL++;sfx.cash();
+    setTimeout(()=>{S.money-=cost;logT('fee',{n:'Kargo: '+o.it.n,i:'📦'},-cost);o.sent=true;o.firm=f.id;o.box=PK.box;o.q=q;o.arrive=S.day+f.eta;(S.pkHist=S.pkHist||[]).push(q);stat('ship');if(q>=.9){stat('perfect');happyMoment('pack')}gainXP(6+Math.round(q*8));PK=null;PKL++;sfx.cash();
       toast(q>.9?'Usta işi paket! Kargoya verildi.':'Paket kargoya verildi! Teslim olunca değerlendirme gelecek.');save();render()},900);return}
   render()}
 
@@ -3829,7 +3829,7 @@ function renderCol(){const tot=SERIES.reduce((a,s)=>a+s.ks.length,0),have=SERIES
     <div class="rlegend">${RN.map((n,i)=>`<span><i style="background:${RC[i]}"></i>${n}</span>`).join('')}</div></div>
    <p class="sub" style="margin:0">Satın aldığın her ürün albüme işlenir. Bir seriyi tamamla, ödülü ve kalıcı satış bonusunu kap. İncelediğin ürünün nadirliği ortaya çıkar.</p>
    ${SERIES.map(s=>{const n=s.ks.filter(k=>S.col&&S.col[k]!=null).length,done=!!(S.colDone&&S.colDone[s.id]);
-     return `<div class="ser${done?' done':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${s.n}${s.pack?' <em class="pktag">📜 Tarih Paketi</em>':''}</b><small>${s.d}</small></div><span class="sern">${done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
+     return `<div class="ser${done?' done':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${s.n}${pkTag(s)}</b><small>${s.d}</small></div><span class="sern">${done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
       <div class="slots">${s.ks.map(k=>{const got=S.col&&S.col[k]!=null,r=got?S.col[k]:0,c=catOf(k);return `<div class="slot${got?' got':''}" data-act="wiki:${k}" style="--rc:${RC[r]}" title="${got?c.n:'?'}"><span class="sic">${icon({k,i:c.i,cond:4,id:'col'+k,known:{}})}</span><small>${got?c.n:'???'}</small>${got&&r?`<i class="sr">${RN[r]}</i>`:''}</div>`}).join('')}</div>
       <div class="serf">${done?`<span class="pos">✓ ${s.bonus}</span>`:`<span>Ödül: <b>${fmt(s.rw)}</b> + ${s.bonus.toLocaleLowerCase('tr-TR')}</span>`}</div></div>`}).join('')}`}
 function renderAch(){const nA=Object.keys(S.ach||{}).length;
@@ -5046,7 +5046,7 @@ function renderCol(){const tot=colTot(),have=colHave(),pc=have/Math.max(1,tot)*1
     <div class="rlegend">${RN.map((n,i)=>`<span><i style="background:${RC[i]}"></i>${n}</span>`).join('')}</div></div>
    <p class="sub" style="margin:0">Aldığın her ürün deftere işlenir. Seriyi tamamla, ödülü ve kalıcı satış bonusunu kap. Bir serinin tüm parçalarını <b>nadir ya da üstü</b> kalitede toplarsan sayfa <b>Altın Sayfa</b> olur, ödülün 1,5 katını alırsın.${nb?`<br>En yakın seri: <b>${nb.s.n}</b> (${nb.n}/${nb.s.ks.length})`:''}</p>
    ${SERIES.map(s=>{const n=s.ks.filter(k=>S.col&&S.col[k]!=null).length,done=!!(S.colDone&&S.colDone[s.id]),gold=!!S.colGold[s.id],gn=s.ks.filter(k=>S.col&&S.col[k]>=1).length;
-     return `<div class="ser${done?' done':''}${gold?' gold':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${gold?'✨ ':''}${s.n}${s.pack?(packOwned(s.pack)?' <em class="pktag">📜 Tarih Paketi</em>':' <em class="pktag lock" data-act="store">🔒 Tarih Paketi · Aç</em>'):''}</b><small>${s.d}</small></div><span class="sern">${gold?'Altın Sayfa':done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
+     return `<div class="ser${done?' done':''}${gold?' gold':''}" style="--sc:${s.c}"><div class="serh"><div style="min-width:0"><b>${gold?'✨ ':''}${s.n}${pkTag(s)}</b><small>${s.d}</small></div><span class="sern">${gold?'Altın Sayfa':done?'Tamamlandı':n+'/'+s.ks.length}</span></div>
       <div class="slots">${s.ks.map(k=>{const got=S.col&&S.col[k]!=null,r=got?S.col[k]:0,c=catOf(k);return `<div class="slot${got?' got':''}" data-act="wiki:${k}" style="--rc:${RC[r]}" title="${got?c.n:'?'}"><span class="sic">${icon({k,i:c.i,cond:4,id:'col'+k,known:{}})}</span><small>${got?c.n:'???'}</small>${got&&r?`<i class="sr">${RN[r]}</i>`:''}</div>`}).join('')}</div>
       <div class="serf">${gold?`<span class="pos">✓ ${s.bonus} · Altın Sayfa ödülü alındı</span>`:done?`<span class="pos">✓ ${s.bonus}</span><span class="gnext">Altın Sayfa: ${gn}/${s.ks.length} nadir · +${fmt(r10(s.rw*1.5))}</span>`:`<span>Ödül: <b>${fmt(s.rw)}</b> + ${s.bonus.toLocaleLowerCase('tr-TR')}</span>`}</div></div>`}).join('')}`}
 
@@ -6028,7 +6028,7 @@ function buildH(it,g,sus){const T=THREE,PI=Math.PI;const k=it.k;const steel=()=>
     for(let i=0;i<5;i++){const x=-.8+i*.4;const h=2*Math.sqrt(Math.max(0,1-x*x))*.94;g.add(mesh(cyl(.025,.025,h,8),b,[x,0,0]))}for(let i=0;i<5;i++){const y=-.8+i*.4;const w=2*Math.sqrt(Math.max(0,1-y*y))*.94;g.add(mesh(cyl(.025,.025,w,8),b,[0,y,0],[0,0,PI/2]))}
     for(let i=0;i<9;i++){const a=PI*.1+i*PI*.8/8;g.add(mesh(sph(.08),b,[Math.cos(a)*1.08,Math.sin(a)*1.08,0]));g.add(mesh(new T.TorusGeometry(.07,.02,6,16),b,[Math.cos(a)*1.2,Math.sin(a)*1.2-.12,0]))}
     g.add(mesh(new T.ConeGeometry(.09,.3,12),b,[0,1.2,0]));break}
-  default:return false}
+  default:return buildP(it,g,sus)}
   return true}
 
 const XTN={mag:['🔍','Büyüteç'],uv:['🔦','UV Lamba'],w:['⚖️','Terazi']};
@@ -6663,6 +6663,375 @@ function dustLoop(t){const cv=document.getElementById('dust');
       g.beginPath();g.arc(m.x*w,m.y*h,m.r,0,6.283);g.fillStyle=`rgba(255,214,150,${a.toFixed(3)})`;g.fill()}}
   requestAnimationFrame(dustLoop)}
 requestAnimationFrame(dustLoop);
+
+/* ===================== 1.9.1 · Yedi yeni paket: Nostalji 90'lar · Eski İstanbul · Hamam · Hat/Kitap/Harita · Halı/Kilim · Para/Altın · Mahalle Bakkalı =====================
+   Her paket ayrı tek seferlik satın alma (ürün App Store'da yoksa yalnızca Premium ile açılır). Premium'a hepsi dahil.
+   Her pakette bir "tadımlık" (free:1) eşya paket olmadan da pazara düşer. */
+const PKS={tarih:{e:'📜',n:'Tarih Paketi'},
+ nostalji:{e:'📼',n:"Nostalji 90'lar",d:'VHS, tuğla telefon, çağrı cihazı, atari kartuşu…',x:'Teyp, disket ve anlık fotoğraf: 90\'ların çocukları dükkâna geliyor'},
+ vapur:{e:'⛴️',n:'Eski İstanbul',d:'Vapur jetonu, tramvay tabelası, vapur çanı…',x:'Vapurlar, tramvaylar ve Haydarpaşa garı'},
+ hamam:{e:'🛁',n:'Hamam Takımı',d:'Gümüş tas, sedefli nalın, gelin bohçası…',x:'Çeyiz sandıklarından çıkan hamam takımları'},
+ hat:{e:'🖋️',n:'Hat, Kitap ve Harita',d:'Hat levhası, gravür, Müteferrika baskısı…',x:'Sahtesi en çok olan paket: UV lamba hazır olsun'},
+ hali:{e:'🧶',n:'Halı ve Kilim',d:'Hereke, Uşak, Kars kilimi, heybe…',x:'Düğümü sayan kazanır'},
+ para:{e:'🪙',n:'Para ve Altın',d:'Reşat altını, ilk Cumhuriyet banknotu…',x:'Teraziyle ayarı tart, sahte altını ayır'},
+ bakkal:{e:'🏪',n:'Mahalle Bakkalı',d:'Emaye tabela, gazoz şişesi, yazar kasa…',x:'Kapanan bakkalların tezgâhından'}};
+const PK_IDS=Object.keys(PKS).filter(k=>k!=='tarih');
+PK_IDS.forEach(k=>{IAP[k]='com.ozsstudio.bitpazari.paket_'+k;IAP_K[IAP[k]]=k});
+const CATP=[
+ /* Nostalji 90'lar */
+ {k:'vhs',n:'VHS Video Kaset',i:'📼',v:180,pack:'nostalji',free:1},
+ {k:'tugla',n:'Tuğla Cep Telefonu',i:'📱',v:1400,f:1,pack:'nostalji'},
+ {k:'cagri',n:'Çağrı Cihazı',i:'📟',v:520,pack:'nostalji'},
+ {k:'disket',n:'Disket Kutusu',i:'💾',v:240,pack:'nostalji'},
+ {k:'kartus',n:'Atari Kartuşu',i:'🕹️',v:680,f:1,pack:'nostalji'},
+ {k:'walkman',n:'Kasetli Müzik Çalar',i:'🎧',v:1150,f:1,pack:'nostalji'},
+ {k:'anlik',n:'Anlık Fotoğraf Makinesi',i:'📷',v:1300,f:1,pack:'nostalji'},
+ {k:'sanal',n:'Sanal Evcil Hayvan Oyuncağı',i:'🥚',v:460,f:1,pack:'nostalji'},
+ /* Eski İstanbul */
+ {k:'vjeton',n:'Vapur Jetonu',i:'🪙',v:140,pack:'vapur',free:1},
+ {k:'tramtabela',n:'Tramvay Durak Tabelası',i:'🚋',v:1900,f:1,pack:'vapur'},
+ {k:'duduk',n:'Pirinç Vapur Düdüğü',i:'📯',v:1700,f:1,pack:'vapur'},
+ {k:'taksimetre',n:'Eski Taksimetre',i:'🚕',v:1500,pack:'vapur'},
+ {k:'plaka',n:'Eski İstanbul Plakası',i:'🚗',v:720,f:1,pack:'vapur'},
+ {k:'haydarpasa',n:'Haydarpaşa Tren Bileti',i:'🎫',v:560,f:1,sp:1,pack:'vapur'},
+ {k:'kaptan',n:'Vapur Kaptanı Şapkası',i:'🧢',v:900,pack:'vapur'},
+ {k:'vapurcan',n:'Şirket-i Hayriye Vapur Çanı',i:'🔔',v:5400,f:1,pack:'vapur'},
+ /* Hamam */
+ {k:'pirinctas',n:'Pirinç Hamam Tası',i:'🥣',v:420,pack:'hamam',free:1},
+ {k:'hamamtasi',n:'Gümüş Hamam Tası',i:'🥣',v:2600,f:1,pack:'hamam'},
+ {k:'nalin',n:'Sedefli Nalın',i:'👡',v:1400,f:1,pack:'hamam'},
+ {k:'pestamal',n:'İşlemeli Peştamal',i:'🧣',v:620,pack:'hamam'},
+ {k:'bohca',n:'Gelin Hamamı Bohçası',i:'🎁',v:1800,f:1,pack:'hamam'},
+ {k:'gulabdan',n:'Gümüş Gülabdan',i:'🌹',v:2300,f:1,pack:'hamam'},
+ {k:'kurna',n:'Mermer Kurna ve Musluk',i:'🚰',v:1300,pack:'hamam'},
+ /* Hat, Kitap ve Harita */
+ {k:'hokka',n:'Gümüş Hokka',i:'🖋️',v:900,pack:'hat',free:1},
+ {k:'hatlevha',n:'Hat Levhası',i:'🖼️',v:2800,f:1,sp:1,pack:'hat'},
+ {k:'gravur',n:'Eski İstanbul Gravürü',i:'🖼️',v:1600,f:1,sp:1,pack:'hat'},
+ {k:'harita',n:'Eski İstanbul Haritası',i:'🗺️',v:2200,f:1,sp:1,pack:'hat'},
+ {k:'ilkbaski',n:'İlk Baskı Roman',i:'📕',v:1200,f:1,sp:1,pack:'hat'},
+ {k:'tezhip',n:'Tezhipli Sayfa',i:'📜',v:1900,f:1,sp:1,pack:'hat'},
+ {k:'muteferrika',n:'Müteferrika Baskısı',i:'📚',v:7500,f:1,sp:1,pack:'hat'},
+ /* Halı ve Kilim */
+ {k:'cicim',n:'Cicim Yastık',i:'🧶',v:560,pack:'hali',free:1},
+ {k:'heybe',n:'Kilim Heybe',i:'👜',v:520,pack:'hali'},
+ {k:'minder',n:'Kilim Minder',i:'🧶',v:460,pack:'hali'},
+ {k:'seccade',n:'Yün Seccade',i:'🧶',v:1300,f:1,pack:'hali'},
+ {k:'kars',n:'Kars Kilimi',i:'🧶',v:1600,f:1,pack:'hali'},
+ {k:'usak',n:'Uşak Halısı',i:'🧶',v:4200,f:1,pack:'hali'},
+ {k:'hereke',n:'Hereke İpek Halısı',i:'🧶',v:8200,f:1,pack:'hali'},
+ /* Para ve Altın */
+ {k:'jeton',n:'Telefon Jetonu',i:'🪙',v:90,pack:'para',free:1},
+ {k:'hatira',n:'Hatıra Gümüş Para',i:'🪙',v:700,f:1,pack:'para'},
+ {k:'mecidiye',n:'Gümüş Mecidiye',i:'🪙',v:1400,f:1,pack:'para'},
+ {k:'ceyrek',n:'Eski Çeyrek Altın',i:'🪙',v:1700,f:1,pack:'para'},
+ {k:'banknot',n:'İlk Cumhuriyet Banknotu',i:'💵',v:2600,f:1,sp:1,pack:'para'},
+ {k:'resat',n:'Reşat Altını',i:'🪙',v:3800,f:1,pack:'para'},
+ {k:'besibir',n:'Beşibiryerde Altın',i:'🪙',v:9000,f:1,pack:'para'},
+ /* Mahalle Bakkalı */
+ {k:'gazoz',n:'Eski Gazoz Şişesi',i:'🍾',v:180,pack:'bakkal',free:1},
+ {k:'veresiye',n:'Veresiye Defteri',i:'📒',v:260,pack:'bakkal'},
+ {k:'biskuvi',n:'Teneke Bisküvi Kutusu',i:'🥫',v:380,pack:'bakkal'},
+ {k:'sifon',n:'Cam Sifon Şişesi',i:'🍶',v:640,f:1,pack:'bakkal'},
+ {k:'kantar',n:'Pirinç Bakkal Terazisi',i:'⚖️',v:1300,pack:'bakkal'},
+ {k:'emaye',n:'Emaye Bakkal Tabelası',i:'🪧',v:1500,f:1,pack:'bakkal'},
+ {k:'yazarkasa',n:'Mekanik Yazar Kasa',i:'🧾',v:2700,f:1,pack:'bakkal'}];
+CAT.push(...CATP);
+['vhs','cagri','disket','kartus','walkman','vjeton','haydarpasa','hokka','jeton','hatira','mecidiye','ceyrek','banknot','resat','besibir','veresiye','tezhip'].forEach(k=>SMALL.add(k));
+['hereke','usak','kars','kantar','yazarkasa','vapurcan','tramtabela','kurna'].forEach(k=>BIG.add(k));
+['anlik','walkman','tugla','gulabdan','sifon','gazoz','hatlevha','gravur','taksimetre','kurna','sanal'].forEach(k=>FRAG.add(k));
+['vjeton','duduk','vapurcan','taksimetre','hamamtasi','pirinctas','gulabdan','kurna','hokka','jeton','hatira','mecidiye','ceyrek','resat','besibir','kantar','yazarkasa','emaye'].forEach(k=>METAL.add(k));
+['ceyrek','resat','besibir','gulabdan'].forEach(k=>JEWEL.add(k));
+['kartus','sanal'].forEach(k=>TOY.add(k));
+SERIES.push(
+ {id:'nostalji',pack:'nostalji',n:"Nostalji 90'lar",d:'Teyp, disket, çağrı cihazı',c:'#ff5fa2',ks:['vhs','tugla','cagri','disket','kartus','walkman','anlik','sanal'],rw:3500,bonus:"90'lar eşyaları %10 daha pahalıya satılır"},
+ {id:'vapur',pack:'vapur',n:'Vapur ve Tramvay',d:'Eski İstanbul ulaşımı',c:'#2f7fc1',ks:['vjeton','tramtabela','duduk','taksimetre','plaka','haydarpasa','kaptan','vapurcan'],rw:5500,bonus:'Eski İstanbul eşyaları %10 daha pahalıya satılır'},
+ {id:'hamam',pack:'hamam',n:'Hamam Takımı',d:'Kurnanın başından',c:'#7fc8d8',ks:['pirinctas','hamamtasi','nalin','pestamal','bohca','gulabdan','kurna'],rw:4500,bonus:'Hamam takımları %10 daha pahalıya satılır'},
+ {id:'hat',pack:'hat',n:'Sahaf Rafı',d:'Hat, kitap ve harita',c:'#b08a4a',ks:['hokka','hatlevha','gravur','harita','ilkbaski','tezhip','muteferrika'],rw:6500,bonus:'Hat, kitap ve haritalar %10 daha pahalıya satılır'},
+ {id:'hali',pack:'hali',n:'Halı ve Kilim',d:'Tezgâhtan çıkanlar',c:'#b3263a',ks:['cicim','heybe','minder','seccade','kars','usak','hereke'],rw:7000,bonus:'Halı ve kilimler %10 daha pahalıya satılır'},
+ {id:'para',pack:'para',n:'Para ve Altın',d:'Nümismatik vitrini',c:'#e0b03c',ks:['jeton','hatira','mecidiye','ceyrek','banknot','resat','besibir'],rw:8000,bonus:'Para ve altınlar %10 daha pahalıya satılır'},
+ {id:'bakkal',pack:'bakkal',n:'Mahalle Bakkalı',d:'Tezgâhın arkasından',c:'#e2643a',ks:['gazoz','veresiye','biskuvi','sifon','kantar','emaye','yazarkasa'],rw:3200,bonus:'Bakkal eşyaları %10 daha pahalıya satılır'});
+(function(){const add=(id,a)=>{const L=LOCS.find(l=>l.id===id);if(L)a.forEach(x=>{if(!L.cats.includes(x))L.cats.push(x)})};
+  add('bit',['nostalji','hamam','bakkal']);add('kadikoy',['nostalji','vapur','bakkal']);add('kapali',['hamam','hali','para']);add('galata',['vapur','hat']);add('nisantasi',['hat','hali','para'])})();
+
+/* ---------- hikâyeli müşteriler: paket sahiplerine kendi eşyalarını getirirler ---------- */
+const PKSELL={
+ nostalji:[{n:'Öğrenci Emre',s:9301,t:'acemi',l:['Babaannemin evini topluyoruz, bu {i} çekmeceden çıktı. {p} olur mu?','Okul harçlığım lazım abi. Bu {i} ilk göz ağrım, {p} ver bırakayım.']},
+  {n:'Torun Ece',s:9302,t:'aceleci',l:['Dedem her şeyi saklarmış! Bu {i} ne işe yarıyor bilmiyorum bile. {p}?']}],
+ vapur:[{n:'Emekli Kaptan Rüstem',s:9311,t:'bilir',l:['Kırk yıl Kadıköy hattında kaptanlık yaptım. Bu {i} benimle emekli oldu. {p} verirsen senin.','Boğaz\'ın her dalgasını bilirim evlat. Bu {i} gerçek, {p} isterim.']},
+  {n:'Vatman Hilmi Amca',s:9312,t:'acemi',l:['Tramvay kalkınca eve getirmiştim bu {i}. Torunlar yer kaplıyor diyor. {p} olur mu?']}],
+ hamam:[{n:'Nazife Teyze',s:9321,t:'acemi',l:['Çeyiz sandığını boşaltıyoruz evladım. Bu {i} anneannemin gelin hamamından. {p}.','Kızım evleniyor, sandığa yer açıyoruz. Bu {i} için {p} istesem çok mu?']},
+  {n:'Hamamcı Sabri',s:9322,t:'kurnaz',l:['Tarihi hamamdan çıktı bu {i}, yemin ederim! {p}, pazarlık yok.']}],
+ hat:[{n:'Sahaf Necdet',s:9331,t:'bilir',l:['Sahafta otuz yıl geçti. Bu {i} rafımın en iyisiydi. {p} altına inmem.','Dükkânı devrediyorum. Bu {i} sana yakışır, {p}.']},
+  {n:'Kurnaz Ressam',s:9332,t:'kurnaz',l:['Bu {i} müzelik, kâğıdına bak! {p}, kimseye söyleme.']}],
+ hali:[{n:'Halıcı Kemal',s:9341,t:'bilir',l:['Düğümünü say istersen, santimde kırk düğüm. Bu {i} için {p} istiyorum.','Babamın tezgâhından çıktı bu {i}. {p}, son fiyat.']},
+  {n:'Karslı Gülizar Nine',s:9342,t:'acemi',l:['Bunu ben dokudum kızım, kırk yıl önce. Bu {i} için {p} verirsen yeter.']}],
+ para:[{n:'Emekli Memur Şükrü',s:9351,t:'bilir',l:['Kırk yıl bankada çalıştım, parayı tanırım. Bu {i} için {p}.','Koleksiyonumu dağıtıyorum. Bu {i} temiz, {p} isterim.']},
+  {n:'Altıncı Çırağı',s:9352,t:'kurnaz',l:['Ustam bilmiyor, sana özel bu {i}. {p}, hemen!']}],
+ bakkal:[{n:'Bakkal Hüsnü Amca',s:9361,t:'acemi',l:['Elli yıllık dükkânı kapattım. Bu {i} tezgâhın arkasındaydı. {p} olur mu?','Veresiye defterini bile sakladım evlat. Bu {i} için {p}.']},
+  {n:'Mahallenin Bekçisi',s:9362,t:'aceleci',l:['Bakkal kapanınca bu {i} kaldırımda kalmıştı. {p} ver, gidiyorum!']}]};
+const PKBUY={
+ nostalji:["Bu {i} benim çocukluğum! Kaça veriyorsun?","90'lar köşesi kuruyorum, {i} tam aradığım şey. Fiyatı?"],
+ vapur:['Kadıköy vapurunu özledim. Şu {i} ne kadar?','Evime eski İstanbul köşesi yapıyorum. {i} kaç para?'],
+ hamam:['Kızımın çeyizine {i} arıyordum. Kaça verirsin?','Otelimizin hamamına {i} lazım. Ne kadar?'],
+ hat:['Kütüphaneme {i} arıyorum. Gerçekse iyi öderim.','Şu {i} ilk baskı mı? Fiyatını söyle.'],
+ hali:['Salonuma {i} serilecek. Kaça veriyorsun?','{i} el dokuması mı? Fiyatı nedir?'],
+ para:['Koleksiyonumda {i} eksik. Ne istiyorsun?','Şu {i} ayarı tam mı? Kaça verirsin?'],
+ bakkal:['Kafemize {i} lazım, eski bakkal havası olsun. Kaç para?','Rahmetli babamın bakkalında da {i} vardı. Ne kadar?']};
+const _pkSpS=spawnSeller;
+spawnSeller=function(){try{const own=PK_IDS.filter(id=>packOwned(id));
+  if(own.length&&S.day>=2&&R()<.15){const id=pick(own),ch=pick(PKSELL[id]),cat=pick(CATP.filter(c=>c.pack===id));const it=newItem(cat,{fake:!!cat.f&&R()<SELL[ch.t].fake});const c=mkSeller(it,ch.t);
+    return Object.assign(c,{name:ch.n,seed:ch.s,line:tpl(pick(ch.l),{i:it.n,p:fmt(c.ask)})})}}catch(e){console.warn(e)}
+  return _pkSpS.apply(this,arguments)};
+const _pkSpB=spawnBuyer;
+spawnBuyer=function(vip){const b=_pkSpB.apply(this,arguments);try{if(b&&!vip&&b.kind==='buyer'&&b.type!=='kurator'){const it=itemById(b.itemId),c=it&&catOf(it.k);if(c&&c.pack&&PKBUY[c.pack]&&R()<.6)b.line=tpl(pick(PKBUY[c.pack]),{i:it.n})}}catch(e){}return b};
+
+/* ---------- koleksiyon etiketi · mağaza · teşekkür ---------- */
+function pkTag(s){if(!s||!s.pack)return '';const p=PKS[s.pack]||PKS.tarih;return packOwned(s.pack)?` <em class="pktag">${p.e} ${p.n}</em>`:` <em class="pktag lock" data-act="store">🔒 ${p.n} · Aç</em>`}
+function pkBtn(k){const own=!!(ENT.premium||ENT[k]);if(own)return `<div class="st-own">✓ Sende</div>`;const N=window.NATIVE,pr=priceOf(k);
+  if(N&&N.isNative&&N.iapOn&&!pr)return `<div class="st-own pkprem">👑 Premium'a dahil</div>`;
+  return `<button class="st-buy" data-act="buy:${k}" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':pr?esc(pr)+' · Satın Al':'Satın Al'}</button>`}
+function pkCards(){return `<h3 class="pkhd">Yeni Paketler</h3>`+PK_IDS.map(k=>{const p=PKS[k],its=CATP.filter(c=>c.pack===k);
+  return `<section class="st-card pkc"><div class="st-ic">${p.e}</div><h2>${p.n}</h2><p class="st-lead">${`${its.length} yeni 3B eşya, 1 koleksiyon serisi`}</p><div class="st-th">${[...new Set(its.map(c=>c.i))].slice(0,8).map(i=>`<span>${i}</span>`).join('')}</div>
+   <ul><li>${p.d}</li><li>${p.x}</li><li>👑 Premium'a dahil</li></ul>${pkBtn(k)}</section>`}).join('')}
+const _pkRS=renderStore;
+renderStore=function(){const h=_pkRS.apply(this,arguments),a='<button class="st-restore"',i=h.indexOf(a);return i<0?h:h.slice(0,i)+pkCards()+h.slice(i)};
+const _pkIT=iapThanks;
+iapThanks=function(k){if(PKS[k]&&k!=='tarih'){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}toast(`${PKS[k].e} ${PKS[k].n} açıldı! Yeni eşyalar pazarda.`);T('pack_buy',{k});return}return _pkIT.apply(this,arguments)};
+(function(){const st=document.createElement('style');st.textContent='.pkhd{margin:14px 4px 2px;font:900 15px/1.2 Cinzel,serif;color:#f3d48c;letter-spacing:.04em}.st-own.pkprem{opacity:.85;font-size:13px}';document.head.appendChild(st)})();
+
+/* ---------- ansiklopedi ---------- */
+Object.assign(WIKI,{
+ vhs:['1985–2000','Japonya','Plastik kasa, manyetik bant','Evlerde film ve düğün kaydı için kullanılan video kaseti. Etiketine çoğu zaman elle ne kaydedildiği yazılır.','Bant ileri sarıldıktan sonra geri sarılmadan iade edilen kiralık kasetler için ceza kesilirdi.'],
+ tugla:['1990–1998','Finlandiya ve ABD','Plastik gövde, nikel pil','İlk nesil cep telefonu. Ağırlığı ve boyu yüzünden “tuğla” lakabını almıştır.','Kutusu ve şarj aleti eksiksiz olanlar koleksiyoncu gözünde iki kat değerlidir.'],
+ cagri:['1988–2000','ABD','Plastik, sıvı kristal ekran','Ekranına numara ya da kısa mesaj düşen cep cihazı. Mesajı gören en yakın telefondan geri arardı.','Kodlu mesajlarla haberleşilirdi: rakamlar ters çevrilince kelime okunurdu.'],
+ disket:['1987–2002','Japonya','Plastik kasa, metal kapak','3,5 inçlik bilgisayar disketleri ve kutusu. Bir disket yaklaşık 1,4 MB veri alır.','Bugün de pek çok programda “kaydet” simgesi disket şeklindedir.'],
+ kartus:['1980–1995','Japonya ve Tayvan','Plastik kasa, devre kartı','Ev konsollarına takılan oyun kartuşu. Çalışmazsa ucuna üflemek bir gelenek hâline gelmişti.','Çarşıda satılan “9999 oyun bir arada” kartuşların çoğu korsan baskıydı.'],
+ walkman:['1980–1998','Japonya','Metal ve plastik gövde','Cebe sığan kasetli müzik çalar ve kulaklığı. Yürürken müzik dinlemeyi yaygınlaştırdı.','Bandı kalemle geri sarmak pili korumanın en bilinen yoluydu.'],
+ anlik:['1970–1999','ABD','Plastik gövde, cam lens','Çektiği fotoğrafı birkaç dakikada basan makine. Fotoğraf yavaş yavaş belirir.','Fotoğrafı sallamak aslında görüntünün çıkmasını hızlandırmaz.'],
+ sanal:['1996–2000','Japonya','Plastik kasa, sıvı kristal ekran','Anahtarlık boyunda, beslenip bakılması gereken dijital evcil hayvan oyuncağı.','Okullarda dersi böldüğü için yasaklanan ilk oyuncaklardan biridir.'],
+ vjeton:['1970–2005','İstanbul','Pirinç','Şehir Hatları vapurlarının turnikelerinde bilet yerine kullanılan madenî jeton.','Jetonlar zamanla yerini önce manyetik kartlara, sonra elektronik bilete bıraktı.'],
+ tramtabela:['1914–1966','İstanbul','Emaye çelik levha','Şehir içi tramvay hatlarının durak tabelası. Üzerinde hattın iki ucu yazar.','İstanbul\'un Avrupa yakasındaki eski tramvay seferleri 1961\'de sona erdi.'],
+ duduk:['1880–1950','İngiltere ve İstanbul','Dökme pirinç','Vapurların bacasına takılan buhar düdüğü. Her vapurun sesi kendine özgüydü.','Eski İstanbullular vapuru düdüğünden tanırdı.'],
+ taksimetre:['1930–1970','Almanya','Çelik kasa, mekanik sayaç','Taksilerin ön camına takılan mekanik ücret sayacı. Bayrağı indirince saymaya başlar.','“İndi-bindi” denen en düşük ücret, taksiye binildiği anda sayaca yazılırdı.'],
+ plaka:['1950–1970','İstanbul','Boyalı sac','İstanbul\'da kayıtlı eski bir otomobil plakası.','Sahteleri yeni sacdan kesilir; eski plakalarda boyanın altında pas izleri olur.'],
+ haydarpasa:['1940–1970','İstanbul','Karton','Haydarpaşa Garı\'ndan kesilmiş kalın karton tren bileti. Arkasında delikli kontrol işaretleri vardır.','Eski biletler kenarındaki numara ile basılırdı; aynı numaradan iki bilet olmaz.'],
+ kaptan:['1950–1980','İstanbul','Yün kumaş, deri siperlik','Şehir Hatları kaptanlarının giydiği lacivert şapka. Önünde sırma işli çapa arması vardır.','Siperliğin üstündeki sırma sayısı rütbeyi gösterir.'],
+ vapurcan:['1880–1910','İstanbul','Dökme bronz','Şirket-i Hayriye vapurlarının güvertesinde asılı duran gemi çanı. Üstünde vapurun adı yazar.','Şirket-i Hayriye, Boğaz\'da vapur işleten ilk anonim şirketlerden biridir.'],
+ pirinctas:['1900–1960','Anadolu','Dövme pirinç','Hamamda su dökünmek için kullanılan tas. Dibinde kabartma bir göbek bulunur.','Hamam taslarının dibindeki kabartmaya halk arasında “göbek” denir.'],
+ hamamtasi:['1850–1920','İstanbul','Gümüş, kalem işi','Gelin ve varlıklı aile hamamları için yapılmış süslü gümüş tas.','Gerçek gümüş taslarda dipte küçük bir ayar damgası olur.'],
+ nalin:['1850–1930','İstanbul ve Şam','Ceviz ağacı, sedef kakma','Hamamın ıslak zemininde kaymamak için giyilen yüksek topuklu ahşap terlik.','Gelin nalınları kat kat sedefle kaplanır ve çok yüksek yapılırdı.'],
+ pestamal:['1900–1970','Denizli ve Bursa','Pamuk ve ipek','Hamamda bele sarılan ince dokuma örtü. Kenarları elle işlenir.','Bursa peştamalları ipek karışımı olduğu için hafif parlar.'],
+ bohca:['1880–1950','İstanbul','Kadife, sırma işleme','Gelin hamamına götürülen havlu ve takımların sarıldığı işlemeli bohça.','Sırma işlemenin altına karton kalıp konursa buna “dival işi” denir.'],
+ gulabdan:['1800–1900','İstanbul','Gümüş','Misafirlere gül suyu serpmek için kullanılan uzun boyunlu kap.','Gülabdanlar çoğu zaman bir buhurdanla takım olarak yapılırdı.'],
+ kurna:['1700–1900','Marmara Adası','Mermer, pirinç musluk','Hamamda sıcak ve soğuk suyun aktığı mermer tekne ve pirinç musluğu.','Marmara mermeri ince damarlıdır; taklitlerde damarlar boyayla çizilir.'],
+ hokka:['1850–1920','İstanbul','Gümüş','Hattatların mürekkep koyduğu kapaklı kap. Kamış kalemle birlikte kullanılır.','Hokkanın içine mürekkebin kurumaması için ipek lif konurdu.'],
+ hatlevha:['1850–1930','İstanbul','Kâğıt, altın varak, ahşap çerçeve','Duvara asılan, ünlü bir hattatın yazdığı süslü yazı levhası.','Usta hattatlar levhanın köşesine küçük bir imza atar; taklitlerde imza sık sık eksik ya da titrektir.'],
+ gravur:['1800–1880','Avrupa','Çelik baskı, kâğıt','Avrupalı gezginlerin kitaplarından çıkan İstanbul manzarası baskısı.','Sonradan elle boyanan gravürler boyasız olanlardan daha değerlidir.'],
+ harita:['1700–1900','Avrupa','Bakır baskı, el boyaması','Eski İstanbul ve Boğaz haritası. Semt adları çoğu zaman Fransızca yazılır.','Gerçek eski haritaların kâğıdı pamuk liflidir; ışığa tutunca su işareti görünür.'],
+ ilkbaski:['1920–1950','İstanbul','Kâğıt, bez cilt','Ünlü bir romanın ilk baskısı. Kapağında yayınevinin adı ve yıl yazar.','İlk baskıyı sonrakilerden ayırmak için künye sayfasındaki baskı bilgisine bakılır.'],
+ tezhip:['1600–1850','İstanbul','Kâğıt, altın, lacivert boya','Bir el yazması kitaptan ayrılmış, kenarları altınla süslenmiş sayfa.','Tezhipte altın varak jelatinle ezilerek boyaya çevrilir; buna “ezme altın” denir.'],
+ muteferrika:['1729–1742','İstanbul','Kâğıt, deri cilt','İbrahim Müteferrika\'nın matbaasında basılmış ilk Türkçe kitaplardan biri.','Müteferrika matbaası 1729–1742 yılları arasında yalnızca 17 eser bastı.'],
+ cicim:['1920–1970','Anadolu','Yün','Cicim tekniğiyle, düz dokuma üstüne ilmekler atılarak yapılmış yastık.','Cicimde desenler sonradan işlenmiş gibi kabarık durur.'],
+ heybe:['1900–1960','Anadolu','Yün kilim','At ya da omuz üstünde taşınan iki gözlü dokuma çanta.','Heybenin iki gözü aynı tezgâhta, tek parça olarak dokunur.'],
+ minder:['1930–1970','Anadolu','Yün kilim, pamuk dolgu','Yere serilen, kilim kumaştan dikilmiş oturma minderi.','Eski minderler yün dolguyla yapılırdı; yeni olanlar sünger doludur.'],
+ seccade:['1880–1950','Konya ve Kayseri','Yün','Namaz için kullanılan küçük halı. Ortasında mihrap biçimli bir kemer deseni vardır.','Mihrap deseninin tepesi kıbleye bakacak şekilde serilir.'],
+ kars:['1900–1960','Kars','Yün, kök boya','Kars yöresinin iri geometrik desenli kilimi. Kök boyalar yıllar içinde yumuşar.','Kök boya yünün ucunda ve dibinde aynı renktedir; kimyasal boya dipte koyulaşır.'],
+ usak:['1700–1900','Uşak','Yün','Kırmızı zeminli, büyük madalyonlu Uşak halısı. Avrupa saray resimlerinde sık görülür.','Bazı Uşak halıları, onları resimlerine koyan Avrupalı ressamların adıyla anılır.'],
+ hereke:['1891–1930','Hereke','İpek','Saray için kurulan Hereke fabrikasının ipek halısı. Santimetrekaresinde 100’e varan düğüm bulunur.','Gerçek Hereke halısının kenarında fabrikanın dokuma imzası bulunur.'],
+ jeton:['1960–2000','Türkiye','Pirinç alaşım','Ankesörlü telefonlarda kullanılan delikli ya da oluklu jeton.','Küçük, normal ve büyük olmak üzere farklı konuşma süreleri için ayrı jetonlar vardı.'],
+ hatira:['1973–2000','Ankara','Gümüş','Önemli yıl dönümleri için basılmış gümüş hatıra parası. Kutusu ve sertifikasıyla satılır.','Sertifikası olmayan hatıra paralar yarı fiyatına alıcı bulur.'],
+ mecidiye:['1844–1922','İstanbul','Gümüş','Sultan Abdülmecid döneminde basılmaya başlanan iri gümüş sikke.','Mecidiyenin üzerinde padişahın tuğrası ve basım yılı yazar.'],
+ ceyrek:['1925–1980','Ankara','22 ayar altın','Cumhuriyet döneminde basılmış eski çeyrek altın.','Eski basımları yeni olanlardan ayırmak için kenar dişlerine ve yüz kabartmasına bakılır.'],
+ banknot:['1927–1939','Londra baskısı','Kâğıt','Türkiye Cumhuriyeti\'nin ilk banknot serisinden bir kâğıt para.','İlk Cumhuriyet banknotları Londra\'da basıldı ve 1927\'de tedavüle girdi.'],
+ resat:['1909–1918','İstanbul','22 ayar altın','Sultan Mehmed Reşad döneminde basılmış altın sikke. Takı olarak çok aranır.','Reşat altınının ön yüzünde tuğranın yanında küçük bir “reşat” yazısı vardır.'],
+ besibir:['1880–1920','İstanbul','22 ayar altın','Beş altın değerinde, iri ve süslü takı altını. Düğünlerde gelinlere takılır.','Beşibiryerde, adını tek parçada beş altın ağırlığı taşımasından alır.'],
+ gazoz:['1940–1980','İstanbul','Cam','Mahalle gazozcularının kalın camdan, tekrar doldurulan gazoz şişesi.','Eski şişelerin dibinde gazozcunun adı kabartma olarak yazar.'],
+ veresiye:['1950–1990','İstanbul','Kâğıt, karton kapak','Bakkalın borçları yazdığı defter. Mahallenin bütün hikâyesi bu sayfalardadır.','Bazı bakkallar ramazanda deftere bakmadan borçları silerdi.'],
+ biskuvi:['1950–1980','İstanbul','Baskılı teneke','Bakkalda açık bisküvi satılan renkli teneke kutu.','Boşalan kutular evlerde dikiş kutusu olarak kullanılırdı.'],
+ sifon:['1920–1960','Avrupa','Cam, krom başlık','Soda ve maden suyu dolu, basınçlı cam şişe. Kolu bastırınca su fışkırır.','Sifonun cam gövdesi basınca dayanması için kalın ve ağır yapılır.'],
+ kantar:['1900–1960','İstanbul','Pirinç, ahşap','Bakkal tezgâhında duran iki kefeli terazi ve ağırlıkları.','Ağırlıkların altında belediyenin damgası olurdu; damgasız ağırlık kullanmak yasaktı.'],
+ emaye:['1930–1970','Avrupa ve İstanbul','Emaye çelik','Bakkal kapısına asılan, fırınlanmış emaye kaplı reklam tabelası.','Emaye tabelaların kenarındaki kırıklar sahtelerde boya ile taklit edilir.'],
+ yazarkasa:['1910–1950','ABD','Döküm demir, pirinç','Tuşlara basınca tutarı gösteren ve çekmecesi zil çalarak açılan mekanik kasa.','Eski kasaların tuşlarında rakamlar sedef ya da cam altındadır.']});
+(function(){const f0=wkFound;wkFound=function(c){const out=f0(c);if(c&&c.pack&&PKS[c.pack]&&c.pack!=='tarih'){const i=out.findIndex(x=>/Tarih Paketi|History Pack|Geschichtspaket/.test(x));const p=PKS[c.pack];const t=`${p.e} <b>${p.n}</b> ile dükkâna gelmeye başlar`;if(i>=0)out[i]=t;else out.unshift(t)}return out}})();
+
+/* ---------- 3B modeller ---------- */
+function buildP(it,g,sus){const T=THREE,PI=Math.PI;
+  const tx=(w,h,fn)=>ctex(w,h,(q,W,H)=>{if(sus)q.filter='blur(2px)';fn(q,W,H)});
+  const tm=(t,o)=>new T.MeshStandardMaterial(Object.assign({map:t,roughness:.5},o||{}));
+  const face6=(m,f)=>[m,m,m,m,f,m];
+  const lcd=(txt,col)=>tx(256,128,(q,W,H)=>{q.fillStyle=col||'#9fb07a';q.fillRect(0,0,W,H);q.fillStyle='rgba(20,30,10,.85)';q.font='900 44px "Lilita One",monospace';q.textAlign='center';q.textBaseline='middle';q.fillText(txt,W/2,H/2+2)});
+  const rug=(w,h,tex,fr,o)=>{g.add(mesh(box(w,h,.05),face6(mat(fr||'#e9dcc0',{roughness:.9}),tm(tex,Object.assign({roughness:.85},o||{})))));
+    for(let i=0;i<Math.round(w*9);i++){const x=-w/2+.05+i*(w-.1)/(Math.round(w*9)-1);[-1,1].forEach(s=>g.add(mesh(cyl(.008,.008,.16,4),mat(fr||'#efe4c8',{roughness:1}),[x,s*(h/2+.08),0])))}};
+  const coinT=(o)=>tx(512,512,(q,W)=>{const c=W/2;const gr=q.createRadialGradient(c*.75,c*.65,20,c,c,c);gr.addColorStop(0,o.hi);gr.addColorStop(.6,o.bg);gr.addColorStop(1,o.lo);q.fillStyle=gr;q.fillRect(0,0,W,W);
+    q.strokeStyle=o.ink;q.fillStyle=o.ink;q.lineWidth=10;q.beginPath();q.arc(c,c,c-22,0,7);q.stroke();q.lineWidth=4;q.beginPath();q.arc(c,c,c-48,0,7);q.stroke();
+    if(o.dots)for(let i=0;i<60;i++){const a=i/60*PI*2;q.beginPath();q.arc(c+Math.cos(a)*(c-35),c+Math.sin(a)*(c-35),5,0,7);q.fill()}
+    if(o.tugra)hTugra(q,c,c+30,1.05,o.ink);
+    if(o.big){q.font='900 150px "Lilita One",sans-serif';q.textAlign='center';q.textBaseline='middle';q.fillText(o.big,c,c+(o.sub?-20:6))}
+    if(o.sub){q.font='800 44px Nunito,sans-serif';q.textAlign='center';q.fillText(o.sub,c,c+110)}
+    if(o.ring){q.font='800 36px Nunito,sans-serif';q.textAlign='center';q.textBaseline='middle';const s=o.ring;for(let i=0;i<s.length;i++){const a=-PI*.92+i*(PI*1.84/s.length);q.save();q.translate(c+Math.cos(a)*(c-80),c+Math.sin(a)*(c-80));q.rotate(a+PI/2);q.fillText(s[i],0,0);q.restore()}}
+    if(o.slot){q.fillStyle=o.lo;rr(q,c-110,c-24,220,48,20);q.fill()}
+    for(let i=0;i<1500;i++){q.fillStyle=`rgba(${Math.random()<.5?'255,245,210':'60,40,10'},${Math.random()*.07})`;q.fillRect(Math.random()*W,Math.random()*W,2,2)}});
+  const coin=(o,r,th)=>{const t=coinT(o);t.center.set(.5,.5);t.rotation=PI/2;const m=new T.MeshStandardMaterial({map:t,metalness:o.metal==null?.9:o.metal,roughness:o.rough||.28,bumpMap:t,bumpScale:.02});const e=mat(o.bg,{metalness:.95,roughness:.3});
+    g.add(mesh(cyl(r||1,r||1,th||.1,72),[e,m,m],[0,0,0],[PI/2,0,0]))};
+  const goldC=sus?{bg:'#d6a650',hi:'#f6dc98',lo:'#8d6a2a',ink:'#7a5a20'}:{bg:'#e3b24a',hi:'#fff2b8',lo:'#9a6a12',ink:'#7a4c08'};
+  const silvC={bg:'#c9ced2',hi:'#ffffff',lo:'#7c8287',ink:'#5d6368'};
+  switch(it.k){
+  /* ===== Nostalji 90'lar ===== */
+  case 'vhs':{const b=blackP();const lab=tx(512,256,(q,W,H)=>{q.fillStyle='#1b1b1d';q.fillRect(0,0,W,H);q.fillStyle='#f3eee0';rr(q,30,24,W-60,96,10);q.fill();q.fillStyle='#c8372d';q.fillRect(30,24,W-60,16);
+      q.fillStyle='#1d3fa8';q.font='54px "Mrs Saint Delafield",cursive';q.textAlign='center';q.fillText('Düğün · 1994',W/2,96);q.fillStyle='#2a2a2c';rr(q,90,140,W-180,90,40);q.fill();
+      [170,W-170].forEach(x=>{q.fillStyle='#e8e8e8';q.beginPath();q.arc(x,185,34,0,7);q.fill();q.fillStyle='#2a2a2c';q.beginPath();q.arc(x,185,14,0,7);q.fill()});q.fillStyle='#4a3020';q.fillRect(W/2-60,165,120,40)});
+    g.add(mesh(box(1.9,1.05,.25),face6(b,tm(lab,{roughness:.4}))));break}
+  case 'tugla':{const b=mat('#2c2e31',{roughness:.45});g.add(mesh(box(.62,1.7,.32),b));g.add(mesh(cyl(.05,.06,.55,16),blackP(),[.2,1.1,0]));g.add(mesh(sph(.06),blackP(),[.2,1.38,0]));
+    g.add(mesh(new T.PlaneGeometry(.44,.22),tm(lcd('BİT 90','#a8c07c'),{emissive:'#2a3a10',emissiveIntensity:.3}),[0,.5,.161]));
+    for(let r=0;r<5;r++)for(let c=0;c<3;c++)g.add(mesh(box(.12,.08,.04),mat(r===0?'#3d8a4a':'#8c9096',{roughness:.4}),[-.15+c*.15,.18-r*.15,.17]));
+    g.add(mesh(box(.5,.12,.02),mat('#1a1a1c'),[0,-.68,.17]));break}
+  case 'cagri':{const b=blackP();g.add(mesh(box(1.05,.66,.22),b));
+    g.add(mesh(new T.PlaneGeometry(.78,.26),tm(lcd('0532 *77','#b5c78a'),{emissive:'#304010',emissiveIntensity:.25}),[0,.08,.111]));
+    [-.25,0,.25].forEach(x=>g.add(mesh(box(.16,.07,.04),mat('#555a60'),[x,-.2,.12])));g.add(mesh(box(.8,.5,.04),mat('#1a1a1c',{metalness:.3}),[0,0,-.13]));break}
+  case 'disket':{const cs=['#1f3f8f','#202022','#c8372d'];cs.forEach((c,i)=>{const lab=tx(256,256,(q,W)=>{q.fillStyle=c;q.fillRect(0,0,W,W);q.fillStyle='#f3eee0';q.fillRect(30,110,W-60,140);
+      q.fillStyle='#1d3fa8';q.font='40px "Mrs Saint Delafield",cursive';q.textAlign='center';q.fillText(['Oyunlar 2','Ödev','Yedek'][i],W/2,190);q.fillStyle='#9aa1a8';q.fillRect(70,0,120,80);q.fillStyle=c;q.fillRect(150,12,26,56)});
+      const m=mat(c,{roughness:.4});g.add(mesh(box(1.2,1.25,.05),face6(m,tm(lab,{roughness:.4})),[i*.12-.12,i*.1-.1,i*.07-.07],[0,0,(i-1)*.12]))});break}
+  case 'kartus':{const b=mat('#8d9096',{roughness:.5});const lab=tx(512,384,(q,W,H)=>{const gr=q.createLinearGradient(0,0,W,H);gr.addColorStop(0,'#1a2a6c');gr.addColorStop(.5,'#b21f6a');gr.addColorStop(1,'#fdbb2d');q.fillStyle=gr;q.fillRect(0,0,W,H);
+      q.fillStyle='#fff';for(let i=0;i<60;i++)q.fillRect(Math.random()*W,Math.random()*H*.6,3,3);q.fillStyle='#ffe14a';q.font='900 60px "Lilita One"';q.textAlign='center';q.fillText('UZAY',W/2,H*.62);q.fillText('SAVAŞI',W/2,H*.8);
+      q.fillStyle='#fff';q.beginPath();q.moveTo(W/2,60);q.lineTo(W/2-40,160);q.lineTo(W/2+40,160);q.fill()});
+    g.add(mesh(box(1.25,1.05,.24),b));g.add(mesh(new T.PlaneGeometry(.95,.7),tm(lab,{roughness:.35}),[0,.1,.121]));for(let i=0;i<10;i++)g.add(mesh(box(.06,.05,.2),b,[-.5+i*.11,-.55,0]));
+    g.add(mesh(box(1.0,.08,.03),gold(),[0,-.5,.12]));break}
+  case 'walkman':{const b=mat('#2a64b8',{metalness:.4,roughness:.3}),s=silver();g.add(mesh(box(1.25,.9,.3),b));g.add(mesh(new T.PlaneGeometry(.85,.52),tm(kasetTex(),{roughness:.3}),[0,.05,.151]));
+    g.add(mesh(new T.PlaneGeometry(.9,.56),glass(),[0,.05,.158]));['#eee','#eee','#e94b3c','#eee'].forEach((c,i)=>g.add(mesh(box(.18,.08,.12),mat(c),[-.33+i*.22,.5,0])));
+    const hp=new T.Group();hp.add(mesh(new T.TorusGeometry(.55,.035,10,40,PI),s,[0,0,0]));[-1,1].forEach(x=>hp.add(mesh(cyl(.17,.17,.12,28),mat('#e8a030',{roughness:.9}),[x*.55,-.02,0],[0,0,PI/2])));hp.position.set(.2,-.25,-.45);hp.rotation.x=-.9;g.add(hp);break}
+  case 'anlik':{const body=tx(512,512,(q,W,H)=>{q.fillStyle='#f2ede2';q.fillRect(0,0,W,H);['#e94b3c','#f39c2a','#f4d03f','#4caf50','#2a7fc1'].forEach((c,i)=>{q.fillStyle=c;q.fillRect(W*.62+i*16,0,16,H)})});
+    const m=tm(body,{roughness:.45}),w=mat('#f2ede2',{roughness:.45});g.add(mesh(box(1.5,1.0,.9),[w,w,w,w,m,w]));g.add(mesh(cyl(.3,.3,.2,40),blackP(),[-.2,.05,.52],[PI/2,0,0]));
+    g.add(mesh(cyl(.2,.2,.04,40),glass(),[-.2,.05,.63],[PI/2,0,0]));g.add(mesh(box(.35,.2,.05),mat('#222'),[.45,.3,.46]));g.add(mesh(cyl(.07,.07,.06,20),mat('#e94b3c'),[.5,-.25,.47],[PI/2,0,0]));
+    const ph=tx(256,300,(q,W,H)=>{q.fillStyle='#fbfaf6';q.fillRect(0,0,W,H);const gr=q.createLinearGradient(0,0,0,200);gr.addColorStop(0,'#f0a060');gr.addColorStop(1,'#3a5a7a');q.fillStyle=gr;q.fillRect(20,20,W-40,200)});
+    g.add(mesh(box(.75,.85,.01),face6(mat('#fbfaf6'),tm(ph)),[.1,-.7,.5],[-.3,0,.08]));break}
+  case 'sanal':{const sh=mat(sus?'#d98cc4':'#e26aa8',{roughness:.25});g.add(mesh(lathe([[0,-.8],[.4,-.72],[.62,-.4],[.66,0],[.56,.4],[.32,.72],[0,.82]],48),sh,[0,0,0],null,[1,1,.55]));
+    const scr=tx(128,128,(q,W)=>{q.fillStyle='#b8c49a';q.fillRect(0,0,W,W);q.fillStyle='#222';[[5,3],[6,3],[4,4],[7,4],[4,5],[5,5],[6,5],[7,5],[4,6],[7,6],[5,7],[6,7]].forEach(([x,y])=>q.fillRect(x*12,y*12,12,12))});
+    g.add(mesh(new T.CircleGeometry(.3,32),tm(scr),[0,.1,.34]));g.add(mesh(new T.TorusGeometry(.33,.03,8,32),mat('#7a3a8a'),[0,.1,.335]));[-.22,0,.22].forEach(x=>g.add(mesh(sph(.06),mat('#ffd34a',{roughness:.3}),[x,-.38,.3])));
+    g.add(mesh(new T.TorusGeometry(.14,.03,8,24),silver(),[0,.98,0]));break}
+  /* ===== Eski İstanbul ===== */
+  case 'vjeton':coin(Object.assign({bg:'#c9973f',hi:'#f6dc98',lo:'#7a5818',ink:'#5a3a10'},{ring:'ŞEHİR HATLARI · İSTANBUL ·',big:'⚓'}),.8,.1);break;
+  case 'tramtabela':{const t=tx(768,256,(q,W,H)=>{q.fillStyle='#16407a';rr(q,0,0,W,H,40);q.fill();q.strokeStyle='#f3eee0';q.lineWidth=10;rr(q,16,16,W-32,H-32,30);q.stroke();q.fillStyle='#f3eee0';q.font='900 70px Cinzel';q.textAlign='center';q.textBaseline='middle';q.fillText('TAKSİM – TÜNEL',W/2,H*.42);
+      q.font='800 34px Nunito';q.fillText('TRAMVAY DURAĞI · Nº 12',W/2,H*.75);q.fillStyle='rgba(30,20,10,.55)';for(let i=0;i<9;i++){q.beginPath();q.arc(Math.random()*W,Math.random()*H,4+Math.random()*12,0,7);q.fill()}});
+    g.add(mesh(box(2.2,.74,.04),face6(mat('#16407a'),tm(t,{roughness:.2,metalness:.1}))));[-1,1].forEach(s=>g.add(mesh(cyl(.04,.04,.06,16),silver(),[s*.98,0,.03],[PI/2,0,0])));break}
+  case 'duduk':{const b=brass();g.add(mesh(lathe([[0,-.9],[.28,-.9],[.3,-.8],[.22,-.6],[.24,.2],[.32,.5],[.3,.62],[.1,.66],[0,.66]],48),b));g.add(mesh(cyl(.09,.09,.6,24),b,[0,-1.2,0]));
+    for(let i=0;i<3;i++)g.add(mesh(new T.TorusGeometry(.25,.025,8,40),b,[0,-.4+i*.25,0],[PI/2,0,0]));g.add(mesh(box(.7,.06,.06),b,[.35,-1.1,0],[0,0,.3]));g.add(mesh(sph(.06),wood('#3a2010'),[.68,-1.0,0]));break}
+  case 'taksimetre':{const f=tx(512,384,(q,W,H)=>{q.fillStyle='#1a1a1c';q.fillRect(0,0,W,H);q.fillStyle='#f3eee0';rr(q,40,40,W-80,140,14);q.fill();q.fillStyle='#111';q.font='900 96px "Lilita One"';q.textAlign='center';q.fillText('0 4 5',W/2,150);
+      q.fillStyle='#e8ab3c';q.font='800 32px Nunito';q.fillText('KURUŞ',W/2,230);q.fillStyle='#c8c8c8';q.font='900 40px Cinzel';q.fillText('TAKSİ',W/2,320)});
+    const b=mat('#25272a',{metalness:.6,roughness:.4});g.add(mesh(box(1.1,.9,.6),face6(b,tm(f))));const fl=tx(256,128,(q,W,H)=>{q.fillStyle='#c8372d';q.fillRect(0,0,W,H);q.fillStyle='#fff';q.font='900 44px Cinzel';q.textAlign='center';q.textBaseline='middle';q.fillText('SERBEST',W/2,H/2)});
+    g.add(mesh(cyl(.035,.035,.6,12),silver(),[.55,.65,0]));g.add(mesh(box(.6,.3,.03),face6(mat('#c8372d'),tm(fl)),[.55,1.05,0]));g.add(mesh(cyl(.08,.08,.12,20),silver(),[-.4,-.25,.31],[PI/2,0,0]));break}
+  case 'plaka':{const t=tx(768,192,(q,W,H)=>{q.fillStyle='#f4f1e8';q.fillRect(0,0,W,H);q.strokeStyle='#111';q.lineWidth=10;q.strokeRect(12,12,W-24,H-24);q.fillStyle='#111';q.font='900 110px "Lilita One"';q.textAlign='center';q.textBaseline='middle';q.fillText('34  K  1957',W/2,H/2+6);
+      q.font='800 22px Nunito';q.fillText('İSTANBUL',W/2,32);if(!sus){q.fillStyle='rgba(140,70,20,.35)';for(let i=0;i<40;i++){q.beginPath();q.arc(Math.random()*W,Math.random()<.5?Math.random()*30+10:H-10-Math.random()*30,3+Math.random()*9,0,7);q.fill()}}});
+    g.add(mesh(box(2.1,.52,.03),face6(mat('#d8d4c8',{metalness:.5}),tm(t,{roughness:.45,metalness:.2}))));[-1,1].forEach(s=>g.add(mesh(cyl(.035,.035,.05,12),silver(),[s*.8,0,.02],[PI/2,0,0])));break}
+  case 'haydarpasa':{const t=tx(512,288,(q,W,H)=>{q.fillStyle='#e9d9a8';q.fillRect(0,0,W,H);q.fillStyle='#7a2a1a';q.font='900 40px Cinzel';q.textAlign='center';q.fillText('T.C.D.D.',W/2,52);q.fillStyle='#2a1a0f';q.font='800 36px Nunito';q.fillText('HAYDARPAŞA',W/2,112);q.fillText('→ ANKARA',W/2,156);
+      q.font='700 26px Nunito';q.fillText('3. Mevki · 1962',W/2,206);q.font='900 30px "Lilita One"';q.fillStyle='#7a2a1a';q.fillText('Nº 018734',W/2,256);q.fillStyle='#0d0d0d';[[40,40],[470,240]].forEach(([x,y])=>{q.beginPath();q.arc(x,y,10,0,7);q.fill()})});
+    g.add(mesh(box(1.3,.73,.025),face6(mat('#e9d9a8',{roughness:.9}),tm(t,{roughness:.85})),[0,0,0],[0,0,-.06]));break}
+  case 'kaptan':{const n=mat('#1b2a4a',{roughness:.8});g.add(mesh(cyl(.78,.62,.42,48),n,[0,.2,0]));g.add(mesh(cyl(.82,.82,.08,48),mat('#f2f0ea',{roughness:.8}),[0,.44,0]));g.add(mesh(cyl(.64,.64,.18,48),blackP(),[0,-.06,0]));
+    g.add(mesh(new T.SphereGeometry(.7,40,10,0,PI,0,PI/2),mat('#0d0d0f',{roughness:.25}),[0,-.12,.2],[-.2,0,0],[1,.18,.9]));g.add(mesh(new T.TorusGeometry(.645,.025,8,48),gold(),[0,.06,0],[PI/2,0,0]));
+    const a=tx(256,256,(q,W)=>{q.fillStyle='#1b2a4a';q.fillRect(0,0,W,W);q.strokeStyle='#e0aa48';q.lineWidth=14;q.beginPath();q.moveTo(W/2,50);q.lineTo(W/2,200);q.stroke();q.beginPath();q.arc(W/2,150,60,.2,PI-.2);q.stroke();q.beginPath();q.moveTo(W/2-40,80);q.lineTo(W/2+40,80);q.stroke();q.beginPath();q.arc(W/2,38,16,0,7);q.stroke()});
+    g.add(mesh(new T.CircleGeometry(.2,32),tm(a,{metalness:.5}),[0,.2,.76],[-.1,0,0]));break}
+  case 'vapurcan':{const iron=()=>mat('#3a3c3f',{metalness:.9,roughness:.5});const b=mat(sus?'#c9a050':'#b8862e',{metalness:1,roughness:.3});const t=tx(1024,256,(q,W,H)=>{q.fillStyle='#b8862e';q.fillRect(0,0,W,H);q.fillStyle='#5a3a10';q.font='900 90px Cinzel';q.textAlign='center';q.textBaseline='middle';q.fillText('VAPUR Nº 54 · 1896',W/2,H/2)});
+    const bm=new T.MeshStandardMaterial({map:t,metalness:1,roughness:.3,side:T.DoubleSide});g.add(mesh(lathe([[.2,1.0],[.36,.9],[.46,.5],[.6,-.1],[.8,-.55],[.86,-.62],[.82,-.66]],64),bm));
+    g.add(mesh(new T.TorusGeometry(.18,.06,12,24),b,[0,1.15,0]));g.add(mesh(cyl(.04,.04,1.1,12),iron(),[0,.1,0]));g.add(mesh(sph(.14),iron(),[0,-.45,0]));g.add(mesh(new T.TorusGeometry(.84,.04,10,64),b,[0,-.62,0],[PI/2,0,0]));break}
+  /* ===== Hamam ===== */
+  case 'pirinctas':case 'hamamtasi':{const sv=it.k==='hamamtasi';const t=tx(1024,256,(q,W,H)=>{q.fillStyle=sv?'#d6dadd':'#c9973f';q.fillRect(0,0,W,H);q.strokeStyle=sv?'#7c8287':'#6a4a14';q.lineWidth=5;
+      for(let x=0;x<W;x+=64){q.beginPath();q.moveTo(x,H*.3);q.bezierCurveTo(x+16,H*.1,x+48,H*.5,x+64,H*.3);q.stroke();q.beginPath();q.arc(x+32,H*.65,18,0,7);q.stroke()}});
+    const m=new T.MeshStandardMaterial({map:t,metalness:1,roughness:sv?.2:.32,side:T.DoubleSide,bumpMap:t,bumpScale:.01});
+    g.add(mesh(lathe([[0,-.3],[.5,-.3],[.7,-.22],[.9,0],[1.05,.28],[1.08,.32],[1.0,.3],[.86,.02],[.55,-.22],[.25,-.24],[.2,-.16],[0,-.1]],72),m));g.add(mesh(new T.SphereGeometry(.22,24,12,0,PI*2,0,PI/2),sv?silver():brass(),[0,-.18,0],[0,0,0],[1,.6,1]));
+    g.rotation.x=.55;break}
+  case 'nalin':{const sd=tx(256,512,(q,W,H)=>{q.fillStyle='#5a3218';q.fillRect(0,0,W,H);for(let i=0;i<70;i++){const x=Math.random()*W,y=Math.random()*H,r=8+Math.random()*18;const gr=q.createRadialGradient(x,y,1,x,y,r);gr.addColorStop(0,'#fff');gr.addColorStop(.5,'#d8e8f0');gr.addColorStop(1,'#a8b8d8');q.fillStyle=gr;q.save();q.translate(x,y);q.rotate(Math.random()*3);q.beginPath();q.moveTo(0,-r);q.lineTo(r*.6,0);q.lineTo(0,r);q.lineTo(-r*.6,0);q.fill();q.restore()}});
+    [-1,1].forEach(s=>{const n=new T.Group();const w=wood('#4a2a14');n.add(mesh(box(.5,.08,1.4),[w,w,tm(sd,{roughness:.25}),w,w,w],[0,.55,0]));n.add(mesh(box(.42,.5,.22),w,[0,.26,.45]));n.add(mesh(box(.42,.5,.22),w,[0,.26,-.45]));
+      n.add(mesh(new T.TorusGeometry(.26,.06,8,24,PI),mat('#8a1e2a',{roughness:.6}),[0,.6,.25],[0,0,0],[1,.8,1]));n.position.set(0,-.4+(s+1)*.0,s*.5);n.rotation.y=PI/2;g.add(n)});g.rotation.set(.45,-.35,0);break}
+  case 'pestamal':{const t=tx(512,512,(q,W,H)=>{q.fillStyle='#f4efe4';q.fillRect(0,0,W,H);const cs=['#b3263a','#1d4f9c','#b3263a'];for(let i=0;i<14;i++){q.fillStyle=cs[i%3];q.fillRect(0,i*38,W,i%3===1?6:14)}q.fillStyle='rgba(200,150,60,.6)';for(let x=0;x<W;x+=24)q.fillRect(x,0,3,H)});
+    const pm=tm(t,{roughness:.9}),pe=mat('#e8e0d0',{roughness:.9});for(let i=0;i<4;i++)g.add(mesh(box(1.7,.12,1.1),[pe,pe,pm,pe,pm,pe],[i*.02,i*.13-.2,i*-.02]));
+    for(let i=0;i<16;i++)g.add(mesh(cyl(.01,.01,.22,4),mat('#f4efe4',{roughness:1}),[-.8+i*.107,.2,.62],[PI/2,0,0]));g.rotation.x=.5;break}
+  case 'bohca':{const t=tx(512,512,(q,W,H)=>{q.fillStyle=sus?'#8a2a3a':'#7a1426';q.fillRect(0,0,W,H);q.strokeStyle='#e8c060';q.lineWidth=4;for(let i=0;i<5;i++){q.beginPath();q.arc(W/2,H/2,40+i*45,0,7);q.stroke()}
+      for(let i=0;i<12;i++){const a=i/12*PI*2;q.save();q.translate(W/2+Math.cos(a)*150,H/2+Math.sin(a)*150);q.rotate(a);q.fillStyle='#e8c060';q.beginPath();q.ellipse(0,0,26,10,0,0,7);q.fill();q.restore()}});
+    const m=tm(t,{roughness:.6});g.add(mesh(sph(1,40,24),m,[0,-.1,0],null,[1,.45,.85]));g.add(mesh(sph(.22,20,12),m,[0,.38,0]));
+    [-1,1].forEach(s=>g.add(mesh(new T.ConeGeometry(.16,.5,8),m,[s*.25,.55,0],[0,0,-s*1.0])));break}
+  case 'gulabdan':{const m=sus?mat('#c8ccd0',{metalness:.6,roughness:.4}):silver();g.add(mesh(lathe([[0,-1.1],[.35,-1.1],[.38,-1.0],[.2,-.85],[.25,-.7],[.55,-.4],[.6,-.15],[.45,.1],[.14,.25],[.08,.9],[.12,1.0],[.05,1.2],[0,1.25]],64),m));
+    g.add(mesh(new T.TorusGeometry(.6,.03,8,48),gold(),[0,-.15,0],[PI/2,0,0]));g.add(mesh(sph(.06),gold(),[0,1.22,0]));for(let i=0;i<8;i++){const a=i/8*PI*2;g.add(mesh(sph(.05),gold(),[Math.cos(a)*.52,-.35,Math.sin(a)*.52]))}break}
+  case 'kurna':{const mb=tx(512,512,(q,W,H)=>{q.fillStyle='#ece9e2';q.fillRect(0,0,W,H);q.strokeStyle='rgba(120,120,130,.35)';for(let i=0;i<26;i++){q.lineWidth=1+Math.random()*2;q.beginPath();let x=Math.random()*W,y=0;q.moveTo(x,y);while(y<H){x+=(Math.random()-.5)*40;y+=20;q.lineTo(x,y)}q.stroke()}});
+    const m=new T.MeshStandardMaterial({map:mb,roughness:.25,side:T.DoubleSide});g.add(mesh(lathe([[0,-.6],[.7,-.6],[.9,-.4],[1.0,.1],[1.05,.2],[.95,.2],[.85,-.3],[0,-.4]],64),m,[0,-.3,0]));
+    g.add(mesh(box(1.6,1.2,.25),[m,m,m,m,m,m],[0,.6,-.8]));const b=brass();g.add(mesh(cyl(.08,.08,.5,20),b,[0,.7,-.5],[PI/2,0,0]));g.add(mesh(cyl(.08,.05,.25,20),b,[0,.58,-.26]));g.add(mesh(box(.3,.06,.06),b,[0,.82,-.45]));break}
+  /* ===== Hat, Kitap ve Harita ===== */
+  case 'hokka':{const m=silver();g.add(mesh(lathe([[0,-.5],[.5,-.5],[.55,-.42],[.45,0],[.3,.18],[.22,.24],[0,.24]],48),m));g.add(mesh(new T.SphereGeometry(.24,24,12,0,PI*2,0,PI/2),m,[0,.24,0],null,[1,.6,1]));g.add(mesh(sph(.06),gold(),[0,.4,0]));
+    g.add(mesh(cyl(.035,.03,1.8,10),wood('#c8a26a'),[.6,0,0],[0,0,-.6]));g.add(mesh(new T.ConeGeometry(.035,.12,8),wood('#8a6a3a'),[1.1,-.67,0],[0,0,-.6+PI]));break}
+  case 'hatlevha':{const t=tx(768,512,(q,W,H)=>{q.fillStyle='#1d4a3a';q.fillRect(0,0,W,H);q.strokeStyle='#e0aa48';q.lineWidth=8;q.strokeRect(30,30,W-60,H-60);q.lineWidth=2;q.strokeRect(46,46,W-92,H-92);
+      q.fillStyle='#f3d48c';q.font='700 170px "Noto Naskh Arabic","Amiri","Geeza Pro","Times New Roman",serif';q.textAlign='center';q.textBaseline='middle';q.fillText('ما شاء الله',W/2,H/2);
+      if(!sus){q.font='700 26px "Noto Naskh Arabic",serif';q.fillText('كتبه',W-130,H-80)}for(let i=0;i<8;i++){q.fillStyle='#e0aa48';q.beginPath();q.arc(60+i*(W-120)/7,H-60,5,0,7);q.fill()}});
+    const fm=wood('#3a2010');[[0,.78,2.1,.16],[0,-.78,2.1,.16],[1.0,0,.16,1.72],[-1.0,0,.16,1.72]].forEach(([x,y,w,h])=>g.add(mesh(box(w,h,.14),fm,[x,y,0])));g.add(mesh(new T.PlaneGeometry(1.86,1.42),tm(t,{roughness:.55}),[0,0,.01]));break}
+  case 'gravur':{const t=tx(768,512,(q,W,H)=>{q.fillStyle=sus?'#f4efe2':'#e8dcbc';q.fillRect(0,0,W,H);q.strokeStyle='rgba(50,35,20,.8)';q.lineWidth=1;for(let y=20;y<H*.55;y+=5){q.beginPath();q.moveTo(20,y);q.lineTo(W-20,y+Math.random()*2);q.stroke()}
+      q.fillStyle='#3a2a1a';const bx=W*.25,by=H*.62;q.beginPath();q.arc(bx+150,by-50,80,PI,0);q.fill();q.fillRect(bx+60,by-55,180,55);[bx+40,bx+260].forEach(x=>{q.fillRect(x-6,by-200,12,200);q.beginPath();q.moveTo(x-8,by-200);q.lineTo(x,by-235);q.lineTo(x+8,by-200);q.fill()});
+      for(let y=by;y<H-20;y+=4){q.globalAlpha=.6;q.beginPath();q.moveTo(20,y);q.lineTo(W-20,y);q.stroke()}q.globalAlpha=1;q.font='italic 700 24px Cinzel';q.textAlign='center';q.fillText('Vue de Constantinople',W/2,H-28)});
+    const fm=gold();fm.roughness=.4;[[0,.7,1.9,.12],[0,-.7,1.9,.12],[.9,0,.12,1.52],[-.9,0,.12,1.52]].forEach(([x,y,w,h])=>g.add(mesh(box(w,h,.1),fm,[x,y,0])));g.add(mesh(new T.PlaneGeometry(1.7,1.3),tm(t,{roughness:.85}),[0,0,.01]));break}
+  case 'harita':{const t=tx(1024,640,(q,W,H)=>{q.fillStyle='#ead9b0';q.fillRect(0,0,W,H);q.fillStyle='#a8c4c8';q.beginPath();q.moveTo(W*.5,0);q.bezierCurveTo(W*.45,H*.3,W*.58,H*.45,W*.5,H*.7);q.lineTo(W*.3,H);q.lineTo(W*.75,H);q.bezierCurveTo(W*.65,H*.7,W*.62,H*.4,W*.6,0);q.fill();
+      q.beginPath();q.moveTo(W*.18,H*.58);q.bezierCurveTo(W*.3,H*.5,W*.42,H*.56,W*.5,H*.62);q.lineTo(W*.5,H*.66);q.bezierCurveTo(W*.4,H*.6,W*.3,H*.58,W*.18,H*.64);q.fill();
+      q.strokeStyle='#5a3a1a';q.lineWidth=3;q.stroke();q.fillStyle='#5a3a1a';q.font='italic 700 46px Cinzel';q.textAlign='center';q.fillText('CONSTANTINOPLE',W*.5,60);q.font='italic 26px Cinzel';q.fillText('Galata',W*.4,H*.5);q.fillText('Scutari',W*.72,H*.7);q.fillText('Bosphore',W*.62,H*.3);
+      q.save();q.translate(W*.12,H*.2);q.strokeStyle='#8a2a1a';q.lineWidth=3;for(let i=0;i<8;i++){q.rotate(PI/4);q.beginPath();q.moveTo(0,0);q.lineTo(0,i%2?40:70);q.stroke()}q.restore();if(!sus){q.globalAlpha=.12;q.fillStyle='#000';q.beginPath();q.arc(W*.85,H*.25,60,0,7);q.fill()}});
+    hScroll(g,t,2.1,1.35);break}
+  case 'ilkbaski':{const c=tx(512,720,(q,W,H)=>{q.fillStyle=sus?'#9a3a2a':'#7a1e1a';q.fillRect(0,0,W,H);q.strokeStyle='#e0aa48';q.lineWidth=6;q.strokeRect(30,30,W-60,H-60);q.fillStyle='#f3d48c';q.font='900 54px Cinzel';q.textAlign='center';q.fillText('SAATLER',W/2,250);q.fillText('VE',W/2,320);q.fillText('ŞEHİR',W/2,390);
+      q.font='700 30px Nunito';q.fillText('Roman',W/2,470);q.font='800 26px Nunito';q.fillText('İstanbul · 1928',W/2,H-80)});
+    const pg=mat('#efe4c8',{roughness:.9}),cv=tm(c,{roughness:.7}),sp=mat(sus?'#9a3a2a':'#7a1e1a',{roughness:.7});g.add(mesh(box(1.1,1.55,.28),[pg,sp,pg,pg,cv,sp]));g.rotation.y=-.25;break}
+  case 'tezhip':{const t=tx(512,720,(q,W,H)=>{q.fillStyle='#f1e6c8';q.fillRect(0,0,W,H);q.fillStyle='#1d3a8a';q.fillRect(40,40,W-80,40);q.fillRect(40,H-80,W-80,40);q.fillRect(40,40,30,H-80);q.fillRect(W-70,40,30,H-80);
+      q.fillStyle=sus?'#d8c060':'#e0aa48';for(let i=0;i<20;i++){q.beginPath();q.arc(55+i*21.5,60,7,0,7);q.fill();q.beginPath();q.arc(55+i*21.5,H-60,7,0,7);q.fill()}q.beginPath();q.ellipse(W/2,150,120,46,0,0,7);q.fill();
+      q.fillStyle='#1a1410';q.font='30px "Noto Naskh Arabic","Geeza Pro",serif';q.textAlign='center';for(let i=0;i<11;i++)q.fillText('بسم الله الرحمن الرحيم',W/2,250+i*38)});
+    const pl=new T.PlaneGeometry(1.2,1.7,10,10);const p=pl.attributes.position;for(let i=0;i<p.count;i++)p.setZ(i,Math.sin(p.getX(i)*2.2)*.05);pl.computeVertexNormals();g.add(mesh(pl,new T.MeshStandardMaterial({map:t,roughness:.85,side:T.DoubleSide})));break}
+  case 'muteferrika':{const c=tx(512,720,(q,W,H)=>{q.fillStyle='#5a3218';q.fillRect(0,0,W,H);for(let i=0;i<3000;i++){q.fillStyle=`rgba(0,0,0,${Math.random()*.15})`;q.fillRect(Math.random()*W,Math.random()*H,2,2)}q.strokeStyle='#c9973f';q.lineWidth=5;q.strokeRect(40,40,W-80,H-80);
+      q.fillStyle='#c9973f';q.beginPath();q.ellipse(W/2,H/2,120,170,0,0,7);q.fill();q.fillStyle='#5a3218';q.beginPath();q.ellipse(W/2,H/2,100,150,0,0,7);q.fill();q.fillStyle='#c9973f';for(let i=0;i<4;i++){q.save();q.translate(i%2?W-80:80,i<2?80:H-80);q.beginPath();q.moveTo(0,-30);q.lineTo(30,0);q.lineTo(0,30);q.lineTo(-30,0);q.fill();q.restore()}});
+    const pg=mat('#e8dcbc',{roughness:.95}),cv=tm(c,{roughness:.75}),sp=mat('#4a2814',{roughness:.75});g.add(mesh(box(1.2,1.7,.5),[pg,sp,pg,pg,cv,cv]));g.add(mesh(box(.12,.3,.56),brass(),[.6,0,0]));g.rotation.y=-.3;break}
+  /* ===== Halı ve Kilim ===== */
+  case 'hereke':case 'usak':case 'kars':case 'seccade':{const k=it.k;const t=tx(512,768,(q,W,H)=>{const P={hereke:['#efe3c6','#1a2a5a','#9a1a2e','#c9973f'],usak:['#a8141e','#16245a','#e8c890','#2a5a3a'],kars:['#8a3a1e','#2a1a10','#d8b878','#5a6a2a'],seccade:['#1d3a5a','#a8141e','#e8d8b0','#c9973f']}[k];
+      q.fillStyle=P[0];q.fillRect(0,0,W,H);q.fillStyle=P[1];q.fillRect(0,0,W,46);q.fillRect(0,H-46,W,46);q.fillRect(0,0,46,H);q.fillRect(W-46,0,46,H);q.fillStyle=P[2];for(let y=10;y<H;y+=36){q.fillRect(14,y,18,18);q.fillRect(W-32,y,18,18)}
+      if(k==='kars'){for(let r=0;r<5;r++){const y=120+r*130;q.fillStyle=r%2?P[2]:P[3];q.beginPath();q.moveTo(W/2,y-60);q.lineTo(W/2+150,y);q.lineTo(W/2,y+60);q.lineTo(W/2-150,y);q.fill();q.fillStyle=P[1];q.beginPath();q.moveTo(W/2,y-25);q.lineTo(W/2+60,y);q.lineTo(W/2,y+25);q.lineTo(W/2-60,y);q.fill()}}
+      else if(k==='seccade'){q.fillStyle=P[1];q.beginPath();q.moveTo(80,H-90);q.lineTo(80,300);q.quadraticCurveTo(W/2,60,W-80,300);q.lineTo(W-80,H-90);q.fill();q.fillStyle=P[3];q.beginPath();q.arc(W/2,240,20,0,7);q.fill();for(let i=0;i<6;i++){q.fillStyle=P[2];q.beginPath();q.arc(140+i*46,H-140,12,0,7);q.fill()}}
+      else{q.fillStyle=P[1];q.beginPath();q.ellipse(W/2,H/2,150,220,0,0,7);q.fill();q.fillStyle=P[2];q.beginPath();q.ellipse(W/2,H/2,110,170,0,0,7);q.fill();q.fillStyle=P[0];q.beginPath();q.ellipse(W/2,H/2,70,110,0,0,7);q.fill();
+        q.fillStyle=P[3];for(let i=0;i<16;i++){const a=i/16*PI*2;q.beginPath();q.arc(W/2+Math.cos(a)*130,H/2+Math.sin(a)*195,10,0,7);q.fill()}[[90,110],[W-90,110],[90,H-110],[W-90,H-110]].forEach(([x,y])=>{q.fillStyle=P[1];q.beginPath();q.arc(x,y,40,0,7);q.fill()})}
+      const fine=k==='hereke'?1:3;for(let i=0;i<(k==='hereke'?9000:5000);i++){q.fillStyle=`rgba(${Math.random()<.5?'255,240,220':'0,0,0'},${Math.random()*.08})`;q.fillRect(Math.random()*W,Math.random()*H,fine,fine)}});
+    const S2={hereke:[1.5,2.2],usak:[1.6,2.3],kars:[1.4,2.1],seccade:[1.1,1.6]}[k];rug(S2[0],S2[1],t,'#efe4c8',k==='hereke'?{roughness:.35,metalness:.15}:null);g.rotation.x=-.5;break}
+  case 'cicim':case 'minder':{const t=tx(512,512,(q,W,H)=>{q.fillStyle=it.k==='cicim'?'#c43a2a':'#2a5a6a';q.fillRect(0,0,W,H);const cs=['#f0d070','#1a1a2a','#e8e0d0','#6a8a3a'];for(let r=0;r<6;r++)for(let c=0;c<6;c++){q.fillStyle=cs[(r+c)%4];q.save();q.translate(43+c*85,43+r*85);q.rotate(PI/4);q.fillRect(-18,-18,36,36);q.restore()}});
+    const m=tm(t,{roughness:.9});if(it.k==='cicim'){g.add(mesh(sph(1,40,24),m,null,null,[1,.35,.85]));[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([x,z])=>g.add(mesh(new T.ConeGeometry(.08,.3,8),mat('#f0d070',{roughness:1}),[x*.82,0,z*.68],[0,0,x*PI/3])));g.rotation.x=.9}
+    else{g.add(mesh(box(1.8,.35,1.8),[m,m,m,m,m,m]));g.add(mesh(new T.TorusGeometry(.1,.04,8,16),mat('#f0d070'),[0,.2,0],[PI/2,0,0]));g.rotation.x=.45}break}
+  case 'heybe':{const t=tx(512,512,(q,W,H)=>{q.fillStyle='#8a2a1a';q.fillRect(0,0,W,H);for(let r=0;r<8;r++){q.fillStyle=['#e8c060','#1a2a3a','#e8e0d0','#3a6a3a'][r%4];q.fillRect(0,r*64+20,W,14);for(let c=0;c<8;c++){q.save();q.translate(c*64+32,r*64+50);q.rotate(PI/4);q.fillRect(-8,-8,16,16);q.restore()}}});
+    const m=tm(t,{roughness:.9});[-1,1].forEach(s=>{g.add(mesh(box(.9,1.0,.3),[m,m,m,m,m,m],[s*.62,-.3,0]));g.add(mesh(new T.ConeGeometry(.06,.28,6),mat('#e8c060'),[s*.62,-.95,0]))});g.add(mesh(box(.4,.6,.1),[m,m,m,m,m,m],[0,.32,-.05],[.2,0,0]));break}
+  /* ===== Para ve Altın ===== */
+  case 'jeton':coin(Object.assign({bg:'#b8923a',hi:'#ead090',lo:'#6a4a10',ink:'#4a3008'},{big:'PTT',sub:'JETON',slot:0}),.55,.1);break;
+  case 'hatira':coin(Object.assign({},silvC,{ring:'TÜRKİYE CUMHURİYETİ · 50. YIL ·',big:'50',sub:'YIL',dots:1}),.95,.12);break;
+  case 'mecidiye':coin(Object.assign({},sus?{bg:'#b8bcc0',hi:'#e8eaec',lo:'#6c7277',ink:'#4d5358'}:silvC,{tugra:1,dots:1}),1.0,.12);break;
+  case 'ceyrek':coin(Object.assign({},goldC,{ring:'TÜRKİYE CUMHURİYETİ · 1927 ·',big:'25',sub:'KURUŞ',dots:1}),.7,.08);break;
+  case 'resat':coin(Object.assign({},goldC,{tugra:1,dots:1}),.82,.1);break;
+  case 'besibir':coin(Object.assign({},goldC,{tugra:1,dots:1,ring:'• • • • • • • • • • • • • • • • • • • • • •'}),1.15,.14);g.add(mesh(new T.TorusGeometry(.18,.05,12,32),gold(),[0,1.3,0]));g.add(mesh(new T.TorusGeometry(1.17,.05,10,72),gold(),[0,0,0]));break;
+  case 'banknot':{const t=tx(1024,512,(q,W,H)=>{q.fillStyle=sus?'#c8d8b8':'#b8ccb0';q.fillRect(0,0,W,H);q.strokeStyle='#3a5a3a';q.lineWidth=12;q.strokeRect(20,20,W-40,H-40);q.lineWidth=2;for(let i=0;i<40;i++){q.beginPath();q.ellipse(W*.7,H/2,40+i*6,30+i*3,0,0,7);q.stroke()}
+      q.fillStyle='#e8eadc';q.beginPath();q.ellipse(W*.25,H*.5,120,150,0,0,7);q.fill();q.fillStyle='#3a5a3a';q.beginPath();q.arc(W*.25,H*.42,52,0,7);q.fill();q.fillRect(W*.25-70,H*.55,140,80);
+      q.font='900 46px Cinzel';q.textAlign='center';q.fillText('TÜRKİYE CÜMHURİYETİ',W*.66,90);q.font='900 150px "Lilita One"';q.fillText('10',W*.66,H*.65);q.font='800 40px Nunito';q.fillText('ON LİRA · 1927',W*.66,H-60);if(!sus){q.globalAlpha=.25;q.fillStyle='#fff';q.beginPath();q.arc(W*.9,H*.3,50,0,7);q.fill()}});
+    const pl=new T.PlaneGeometry(2.2,1.1,16,4);const p=pl.attributes.position;for(let i=0;i<p.count;i++)p.setZ(i,Math.sin(p.getX(i)*2.4)*.06);pl.computeVertexNormals();g.add(mesh(pl,new T.MeshStandardMaterial({map:t,roughness:.85,side:T.DoubleSide})));break}
+  /* ===== Mahalle Bakkalı ===== */
+  case 'gazoz':{const gl=new T.MeshPhysicalMaterial({color:sus?'#a8d8b8':'#6abf8a',roughness:.05,metalness:0,transparent:true,opacity:.6,clearcoat:1,side:T.DoubleSide});
+    g.add(mesh(lathe([[0,-1.2],[.4,-1.2],[.42,-1.1],[.42,.1],[.25,.55],[.15,.95],[.17,1.05],[.13,1.1]],48),gl));g.add(mesh(cyl(.16,.17,.12,24),mat('#c8372d',{metalness:.6,roughness:.3}),[0,1.12,0]));
+    const lb=tx(512,256,(q,W,H)=>{q.fillStyle='#f3eee0';q.fillRect(0,0,W,H);q.fillStyle='#c8372d';q.font='900 70px "Lilita One"';q.textAlign='center';q.fillText('GAZOZ',W/2,120);q.font='800 32px Nunito';q.fillStyle='#1d4f9c';q.fillText('Mahalle · 1962',W/2,190)});
+    g.add(mesh(new T.CylinderGeometry(.425,.425,.5,48,1,true),new T.MeshStandardMaterial({map:lb,roughness:.6,side:T.DoubleSide}),[0,-.45,0]));break}
+  case 'veresiye':{const c=tx(512,720,(q,W,H)=>{q.fillStyle='#2a5a8a';q.fillRect(0,0,W,H);q.fillStyle='#f3eee0';rr(q,60,180,W-120,200,16);q.fill();q.fillStyle='#1a1410';q.font='900 52px Cinzel';q.textAlign='center';q.fillText('VERESİYE',W/2,260);q.font='800 34px Nunito';q.fillText('DEFTERİ',W/2,320);
+      q.fillStyle='#1d3fa8';q.font='54px "Mrs Saint Delafield",cursive';q.fillText('Hüsnü Bakkal',W/2,470)});
+    const pg=mat('#efe8d4',{roughness:.9});g.add(mesh(box(1.15,1.6,.12),[pg,mat('#1a3a5a'),pg,pg,tm(c,{roughness:.8}),mat('#2a5a8a')]));g.add(mesh(cyl(.03,.03,1.4,6),mat('#e8b030'),[.68,0,.1],[0,0,.2]));g.rotation.y=-.2;break}
+  case 'biskuvi':{const t=tx(1024,256,(q,W,H)=>{q.fillStyle='#e8b030';q.fillRect(0,0,W,H);q.fillStyle='#c8372d';q.fillRect(0,0,W,40);q.fillRect(0,H-40,W,40);q.fillStyle='#1d4f9c';q.font='900 70px "Lilita One"';q.textAlign='center';for(let i=0;i<2;i++)q.fillText('BİSKÜVİ',W*(.25+i*.5),H*.6);
+      q.fillStyle='#8a4a1a';for(let i=0;i<8;i++){q.beginPath();q.arc(60+i*130,H*.82,14,0,7);q.fill()}});
+    const top=tx(512,512,(q,W)=>{q.fillStyle='#c8372d';q.fillRect(0,0,W,W);q.fillStyle='#e8b030';q.beginPath();q.arc(W/2,W/2,200,0,7);q.fill();q.fillStyle='#1d4f9c';q.font='900 60px "Lilita One"';q.textAlign='center';q.fillText('MAHALLE',W/2,W/2-10);q.font='800 40px Nunito';q.fillText('Bisküvileri',W/2,W/2+50)});
+    const side=new T.MeshStandardMaterial({map:t,metalness:.6,roughness:.35}),tp=new T.MeshStandardMaterial({map:top,metalness:.6,roughness:.3});g.add(mesh(cyl(.9,.9,1.1,64),[side,tp,mat('#888')]));g.add(mesh(cyl(.93,.93,.18,64),[mat('#c8372d',{metalness:.6,roughness:.3}),tp,tp],[0,.5,0]));g.rotation.x=.35;break}
+  case 'sifon':{const gl=new T.MeshPhysicalMaterial({color:'#7fb8e0',roughness:.05,transparent:true,opacity:.5,clearcoat:1,side:T.DoubleSide});g.add(mesh(lathe([[0,-1.2],[.45,-1.2],[.48,-1.1],[.48,.3],[.3,.6],[.2,.75]],48),gl));
+    const s=silver();g.add(mesh(cyl(.22,.25,.4,32),s,[0,.95,0]));g.add(mesh(cyl(.05,.04,.6,16),s,[.3,1.0,0],[0,0,-PI/2.4]));g.add(mesh(box(.5,.08,.1),s,[-.15,1.2,0],[0,0,.3]));
+    const net=new T.Mesh(new T.CylinderGeometry(.495,.495,1.3,24,1,true),new T.MeshStandardMaterial({color:'#c0c4c8',metalness:1,roughness:.3,wireframe:true}));net.position.y=-.5;g.add(net);break}
+  case 'kantar':{const b=brass(),w=wood('#5a3418');g.add(mesh(box(2.0,.2,.7),w,[0,-.9,0]));g.add(mesh(cyl(.06,.08,1.3,20),b,[0,-.2,0]));g.add(mesh(box(2.0,.06,.08),b,[0,.48,0]));g.add(mesh(new T.ConeGeometry(.06,.2,12),b,[0,.62,0]));
+    [-1,1].forEach(s=>{for(let i=0;i<3;i++){const a=i/3*PI*2;g.add(mesh(cyl(.008,.008,.62,4),b,[s*.95+Math.cos(a)*.12,.17,Math.sin(a)*.12],[Math.sin(a)*.18,0,-Math.cos(a)*.18]))}g.add(mesh(lathe([[0,0],[.42,.02],[.48,.1],[.44,.1],[.38,.05],[0,.04]],40),b,[s*.95,-.18,0]))});
+    [.3,.22,.16].forEach((r,i)=>g.add(mesh(cyl(r*.5,r*.6,r,24),b,[.5+i*.25,-.8+r/2,.15])));break}
+  case 'emaye':{const t=tx(768,384,(q,W,H)=>{q.fillStyle='#c8372d';rr(q,0,0,W,H,40);q.fill();q.strokeStyle='#f3eee0';q.lineWidth=12;rr(q,18,18,W-36,H-36,30);q.stroke();q.fillStyle='#f3eee0';q.font='900 110px "Lilita One"';q.textAlign='center';q.textBaseline='middle';q.fillText('GAZOZ',W/2,H*.4);
+      q.font='800 44px Nunito';q.fillText('BUZ GİBİ · HER YERDE',W/2,H*.75);q.fillStyle='#1a1a1c';for(let i=0;i<(sus?3:10);i++){const x=Math.random()<.5?Math.random()*60+10:W-70+Math.random()*60,y=Math.random()*H;q.beginPath();q.arc(x,y,6+Math.random()*14,0,7);q.fill()}});
+    g.add(mesh(box(2.0,1.0,.04),face6(mat('#f3eee0',{metalness:.2,roughness:.3}),new T.MeshPhysicalMaterial({map:t,roughness:.15,clearcoat:.8}))));[[-1,1],[1,1],[-1,-1],[1,-1]].forEach(([x,y])=>g.add(mesh(cyl(.035,.035,.05,12),silver(),[x*.88,y*.38,.03],[PI/2,0,0])));break}
+  case 'yazarkasa':{const b=mat(sus?'#9a7a4a':'#8a6a3a',{metalness:.85,roughness:.35}),d=mat('#2a2a2c',{metalness:.5,roughness:.4});g.add(mesh(box(1.6,.4,1.2),b,[0,-.7,0]));g.add(mesh(box(1.5,.9,.9),b,[0,-.1,-.1],[-.25,0,0]));
+    for(let r=0;r<4;r++)for(let c=0;c<7;c++)g.add(mesh(cyl(.06,.06,.08,16),mat('#f3eee0',{roughness:.3}),[-.6+c*.2,-.22+r*.15,.38-r*.06],[PI/2-.25,0,0]));
+    const dp=tx(512,160,(q,W,H)=>{q.fillStyle='#1a1a1c';q.fillRect(0,0,W,H);q.fillStyle='#f3eee0';q.font='900 92px "Lilita One"';q.textAlign='center';q.textBaseline='middle';q.fillText('₺ 12,50',W/2,H/2+4)});
+    g.add(mesh(box(1.0,.36,.3),face6(d,tm(dp)),[0,.6,-.25]));g.add(mesh(cyl(.04,.04,.5,12),b,[.95,-.1,0],[0,0,PI/2]));g.add(mesh(sph(.08),wood('#3a2010'),[1.2,-.1,0]));g.add(mesh(box(1.4,.05,.05),b,[0,-.72,.61]));break}
+  default:return false}
+  return true}
 
 /* ---------- boot ---------- */
 ensureEcon();ensureLive();if(S.cust&&S.cust.done){S.cust=null}
