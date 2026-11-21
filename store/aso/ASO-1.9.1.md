@@ -43,29 +43,28 @@ Neden böyle:
 ## 3. Bu sürümdeki yenilikler (What's New)
 
 **Türkçe**
-> 7 yeni paket geldi: Nostalji 90'lar, Eski İstanbul, Hamam Takımı, Hat, Kitap ve Harita, Halı ve Kilim, Para ve Altın, Mahalle Bakkalı. 51 yeni 3B eşya, 7 koleksiyon serisi ve kendi hikâyesiyle gelen yeni müşteriler: emekli kaptan, sahaf, halıcı, bakkal Hüsnü Amca… Her paketten bir parça herkese açık, tamamı Premium'a dahil.
+> • 4 yeni paket herkese açık: Nostalji 90'lar, Eski İstanbul, Hamam Takımı, Mahalle Bakkalı
+> • Premium'a 3 yeni paket: Hat, Kitap ve Harita · Halı ve Kilim · Para ve Altın
+> • 51 yeni 3B eşya, 7 koleksiyon serisi
+> • Hikâyeli yeni müşteriler: emekli kaptan, vatman, hamamcı, bakkal Hüsnü Amca…
 
 **İngilizce**
-> 7 new packs: 90s Nostalgia, Old Istanbul, Hammam Set, Calligraphy & Maps, Carpets & Kilims, Coins & Gold and Corner Grocer. 51 new 3D items, 7 collection series and new customers with their own stories. One item from every pack is free for everyone; all packs are included in Premium.
+> • 4 new packs free for everyone: 90s Nostalgia, Old Istanbul, Hammam Set, Corner Grocer
+> • 3 new Premium packs: Calligraphy & Maps, Carpets & Kilims, Coins & Gold
+> • 51 new 3D items, 7 collection series
+> • New customers with their own stories: a retired ferry captain, a tram driver, the corner grocer…
 
 **Almanca**
-> 7 neue Pakete: 90er-Nostalgie, Altes Istanbul, Hamam-Set, Kalligrafie & Karten, Teppiche & Kelims, Münzen & Gold und Tante-Emma-Laden. 51 neue 3D-Gegenstände, 7 Sammelserien und neue Kunden mit eigenen Geschichten. Ein Stück aus jedem Paket ist für alle frei, alle Pakete sind in Premium enthalten.
+> • 4 neue Pakete für alle: 90er-Nostalgie, Altes Istanbul, Hamam-Set, Tante-Emma-Laden
+> • 3 neue Premium-Pakete: Kalligrafie & Karten, Teppiche & Kelims, Münzen & Gold
+> • 51 neue 3D-Gegenstände, 7 Sammelserien
+> • Neue Kunden mit eigenen Geschichten: ein Fährkapitän a. D., ein Straßenbahnfahrer, der Krämer von nebenan…
 
-## 4. Yeni uygulama içi satın almalar (App Store Connect › Uygulama İçi Satın Almalar)
+## 4. Paketlerin dağılımı (yeni satın alma ürünü yok)
 
-Oyun aşağıdaki kimlikleri hazır bekliyor. Ürün mağazada yoksa kartta "Premium'a dahil" yazar, satın alma düğmesi çıkmaz; bir şey bozulmaz. Yani ürünleri sonra da açabilirsin. Hepsi **Tüketilemez (Non-Consumable)**.
-
-| Kimlik | Ad | Önerilen TR fiyatı |
-|---|---|---|
-| `com.ozsstudio.bitpazari.paket_nostalji` | Nostalji 90'lar Paketi | ₺79,99 |
-| `com.ozsstudio.bitpazari.paket_vapur` | Eski İstanbul Paketi | ₺79,99 |
-| `com.ozsstudio.bitpazari.paket_hamam` | Hamam Takımı Paketi | ₺79,99 |
-| `com.ozsstudio.bitpazari.paket_hat` | Hat, Kitap ve Harita Paketi | ₺79,99 |
-| `com.ozsstudio.bitpazari.paket_hali` | Halı ve Kilim Paketi | ₺79,99 |
-| `com.ozsstudio.bitpazari.paket_para` | Para ve Altın Paketi | ₺79,99 |
-| `com.ozsstudio.bitpazari.paket_bakkal` | Mahalle Bakkalı Paketi | ₺79,99 |
-
-Fiyat önerisi: tek paket Tarih Paketi'nden (42 eşya) ucuz olmalı, çünkü her biri 7–8 eşya. ₺79,99'da üç paket Premium'u (₺249,99) geçtiği için Premium daha cazip görünür.
+- **Ücretsiz oyunda:** Nostalji 90'lar, Eski İstanbul, Hamam Takımı, Mahalle Bakkalı (30 eşya, 4 seri, hikâyeli satıcılarıyla)
+- **Premium'a özel:** Hat, Kitap ve Harita · Halı ve Kilim · Para ve Altın (21 eşya, 3 seri). Her birinden bir parça (hokka, cicim yastık, telefon jetonu) herkesin pazarına düşer.
+- Mağazada Premium kartının altında "Premium'a özel yeni paketler" kartı var; düğmesi Premium satın almayı açar.
 
 ## 5. Puan isteği (1.9.1 kodunda)
 

@@ -6665,8 +6665,8 @@ function dustLoop(t){const cv=document.getElementById('dust');
 requestAnimationFrame(dustLoop);
 
 /* ===================== 1.9.1 · Yedi yeni paket: Nostalji 90'lar · Eski İstanbul · Hamam · Hat/Kitap/Harita · Halı/Kilim · Para/Altın · Mahalle Bakkalı =====================
-   Her paket ayrı tek seferlik satın alma (ürün App Store'da yoksa yalnızca Premium ile açılır). Premium'a hepsi dahil.
-   Her pakette bir "tadımlık" (free:1) eşya paket olmadan da pazara düşer. */
+   Dördü herkese açık (ücretsiz oyun), üçü Premium'a özel. Ayrı satın alma ürünü yok.
+   Premium paketlerinden birer "tadımlık" (free:1) eşya herkesin pazarına düşer. */
 const PKS={tarih:{e:'📜',n:'Tarih Paketi'},
  nostalji:{e:'📼',n:"Nostalji 90'lar",d:'VHS, tuğla telefon, çağrı cihazı, atari kartuşu…',x:'Teyp, disket ve anlık fotoğraf: 90\'ların çocukları dükkâna geliyor'},
  vapur:{e:'⛴️',n:'Eski İstanbul',d:'Vapur jetonu, tramvay tabelası, vapur çanı…',x:'Vapurlar, tramvaylar ve Haydarpaşa garı'},
@@ -6676,7 +6676,8 @@ const PKS={tarih:{e:'📜',n:'Tarih Paketi'},
  para:{e:'🪙',n:'Para ve Altın',d:'Reşat altını, ilk Cumhuriyet banknotu…',x:'Teraziyle ayarı tart, sahte altını ayır'},
  bakkal:{e:'🏪',n:'Mahalle Bakkalı',d:'Emaye tabela, gazoz şişesi, yazar kasa…',x:'Kapanan bakkalların tezgâhından'}};
 const PK_IDS=Object.keys(PKS).filter(k=>k!=='tarih');
-PK_IDS.forEach(k=>{IAP[k]='com.ozsstudio.bitpazari.paket_'+k;IAP_K[IAP[k]]=k});
+const PK_FREE=new Set(['nostalji','vapur','hamam','bakkal']);
+const PK_PREM=PK_IDS.filter(k=>!PK_FREE.has(k));
 const CATP=[
  /* Nostalji 90'lar */
  {k:'vhs',n:'VHS Video Kaset',i:'📼',v:180,pack:'nostalji',free:1},
@@ -6736,6 +6737,7 @@ const CATP=[
  {k:'kantar',n:'Pirinç Bakkal Terazisi',i:'⚖️',v:1300,pack:'bakkal'},
  {k:'emaye',n:'Emaye Bakkal Tabelası',i:'🪧',v:1500,f:1,pack:'bakkal'},
  {k:'yazarkasa',n:'Mekanik Yazar Kasa',i:'🧾',v:2700,f:1,pack:'bakkal'}];
+CATP.forEach(c=>{c.grp=c.pack;if(PK_FREE.has(c.pack)){delete c.pack;delete c.free}});
 CAT.push(...CATP);
 ['vhs','cagri','disket','kartus','walkman','vjeton','haydarpasa','hokka','jeton','hatira','mecidiye','ceyrek','banknot','resat','besibir','veresiye','tezhip'].forEach(k=>SMALL.add(k));
 ['hereke','usak','kars','kantar','yazarkasa','vapurcan','tramtabela','kurna'].forEach(k=>BIG.add(k));
@@ -6751,6 +6753,7 @@ SERIES.push(
  {id:'hali',pack:'hali',n:'Halı ve Kilim',d:'Tezgâhtan çıkanlar',c:'#b3263a',ks:['cicim','heybe','minder','seccade','kars','usak','hereke'],rw:7000,bonus:'Halı ve kilimler %10 daha pahalıya satılır'},
  {id:'para',pack:'para',n:'Para ve Altın',d:'Nümismatik vitrini',c:'#e0b03c',ks:['jeton','hatira','mecidiye','ceyrek','banknot','resat','besibir'],rw:8000,bonus:'Para ve altınlar %10 daha pahalıya satılır'},
  {id:'bakkal',pack:'bakkal',n:'Mahalle Bakkalı',d:'Tezgâhın arkasından',c:'#e2643a',ks:['gazoz','veresiye','biskuvi','sifon','kantar','emaye','yazarkasa'],rw:3200,bonus:'Bakkal eşyaları %10 daha pahalıya satılır'});
+SERIES.forEach(x=>{if(PK_FREE.has(x.pack))delete x.pack});
 (function(){const add=(id,a)=>{const L=LOCS.find(l=>l.id===id);if(L)a.forEach(x=>{if(!L.cats.includes(x))L.cats.push(x)})};
   add('bit',['nostalji','hamam','bakkal']);add('kadikoy',['nostalji','vapur','bakkal']);add('kapali',['hamam','hali','para']);add('galata',['vapur','hat']);add('nisantasi',['hat','hali','para'])})();
 
@@ -6779,25 +6782,19 @@ const PKBUY={
  para:['Koleksiyonumda {i} eksik. Ne istiyorsun?','Şu {i} ayarı tam mı? Kaça verirsin?'],
  bakkal:['Kafemize {i} lazım, eski bakkal havası olsun. Kaç para?','Rahmetli babamın bakkalında da {i} vardı. Ne kadar?']};
 const _pkSpS=spawnSeller;
-spawnSeller=function(){try{const own=PK_IDS.filter(id=>packOwned(id));
-  if(own.length&&S.day>=2&&R()<.15){const id=pick(own),ch=pick(PKSELL[id]),cat=pick(CATP.filter(c=>c.pack===id));const it=newItem(cat,{fake:!!cat.f&&R()<SELL[ch.t].fake});const c=mkSeller(it,ch.t);
+spawnSeller=function(){try{const own=PK_IDS.filter(id=>PK_FREE.has(id)||packOwned(id));
+  if(own.length&&S.day>=2&&R()<.15){const id=pick(own),ch=pick(PKSELL[id]),cat=pick(CATP.filter(c=>c.grp===id));const it=newItem(cat,{fake:!!cat.f&&R()<SELL[ch.t].fake});const c=mkSeller(it,ch.t);
     return Object.assign(c,{name:ch.n,seed:ch.s,line:tpl(pick(ch.l),{i:it.n,p:fmt(c.ask)})})}}catch(e){console.warn(e)}
   return _pkSpS.apply(this,arguments)};
 const _pkSpB=spawnBuyer;
-spawnBuyer=function(vip){const b=_pkSpB.apply(this,arguments);try{if(b&&!vip&&b.kind==='buyer'&&b.type!=='kurator'){const it=itemById(b.itemId),c=it&&catOf(it.k);if(c&&c.pack&&PKBUY[c.pack]&&R()<.6)b.line=tpl(pick(PKBUY[c.pack]),{i:it.n})}}catch(e){}return b};
+spawnBuyer=function(vip){const b=_pkSpB.apply(this,arguments);try{if(b&&!vip&&b.kind==='buyer'&&b.type!=='kurator'){const it=itemById(b.itemId),c=it&&catOf(it.k);const gp=c&&(c.grp||c.pack);if(gp&&PKBUY[gp]&&R()<.6)b.line=tpl(pick(PKBUY[gp]),{i:it.n})}}catch(e){}return b};
 
 /* ---------- koleksiyon etiketi · mağaza · teşekkür ---------- */
 function pkTag(s){if(!s||!s.pack)return '';const p=PKS[s.pack]||PKS.tarih;return packOwned(s.pack)?` <em class="pktag">${p.e} ${p.n}</em>`:` <em class="pktag lock" data-act="store">🔒 ${p.n} · Aç</em>`}
-function pkBtn(k){const own=!!(ENT.premium||ENT[k]);if(own)return `<div class="st-own">✓ Sende</div>`;const N=window.NATIVE,pr=priceOf(k);
-  if(N&&N.isNative&&N.iapOn&&!pr)return `<div class="st-own pkprem">👑 Premium'a dahil</div>`;
-  return `<button class="st-buy" data-act="buy:${k}" ${storeBusy?'disabled':''}>${storeBusy?'Bekle…':pr?esc(pr)+' · Satın Al':'Satın Al'}</button>`}
-function pkCards(){return `<h3 class="pkhd">Yeni Paketler</h3>`+PK_IDS.map(k=>{const p=PKS[k],its=CATP.filter(c=>c.pack===k);
-  return `<section class="st-card pkc"><div class="st-ic">${p.e}</div><h2>${p.n}</h2><p class="st-lead">${`${its.length} yeni 3B eşya, 1 koleksiyon serisi`}</p><div class="st-th">${[...new Set(its.map(c=>c.i))].slice(0,8).map(i=>`<span>${i}</span>`).join('')}</div>
-   <ul><li>${p.d}</li><li>${p.x}</li><li>👑 Premium'a dahil</li></ul>${pkBtn(k)}</section>`}).join('')}
+function pkCards(){const own=!!ENT.premium;return `<section class="st-card pkc"><div class="st-ic">✨</div><h2>${'Premium\'a özel yeni paketler'}</h2><p class="st-lead">${`${CATP.filter(c=>c.pack).length} yeni 3B eşya, 3 koleksiyon serisi`}</p>
+   <ul>${PK_PREM.map(k=>`<li>${PKS[k].e} <b>${PKS[k].n}</b>: ${PKS[k].d}</li>`).join('')}</ul>${own?`<div class="st-own">✓ Sende</div>`:`<button class="st-buy gold" data-act="buy:premium" ${storeBusy?'disabled':''}>${'👑 Premium ile aç'}</button>`}</section>`}
 const _pkRS=renderStore;
 renderStore=function(){const h=_pkRS.apply(this,arguments),a='<button class="st-restore"',i=h.indexOf(a);return i<0?h:h.slice(0,i)+pkCards()+h.slice(i)};
-const _pkIT=iapThanks;
-iapThanks=function(k){if(PKS[k]&&k!=='tarih'){sfx.cash&&sfx.cash();try{burst(26)}catch(e){}toast(`${PKS[k].e} ${PKS[k].n} açıldı! Yeni eşyalar pazarda.`);T('pack_buy',{k});return}return _pkIT.apply(this,arguments)};
 (function(){const st=document.createElement('style');st.textContent='.pkhd{margin:14px 4px 2px;font:900 15px/1.2 Cinzel,serif;color:#f3d48c;letter-spacing:.04em}.st-own.pkprem{opacity:.85;font-size:13px}';document.head.appendChild(st)})();
 
 /* ---------- ansiklopedi ---------- */
