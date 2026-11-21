@@ -145,3 +145,35 @@ if MODE=='gonder':
     print('SURUM',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
     for i in iaps():
         if i['attributes']['productId'] in [x['pid'] for x in P['iap']]: print('IAP',i['attributes']['productId'],i['attributes']['state'])
+
+if MODE=='aso':
+    for v in allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':3}):
+        a=v['attributes'];print('VER',a['versionString'],a['appStoreState'])
+        for l in allp(f"/v1/appStoreVersions/{v['id']}/appStoreVersionLocalizations"):
+            la=l['attributes'];print('  VLOC',la['locale'],'| KW:',la.get('keywords'),'| PROMO:',(la.get('promotionalText') or '')[:170])
+            print('  DESC',la['locale'],(la.get('description') or '').replace('\n',' / ')[:600])
+        break
+    for ai in allp(f'/v1/apps/{AID}/appInfos'):
+        print('APPINFO',ai['attributes'].get('state'))
+        for l in allp(f"/v1/appInfos/{ai['id']}/appInfoLocalizations"): print('  AILOC',l['attributes']['locale'],'|',l['attributes'].get('name'),'|',l['attributes'].get('subtitle'))
+        try:
+            pc=get(f"/v1/appInfos/{ai['id']}/primaryCategory"); print('  CAT',pc['data']['id'] if pc.get('data') else None)
+            sc=get(f"/v1/appInfos/{ai['id']}/secondaryCategory"); print('  CAT2',sc['data']['id'] if sc.get('data') else None)
+        except SystemExit: pass
+    try:
+        r=get(f'/v1/apps/{AID}/customerReviews',**{'limit':50,'sort':'-createdDate'})
+        print('REVIEWS',len(r.get('data',[])),[ (x['attributes']['rating'],x['attributes'].get('territory')) for x in r.get('data',[])][:50])
+    except SystemExit: pass
+    try:
+        r=get(f'/v1/apps/{AID}/appStoreVersionExperimentsV2',limit=5); print('PPO',len(r.get('data',[])))
+    except SystemExit: pass
+    try:
+        r=get(f'/v1/apps/{AID}/appCustomProductPages',limit=10); print('CPP',[x['attributes'].get('name') for x in r.get('data',[])])
+    except SystemExit: pass
+    vs=allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':1})
+    vl=allp(f"/v1/appStoreVersions/{vs[0]['id']}/appStoreVersionLocalizations")
+    for l in vl:
+        for ss in allp(f"/v1/appStoreVersionLocalizations/{l['id']}/appScreenshotSets"):
+            print('SHOTSET',l['attributes']['locale'],ss['attributes']['screenshotDisplayType'],len(allp(f"/v1/appScreenshotSets/{ss['id']}/appScreenshots")))
+        for ps in allp(f"/v1/appStoreVersionLocalizations/{l['id']}/appPreviewSets"):
+            print('PREVIEWSET',l['attributes']['locale'],ps['attributes']['previewType'])
