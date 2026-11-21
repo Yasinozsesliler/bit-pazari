@@ -77,5 +77,66 @@
   }
  ],
  "version": "1.9.0",
- "build": "44"
+ "build": "44",
+ "v191": {
+  "version": "1.9.1",
+  "promoLive": {
+   "tr": "Yeni: Mezat Gecesi! Kendi müzayedeni kur, tokmağı sen vur. Kırık malı onar, paketleyip kargola, İstanbul'un en büyük antikacısı ol.",
+   "en-US": "New: Auction Night! Run your own auction and bring down the hammer. Restore broken finds, pack and ship them, and become Istanbul's top antique dealer."
+  },
+  "promo": {
+   "tr": "Yeni: 7 paket! 90'lar, Eski İstanbul, Hamam, Hat ve Harita, Halı ve Kilim, Para ve Altın, Mahalle Bakkalı. 51 yeni 3B eşya, hikâyeli müşteriler.",
+   "en-US": "New: 7 packs! 90s Nostalgia, Old Istanbul, Hammam, Calligraphy & Maps, Carpets & Kilims, Coins & Gold, Corner Grocer. 51 new 3D items.",
+   "en-GB": "New: 7 packs! 90s Nostalgia, Old Istanbul, Hammam, Calligraphy & Maps, Carpets & Kilims, Coins & Gold, Corner Grocer. 51 new 3D items.",
+   "de-DE": "Neu: 7 Pakete! 90er-Nostalgie, Altes Istanbul, Hamam, Kalligrafie & Karten, Teppiche & Kelims, Münzen & Gold, Tante-Emma-Laden. 51 neue 3D-Stücke."
+  },
+  "keywords": {
+   "tr": "ikinci el,dükkan,antikacı,simülasyon,tüccar,esnaf,işletme,nostalji,müzayede,koleksiyon,tamir,sahte",
+   "en-US": "flea,market,bargain,trade,tycoon,business,store,collector,fake,merchant,offline,haggle,thrift",
+   "en-GB": "dealer,flea,market,bargain,trade,collector,fake,merchant,store,restore,treasure,business,thrift",
+   "de-DE": "antiquitäten,flohmarkt,händler,laden,feilschen,auktion,sammler,fälschung,istanbul,pfandhaus,trödel"
+  },
+  "info": {
+   "tr": [
+    "Bit Pazarı: Antika Simülatörü",
+    "Pazarlık, Mezat, Rehinci Oyunu"
+   ],
+   "en-US": [
+    "Bit Pazari: Antique Dealer",
+    "Pawn Shop & Auction Simulator"
+   ],
+   "en-GB": [
+    "Bit Pazari: Pawn Shop Tycoon",
+    "Antique Haggle & Auction Sim"
+   ]
+  },
+  "whatsNew": {
+   "tr": "• 4 yeni paket herkese açık: Nostalji 90'lar, Eski İstanbul, Hamam Takımı, Mahalle Bakkalı\n• Premium'a 3 yeni paket: Hat, Kitap ve Harita · Halı ve Kilim · Para ve Altın\n• 51 yeni 3B eşya, 7 koleksiyon serisi\n• Hikâyeli yeni müşteriler: emekli kaptan, vatman, hamamcı, bakkal Hüsnü Amca…",
+   "en-US": "• 4 new packs free for everyone: 90s Nostalgia, Old Istanbul, Hammam Set, Corner Grocer\n• 3 new Premium packs: Calligraphy & Maps, Carpets & Kilims, Coins & Gold\n• 51 new 3D items, 7 collection series\n• New customers with their own stories: a retired ferry captain, a tram driver, the corner grocer…",
+   "de-DE": "• 4 neue Pakete für alle: 90er-Nostalgie, Altes Istanbul, Hamam-Set, Tante-Emma-Laden\n• 3 neue Premium-Pakete: Kalligrafie & Karten, Teppiche & Kelims, Münzen & Gold\n• 51 neue 3D-Gegenstände, 7 Sammelserien\n• Neue Kunden mit eigenen Geschichten: ein Fährkapitän a. D., ein Straßenbahnfahrer, der Krämer von nebenan…",
+   "en-GB": "• 4 new packs free for everyone: 90s Nostalgia, Old Istanbul, Hammam Set, Corner Grocer\n• 3 new Premium packs: Calligraphy & Maps, Carpets & Kilims, Coins & Gold\n• 51 new 3D items, 7 collection series\n• New customers with their own stories: a retired ferry captain, a tram driver, the corner grocer…"
+  },
+  "desc": [
+   [
+    "120+",
+    "200+"
+   ],
+   [
+    "Complete 13 collection series",
+    "Complete 29 collection series"
+   ],
+   [
+    "Über 120 Stücke",
+    "Über 200 Stücke"
+   ],
+   [
+    "120'den fazla",
+    "200'den fazla"
+   ],
+   [
+    "120+ eşya",
+    "200+ eşya"
+   ]
+  ]
+ }
 }

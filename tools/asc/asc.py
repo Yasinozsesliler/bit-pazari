@@ -146,6 +146,63 @@ if MODE=='gonder':
     for i in iaps():
         if i['attributes']['productId'] in [x['pid'] for x in P['iap']]: print('IAP',i['attributes']['productId'],i['attributes']['state'])
 
+if MODE in('v191','v191gonder'):
+    Q=P['v191']
+    vs=allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':20})
+    live=[v for v in vs if v['attributes']['appStoreState']=='READY_FOR_SALE']
+    if live and MODE=='v191':
+        for l in allp(f"/v1/appStoreVersions/{live[0]['id']}/appStoreVersionLocalizations"):
+            loc=l['attributes']['locale']
+            if loc in Q['promoLive'] and not l['attributes'].get('promotionalText'):
+                req('PATCH',f"/v1/appStoreVersionLocalizations/{l['id']}",{'data':{'type':'appStoreVersionLocalizations','id':l['id'],'attributes':{'promotionalText':Q['promoLive'][loc]}}});print('YAYINDAKI tanitim metni',loc)
+    vv={v['attributes']['versionString']:v for v in vs}
+    if Q['version'] in vv: VID=vv[Q['version']]['id']
+    else:
+        VID=req('POST','/v1/appStoreVersions',{'data':{'type':'appStoreVersions','attributes':{'platform':'IOS','versionString':Q['version'],'releaseType':'AFTER_APPROVAL'},'relationships':{'app':{'data':{'type':'apps','id':AID}}}}})['data']['id'];print('SURUM olusturuldu',Q['version'])
+    print('VERSION',VID,get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
+    locs={l['attributes']['locale']:l for l in allp(f'/v1/appStoreVersions/{VID}/appStoreVersionLocalizations')}
+    print('version locales',list(locs))
+    if MODE=='v191':
+        if 'en-GB' not in locs:
+            us=locs['en-US']['attributes']
+            r=req('POST','/v1/appStoreVersionLocalizations',{'data':{'type':'appStoreVersionLocalizations','attributes':{'locale':'en-GB','description':us['description'],'supportUrl':us.get('supportUrl'),'marketingUrl':us.get('marketingUrl')},'relationships':{'appStoreVersion':{'data':{'type':'appStoreVersions','id':VID}}}}})
+            locs['en-GB']=r['data'];print('en-GB surum sayfasi eklendi')
+        for loc,l in locs.items():
+            a=dict(l['attributes']);att={}
+            if loc in Q['whatsNew']: att['whatsNew']=Q['whatsNew'][loc]
+            if loc in Q['keywords']: att['keywords']=Q['keywords'][loc]
+            if loc in Q['promo']: att['promotionalText']=Q['promo'][loc]
+            d=a.get('description') or ''
+            for o,n in Q['desc']: d=d.replace(o,n)
+            if d and d!=a.get('description'): att['description']=d;print('  aciklama guncellendi',loc)
+            if att: req('PATCH',f"/v1/appStoreVersionLocalizations/{l['id']}",{'data':{'type':'appStoreVersionLocalizations','id':l['id'],'attributes':att}});print('surum metni',loc,list(att))
+        ai=[a for a in allp(f'/v1/apps/{AID}/appInfos') if a['attributes'].get('state')!='READY_FOR_DISTRIBUTION']
+        if ai:
+            al={l['attributes']['locale']:l for l in allp(f"/v1/appInfos/{ai[0]['id']}/appInfoLocalizations")}
+            pp=al['tr']['attributes'].get('privacyPolicyUrl')
+            for loc,(n,st) in Q['info'].items():
+                if loc in al: req('PATCH',f"/v1/appInfoLocalizations/{al[loc]['id']}",{'data':{'type':'appInfoLocalizations','id':al[loc]['id'],'attributes':{'name':n,'subtitle':st}}});print('ad/alt baslik',loc)
+                else: req('POST','/v1/appInfoLocalizations',{'data':{'type':'appInfoLocalizations','attributes':{'locale':loc,'name':n,'subtitle':st,'privacyPolicyUrl':pp},'relationships':{'appInfo':{'data':{'type':'appInfos','id':ai[0]['id']}}}}});print('ad/alt baslik EKLENDI',loc)
+        else: print('!! duzenlenebilir appInfo yok')
+    bs=allp('/v1/builds',**{'filter[app]':AID,'filter[preReleaseVersion.version]':Q['version'],'sort':'-uploadedDate','limit':10})
+    for b in bs: print('BUILD',b['attributes']['version'],b['attributes']['processingState'],b['attributes'].get('uploadedDate'))
+    ok=[b for b in bs if b['attributes']['processingState']=='VALID']
+    if ok:
+        b=max(ok,key=lambda b:int(b['attributes']['version']))
+        if b['attributes'].get('usesNonExemptEncryption') is None:
+            req('PATCH',f"/v1/builds/{b['id']}",{'data':{'type':'builds','id':b['id'],'attributes':{'usesNonExemptEncryption':False}}})
+        req('PATCH',f'/v1/appStoreVersions/{VID}/relationships/build',{'data':{'type':'builds','id':b['id']}});print('BUILD BAGLANDI',b['attributes']['version'])
+    else: print('henuz islenmis derleme yok')
+    if MODE=='v191gonder':
+        if not ok: raise SystemExit('derleme yok, gonderilmedi')
+        open_=get(f'/v1/apps/{AID}/reviewSubmissions',**{'filter[platform]':'IOS','filter[state]':'READY_FOR_REVIEW,UNRESOLVED_ISSUES','limit':5}).get('data',[])
+        RS=open_[0]['id'] if open_ else req('POST','/v1/reviewSubmissions',{'data':{'type':'reviewSubmissions','attributes':{'platform':'IOS'},'relationships':{'app':{'data':{'type':'apps','id':AID}}}}})['data']['id']
+        if not get(f'/v1/reviewSubmissions/{RS}/items').get('data'):
+            req('POST','/v1/reviewSubmissionItems',{'data':{'type':'reviewSubmissionItems','relationships':{'reviewSubmission':{'data':{'type':'reviewSubmissions','id':RS}},'appStoreVersion':{'data':{'type':'appStoreVersions','id':VID}}}}})
+        r=req('PATCH',f'/v1/reviewSubmissions/{RS}',{'data':{'type':'reviewSubmissions','id':RS,'attributes':{'submitted':True}}})
+        print('INCELEMEYE GONDERILDI',r['data']['attributes'])
+    print('SURUM DURUMU',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
+
 if MODE=='aso':
     for v in allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':3}):
         a=v['attributes'];print('VER',a['versionString'],a['appStoreState'])
