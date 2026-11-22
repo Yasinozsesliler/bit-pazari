@@ -203,6 +203,34 @@ if MODE in('v191','v191gonder'):
         print('INCELEMEYE GONDERILDI',r['data']['attributes'])
     print('SURUM DURUMU',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
 
+if MODE=='shots191':
+    import glob
+    vs=allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':20})
+    VID=[v for v in vs if v['attributes']['versionString']=='1.9.1'][0]['id']
+    D=os.path.join(os.path.dirname(__file__),'shots191')
+    for l in allp(f'/v1/appStoreVersions/{VID}/appStoreVersionLocalizations'):
+        loc=l['attributes']['locale'];L={'tr':'tr','en-US':'en','en-GB':'en','de-DE':'de'}.get(loc)
+        if not L: continue
+        sets={ss['attributes']['screenshotDisplayType']:ss for ss in allp(f"/v1/appStoreVersionLocalizations/{l['id']}/appScreenshotSets")}
+        if 'APP_IPHONE_67' in sets:
+            SID=sets['APP_IPHONE_67']['id']
+            for sc in allp(f'/v1/appScreenshotSets/{SID}/appScreenshots'): req('DELETE',f"/v1/appScreenshots/{sc['id']}")
+        else:
+            SID=req('POST','/v1/appScreenshotSets',{'data':{'type':'appScreenshotSets','attributes':{'screenshotDisplayType':'APP_IPHONE_67'},'relationships':{'appStoreVersionLocalization':{'data':{'type':'appStoreVersionLocalizations','id':l['id']}}}}})['data']['id']
+        for fp in sorted(glob.glob(f'{D}/{L}-*.jpg')):
+            data=open(fp,'rb').read();fn=os.path.basename(fp)
+            r=req('POST','/v1/appScreenshots',{'data':{'type':'appScreenshots','attributes':{'fileName':fn,'fileSize':len(data)},'relationships':{'appScreenshotSet':{'data':{'type':'appScreenshotSets','id':SID}}}}})['data']
+            for op in r['attributes']['uploadOperations']:
+                h={k['name']:k['value'] for k in op.get('requestHeaders',[])}
+                requests.request(op['method'],op['url'],headers=h,data=data[op['offset']:op['offset']+op['length']],timeout=120)
+            req('PATCH',f"/v1/appScreenshots/{r['id']}",{'data':{'type':'appScreenshots','id':r['id'],'attributes':{'uploaded':True,'sourceFileChecksum':hashlib.md5(data).hexdigest()}}})
+        time.sleep(20)
+        st=[sc['attributes'].get('assetDeliveryState',{}).get('state') for sc in allp(f'/v1/appScreenshotSets/{SID}/appScreenshots')]
+        print('GORSEL',loc,len(st),st)
+    for l in allp(f'/v1/appStoreVersions/{VID}/appStoreVersionLocalizations'):
+        for ss in allp(f"/v1/appStoreVersionLocalizations/{l['id']}/appScreenshotSets"):
+            print('SHOTSET',l['attributes']['locale'],ss['attributes']['screenshotDisplayType'],len(allp(f"/v1/appScreenshotSets/{ss['id']}/appScreenshots")))
+
 if MODE=='aso':
     for v in allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':3}):
         a=v['attributes'];print('VER',a['versionString'],a['appStoreState'])
