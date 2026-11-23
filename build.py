@@ -16,6 +16,10 @@ for fam,pkg,vs in FONTS:
       if not os.path.exists(src): miss.append(fn);continue
       shutil.copy(src,f"{W}/fonts/{fn}")
       css.append(f"@font-face{{font-family:'{fam}';font-style:{st};font-weight:{w};font-display:swap;src:url(./{fn}) format('woff2');unicode-range:{RANGES[sub]}}}")
+# repoya gömülü fontlar (Fraunces: OFL, src/fonts)
+for w in (600,800):
+  fn=f"fraunces-{w}.woff"; shutil.copy(f"src/fonts/{fn}",f"{W}/fonts/{fn}")
+  css.append(f"@font-face{{font-family:'Fraunces';font-style:normal;font-weight:{w};font-display:swap;src:url(./{fn}) format('woff')}}")
 open(f"{W}/fonts/fonts.css","w").write("\n".join(css))
 if miss: raise SystemExit("eksik font: "+str(miss))
 shutil.copy("node_modules/three/build/three.min.js",f"{W}/lib/three.min.js")
