@@ -138,5 +138,24 @@
     "200+ eşya"
    ]
   ]
+ },
+ "v110": {
+  "version": "1.10.0",
+  "promoLive": {},
+  "promo": {
+   "tr": "Yeni görünüm! Terazide pazarlık et: fiyatı kaydır, müşterinin yüzünü izle. Büyüteç, çay bardağı ve ekspertiz kartı artık tezgâhında.",
+   "en-US": "A fresh new look! Haggle on the scale: slide your price and watch the customer's face. Your loupe, tea glass and expert card now sit on the counter.",
+   "de-DE": "Neuer Look! Feilsche auf der Waage: Preis schieben, Gesicht des Kunden beobachten. Lupe, Teeglas und Gutachterkarte liegen jetzt auf der Theke.",
+   "en-GB": "A fresh new look! Haggle on the scale: slide your price and watch the customer's face. Your loupe, tea glass and expert card now sit on the counter."
+  },
+  "keywords": {},
+  "info": {},
+  "desc": [],
+  "whatsNew": {
+   "tr": "• Yeni görünüm: Gece Laciverti\n• Terazi ile pazarlık: fiyatı parmağınla kaydır, terazi ve müşterinin yüzü anında tepki versin\n• Tezgâhta büyüteç, ekspertiz kartı, çay bardağı ve kapı: araçlar artık birer eşya\n• Satarken maliyetinin kaç katına sattığını görüyorsun\n• Küçük ekranlarda dükkân adı artık bölünmüyor",
+   "en-US": "• A fresh new look: Midnight Navy\n• Haggle on the scale: slide your price and the scale and the customer's face react instantly\n• Your tools now sit on the counter: a loupe, an expert's card, a tea glass and the door\n• When selling, see how many times your cost you're asking\n• Shop names no longer break on small screens",
+   "de-DE": "• Neuer Look: Nachtblau\n• Feilschen auf der Waage: Preis mit dem Finger schieben, Waage und Kundengesicht reagieren sofort\n• Deine Werkzeuge liegen jetzt auf der Theke: Lupe, Gutachterkarte, Teeglas und Tür\n• Beim Verkaufen siehst du, das Wievielfache deiner Kosten du verlangst\n• Ladennamen werden auf kleinen Bildschirmen nicht mehr getrennt",
+   "en-GB": "• A fresh new look: Midnight Navy\n• Haggle on the scale: slide your price and the scale and the customer's face react instantly\n• Your tools now sit on the counter: a loupe, an expert's card, a tea glass and the door\n• When selling, see how many times your cost you're asking\n• Shop names no longer break on small screens"
+  }
  }
 }

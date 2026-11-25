@@ -146,11 +146,11 @@ if MODE=='gonder':
     for i in iaps():
         if i['attributes']['productId'] in [x['pid'] for x in P['iap']]: print('IAP',i['attributes']['productId'],i['attributes']['state'])
 
-if MODE in('v191','v191gonder'):
-    Q=P['v191']
+if MODE in('v191','v191gonder','v110','v110gonder'):
+    Q=P['v110' if MODE.startswith('v110') else 'v191']
     vs=allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':20})
     live=[v for v in vs if v['attributes']['appStoreState']=='READY_FOR_SALE']
-    if live and MODE=='v191':
+    if live and MODE in('v191','v110') and Q['promoLive']:
         for l in allp(f"/v1/appStoreVersions/{live[0]['id']}/appStoreVersionLocalizations"):
             loc=l['attributes']['locale']
             if loc in Q['promoLive'] and not l['attributes'].get('promotionalText'):
@@ -162,7 +162,7 @@ if MODE in('v191','v191gonder'):
     print('VERSION',VID,get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
     locs={l['attributes']['locale']:l for l in allp(f'/v1/appStoreVersions/{VID}/appStoreVersionLocalizations')}
     print('version locales',list(locs))
-    if MODE=='v191':
+    if MODE in('v191','v110'):
         if 'en-GB' not in locs:
             us=locs['en-US']['attributes']
             r=req('POST','/v1/appStoreVersionLocalizations',{'data':{'type':'appStoreVersionLocalizations','attributes':{'locale':'en-GB','description':us['description'],'supportUrl':us.get('supportUrl'),'marketingUrl':us.get('marketingUrl')},'relationships':{'appStoreVersion':{'data':{'type':'appStoreVersions','id':VID}}}}})
@@ -177,13 +177,13 @@ if MODE in('v191','v191gonder'):
             if d and d!=a.get('description'): att['description']=d;print('  aciklama guncellendi',loc)
             if att: req('PATCH',f"/v1/appStoreVersionLocalizations/{l['id']}",{'data':{'type':'appStoreVersionLocalizations','id':l['id'],'attributes':att}});print('surum metni',loc,list(att))
         ai=[a for a in allp(f'/v1/apps/{AID}/appInfos') if a['attributes'].get('state')!='READY_FOR_DISTRIBUTION']
-        if ai:
+        if ai and Q['info']:
             al={l['attributes']['locale']:l for l in allp(f"/v1/appInfos/{ai[0]['id']}/appInfoLocalizations")}
             pp=al['tr']['attributes'].get('privacyPolicyUrl')
             for loc,(n,st) in Q['info'].items():
                 if loc in al: req('PATCH',f"/v1/appInfoLocalizations/{al[loc]['id']}",{'data':{'type':'appInfoLocalizations','id':al[loc]['id'],'attributes':{'name':n,'subtitle':st}}});print('ad/alt baslik',loc)
                 else: req('POST','/v1/appInfoLocalizations',{'data':{'type':'appInfoLocalizations','attributes':{'locale':loc,'name':n,'subtitle':st,'privacyPolicyUrl':pp},'relationships':{'appInfo':{'data':{'type':'appInfos','id':ai[0]['id']}}}}});print('ad/alt baslik EKLENDI',loc)
-        else: print('!! duzenlenebilir appInfo yok')
+        elif Q['info']: print('!! duzenlenebilir appInfo yok')
     bs=allp('/v1/builds',**{'filter[app]':AID,'filter[preReleaseVersion.version]':Q['version'],'sort':'-uploadedDate','limit':10})
     for b in bs: print('BUILD',b['attributes']['version'],b['attributes']['processingState'],b['attributes'].get('uploadedDate'))
     ok=[b for b in bs if b['attributes']['processingState']=='VALID']
@@ -193,7 +193,7 @@ if MODE in('v191','v191gonder'):
             req('PATCH',f"/v1/builds/{b['id']}",{'data':{'type':'builds','id':b['id'],'attributes':{'usesNonExemptEncryption':False}}})
         req('PATCH',f'/v1/appStoreVersions/{VID}/relationships/build',{'data':{'type':'builds','id':b['id']}});print('BUILD BAGLANDI',b['attributes']['version'])
     else: print('henuz islenmis derleme yok')
-    if MODE=='v191gonder':
+    if MODE in('v191gonder','v110gonder'):
         if not ok: raise SystemExit('derleme yok, gonderilmedi')
         open_=get(f'/v1/apps/{AID}/reviewSubmissions',**{'filter[platform]':'IOS','filter[state]':'READY_FOR_REVIEW,UNRESOLVED_ISSUES','limit':5}).get('data',[])
         RS=open_[0]['id'] if open_ else req('POST','/v1/reviewSubmissions',{'data':{'type':'reviewSubmissions','attributes':{'platform':'IOS'},'relationships':{'app':{'data':{'type':'apps','id':AID}}}}})['data']['id']
@@ -203,15 +203,19 @@ if MODE in('v191','v191gonder'):
         print('INCELEMEYE GONDERILDI',r['data']['attributes'])
     print('SURUM DURUMU',get(f'/v1/appStoreVersions/{VID}')['data']['attributes']['appStoreState'])
 
-if MODE=='shots191':
+if MODE in('shots191','shots110'):
+    SV={'shots191':'1.9.1','shots110':'1.10.0'}[MODE]
     import glob
     vs=allp(f'/v1/apps/{AID}/appStoreVersions',**{'filter[platform]':'IOS','limit':20})
-    VID=[v for v in vs if v['attributes']['versionString']=='1.9.1'][0]['id']
-    D=os.path.join(os.path.dirname(__file__),'shots191')
+    VID=[v for v in vs if v['attributes']['versionString']==SV][0]['id']
+    D=os.path.join(os.path.dirname(__file__),MODE)
     for l in allp(f'/v1/appStoreVersions/{VID}/appStoreVersionLocalizations'):
         loc=l['attributes']['locale'];L={'tr':'tr','en-US':'en','en-GB':'en','de-DE':'de'}.get(loc)
         if not L: continue
         sets={ss['attributes']['screenshotDisplayType']:ss for ss in allp(f"/v1/appStoreVersionLocalizations/{l['id']}/appScreenshotSets")}
+        if MODE=='shots110' and 'APP_IPHONE_61' in sets:
+            for sc in allp(f"/v1/appScreenshotSets/{sets['APP_IPHONE_61']['id']}/appScreenshots"): req('DELETE',f"/v1/appScreenshots/{sc['id']}")
+            print('eski 6.1 gorseller silindi',loc)
         if 'APP_IPHONE_67' in sets:
             SID=sets['APP_IPHONE_67']['id']
             for sc in allp(f'/v1/appScreenshotSets/{SID}/appScreenshots'): req('DELETE',f"/v1/appScreenshots/{sc['id']}")
