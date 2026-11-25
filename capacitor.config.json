@@ -2,7 +2,7 @@
   "appId": "com.ozsstudio.bitpazari",
   "appName": "Bit Pazarı",
   "webDir": "www",
-  "backgroundColor": "#0d1f1c",
+  "backgroundColor": "#0d141f",
   "android": {
     "allowMixedContent": false,
     "captureInput": true,
@@ -12,7 +12,7 @@
     "SplashScreen": {
       "launchShowDuration": 3000,
       "launchAutoHide": false,
-      "backgroundColor": "#0d1f1c",
+      "backgroundColor": "#0d141f",
       "showSpinner": false,
       "androidScaleType": "CENTER_CROP"
     },
@@ -27,7 +27,7 @@
   "ios": {
     "contentInset": "never",
     "scrollEnabled": false,
-    "backgroundColor": "#0d1f1c",
+    "backgroundColor": "#0d141f",
     "preferredContentMode": "mobile"
   }
 }
