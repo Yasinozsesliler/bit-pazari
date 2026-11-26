@@ -157,5 +157,24 @@
    "de-DE": "• Neuer Look: Nachtblau\n• Feilschen auf der Waage: Preis mit dem Finger schieben, Waage und Kundengesicht reagieren sofort\n• Deine Werkzeuge liegen jetzt auf der Theke: Lupe, Gutachterkarte, Teeglas und Tür\n• Beim Verkaufen siehst du, das Wievielfache deiner Kosten du verlangst\n• Ladennamen werden auf kleinen Bildschirmen nicht mehr getrennt",
    "en-GB": "• A fresh new look: Midnight Navy\n• Haggle on the scale: slide your price and the scale and the customer's face react instantly\n• Your tools now sit on the counter: a loupe, an expert's card, a tea glass and the door\n• When selling, see how many times your cost you're asking\n• Shop names no longer break on small screens"
   }
+ },
+ "v111": {
+  "version": "1.11.0",
+  "promoLive": {},
+  "promo": {
+   "tr": "Yeni: Pazar Turu! Feriköy'de tezgâh tezgâh gez, pazarlıkla mal topla. Dükkânının önüne çık; tabelanı, tenteni ve saksılarını seç.",
+   "en-US": "New: Market Trips! Browse Feriköy stall by stall and haggle for finds. Step outside your shop and pick your sign, awning and flower pots.",
+   "de-DE": "Neu: Marktbummel! Stöbere Stand für Stand in Feriköy und feilsche um Fundstücke. Geh vor deinen Laden und wähle Schild, Markise und Blumen.",
+   "en-GB": "New: Market Trips! Browse Feriköy stall by stall and haggle for finds. Step outside your shop and pick your sign, awning and flower pots."
+  },
+  "keywords": {},
+  "info": {},
+  "desc": [],
+  "whatsNew": {
+   "tr": "• Dükkânın önü: sokağa çık, tabelanı, tenteni, çitini ve saksılarını seç. Vitrinde en değerli mallarını sergile\n• Pazar Turu: Feriköy, Horhor ve Kadıköy antika pazarlarında tezgâh tezgâh gez, satıcılarla pazarlık et\n• Feriköy yalnızca pazar günleri kurulur, tezgâhlar her gün yenilenir\n• Akşam ışıklarıyla yeni 3B sokak ve pazar sahneleri",
+   "en-US": "• Outside your shop: step into the street and pick your sign, awning, fence and flower pots. Show off your best finds in the window\n• Market Trips: browse the Feriköy, Horhor and Kadıköy antique markets stall by stall and haggle with the sellers\n• Feriköy only opens on Sundays, and the stalls change every day\n• New 3D street and market scenes with evening lights",
+   "de-DE": "• Vor deinem Laden: Geh auf die Straße und wähle Schild, Markise, Zaun und Blumentöpfe. Zeig deine besten Stücke im Schaufenster\n• Marktbummel: Stöbere Stand für Stand über die Antikmärkte Feriköy, Horhor und Kadıköy und feilsche mit den Händlern\n• Feriköy öffnet nur sonntags, die Stände wechseln täglich\n• Neue 3D-Straßen- und Marktszenen mit Abendlicht",
+   "en-GB": "• Outside your shop: step into the street and pick your sign, awning, fence and flower pots. Show off your best finds in the window\n• Market Trips: browse the Feriköy, Horhor and Kadıköy antique markets stall by stall and haggle with the sellers\n• Feriköy only opens on Sundays, and the stalls change every day\n• New 3D street and market scenes with evening lights"
+  }
  }
 }
